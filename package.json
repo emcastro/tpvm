@@ -1,27 +1,36 @@
 {
   "name": "tpvm",
-
   "description": "A Virtual Machine for TP",
   "respository": {
     "type": "git",
-    "url": "http://www.github.com/emcastro/tpvm.git"
+    "url": "https://emmanuel_castro@bitbucket.org/emmanuel_castro/tpvm.git"
   },
-  "licence": "MIT",
-
+  "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-plugin-minify-constant-folding": "^0.0.4",
     "babel-plugin-minify-dead-code-elimination": "^0.1.4",
     "babel-plugin-transform-do-expressions": "^6.22.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-inline-consecutive-adds": "^0.0.2",
     "babel-preset-env": "^1.2.2",
     "flow-bin": "^0.42.0",
     "glup": "^1.0.14",
     "gulp-clean": "^0.3.2",
-    "standard-flow": "^1.0.0"
+    "gulp-sequence": "^0.4.6",
+    "gulp-webpack": "^1.5.0",
+    "gulp-webserver": "^0.9.1",
+    "standard-flow": "^1.0.0",
+    "vinyl-named": "^1.1.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2"
   },
   "dependencies": {
     "lodash": "^4.17.4",
     "wu": "^2.1.0"
+  },
+  "scripts": {
+    "start": "",
+    "build": "gulp default"
   }
 }

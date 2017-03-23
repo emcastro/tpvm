@@ -1,6 +1,5 @@
 {
-  "presets": ["env"],
-/*  "plugins": [
+  "plugins": [
     "transform-flow-strip-types",
     "transform-es2015-arrow-functions",
     "transform-es2015-block-scoped-functions",
@@ -9,5 +8,5 @@
     "transform-inline-consecutive-adds",
     "minify-constant-folding",
     "minify-dead-code-elimination"
-  ]*/
+  ]
 }
