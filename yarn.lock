@@ -2746,6 +2746,16 @@ gulp-clean@^0.3.2:
     rimraf "^2.2.8"
     through2 "^0.4.2"
 
+gulp-combine@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/gulp-combine/-/gulp-combine-0.1.0.tgz#03091eceb099054e6d74d4e64a30076a683c87ef"
+  dependencies:
+    gulp-util "^3.0.8"
+    source-map "^0.5.6"
+    through2 "^2.0.3"
+    vinyl "^2.0.1"
+    vinyl-sourcemaps-apply "^0.2.1"
+
 gulp-concat@^2.6.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/gulp-concat/-/gulp-concat-2.6.1.tgz#633d16c95d88504628ad02665663cee5a4793353"
@@ -4025,6 +4035,10 @@ map-cache@^0.2.0:
 map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
+
+map-stream@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/map-stream/-/map-stream-0.0.7.tgz#8a1f07896d82b10926bd3744a2420009f88974a8"
 
 marked-terminal@^1.6.2:
   version "1.7.0"
@@ -5817,7 +5831,7 @@ tfunk@^3.0.1:
     chalk "^1.1.1"
     object-path "^0.9.0"
 
-through2@2.X, through2@^2, through2@^2.0.0, through2@^2.0.1:
+through2@2.X, through2@^2, through2@^2.0.0, through2@^2.0.1, through2@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
   dependencies:
@@ -6157,7 +6171,7 @@ vinyl@^0.4.0:
     clone "^0.2.0"
     clone-stats "^0.0.1"
 
-vinyl@^2.0.0:
+vinyl@^2.0.0, vinyl@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/vinyl/-/vinyl-2.0.1.tgz#1c3b4931e7ac4c1efee743f3b91a74c094407bb6"
   dependencies:

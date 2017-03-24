@@ -1,6 +1,8 @@
 // @flow
 import _ from 'lodash'
 
+_.toto = 'toto'
+
 // import timer from 'timers'
 
 const list = [1, 2, 3, 4]
@@ -14,8 +16,8 @@ function doIt () {
 
 list.forEach(doIt)
 
-// timer.setInterval(doIt, 1000)   
+// timer.setInterval(doIt, 1000)
 
-import {machin} from './bidule'
+import { machin } from './bidule'
 
 machin({a: 33, b: 66})

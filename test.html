@@ -5,6 +5,24 @@
   <title>TPVM Testbed</title>
 </head>
 <body>
-  <script src="assets/bundle.js"></script>
+  <script>
+  function load(name) {
+    resource = 'dist/'+name
+
+    const req = new XMLHttpRequest();
+    req.open('GET', resource, false);
+    req.send();
+
+    if (req.status === 200) {
+      const module = `(function ${name}() {${req.responseText}\n})`
+      console.log("exec", module)
+      const m = eval(module)
+      m()
+    } else {
+      console.error("Error loading "+name, req.status, req.statusText)
+    }
+  }
+  load('toto')
+  </script>
 </body>
 </html>

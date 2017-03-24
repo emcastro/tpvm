@@ -20,13 +20,30 @@ gulp.task('clean', () => {
     .pipe(clean())
 })
 
+const map = require('map-stream')
+function log (key) {
+  return map(function (x, callback) {
+    console.log(key, x)
+    callback(null, x)
+  })
+}
+
 // Build for NodeJS
 gulp.task('build', () => {
+  // const gulpCombine = require('gulp-combine')
+
   return gulp.src('src/**/*.js')
+    .pipe(log('a'))
     .pipe(sourcemaps.init())
+    .pipe(log('b'))
     .pipe(babel())
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('dist/'))
+    .pipe(log('c'))
+    // .pipe(gulpCombine({
+    //   mainModule: 'test'
+    // }))
+    .pipe(sourcemaps.write())
+    .pipe(log('d'))
+    .pipe(gulp.dest('dist'))
 })
 
 // Continuous build for NodeJS
@@ -37,16 +54,8 @@ gulp.task('server', ['default'], () => {
 // Continuous build for Web-browser test
 gulp.task('http', () => {
   const webserver = require('gulp-webserver')
-  const webpack = require('gulp-webpack')
-  const named = require('vinyl-named')
 
-  return gulp.src('src/**/*.js')
-    // .pipe(sourcemaps.init())
-    .pipe(babel())
-    // .pipe(named())
-    .pipe(webpack(require('./webpack.config.js')))
-    .pipe(gulp.dest('web'))
-
+  return gulp.src('dist')
     .pipe(webserver({
       livereload: true,
       directoryListing: true,
