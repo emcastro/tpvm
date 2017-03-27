@@ -13,7 +13,7 @@ class Module { // eslint-disable-line no-unused-vars
   _dirname: string
   */
 
-  constructor (id /* :string */, parent /* :Module */) {
+  constructor (id /* :string */, parent /* :?Module */) {
     this.id = id
     this.exports = {}
     this.parent = parent
@@ -114,8 +114,8 @@ function dirname (path /* :string */) /* :string */ {
   return dirnameRe.exec(path)[1]
 }
 
-// ///////////////////////////////
-// Banc de test
+const root = new Module('/', null)
 
-const m = new Module('/', null)
-m.require('./dist/toto.js')
+function require (id) { // eslint-disable-line no-unused-vars
+  root.require(id)
+}

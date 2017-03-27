@@ -5,9 +5,11 @@
   <title>TPVM Testbed</title>
 </head>
 <body>
-  <!-- <script>
-    w = new Worker("node-browser-loader.js");
-  </script> -->
+  <script src="html-console.js"></script>
   <script src="node-browser-loader.js"></script>
+  <pre><script>
+    require('./dist/toto.js')
+    log("toto")
+  </script>
 </body>
 </html>
