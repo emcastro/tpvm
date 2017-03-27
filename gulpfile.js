@@ -40,7 +40,7 @@ gulp.task('http', () => {
   return gulp.src('.')
     .pipe(webserver({
       livereload: true,
-      directoryListing: true,
-      open: true
+      directoryListing: false,
+      open: 'http://localhost:8000/test.html'
     }))
 })
