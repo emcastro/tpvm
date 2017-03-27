@@ -5,24 +5,9 @@
   <title>TPVM Testbed</title>
 </head>
 <body>
-  <script>
-  function load(name) {
-    resource = 'dist/'+name
-
-    const req = new XMLHttpRequest();
-    req.open('GET', resource, false);
-    req.send();
-
-    if (req.status === 200) {
-      const module = `(function ${name}() {${req.responseText}\n})`
-      console.log("exec", module)
-      const m = eval(module)
-      m()
-    } else {
-      console.error("Error loading "+name, req.status, req.statusText)
-    }
-  }
-  load('toto')
-  </script>
+  <!-- <script>
+    w = new Worker("node-browser-loader.js");
+  </script> -->
+  <script src="node-browser-loader.js"></script>
 </body>
 </html>

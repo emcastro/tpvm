@@ -23,11 +23,11 @@
     "gulp-webserver": "^0.9.1",
     "map-stream": "^0.0.7",
     "standard-flow": "^1.0.0",
-    "vinyl-named": "^1.1.0",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.2"
+    "vinyl-named": "^1.1.0"
   },
   "dependencies": {
+    "amd-loader": "^0.0.5",
+    "amdrequire": "^0.0.3",
     "lodash": "^4.17.4",
     "wu": "^2.1.0"
   },

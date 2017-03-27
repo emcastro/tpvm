@@ -23,7 +23,7 @@ gulp.task('clean', () => {
 const map = require('map-stream')
 function log (key) {
   return map(function (x, callback) {
-    console.log(key, x)
+  //  console.log(key, x)
     callback(null, x)
   })
 }
@@ -38,12 +38,9 @@ gulp.task('build', () => {
     .pipe(log('b'))
     .pipe(babel())
     .pipe(log('c'))
-    // .pipe(gulpCombine({
-    //   mainModule: 'test'
-    // }))
     .pipe(sourcemaps.write())
     .pipe(log('d'))
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('.'))
 })
 
 // Continuous build for NodeJS
@@ -55,7 +52,7 @@ gulp.task('server', ['default'], () => {
 gulp.task('http', () => {
   const webserver = require('gulp-webserver')
 
-  return gulp.src('dist')
+  return gulp.src('.')
     .pipe(webserver({
       livereload: true,
       directoryListing: true,
