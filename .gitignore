@@ -1,6 +1,7 @@
 /node_modules
 /flow-typed
-/dist
+/build
 /web
+/src/generated
 *.iml
 .idea

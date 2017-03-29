@@ -14,20 +14,19 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-inline-consecutive-adds": "^0.0.2",
     "babel-preset-env": "^1.2.2",
+    "event-stream": "^3.3.4",
+    "flat-map": "^0.4.0",
     "flow-bin": "^0.42.0",
     "glup": "^1.0.14",
     "gulp-clean": "^0.3.2",
-    "gulp-combine": "^0.1.0",
+    "gulp-file": "^0.3.0",
     "gulp-sequence": "^0.4.6",
-    "gulp-webpack": "^1.5.0",
     "gulp-webserver": "^0.9.1",
     "map-stream": "^0.0.7",
-    "standard-flow": "^1.0.0",
-    "vinyl-named": "^1.1.0"
+    "merge-stream": "^1.0.1",
+    "standard-flow": "^1.0.0"
   },
   "dependencies": {
-    "amd-loader": "^0.0.5",
-    "amdrequire": "^0.0.3",
     "lodash": "^4.17.4",
     "wu": "^2.1.0"
   },
