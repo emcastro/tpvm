@@ -5,10 +5,8 @@ const sourcemaps = require('gulp-sourcemaps')
 const babel = require('gulp-babel')
 const clean = require('gulp-clean')
 const gulpSequence = require('gulp-sequence')
-// const mapStream = require('map-stream')
-const path = require('path')
-const es = require('event-stream')
 const flatMap = require('flat-map')
+const Vinyl = require('vinyl')
 
 // Global error report
 process.on('uncaughtException', function (error) {
@@ -29,11 +27,15 @@ gulp.task('clean', () => {
 })
 
 gulp.task('codegen', () => {
-  gulp.src('src/codegen/**/*_codegen.js', {read: false}) // TODO CODEGEN
+  gulp.src('src/codegen/**/*_codegen.js') // TODO CODEGEN
     .pipe(flatMap((data, cb) => {
-      const module = path.relative(data.cwd, data.path)
-      const result = require('./' + module)
-      cb(null, result)
+      const code = data.contents.toString()
+      const result = eval('"use strict"\n' + code) // eslint-disable-line no-eval
+      cb(null, result.map(({path, sourceCode}) => new Vinyl({
+        path,
+        contents: new Buffer(sourceCode)
+      }))
+      )
     }))
     .pipe(gulp.dest(GENERATED))
 })
@@ -48,7 +50,7 @@ gulp.task('build', ['codegen'], () => {
 
 // Continuous build for NodeJS
 gulp.task('server', ['default'], () => {
-  return gulp.watch(`src/**/*`, ['build'])  // TODO préciser
+  return gulp.watch('src/**/*', ['build']) // TODO préciser
 })
 
 // Continuous build for Web-browser test
