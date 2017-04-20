@@ -8,16 +8,17 @@ const gulpSequence = require('gulp-sequence')
 const flatMap = require('flat-map')
 const Vinyl = require('vinyl')
 
-// Global error report
-process.on('uncaughtException', function (error) {
-  console.log(error.toString())
-  this.emit('end')
-})
+// // Global error report
+// process.on('uncaughtException', function (error) {
+//   console.error(error)
+//   console.error(error.stack)
+//   this.emit('end')
+// })
 
 gulp.task('default', gulpSequence('clean', 'build'))
 
 const SOURCE = 'src/main'
-const GENERATED = 'src/generated'
+const GENERATED = 'src/node_modules'
 const BUILD = 'build'
 
 gulp.task('clean', () => {
@@ -27,7 +28,7 @@ gulp.task('clean', () => {
 })
 
 gulp.task('codegen', () => {
-  gulp.src('src/codegen/**/*_codegen.js') // TODO CODEGEN
+  return gulp.src('src/codegen/**/*_codegen.js') // TODO CODEGEN
     .pipe(flatMap((data, cb) => {
       const code = data.contents.toString()
       const result = eval('"use strict"\n' + code) // eslint-disable-line no-eval

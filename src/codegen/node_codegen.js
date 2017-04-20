@@ -1,12 +1,22 @@
-// @flow
+// @flow - in comments only
 const _ = require('lodash')
 
-function defCaseClass (name, attributes) {
-  const sourceCode = (`// generated code
+function defCaseClass (name, extend, implement, typedAttributes) {
+  const attributes = typedAttributes.map(attr => attr.trim().split(/\s*:\s*/)[0])
 
-export default class ${name} {
+  function kw (keyword, argument) {
+    if (argument != null) {
+      return ` ${keyword} ${argument}`
+    } else {
+      return ''
+    }
+  }
 
-  constructor (${attributes.join(', ')}) {
+  const sourceCode = (`
+
+export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
+
+  constructor (${typedAttributes.join(', ')}) {
     // generated code
     ${_.join(_.map(attributes, a => `this.${a} = notnull(${a})`), '\n    ')}
   }
@@ -33,23 +43,51 @@ export default class ${name} {
   notEquals (other) { return !(this.equals(other)) }
 }
 
-${name}.prototype.toString = expr_toString
-${name}.prototype.toText = expr_toText
-
-${name}
-
 `)
 
-  return {path: `${name}.js`, sourceCode}
+  return sourceCode
 }
 
-const result = ([
-  defCaseClass('Var', ['varId']),
-  defCaseClass('Literal', ['value']),
-  defCaseClass('Apply', ['operator', 'operands']),
-  defCaseClass('IfElse', ['ifClause', 'thenClause', 'elseClause']),
-  defCaseClass('Lambda', ['params', 'body']),
-  defCaseClass('Let', ['defs', 'body'])
-])
+// ////////////////////
 
-result
+function typedEntries (object) {
+  return Object.keys(object).map(k => [k, object[k]])
+}
+
+/* ::
+type dataParams = {
+  extend?: string;
+  implement?: string;
+  constructors: { [name: string]: Array<string> }
+}
+*/
+
+function data (name /* :string */, params /* :dataParams */) {
+  const header = (`// @flow
+// generated code
+
+
+  `)
+
+  const entries = typedEntries(params.constructors).map(([name, typedAttributes]) =>
+    defCaseClass(name, params.extend, params.implement, typedAttributes)
+  )
+
+  const footer = (`
+// EOF`)
+
+  return { path: 'generated/Expr.js', sourceCode: [header, ...entries, footer].join('\n') }
+}
+
+[data('Expr',
+  {
+    extend: 'ExprBase',
+    constructors: {
+      'Var': ['varId : string'],
+      'Literal': ['value: any'],
+      'Apply': ['operator: Expr', 'operands: Array<Expr>'],
+      'IfElse': ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
+      'Lambda': ['params: Array<Var>', 'body: Expr'],
+      'Let': ['defs: Map<string, Expr>', 'body: Expr']
+    }
+  })]
