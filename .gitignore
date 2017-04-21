@@ -2,6 +2,6 @@
 /flow-typed
 /build
 /web
-/src/generated
+/src/main/generated
 *.iml
 .idea

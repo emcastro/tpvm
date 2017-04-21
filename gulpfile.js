@@ -18,7 +18,7 @@ const Vinyl = require('vinyl')
 gulp.task('default', gulpSequence('clean', 'build'))
 
 const SOURCE = 'src/main'
-const GENERATED = 'src/node_modules'
+const GENERATED = 'src/main/generated'
 const BUILD = 'build'
 
 gulp.task('clean', () => {

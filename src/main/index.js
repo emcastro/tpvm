@@ -1,15 +1,7 @@
 // @flow
 
-import { Apply } from './Expr'
+import { Apply, Var } from './Expr'
 
 console.log(Apply)
 
-class A {
-  foo () { return 0 }
-}
-
-class B extends A {
-  bar () { return 1 }
-}
-
-new B()
+console.log(Apply.n(Var.n('ooo'), []))

@@ -1,48 +1,60 @@
 // @flow - in comments only
 const _ = require('lodash')
 
+// Format keyword
+function kw (keyword, argument) {
+  if (argument != null) {
+    return ` ${keyword} ${argument}`
+  } else {
+    return ''
+  }
+}
+
 function defCaseClass (name, extend, implement, typedAttributes) {
   const attributes = typedAttributes.map(attr => attr.trim().split(/\s*:\s*/)[0])
-
-  function kw (keyword, argument) {
-    if (argument != null) {
-      return ` ${keyword} ${argument}`
-    } else {
-      return ''
-    }
-  }
+  const types = typedAttributes.map(attr => attr.trim().split(/\s*:\s*/)[1])
 
   const sourceCode = (`
 
 export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
+  // generated code
+
+  ${_.join(typedAttributes, ';\n  ')}
 
   constructor (${typedAttributes.join(', ')}) {
     // generated code
+    super()
     ${_.join(_.map(attributes, a => `this.${a} = notnull(${a})`), '\n    ')}
   }
 
-  children () {
+  static n (${typedAttributes.join(', ')}) : ${name} {
+    // generated code
+    return new ${name}(${attributes.join(', ')})
+  }
+
+  children () : [${_.join(types, ', ')}] {
     // generated code
     return [${_.join(_.map(attributes, a => `this.${a}`), ', ')}]
   }
 
-  rewrite (subExprs) {
+  rewrite (subExprs: [${_.join(types, ', ')}]) : ${name} {
     // generated code
-    return new ${name}(${_.join(_.map(attributes, (a, idx) => `subExprs[${idx}]`), ', ')})
+    return ${name}.n(${_.join(_.map(attributes, (a, idx) => `subExprs[${idx}]`), ', ')})
   }
 
-  equals (other) {
+  equals (that: mixed | ${name}) : boolean {
     // generated code
-    if (other === this) return true // fast-track
-    if (other == null) return false
-    if (other.constructor !== this.constructor) return false
-    ${_.join(_.map(attributes, a => `if (rewriteEquals(this.${a}, that.${a})) return false`), '\n    ')}
-    return true
+    if (that === this) return true // fast-track
+    if (that == null) return false
+    if (that instanceof ${name}) {
+      ${_.join(_.map(attributes, a => `if (!standardEquals(this.${a}, that.${a})) return false`), '\n      ')}
+      return true
+    }
+    return false
   }
 
-  notEquals (other) { return !(this.equals(other)) }
+  notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
-
 `)
 
   return sourceCode
@@ -57,6 +69,7 @@ function typedEntries (object) {
 /* ::
 type dataParams = {
   extend?: string;
+  import?: string;
   implement?: string;
   constructors: { [name: string]: Array<string> }
 }
@@ -64,10 +77,13 @@ type dataParams = {
 
 function data (name /* :string */, params /* :dataParams */) {
   const header = (`// @flow
+/*eslint no-multiple-empty-lines:0*/
 // generated code
 
+${params.import || ''}
 
-  `)
+type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
+`)
 
   const entries = typedEntries(params.constructors).map(([name, typedAttributes]) =>
     defCaseClass(name, params.extend, params.implement, typedAttributes)
@@ -76,15 +92,16 @@ function data (name /* :string */, params /* :dataParams */) {
   const footer = (`
 // EOF`)
 
-  return { path: 'generated/Expr.js', sourceCode: [header, ...entries, footer].join('\n') }
+  return { path: name + '.js', sourceCode: [header, ...entries, footer].join('\n') }
 }
 
 [data('Expr',
   {
     extend: 'ExprBase',
+    import: 'import {ExprBase, notnull, standardEquals} from \'../ExprBase\'',
     constructors: {
-      'Var': ['varId : string'],
-      'Literal': ['value: any'],
+      'Var': ['varId: string'],
+      'Literal': ['value: mixed'],
       'Apply': ['operator: Expr', 'operands: Array<Expr>'],
       'IfElse': ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
       'Lambda': ['params: Array<Var>', 'body: Expr'],
