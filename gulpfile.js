@@ -34,7 +34,7 @@ gulp.task('codegen', () => {
       const result = eval('"use strict"\n' + code) // eslint-disable-line no-eval
       cb(null, result.map(({path, sourceCode}) => new Vinyl({
         path,
-        contents: new Buffer(sourceCode)
+        contents: Buffer.from(sourceCode)
       }))
       )
     }))

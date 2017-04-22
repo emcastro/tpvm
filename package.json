@@ -1,5 +1,6 @@
 {
   "name": "tpvm",
+  "version": "0.0.0",
   "description": "A Virtual Machine for TP",
   "respository": {
     "type": "git",
@@ -8,12 +9,15 @@
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.24.0",
+    "babel-eslint": "^7.2.3",
     "babel-plugin-minify-constant-folding": "^0.0.4",
     "babel-plugin-minify-dead-code-elimination": "^0.1.4",
     "babel-plugin-transform-do-expressions": "^6.22.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-inline-consecutive-adds": "^0.0.2",
     "babel-preset-env": "^1.2.2",
+    "eslint": "^3.19.0",
+    "eslint-plugin-flowtype": "^2.32.1",
     "event-stream": "^3.3.4",
     "flat-map": "^0.4.0",
     "flow-bin": "^0.44.2",
@@ -24,14 +28,21 @@
     "gulp-webserver": "^0.9.1",
     "map-stream": "^0.0.7",
     "merge-stream": "^1.0.1",
-    "standard-flow": "^1.0.0"
+    "standard": "^10.0.2"
   },
   "dependencies": {
     "lodash": "^4.17.4",
     "wu": "^2.1.0"
   },
   "scripts": {
-    "start": "",
-    "build": "gulp default"
+    "start": "node build/index.js",
+    "autobuild": "gulp server",
+    "webrun": "gulp server http",
+    "build": "gulp default",
+    "test": "standard"
+  },
+  "standard": {
+    "plugins": ["flowtype"],
+    "parser": "babel-eslint"
   }
 }

@@ -85,13 +85,12 @@ class Module { // eslint-disable-line no-unused-vars
   loadEval (x) {
     const f = load(x)
     if (f != null) {
-      const builder = eval(`(function _module_(exports, require, module, __filename, __dirname){${f}\n})`)
+      const builder = eval(`(function _module_(exports, require, module, __filename, __dirname){${f}\n})`) // eslint-disable-line no-eval
       const module = new Module(x, this)
       builder.call({}, module.exports, (id) => module.require(id), module, module.filename, module._dirname)
       return module.exports
     }
   }
-
 }
 
 function load (x) {

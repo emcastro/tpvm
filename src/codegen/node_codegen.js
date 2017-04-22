@@ -77,11 +77,12 @@ type dataParams = {
 
 function data (name /* :string */, params /* :dataParams */) {
   const header = (`// @flow
-/*eslint no-multiple-empty-lines:0*/
+/* eslint-disable  no-multiple-empty-lines */
 // generated code
 
 ${params.import || ''}
 
+// eslint-disable-next-line no-use-before-define
 type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
 `)
 
@@ -90,12 +91,13 @@ type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
   )
 
   const footer = (`
-// EOF`)
+// EOF
+`)
 
   return { path: name + '.js', sourceCode: [header, ...entries, footer].join('\n') }
 }
 
-[data('Expr',
+const files = [data('Expr',
   {
     extend: 'ExprBase',
     import: 'import {ExprBase, notnull, standardEquals} from \'../ExprBase\'',
@@ -108,3 +110,5 @@ type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
       'Let': ['defs: Map<string, Expr>', 'body: Expr']
     }
   })]
+
+files // eslint-disable-line no-unused-expressions
