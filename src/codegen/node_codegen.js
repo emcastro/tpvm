@@ -24,7 +24,7 @@ export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
   constructor (${typedAttributes.join(', ')}) {
     // generated code
     super()
-    ${_.join(_.map(attributes, a => `this.${a} = notnull(${a})`), '\n    ')}
+    ${_.join(_.map(attributes, a => `this.${a} = ${a}`), '\n    ')}
   }
 
   static n (${typedAttributes.join(', ')}) : ${name} {
@@ -47,7 +47,7 @@ export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
     if (that === this) return true // fast-track
     if (that == null) return false
     if (that instanceof ${name}) {
-      ${_.join(_.map(attributes, a => `if (!standardEquals(this.${a}, that.${a})) return false`), '\n      ')}
+      ${_.join(_.map(attributes, a => `if (!equal(this.${a}, that.${a})) return false`), '\n      ')}
       return true
     }
     return false
@@ -69,7 +69,7 @@ function typedEntries (object) {
 /* ::
 type dataParams = {
   extend?: string;
-  import?: string;
+  import?: Array<string>;
   implement?: string;
   constructors: { [name: string]: Array<string> }
 }
@@ -80,10 +80,10 @@ function data (name /* :string */, params /* :dataParams */) {
 /* eslint-disable  no-multiple-empty-lines */
 // generated code
 
-${params.import || ''}
+${(params.import && params.import.join('\n')) || ''}
 
 // eslint-disable-next-line no-use-before-define
-type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
+export type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
 `)
 
   const entries = typedEntries(params.constructors).map(([name, typedAttributes]) =>
@@ -100,7 +100,10 @@ type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
 const files = [data('Expr',
   {
     extend: 'ExprBase',
-    import: 'import {ExprBase, notnull, standardEquals} from \'../ExprBase\'',
+    import: [
+      'import {ExprBase} from \'../ExprBase\'',
+      'import {equal} from \'../prelude\''
+    ],
     constructors: {
       'Var': ['varId: string'],
       'Literal': ['value: mixed'],
