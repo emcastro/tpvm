@@ -2,7 +2,7 @@
 /flow-typed
 /build
 /web
-/src/main/generated
+/src/generated
 *.iml
 .idea
 .vscode

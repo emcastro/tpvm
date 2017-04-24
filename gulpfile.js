@@ -17,9 +17,10 @@ const Vinyl = require('vinyl')
 
 gulp.task('default', gulpSequence('clean', 'build'))
 
-const SOURCE = 'src/main'
-const GENERATED = 'src/main/generated'
+const SOURCE = 'src'
+const GENERATED = 'src/generated'
 const BUILD = 'build'
+const CODEGEN = 'codegen/**/*_codegen.js'
 
 gulp.task('clean', () => {
   return (
@@ -28,7 +29,7 @@ gulp.task('clean', () => {
 })
 
 gulp.task('codegen', () => {
-  return gulp.src('src/codegen/**/*_codegen.js') // TODO CODEGEN
+  return gulp.src(CODEGEN)
     .pipe(flatMap((data, cb) => {
       const code = data.contents.toString()
       const result = eval('"use strict"\n' + code) // eslint-disable-line no-eval

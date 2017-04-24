@@ -26,6 +26,7 @@
     "gulp-file": "^0.3.0",
     "gulp-sequence": "^0.4.6",
     "gulp-webserver": "^0.9.1",
+    "jest": "^19.0.2",
     "map-stream": "^0.0.7",
     "merge-stream": "^1.0.1",
     "standard": "^10.0.2"
@@ -42,7 +43,12 @@
     "test": "standard"
   },
   "standard": {
-    "plugins": ["flowtype"],
+    "plugins": [
+      "flowtype"
+    ],
     "parser": "babel-eslint"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

@@ -55,6 +55,6 @@ export function arrayEqual (a: Array<mixed>, b: Array<mixed>) : boolean {
     itemB = bIter.next()
   }
 
-  if (itemA.done && itemB.done) throw new Error('Assertion error')
+  if (!(itemA.done && itemB.done)) throw new Error('Assertion error')
   return true
 }
