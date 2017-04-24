@@ -19,10 +19,6 @@
       "args": [
         "--runInBand", "--coverage", "build"
       ],
-      // "runtimeArgs": [
-      //   "--harmony"
-      // ],
-      // "protocol": "inspector",
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"
       ]
@@ -43,6 +39,6 @@
       "name": "Attach to Port",
       "address": "localhost",
       "port": 5858
-    },
+    }
   ]
 }

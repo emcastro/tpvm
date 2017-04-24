@@ -1,8 +1,6 @@
 // @flow
 
 const gulp = require('gulp')
-const sourcemaps = require('gulp-sourcemaps')
-const babel = require('gulp-babel')
 const clean = require('gulp-clean')
 const gulpSequence = require('gulp-sequence')
 const flatMap = require('flat-map')
@@ -15,9 +13,9 @@ const Vinyl = require('vinyl')
 //   this.emit('end')
 // })
 
-gulp.task('default', gulpSequence('clean', 'build'))
+gulp.task('default', gulpSequence('clean', 'codegen'))
 
-const SOURCE = 'src'
+// const SOURCE = 'src'
 const GENERATED = 'src/generated'
 const BUILD = 'build'
 const CODEGEN = 'codegen/**/*_codegen.js'
@@ -40,14 +38,6 @@ gulp.task('codegen', () => {
       )
     }))
     .pipe(gulp.dest(GENERATED))
-})
-
-gulp.task('build', ['codegen'], () => {
-  return gulp.src([`${SOURCE}/**/*.js`, `${GENERATED}/**/*.js`])
-    .pipe(sourcemaps.init())
-    .pipe(babel())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(BUILD))
 })
 
 // Continuous build for NodeJS

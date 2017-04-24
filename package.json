@@ -37,17 +37,20 @@
   },
   "scripts": {
     "start": "node build/index.js",
-    "autobuild": "gulp server",
-    "webrun": "gulp server http",
-    "build": "gulp default",
-    "test": "standard"
+    "autobuild": "babel src -d build --source-maps --watch",
+    "build": "gulp default && babel src -d build --source-maps",
+    "pretest": "npm run build",
+    "test": "standard && jest src"
   },
   "standard": {
     "plugins": [
       "flowtype"
     ],
     "parser": "babel-eslint",
-    "globals": ["test", "describe", "it", "expect"]
+    "globals": ["test", "describe", "it", "expect"],
+    "ignore": [
+      "flow-typed"
+    ]
   },
   "jest": {
     "testEnvironment": "node"
