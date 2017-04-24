@@ -54,15 +54,3 @@ gulp.task('build', ['codegen'], () => {
 gulp.task('server', ['default'], () => {
   return gulp.watch('src/**/*', ['build']) // TODO préciser
 })
-
-// Continuous build for Web-browser test
-gulp.task('http', () => {
-  const webserver = require('gulp-webserver')
-
-  return gulp.src('.')
-    .pipe(webserver({
-      livereload: true,
-      directoryListing: false,
-      open: 'http://localhost:8000/test.html'
-    }))
-})

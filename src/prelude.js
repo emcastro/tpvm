@@ -4,15 +4,15 @@
 // standard Array and Map, and
 // objects with that have .equals() method.
 export function equal (a: mixed, b: mixed) : boolean {
-  if (a == null) return b == null
-  if (typeof a === 'object') {
+  if (a === b) return true // fast-track
+  if (a != null && typeof a === 'object') { // TODO typeof a === 'object' => a != null
     if (typeof a.equals === 'function') return a.equals(b)
 
     if (a instanceof Map && b instanceof Map) return mapEqual(a, b)
 
     if (a instanceof Array && b instanceof Array) return arrayEqual(a, b)
   }
-  return a === b
+  return false
 }
 
 // Compare Map

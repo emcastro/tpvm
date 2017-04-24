@@ -1,8 +1,6 @@
 /node_modules
-/flow-typed
 /build
 /web
-/src/generated
 *.iml
 .idea
-.vscode
+/coverage
