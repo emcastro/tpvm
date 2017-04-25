@@ -6,7 +6,7 @@
 export function equal (a: mixed, b: mixed) : boolean {
   if (a === b) return true // fast-track
   if (a != null && typeof a === 'object') { // TODO typeof a === 'object' => a != null
-    if (typeof a.equals === 'function') return a.equals(b)
+    if (typeof a.equals === 'function' && b != null) return a.equals(b)
 
     if (a instanceof Map && b instanceof Map) return mapEqual(a, b)
 
@@ -55,6 +55,6 @@ export function arrayEqual (a: Array<mixed>, b: Array<mixed>) : boolean {
     itemB = bIter.next()
   }
 
-  if (!(itemA.done && itemB.done)) throw new Error('Assertion error')
+  // if (!(itemA.done && itemB.done)) throw new Error('Assertion error')
   return true
 }
