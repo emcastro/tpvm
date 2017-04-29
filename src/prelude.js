@@ -5,7 +5,7 @@
 // objects with that have .equals() method.
 export function equal (a: mixed, b: mixed) : boolean {
   if (a === b) return true // fast-track
-  if (a != null && typeof a === 'object') { // TODO typeof a === 'object' => a != null
+  if (a != null && typeof a === 'object') {
     if (typeof a.equals === 'function' && b != null) return a.equals(b)
 
     if (a instanceof Map && b instanceof Map) return mapEqual(a, b)

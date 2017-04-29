@@ -190,27 +190,27 @@ export class IfElse extends ExprBase {
 export class Lambda extends ExprBase {
   // generated code
 
-  params: Array<Var>;
+  params: Array<string>;
   body: Expr
 
-  constructor (params: Array<Var>, body: Expr) {
+  constructor (params: Array<string>, body: Expr) {
     // generated code
     super()
     this.params = params
     this.body = body
   }
 
-  static n (params: Array<Var>, body: Expr) : Lambda {
+  static n (params: Array<string>, body: Expr) : Lambda {
     // generated code
     return new Lambda(params, body)
   }
 
-  children () : [Array<Var>, Expr] {
+  children () : [Array<string>, Expr] {
     // generated code
     return [this.params, this.body]
   }
 
-  rewrite (subExprs: [Array<Var>, Expr]) : Lambda {
+  rewrite (subExprs: [Array<string>, Expr]) : Lambda {
     // generated code
     return Lambda.n(subExprs[0], subExprs[1])
   }

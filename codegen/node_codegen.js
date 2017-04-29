@@ -109,7 +109,7 @@ const files = [data('Expr',
       'Literal': ['value: mixed'],
       'Apply': ['operator: Expr', 'operands: Array<Expr>'],
       'IfElse': ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
-      'Lambda': ['params: Array<Var>', 'body: Expr'],
+      'Lambda': ['params: Array<string>', 'body: Expr'],
       'Let': ['defs: Map<string, Expr>', 'body: Expr']
     }
   })]
