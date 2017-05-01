@@ -3,6 +3,9 @@
 import _ from 'lodash'
 import { escape } from './stringTools'
 
+/**
+ * Generic S-Expression renderer.js
+ */
 export class SExprRenderer<N> {
   splitNode (o: N): string | [string, Array<N>] {
     throw new Error('Unimplemented')

@@ -21,7 +21,7 @@ function defCaseClass (name, extend, implement, typedAttributes) {
   const sourceCode = (`
 export const ${name.toUpperCase()} = ${typ}
 
-export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
+class ${name}${kw('extends', extend)}${kw('implements', implement)} {
   // generated code
 
   typ: typeof ${name.toUpperCase()}
@@ -34,11 +34,6 @@ ${extend ? '    super()' : ''}
     ${_.join(_.map(attributes, a => `this.${a} = ${a}`), '\n    ')}
   }
 
-  static n (${typedAttributes.join(', ')}) : ${name} {
-    // generated code
-    return new ${name}(${attributes.join(', ')})
-  }
-
   children () : [${_.join(types, ', ')}] {
     // generated code
     return [${_.join(_.map(attributes, a => `this.${a}`), ', ')}]
@@ -46,7 +41,7 @@ ${extend ? '    super()' : ''}
 
   rewrite (subExprs: [${_.join(types, ', ')}]) : ${name} {
     // generated code
-    return ${name}.n(${_.join(_.map(attributes, (a, idx) => `subExprs[${idx}]`), ', ')})
+    return e${_.upperFirst(name)}(${_.join(_.map(attributes, (a, idx) => `subExprs[${idx}]`), ', ')})
   }
 
   equals (that: mixed | ${name}) : boolean {
@@ -62,6 +57,18 @@ ${extend ? '    super()' : ''}
 
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
+
+/** expression Var builder */
+export function e${_.upperFirst(name)} (${typedAttributes.join(', ')}) : ${name} {
+  // generated code
+  return new ${name}(${attributes.join(', ')})
+}
+
+e${_.upperFirst(name)}.typ = ${name.toUpperCase()} // Shortcut that avoids importing ${name.toUpperCase()}
+
+export type { ${name} } // Export type only, not the class implementation
+
+//
 `)
 
   return sourceCode
@@ -91,7 +98,8 @@ ${params.import ? params.import.join('\n') : ''}
 
 // eslint-disable-next-line no-use-before-define
 export type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
-`)
+
+//`)
 
   const entries = typedEntries(params.constructors).map(([name, typedAttributes]) =>
     defCaseClass(name, params.extend, params.implement, typedAttributes)

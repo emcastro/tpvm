@@ -8,10 +8,11 @@ import {equal} from '../prelude'
 // eslint-disable-next-line no-use-before-define
 export type Expr = Var | Literal | Apply | IfElse | Lambda | Let
 
+//
 
 export const VAR = 0
 
-export class Var extends ExprBase {
+class Var extends ExprBase {
   // generated code
 
   typ: typeof VAR
@@ -24,11 +25,6 @@ export class Var extends ExprBase {
     this.varId = varId
   }
 
-  static n (varId: string) : Var {
-    // generated code
-    return new Var(varId)
-  }
-
   children () : [string] {
     // generated code
     return [this.varId]
@@ -36,7 +32,7 @@ export class Var extends ExprBase {
 
   rewrite (subExprs: [string]) : Var {
     // generated code
-    return Var.n(subExprs[0])
+    return eVar(subExprs[0])
   }
 
   equals (that: mixed | Var) : boolean {
@@ -53,10 +49,22 @@ export class Var extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
+/** expression Var builder */
+export function eVar (varId: string) : Var {
+  // generated code
+  return new Var(varId)
+}
+
+eVar.typ = VAR // Shortcut that avoids importing VAR
+
+export type { Var } // Export type only, not the class implementation
+
+//
+
 
 export const LITERAL = 1
 
-export class Literal extends ExprBase {
+class Literal extends ExprBase {
   // generated code
 
   typ: typeof LITERAL
@@ -69,11 +77,6 @@ export class Literal extends ExprBase {
     this.value = value
   }
 
-  static n (value: mixed) : Literal {
-    // generated code
-    return new Literal(value)
-  }
-
   children () : [mixed] {
     // generated code
     return [this.value]
@@ -81,7 +84,7 @@ export class Literal extends ExprBase {
 
   rewrite (subExprs: [mixed]) : Literal {
     // generated code
-    return Literal.n(subExprs[0])
+    return eLiteral(subExprs[0])
   }
 
   equals (that: mixed | Literal) : boolean {
@@ -98,10 +101,22 @@ export class Literal extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
+/** expression Var builder */
+export function eLiteral (value: mixed) : Literal {
+  // generated code
+  return new Literal(value)
+}
+
+eLiteral.typ = LITERAL // Shortcut that avoids importing LITERAL
+
+export type { Literal } // Export type only, not the class implementation
+
+//
+
 
 export const APPLY = 2
 
-export class Apply extends ExprBase {
+class Apply extends ExprBase {
   // generated code
 
   typ: typeof APPLY
@@ -116,11 +131,6 @@ export class Apply extends ExprBase {
     this.operands = operands
   }
 
-  static n (operator: Expr, operands: Array<Expr>) : Apply {
-    // generated code
-    return new Apply(operator, operands)
-  }
-
   children () : [Expr, Array<Expr>] {
     // generated code
     return [this.operator, this.operands]
@@ -128,7 +138,7 @@ export class Apply extends ExprBase {
 
   rewrite (subExprs: [Expr, Array<Expr>]) : Apply {
     // generated code
-    return Apply.n(subExprs[0], subExprs[1])
+    return eApply(subExprs[0], subExprs[1])
   }
 
   equals (that: mixed | Apply) : boolean {
@@ -146,10 +156,22 @@ export class Apply extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
+/** expression Var builder */
+export function eApply (operator: Expr, operands: Array<Expr>) : Apply {
+  // generated code
+  return new Apply(operator, operands)
+}
+
+eApply.typ = APPLY // Shortcut that avoids importing APPLY
+
+export type { Apply } // Export type only, not the class implementation
+
+//
+
 
 export const IFELSE = 3
 
-export class IfElse extends ExprBase {
+class IfElse extends ExprBase {
   // generated code
 
   typ: typeof IFELSE
@@ -166,11 +188,6 @@ export class IfElse extends ExprBase {
     this.elseClause = elseClause
   }
 
-  static n (ifClause: Expr, thenClause: Expr, elseClause: Expr) : IfElse {
-    // generated code
-    return new IfElse(ifClause, thenClause, elseClause)
-  }
-
   children () : [Expr, Expr, Expr] {
     // generated code
     return [this.ifClause, this.thenClause, this.elseClause]
@@ -178,7 +195,7 @@ export class IfElse extends ExprBase {
 
   rewrite (subExprs: [Expr, Expr, Expr]) : IfElse {
     // generated code
-    return IfElse.n(subExprs[0], subExprs[1], subExprs[2])
+    return eIfElse(subExprs[0], subExprs[1], subExprs[2])
   }
 
   equals (that: mixed | IfElse) : boolean {
@@ -197,10 +214,22 @@ export class IfElse extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
+/** expression Var builder */
+export function eIfElse (ifClause: Expr, thenClause: Expr, elseClause: Expr) : IfElse {
+  // generated code
+  return new IfElse(ifClause, thenClause, elseClause)
+}
+
+eIfElse.typ = IFELSE // Shortcut that avoids importing IFELSE
+
+export type { IfElse } // Export type only, not the class implementation
+
+//
+
 
 export const LAMBDA = 4
 
-export class Lambda extends ExprBase {
+class Lambda extends ExprBase {
   // generated code
 
   typ: typeof LAMBDA
@@ -215,11 +244,6 @@ export class Lambda extends ExprBase {
     this.body = body
   }
 
-  static n (params: Array<string>, body: Expr) : Lambda {
-    // generated code
-    return new Lambda(params, body)
-  }
-
   children () : [Array<string>, Expr] {
     // generated code
     return [this.params, this.body]
@@ -227,7 +251,7 @@ export class Lambda extends ExprBase {
 
   rewrite (subExprs: [Array<string>, Expr]) : Lambda {
     // generated code
-    return Lambda.n(subExprs[0], subExprs[1])
+    return eLambda(subExprs[0], subExprs[1])
   }
 
   equals (that: mixed | Lambda) : boolean {
@@ -245,10 +269,22 @@ export class Lambda extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
+/** expression Var builder */
+export function eLambda (params: Array<string>, body: Expr) : Lambda {
+  // generated code
+  return new Lambda(params, body)
+}
+
+eLambda.typ = LAMBDA // Shortcut that avoids importing LAMBDA
+
+export type { Lambda } // Export type only, not the class implementation
+
+//
+
 
 export const LET = 5
 
-export class Let extends ExprBase {
+class Let extends ExprBase {
   // generated code
 
   typ: typeof LET
@@ -263,11 +299,6 @@ export class Let extends ExprBase {
     this.body = body
   }
 
-  static n (defs: Map<string, Expr>, body: Expr) : Let {
-    // generated code
-    return new Let(defs, body)
-  }
-
   children () : [Map<string, Expr>, Expr] {
     // generated code
     return [this.defs, this.body]
@@ -275,7 +306,7 @@ export class Let extends ExprBase {
 
   rewrite (subExprs: [Map<string, Expr>, Expr]) : Let {
     // generated code
-    return Let.n(subExprs[0], subExprs[1])
+    return eLet(subExprs[0], subExprs[1])
   }
 
   equals (that: mixed | Let) : boolean {
@@ -292,6 +323,18 @@ export class Let extends ExprBase {
 
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
+
+/** expression Var builder */
+export function eLet (defs: Map<string, Expr>, body: Expr) : Let {
+  // generated code
+  return new Let(defs, body)
+}
+
+eLet.typ = LET // Shortcut that avoids importing LET
+
+export type { Let } // Export type only, not the class implementation
+
+//
 
 
 // EOF

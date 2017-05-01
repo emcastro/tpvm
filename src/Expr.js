@@ -1,7 +1,7 @@
 // @flow
 
-import { Var, Literal, Apply, IfElse, Lambda, Let } from './generated/Expr'
-import type { Expr } from './generated/Expr'
+import { eVar, eLiteral, eApply, eIfElse, eLambda, eLet } from './generated/genExpr'
+import type { Expr, Var, Literal, Apply, IfElse, Lambda, Let } from './generated/genExpr'
 import { SExprRenderer } from './SExprRenderer'
 import _ from 'lodash'
 
@@ -9,69 +9,73 @@ import _ from 'lodash'
 const _emptyChildren = []
 
 export function subExprs (expr: Expr): Array<Expr> {
-  if (expr instanceof Var) {
-    return _emptyChildren
+  switch (expr.typ) {
+    case eVar.typ:
+      return _emptyChildren
+
+    case eApply.typ:
+      return [expr.operator, ...expr.operands]
+
+    case eIfElse.typ:
+      return [expr.ifClause, expr.thenClause, expr.elseClause]
+
+    case eLiteral.typ:
+      return _emptyChildren
+
+    case eLet.typ:
+      const elements = _.toArray(expr.defs.values())
+      elements.push(expr.body)
+      return elements
+
+    default:
+      // case eLambda.typ:
+      return [expr.body]
   }
-  if (expr instanceof Apply) {
-    return [expr.operator, ...expr.operands]
-  }
-  if (expr instanceof IfElse) {
-    return [expr.ifClause, expr.thenClause, expr.elseClause]
-  }
-  if (expr instanceof Literal) {
-    return _emptyChildren
-  }
-  if (expr instanceof Let) {
-    const elements = _.toArray(expr.defs.values())
-    elements.push(expr.body)
-    return elements
-  }
-  /* if (expr instanceof Lambda) */
-  return [expr.body]
 }
 
 //
-
 function isSymbol (value: string | mixed): boolean {
   return (typeof value === 'string' && _.startsWith(value, '#'))
 }
 
+// eslint-disable-next-line
 class ExprRenderer extends SExprRenderer<Expr> {
-  splitNode (node): string | [string, Array<Expr>] {
-    if (node instanceof Var) {
-      return '$' + node.varId
-    }
-    if (node instanceof Literal) {
-      const v = node.value
-      if (isSymbol(v)) { // isSymbol
-        return 'v.toString()'
-      } else {
-        return "v + ':' + typeof v"
-      }
-    }
-    if (node instanceof Apply) {
-      return ['Apply', subExprs(node)]
-    }
-    if (node instanceof IfElse) {
-      return ['If', subExprs(node)]
-    }
+  splitNode (node: Expr): string | [string, Array<Expr>] {
+    switch (node.typ) {
+      case eVar.typ:
+        return '$' + node.varId
 
-    if (node instanceof Let) {
-      const elements = _.toArray(node.defs.entries())
-      elements.push(node.body)
+      case eLiteral.typ:
+        const v = node.value
+        if (isSymbol(v)) { // isSymbol
+          return 'v.toString()'
+        } else {
+          return "v + ':' + typeof v"
+        }
 
-      return ['Let', elements]
-    }
-    if (node instanceof Array) {
-      const [v, e] = node
-      return [`$${v} :`, [e]]
-    }
-    if (node instanceof Lambda) {
-      return [`Lambda (${_.join(_.map(node.params, p => '$' + p), ' ')})`, subExprs(node)]
-    } else {
-      console.error('Unexpected node', node)
-      //  throw new Error(node);
-      return '#error'
+      case eApply.typ:
+        return ['Apply', subExprs(node)]
+
+      case eIfElse.typ:
+        return ['If', subExprs(node)]
+
+      case eLet.typ:
+        const elements = _.toArray(node.defs.entries())
+        elements.push(node.body)
+
+        return ['Let', elements]
+
+      // case eArray.typ : {
+      //   const [v, e] = node
+      //   return [`$${v} :`, [e]]
+      // }
+      case eLambda.typ:
+        return [`Lambda (${_.join(_.map(node.params, p => '$' + p), ' ')})`, subExprs(node)]
+
+      default:
+        console.error('Unexpected node', node)
+        //  throw new Error(node);
+        return '#error'
     }
   }
 
@@ -99,5 +103,5 @@ ExprRewriter.children = function (obj) {
 }
 */
 
-export { Var, Literal, Apply, IfElse, Lambda, Let }
-export type { Expr }
+export { eVar, eLiteral, eApply, eIfElse, eLambda, eLet }
+export type { Expr, Var, Literal, Apply, IfElse, Lambda, Let }
