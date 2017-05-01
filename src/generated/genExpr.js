@@ -49,7 +49,7 @@ class Var extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
-/** expression Var builder */
+/** Builder for Var */
 export function eVar (varId: string) : Var {
   // generated code
   return new Var(varId)
@@ -101,7 +101,7 @@ class Literal extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
-/** expression Var builder */
+/** Builder for Literal */
 export function eLiteral (value: mixed) : Literal {
   // generated code
   return new Literal(value)
@@ -156,7 +156,7 @@ class Apply extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
-/** expression Var builder */
+/** Builder for Apply */
 export function eApply (operator: Expr, operands: Array<Expr>) : Apply {
   // generated code
   return new Apply(operator, operands)
@@ -214,7 +214,7 @@ class IfElse extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
-/** expression Var builder */
+/** Builder for IfElse */
 export function eIfElse (ifClause: Expr, thenClause: Expr, elseClause: Expr) : IfElse {
   // generated code
   return new IfElse(ifClause, thenClause, elseClause)
@@ -269,7 +269,7 @@ class Lambda extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
-/** expression Var builder */
+/** Builder for Lambda */
 export function eLambda (params: Array<string>, body: Expr) : Lambda {
   // generated code
   return new Lambda(params, body)
@@ -324,7 +324,7 @@ class Let extends ExprBase {
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
-/** expression Var builder */
+/** Builder for Let */
 export function eLet (defs: Map<string, Expr>, body: Expr) : Let {
   // generated code
   return new Let(defs, body)

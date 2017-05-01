@@ -58,7 +58,7 @@ ${extend ? '    super()' : ''}
   notEquals (that: mixed) : boolean { return !(this.equals(that)) }
 }
 
-/** expression Var builder */
+/** Builder for ${name} */
 export function e${_.upperFirst(name)} (${typedAttributes.join(', ')}) : ${name} {
   // generated code
   return new ${name}(${attributes.join(', ')})
