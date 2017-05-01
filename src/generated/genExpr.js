@@ -9,15 +9,18 @@ import {equal} from '../prelude'
 export type Expr = Var | Literal | Apply | IfElse | Lambda | Let
 
 
+export const VAR = 0
 
 export class Var extends ExprBase {
   // generated code
 
+  typ: typeof VAR
   varId: string
 
   constructor (varId: string) {
     // generated code
     super()
+    this.typ = VAR // typ is faster when set on instances
     this.varId = varId
   }
 
@@ -51,15 +54,18 @@ export class Var extends ExprBase {
 }
 
 
+export const LITERAL = 1
 
 export class Literal extends ExprBase {
   // generated code
 
+  typ: typeof LITERAL
   value: mixed
 
   constructor (value: mixed) {
     // generated code
     super()
+    this.typ = LITERAL // typ is faster when set on instances
     this.value = value
   }
 
@@ -93,16 +99,19 @@ export class Literal extends ExprBase {
 }
 
 
+export const APPLY = 2
 
 export class Apply extends ExprBase {
   // generated code
 
+  typ: typeof APPLY
   operator: Expr;
   operands: Array<Expr>
 
   constructor (operator: Expr, operands: Array<Expr>) {
     // generated code
     super()
+    this.typ = APPLY // typ is faster when set on instances
     this.operator = operator
     this.operands = operands
   }
@@ -138,10 +147,12 @@ export class Apply extends ExprBase {
 }
 
 
+export const IFELSE = 3
 
 export class IfElse extends ExprBase {
   // generated code
 
+  typ: typeof IFELSE
   ifClause: Expr;
   thenClause: Expr;
   elseClause: Expr
@@ -149,6 +160,7 @@ export class IfElse extends ExprBase {
   constructor (ifClause: Expr, thenClause: Expr, elseClause: Expr) {
     // generated code
     super()
+    this.typ = IFELSE // typ is faster when set on instances
     this.ifClause = ifClause
     this.thenClause = thenClause
     this.elseClause = elseClause
@@ -186,16 +198,19 @@ export class IfElse extends ExprBase {
 }
 
 
+export const LAMBDA = 4
 
 export class Lambda extends ExprBase {
   // generated code
 
+  typ: typeof LAMBDA
   params: Array<string>;
   body: Expr
 
   constructor (params: Array<string>, body: Expr) {
     // generated code
     super()
+    this.typ = LAMBDA // typ is faster when set on instances
     this.params = params
     this.body = body
   }
@@ -231,16 +246,19 @@ export class Lambda extends ExprBase {
 }
 
 
+export const LET = 5
 
 export class Let extends ExprBase {
   // generated code
 
+  typ: typeof LET
   defs: Map<string, Expr>;
   body: Expr
 
   constructor (defs: Map<string, Expr>, body: Expr) {
     // generated code
     super()
+    this.typ = LET // typ is faster when set on instances
     this.defs = defs
     this.body = body
   }

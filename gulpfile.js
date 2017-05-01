@@ -7,11 +7,11 @@ const flatMap = require('flat-map')
 const Vinyl = require('vinyl')
 
 // // Global error report
-// process.on('uncaughtException', function (error) {
-//   console.error(error)
-//   console.error(error.stack)
-//   this.emit('end')
-// })
+process.on('uncaughtException', function (error) {
+  console.error(error)
+  console.error(error.stack)
+  this.emit('end')
+})
 
 gulp.task('default', gulpSequence('clean', 'codegen'))
 
@@ -30,7 +30,12 @@ gulp.task('codegen', () => {
   return gulp.src(CODEGEN)
     .pipe(flatMap((data, cb) => {
       const code = data.contents.toString()
-      const result = eval('"use strict"\n' + code) // eslint-disable-line no-eval
+      let result
+      try {
+        result = eval('"use strict"\n' + code) // eslint-disable-line no-eval
+      } catch (e) {
+        result = []
+      }
       cb(null, result.map(({path, sourceCode}) => new Vinyl({
         path,
         contents: Buffer.from(sourceCode)
@@ -41,6 +46,6 @@ gulp.task('codegen', () => {
 })
 
 // Continuous build for NodeJS
-gulp.task('server', ['default'], () => {
-  return gulp.watch('src/**/*', ['build']) // TODO préciser
+gulp.task('autocodegen', ['default'], () => {
+  return gulp.watch(CODEGEN, ['codegen'])
 })

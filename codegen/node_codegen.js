@@ -10,20 +10,27 @@ function kw (keyword, argument) {
   }
 }
 
+let typCounter = 0
+
 function defCaseClass (name, extend, implement, typedAttributes) {
+  const typ = typCounter++
+
   const attributes = typedAttributes.map(attr => attr.trim().split(/\s*:\s*/)[0])
   const types = typedAttributes.map(attr => attr.trim().split(/\s*:\s*/)[1])
 
   const sourceCode = (`
+export const ${name.toUpperCase()} = ${typ}
 
 export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
   // generated code
 
+  typ: typeof ${name.toUpperCase()}
   ${_.join(typedAttributes, ';\n  ')}
 
   constructor (${typedAttributes.join(', ')}) {
     // generated code
-    super()
+${extend ? '    super()' : ''}
+    this.typ = ${name.toUpperCase()} // typ is faster when set on instances
     ${_.join(_.map(attributes, a => `this.${a} = ${a}`), '\n    ')}
   }
 
@@ -80,7 +87,7 @@ function data (name /* :string */, params /* :dataParams */) {
 /* eslint-disable  no-multiple-empty-lines */
 // generated code
 
-${(params.import && params.import.join('\n')) || ''}
+${params.import ? params.import.join('\n') : ''}
 
 // eslint-disable-next-line no-use-before-define
 export type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
@@ -94,7 +101,7 @@ export type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
 // EOF
 `)
 
-  return { path: name + '.js', sourceCode: [header, ...entries, footer].join('\n') }
+  return { path: 'gen' + _.upperFirst(name) + '.js', sourceCode: [header, ...entries, footer].join('\n') }
 }
 
 const files = [data('Expr',
