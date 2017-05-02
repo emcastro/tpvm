@@ -1,8 +1,26 @@
 // @flow
 
-// Compare primitive objects (number, string, boolean),
-// standard Array and Map, and
-// objects with that have .equals() method.
+/** Typed version of o[Symbol.iterator]() */
+export function iterator (o : any) : Iterator<mixed> {
+  return o[Symbol.iterator]()
+}
+
+/** Iterator to Array */
+export function iteratorToArray<T> (i : Iterator<T>) : Array<T> {
+  const list : Array<T> = []
+  let item : { done: boolean, value: T }  // TODO: report type error in Flow
+  while (!(item = (i.next() : any)).done) {
+    list.push(item.value)
+  }
+  return list
+}
+
+
+/** Deep Equals.
+ * Compare primitive objects (number, string, boolean),
+ * standard Array and Map, and
+ * objects with that have .equals() method.
+ */
 export function equal (a: mixed, b: mixed) : boolean {
   if (a === b) return true // fast-track
   if (a != null && typeof a === 'object') {
@@ -15,7 +33,7 @@ export function equal (a: mixed, b: mixed) : boolean {
   return false
 }
 
-// Compare Map
+/** Compare Map */
 export function mapEqual (a : Map<mixed, mixed>, b : Map<mixed, mixed>) : boolean {
   if (b === a) return true // fast-track
 
@@ -29,15 +47,7 @@ export function mapEqual (a : Map<mixed, mixed>, b : Map<mixed, mixed>) : boolea
   return true
 }
 
-type Iterator = {
-  next() : { done: boolean; value: mixed }
-}
-
-function iterator (o : any) : Iterator {
-  return o[Symbol.iterator]()
-}
-
-// Compare Array
+/** Compare Array */
 export function arrayEqual (a: Array<mixed>, b: Array<mixed>) : boolean {
   if (b === a) return true // fast-track
 
@@ -58,3 +68,4 @@ export function arrayEqual (a: Array<mixed>, b: Array<mixed>) : boolean {
   // if (!(itemA.done && itemB.done)) throw new Error('Assertion error')
   return true
 }
+

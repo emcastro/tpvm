@@ -1,13 +1,15 @@
 // @flow
 
 import _ from 'lodash'
-import { escape } from './stringTools'
+import { jsEscape } from './stringTools'
 
 /**
  * Generic S-Expression renderer.js
+ * @param <N> Non-terminal node
+ * @param <T> Terminal node
  */
-export class SExprRenderer<N> {
-  splitNode (o: N): string | [string, Array<N>] {
+export class SExprRenderer<N, T> {
+  splitNode (o: N): T | [string, Array<N>] {
     throw new Error('Unimplemented')
   }
 
@@ -46,7 +48,7 @@ export class SExprRenderer<N> {
     }
   }
 
-  escape (o: string): string { return "'" + escape(o) + "'" }
+  escape (o: T): string { return "'" + jsEscape(String(o)) + "'" }
 }
 
 export default SExprRenderer

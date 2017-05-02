@@ -6,7 +6,8 @@ export function concat (strings: Array<string>) : string {
   return stringConcat.apply('', strings)
 }
 
-export function escape (string: string) : string {
+/** Javascript string escape */
+export function jsEscape (string: string) : string {
   const chars = []
   const length = string.length
   for (var i = 0; i < length; i++) { // var ++ optim-rule

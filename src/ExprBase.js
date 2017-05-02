@@ -1,8 +1,103 @@
 // @flow
 
-// import type {Expr} from './generated/Expr'
+import { eVar, eLiteral, eApply, eIfElse, eLambda, eLet } from './generated/genExpr'
+import type { Expr } from './generated/genExpr'
+import { SExprRenderer } from './SExprRenderer'
+import { iteratorToArray } from './prelude'
+import { jsEscape } from './stringTools'
+import _ from 'lodash'
+
+export type Binding = [string, Expr];
+
+// Debugging print support
+const _emptyChildren = []
+
+export function subExprs (expr: Expr): Array<Expr | Binding> {
+  switch (expr.typ) {
+    case eVar.typ:
+      return _emptyChildren
+
+    case eApply.typ:
+      return [expr.operator, ...expr.operands]
+
+    case eIfElse.typ:
+      return [expr.ifClause, expr.thenClause, expr.elseClause]
+
+    case eLiteral.typ:
+      return _emptyChildren
+
+    case eLet.typ:
+      const elements = iteratorToArray(expr.defs.values())
+      elements.push(expr.body)
+      return elements
+
+    default:
+      // case eLambda.typ:
+      return [expr.body]
+  }
+}
+
+function isSymbol (value: string | mixed): boolean {
+  return (typeof value === 'string' && _.startsWith(value, '#'))
+}
+
+class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
+  splitNode (node: Expr | Binding): string | [string, Array<Expr | Binding>] {
+    if (Array.isArray(node)) {
+      const [v, e] = node
+      return [`$${v} :`, [e]]
+    } else {
+      switch (node.typ) {
+        case eVar.typ:
+          return '$' + node.varId
+
+        case eLiteral.typ:
+          const v = node.value
+          if (isSymbol(v)) { // isSymbol
+            return String(v)
+          } else {
+            return String(v) + ':' + typeof v
+          }
+
+        case eApply.typ:
+          return ['Apply', subExprs(node)]
+
+        case eIfElse.typ:
+          return ['If', subExprs(node)]
+
+        case eLet.typ:
+          let elements : Array<Expr | Binding> = iteratorToArray(node.defs.entries())
+          elements.push(node.body)
+          return ['Let', elements]
+
+        case eLambda.typ:
+          return [`Lambda (${_.join(_.map(node.params, p => '$' + p), ' ')})`, subExprs(node)]
+
+        default:
+          console.error('Unexpected node', node)
+          //  throw new Error(node);
+          return '#error'
+      }
+    }
+  }
+
+  escape (o: mixed): string {
+    if (typeof o === 'string' && _.startsWith(o, '$')) {
+      return jsEscape(o)
+    } else {
+      return super.escape.call(this, o)
+    }
+  }
+}
+
+const exprRenderer = new ExprRenderer()
 
 export class ExprBase {
-  // // Debugging print support
-  // subExprs : () => Array<Expr>;
+  toString (): string {
+    return exprRenderer.sExpr((this: any))
+  }
+
+  toText (): string {
+    return exprRenderer.sExprLn((this: any))
+  }
 }
