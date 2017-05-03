@@ -21,7 +21,7 @@ export function jsEscape (string: string) : string {
       case '\r': e = '\\r'; break
       case '"': e = '\\"'; break
       case '\'': e = '\\\''; break
-      case '\\': e = '\\\\`'; break
+      case '\\': e = '\\\\'; break
       default: e = c
     }
     chars.push(e)

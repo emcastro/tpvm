@@ -26,7 +26,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch Program (index.js)",
       "program": "${workspaceRoot}/build/index.js",
       "protocol": "inspector",
       "outFiles": [

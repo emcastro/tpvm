@@ -38,7 +38,7 @@ export function subExprs (expr: Expr): Array<Expr | Binding> {
 }
 
 function isSymbol (value: string | mixed): boolean {
-  return (typeof value === 'string' && _.startsWith(value, '#'))
+  return (typeof value === 'string' && _.startsWith(value, '#')) // TODO: Mauvais design
 }
 
 class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
@@ -55,6 +55,8 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
           const v = node.value
           if (isSymbol(v)) { // isSymbol
             return String(v)
+          } else if (Array.isArray(v)) {
+            return '[' + String(v) + ']:array'
           } else {
             return String(v) + ':' + typeof v
           }

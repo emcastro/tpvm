@@ -39,7 +39,7 @@ export class SExprRenderer<N, T> {
       const newTab = tab + this.length(name) + 2
       const tabs = _.repeat(' ', tab)
       if (seq.length === 0) {
-        return tabs + '(' + name + ')'
+        return tabs + '(' + name + ')' // Does not happen with Expr
       } else {
         return tabs + '(' + name + _.join(_.map(seq, e => '\n' + this.sExprLn(e, newTab)), '') + ')'
       }
