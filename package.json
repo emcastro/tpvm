@@ -43,7 +43,8 @@
     "test": "standard && jest src",
     "autobuild": "babel src -d build --source-maps --watch",
     "autocodegen": "gulp autocodegen",
-    "autotest": "jest src --coverage --watchAll"
+    "autotest": "jest src --coverage --watchAll",
+    "cleaner": "rm -rf coverage"
   },
   "standard": {
     "plugins": [

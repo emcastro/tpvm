@@ -2,6 +2,7 @@
 
 import { eVar, eLiteral, eApply, eIfElse, eLambda, eLet } from './generated/genExpr'
 import type { Expr, Var, Literal, Apply, IfElse, Lambda, Let } from './generated/genExpr'
+import { isSymbol } from './ExprBase'
 
 // import { SExprRenderer } from './SExprRenderer'
 // import _ from 'lodash'
@@ -21,5 +22,5 @@ ExprRewriter.children = function (obj) {
 }
 */
 
-export { eVar, eLiteral, eApply, eIfElse, eLambda, eLet }
+export { eVar, eLiteral, eApply, eIfElse, eLambda, eLet, isSymbol }
 export type { Expr, Var, Literal, Apply, IfElse, Lambda, Let }

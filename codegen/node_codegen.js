@@ -25,7 +25,7 @@ class ${name}${kw('extends', extend)}${kw('implements', implement)} {
   // generated code
 
   typ: typeof ${name.toUpperCase()}
-  ${_.join(typedAttributes, ';\n  ')}
+  ${_.join(typedAttributes, '\n  ')}
 
   constructor (${typedAttributes.join(', ')}) {
     // generated code
@@ -82,9 +82,9 @@ function typedEntries (object) {
 
 /* ::
 type dataParams = {
-  extend?: string;
-  import?: Array<string>;
-  implement?: string;
+  extend?: string,
+  import?: Array<string>,
+  implement?: string,
   constructors: { [name: string]: Array<string> }
 }
 */

@@ -120,7 +120,7 @@ class Apply extends ExprBase {
   // generated code
 
   typ: typeof APPLY
-  operator: Expr;
+  operator: Expr
   operands: Array<Expr>
 
   constructor (operator: Expr, operands: Array<Expr>) {
@@ -175,8 +175,8 @@ class IfElse extends ExprBase {
   // generated code
 
   typ: typeof IFELSE
-  ifClause: Expr;
-  thenClause: Expr;
+  ifClause: Expr
+  thenClause: Expr
   elseClause: Expr
 
   constructor (ifClause: Expr, thenClause: Expr, elseClause: Expr) {
@@ -233,7 +233,7 @@ class Lambda extends ExprBase {
   // generated code
 
   typ: typeof LAMBDA
-  params: Array<string>;
+  params: Array<string>
   body: Expr
 
   constructor (params: Array<string>, body: Expr) {
@@ -288,7 +288,7 @@ class Let extends ExprBase {
   // generated code
 
   typ: typeof LET
-  defs: Map<string, Expr>;
+  defs: Map<string, Expr>
   body: Expr
 
   constructor (defs: Map<string, Expr>, body: Expr) {

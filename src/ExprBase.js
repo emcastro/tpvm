@@ -1,7 +1,7 @@
 // @flow
 
-import { eVar, eLiteral, eApply, eIfElse, eLambda, eLet } from './generated/genExpr'
-import type { Expr } from './generated/genExpr'
+import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda } from './generated/genExpr'
+import type { Expr, Apply, IfElse, Let, Lambda } from './generated/genExpr'
 import { SExprRenderer } from './SExprRenderer'
 import { iteratorToArray } from './prelude'
 import { jsEscape } from './stringTools'
@@ -9,13 +9,13 @@ import _ from 'lodash'
 
 export type Binding = [string, Expr];
 
-// Debugging print support
-const _emptyChildren = []
 
-export function subExprs (expr: Expr): Array<Expr | Binding> {
+
+// Debugging print support
+export function subExprs (expr: Apply | IfElse | Let | Lambda): Array<Expr | Binding> {
   switch (expr.typ) {
-    case eVar.typ:
-      return _emptyChildren
+    // case eVar.typ:
+    //   return _emptyChildren
 
     case eApply.typ:
       return [expr.operator, ...expr.operands]
@@ -23,8 +23,8 @@ export function subExprs (expr: Expr): Array<Expr | Binding> {
     case eIfElse.typ:
       return [expr.ifClause, expr.thenClause, expr.elseClause]
 
-    case eLiteral.typ:
-      return _emptyChildren
+    // case eLiteral.typ:
+    //   return _emptyChildren
 
     case eLet.typ:
       const elements = iteratorToArray(expr.defs.values())
@@ -37,7 +37,7 @@ export function subExprs (expr: Expr): Array<Expr | Binding> {
   }
 }
 
-function isSymbol (value: string | mixed): boolean {
+export function isSymbol (value: string | mixed): boolean {
   return (typeof value === 'string' && _.startsWith(value, '#')) // TODO: Mauvais design
 }
 

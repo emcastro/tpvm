@@ -3,7 +3,7 @@
 import { eApply, eIfElse, eLambda, eLet, eLiteral, eVar } from '../Expr.js'
 
 describe('Expr', () => {
-  function build() {
+  function build () {
     return eLet(
       new Map([
         // Literals with different types of data
