@@ -1,2 +1,4 @@
 [options]
 emoji=true
+experimental.const_params=true
+suppress_comment=\\(.\\|\n\\)*\\$TypingTrick

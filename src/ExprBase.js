@@ -7,6 +7,7 @@ import { iteratorToArray } from './prelude'
 import { jsEscape } from './stringTools'
 import _ from 'lodash'
 
+export type LiteralValue = string | number | boolean | Symbol
 export type Binding = [string, Expr];
 
 
@@ -37,9 +38,6 @@ export function subExprs (expr: Apply | IfElse | Let | Lambda): Array<Expr | Bin
   }
 }
 
-export function isSymbol (value: string | mixed): boolean {
-  return (typeof value === 'string' && _.startsWith(value, '#')) // TODO: Mauvais design
-}
 
 class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
   splitNode (node: Expr | Binding): string | [string, Array<Expr | Binding>] {
@@ -53,8 +51,10 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
 
         case eLiteral.typ:
           const v = node.value
-          if (isSymbol(v)) { // isSymbol
-            return String(v)
+          // $TypingTrick
+          if (typeof v === 'symbol') {
+            // $TypingTrick
+            return Symbol.keyFor(v)
           } else if (Array.isArray(v)) {
             return '[' + String(v) + ']:array'
           } else {

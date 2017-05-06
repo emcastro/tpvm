@@ -1,0 +1,74 @@
+// Testbed 1
+__eq__=#eq;
+__concat__=#list_concat;
+
+// Lists
+head(list)=list(0);
+tail(list)=list.tailFrom(1);
+tailFrom(list,n) = #list_tailFrom(list,n);
+sublist(list,from,to) = #list_sublist(list,from,to);
+length(list)=#list_length(list);
+empty(list)=length(list)==0;
+
+lone(list)=if(list.length == 1) list(0) else #error("Size must be 1");
+char = lone;
+
+//
+
+flatmap(list, f) = {
+    if (list.empty) #nil
+    else {
+        f(list.head) ++ list.map(f)
+    }
+}
+
+map(list, f) = flatmap(list, e->#list(f(e))); // flêche double
+
+filter(list, f) = {
+    if (list.empty) #nil
+    else {
+        if (f(list.head))
+            #list(list.head) ++ list.tail.filter(f)
+        else
+            list.tail.filter(f)
+    }
+}
+
+split(list, isDelim) = {
+    if (list.empty) #nil
+    else {
+        if (isDelim(list.head)) // [ delim, a, b, c ] => [[],[a,b,c]]
+            #list(#nil) ++ split(list.tail, isDelim)
+        else {
+            suite = split(list.tail, isDelim);
+            if (suite.isEmpty)
+                #list(#list(list.head))
+            else
+                #list(#list(list.head)++suite.head)++suite.tail
+        }
+    }
+}
+
+foldLeft(list, zero, op) = {
+    loop(list, state) = {
+        if (list.empty) state
+        else {
+            loop(list.tail, state op list.head)
+        }
+    }
+
+    loop(list,zero)
+}
+
+join(list, delimList) = {
+    list.map(item->delimList++list).foldLeft(#nil, (x,y)->x++y)
+}
+
+/* ------------------ */
+
+file = #readFile("test");
+
+lines = file.split(c->c == char(","));
+
+// main
+lines.join(char(";"))

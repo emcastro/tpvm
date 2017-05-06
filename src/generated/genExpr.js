@@ -2,8 +2,9 @@
 /* eslint-disable  no-multiple-empty-lines */
 // generated code
 
-import {ExprBase} from '../ExprBase'
-import {equal} from '../prelude'
+import { ExprBase } from '../ExprBase'
+import { equal } from '../prelude'
+import type { LiteralValue } from '../ExprBase'
 
 // eslint-disable-next-line no-use-before-define
 export type Expr = Var | Literal | Apply | IfElse | Lambda | Let
@@ -68,21 +69,21 @@ class Literal extends ExprBase {
   // generated code
 
   typ: typeof LITERAL
-  value: mixed
+  value: LiteralValue
 
-  constructor (value: mixed) {
+  constructor (value: LiteralValue) {
     // generated code
     super()
     this.typ = LITERAL // typ is faster when set on instances
     this.value = value
   }
 
-  children () : [mixed] {
+  children () : [LiteralValue] {
     // generated code
     return [this.value]
   }
 
-  rewrite (subExprs: [mixed]) : Literal {
+  rewrite (subExprs: [LiteralValue]) : Literal {
     // generated code
     return eLiteral(subExprs[0])
   }
@@ -102,7 +103,7 @@ class Literal extends ExprBase {
 }
 
 /** Builder for Literal */
-export function eLiteral (value: mixed) : Literal {
+export function eLiteral (value: LiteralValue) : Literal {
   // generated code
   return new Literal(value)
 }

@@ -116,12 +116,13 @@ const files = [data('Expr',
   {
     extend: 'ExprBase',
     import: [
-      'import {ExprBase} from \'../ExprBase\'',
-      'import {equal} from \'../prelude\''
+      "import { ExprBase } from '../ExprBase'",
+      "import { equal } from '../prelude'",
+      "import type { LiteralValue } from '../ExprBase'"
     ],
     constructors: {
       'Var': ['varId: string'],
-      'Literal': ['value: mixed'],
+      'Literal': ['value: LiteralValue'],
       'Apply': ['operator: Expr', 'operands: Array<Expr>'],
       'IfElse': ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
       'Lambda': ['params: Array<string>', 'body: Expr'],
