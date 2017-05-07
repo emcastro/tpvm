@@ -7,14 +7,16 @@ import { } from './eval1'
 import type { Value } from './eval1' // eslint-disable-line
 import { equal } from './../prelude'
 
-function now (value, f) {
+type X<T> = T | Promise<T>
+
+function now<T, R> (value: X<T>, f : T => X<R>) : X<R> {
   if (value instanceof Promise) {
     return value.then(f)
   }
   return f(value)
 }
 
-function now2 (a, b, f) {
+function now2<T, U, R> (a: X<T>, b: X<U>, f: (T, U) => X<R>) : X<R> {
   return now(a, (va) => {
     return now(b, (vb) => {
       return f(va, vb)
@@ -31,53 +33,26 @@ function symbolize (map) {
   return smap
 }
 
-type X<T> = T | Promise<T>
-
 export const primitives : { [Symbol] : Function } = symbolize({
-  '#readFile': function (name: X<string>) {
-    return now(name, (vName) => {
-      return fsp.readFile(vName, 'utf8')
+  '#readFile': function (xname: X<string>) : X<string> {
+    return now(xname, (name) => {
+      return fsp.readFile(name, 'utf8')
     })
   },
 
-  '#list_length': function <T> (list: X<Array<T>>) {
-    return now(list, (l) => l.length)
+  '#list_length': function <T> (xlist: X<Array<T>>) : X<number> {
+    return now(xlist, (list) => list.length)
   },
 
-  '#eq': function (a, b) {
+  '#list_tailFrom': function<T> (xlist: X<Array<T>>, xfrom: X<number>) : X<Array<T>> {
+    return now2(xlist, xfrom, (list : Array<T>, from: number) => {
+      return list.slice(from)
+    })
+  },
+
+  '#eq': function (a : X<mixed>, b : X<mixed>) : X<boolean> {
     return now2(a, b, (va, vb) => {
       return equal(va, vb)
     })
   }
 })
-
-/*
-export function callPrimitive (primitive: string, operands: Array<Value | Promise<Value>>) {
-  switch (primitive) {
-    case '#readFile':
-      checkSize(operands, 1)
-      return now(operands[0], (name) => {
-        return fsp.readFile(name, 'utf8')
-      })
-
-    case '#list_length':
-      checkSize(operands, 1)
-      return now(operands[0], (l:any) => l.length)
-
-    case '#eq':
-      checkSize(operands, 2)
-      return now2(operands[0], operands[1], (a, b) => {
-        return equal(a, b)
-      })
-
-    default:
-      throw new Error('Not implemented primitive: ' + primitive)
-  }
-}
-
-function checkSize (list: Array<mixed>, size: number) : void {
-  if (list.length !== size) {
-    throw new PrimitiveError(`Argument count ${list.length} differs from parameter count ${size}`)
-  }
-}
-*/

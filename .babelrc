@@ -7,7 +7,7 @@
     "transform-object-rest-spread",
     "transform-es2015-modules-commonjs",
     "transform-inline-consecutive-adds",
-    "minify-constant-folding",
-    "minify-dead-code-elimination"
+    // "minify-dead-code-elimination", // May cause but when counting Function.length
+    "minify-constant-folding"
   ]
 }
