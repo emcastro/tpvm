@@ -131,12 +131,15 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
             const f = primitives[opSymbol]
             if (f == null) {
               // $TypingTrick keyFor cannot be null
-              throw new Error(`Primitive ${Symbol.keyFor(op)} not defined`)
+              throw new Error(`Primitive ${Symbol.keyFor(op)} not defined. Args: ${ops.map(e => e.toString())}`)
             }
             if (f.length !== ops.length) {
-              throw new EvalError(`Argument count ${ops.length} differs from parameter count ${f.length}`)
+              if (f.varArgs) {
+                throw new EvalError(`Argument count ${ops.length} differs from parameter count ${f.length}`)
+              }
             }
             try {
+              // inlined Array.map
               const args = []
               for (let i = 0; i < ops.length; i++) {
                 args.push(eval1(ops[i], env))

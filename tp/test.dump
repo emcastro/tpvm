@@ -1,0 +1,253 @@
+(Let
+     ($__eq___1 :
+                '#eq')
+     ($__concat___2 :
+                    '#list_concat')
+     ($head_3 :
+              (Lambda ($list_19)
+                      (Apply
+                             $list_19
+                             '0:number')))
+     ($tail_4 :
+              (Lambda ($list_20)
+                      (Apply
+                             $tailFrom_5
+                             $list_20
+                             '1:number')))
+     ($tailFrom_5 :
+                  (Lambda ($list_21 $n_22)
+                          (Apply
+                                 '#list_tailFrom'
+                                 $list_21
+                                 $n_22)))
+     ($sublist_6 :
+                 (Lambda ($list_23 $from_24 $to_25)
+                         (Apply
+                                '#list_sublist'
+                                $list_23
+                                $from_24
+                                $to_25)))
+     ($length_7 :
+                (Lambda ($list_26)
+                        (Apply
+                               '#list_length'
+                               $list_26)))
+     ($empty_8 :
+               (Lambda ($list_27)
+                       (Apply
+                              $__eq___1
+                              (Apply
+                                     $length_7
+                                     $list_27)
+                              '0:number')))
+     ($lone_9 :
+              (Lambda ($list_28)
+                      (If
+                          (Apply
+                                 $__eq___1
+                                 (Apply
+                                        $length_7
+                                        $list_28)
+                                 '1:number')
+                          (Apply
+                                 $list_28
+                                 '0:number')
+                          (Apply
+                                 '#error'
+                                 'Size must be 1:string'))))
+     ($char_10 :
+               $lone_9)
+     ($flatmap_11 :
+                  (Lambda ($list_29 $f_30)
+                          (Let
+                               (If
+                                   (Apply
+                                          $empty_8
+                                          $list_29)
+                                   '#nil'
+                                   (Let
+                                        (Apply
+                                               $__concat___2
+                                               (Apply
+                                                      $f_30
+                                                      (Apply
+                                                             $head_3
+                                                             $list_29))
+                                               (Apply
+                                                      $map_12
+                                                      $list_29
+                                                      $f_30)))))))
+     ($map_12 :
+              (Lambda ($list_31 $f_32)
+                      (Apply
+                             $flatmap_11
+                             $list_31
+                             (Lambda ($e_33)
+                                     (Apply
+                                            '#list'
+                                            (Apply
+                                                   $f_32
+                                                   $e_33))))))
+     ($filter_13 :
+                 (Lambda ($list_34 $f_35)
+                         (Let
+                              (If
+                                  (Apply
+                                         $empty_8
+                                         $list_34)
+                                  '#nil'
+                                  (Let
+                                       (If
+                                           (Apply
+                                                  $f_35
+                                                  (Apply
+                                                         $head_3
+                                                         $list_34))
+                                           (Apply
+                                                  $__concat___2
+                                                  (Apply
+                                                         '#list'
+                                                         (Apply
+                                                                $head_3
+                                                                $list_34))
+                                                  (Apply
+                                                         $filter_13
+                                                         (Apply
+                                                                $tail_4
+                                                                $list_34)
+                                                         $f_35))
+                                           (Apply
+                                                  $filter_13
+                                                  (Apply
+                                                         $tail_4
+                                                         $list_34)
+                                                  $f_35)))))))
+     ($split_14 :
+                (Lambda ($list_36 $isDelim_37)
+                        (Let
+                             (If
+                                 (Apply
+                                        $empty_8
+                                        $list_36)
+                                 '#nil'
+                                 (Let
+                                      (If
+                                          (Apply
+                                                 $isDelim_37
+                                                 (Apply
+                                                        $head_3
+                                                        $list_36))
+                                          (Apply
+                                                 $__concat___2
+                                                 (Apply
+                                                        '#list'
+                                                        '#nil')
+                                                 (Apply
+                                                        $split_14
+                                                        (Apply
+                                                               $tail_4
+                                                               $list_36)
+                                                        $isDelim_37))
+                                          (Let
+                                               ($suite_38 :
+                                                          (Apply
+                                                                 $split_14
+                                                                 (Apply
+                                                                        $tail_4
+                                                                        $list_36)
+                                                                 $isDelim_37))
+                                               (If
+                                                   (Apply
+                                                          $suite_38
+                                                          'isEmpty:string')
+                                                   (Apply
+                                                          '#list'
+                                                          (Apply
+                                                                 '#list'
+                                                                 (Apply
+                                                                        $head_3
+                                                                        $list_36)))
+                                                   (Apply
+                                                          $__concat___2
+                                                          (Apply
+                                                                 '#list'
+                                                                 (Apply
+                                                                        $__concat___2
+                                                                        (Apply
+                                                                               '#list'
+                                                                               (Apply
+                                                                                      $head_3
+                                                                                      $list_36))
+                                                                        (Apply
+                                                                               $head_3
+                                                                               $suite_38)))
+                                                          (Apply
+                                                                 $tail_4
+                                                                 $suite_38))))))))))
+     ($foldLeft_15 :
+                   (Lambda ($list_39 $zero_40 $op_41)
+                           (Let
+                                ($loop_42 :
+                                          (Lambda ($list_43 $state_44)
+                                                  (Let
+                                                       (If
+                                                           (Apply
+                                                                  $empty_8
+                                                                  $list_43)
+                                                           $state_44
+                                                           (Let
+                                                                (Apply
+                                                                       $loop_42
+                                                                       (Apply
+                                                                              $tail_4
+                                                                              $list_43)
+                                                                       (Apply
+                                                                              $op_41
+                                                                              $state_44
+                                                                              (Apply
+                                                                                     $head_3
+                                                                                     $list_43))))))))
+                                (Apply
+                                       $loop_42
+                                       $list_39
+                                       $zero_40))))
+     ($join_16 :
+               (Lambda ($list_45 $delimList_46)
+                       (Let
+                            (Apply
+                                   $foldLeft_15
+                                   (Apply
+                                          $map_12
+                                          $list_45
+                                          (Lambda ($item_47)
+                                                  (Apply
+                                                         $__concat___2
+                                                         $delimList_46
+                                                         $list_45)))
+                                   '#nil'
+                                   (Lambda ($x_48 $y_49)
+                                           (Apply
+                                                  $__concat___2
+                                                  $x_48
+                                                  $y_49))))))
+     ($file_17 :
+               (Apply
+                      '#readFile'
+                      'test:string'))
+     ($lines_18 :
+                (Apply
+                       $split_14
+                       $file_17
+                       (Lambda ($c_50)
+                               (Apply
+                                      $__eq___1
+                                      $c_50
+                                      (Apply
+                                             $char_10
+                                             ',:string')))))
+     (Apply
+            $join_16
+            $lines_18
+            (Apply
+                   $char_10
+                   ';:string')))
