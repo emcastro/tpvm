@@ -38,34 +38,36 @@ function varArg (f) {
   return f
 }
 
+/* eslint-disable camelcase */
+
 export const primitives : { [Symbol] : Function } = symbolize({
-  '#readFile': function (xname: X<string>) : X<string> {
+  '#readFile': function readFile (xname: X<string>) : X<string> {
     return now(xname, (name : string) => {
       return fsp.readFile(name, 'utf8')
     })
   },
 
-  '#list_length': function <T> (xlist: X<Array<T>>) : X<number> {
+  '#list_length': function list_length<T> (xlist: X<Array<T>>) : X<number> {
     return now(xlist, (list : Array<T>) => list.length)
   },
 
-  '#list_tailFrom': function<T> (xlist: X<Array<T>>, xfrom: X<number>) : X<Array<T>> {
+  '#list_tailFrom': function list_tailFrom <T> (xlist: X<Array<T>>, xfrom: X<number>) : X<Array<T>> {
     return now2(xlist, xfrom, (list : Array<T>, from: number) => {
       return list.slice(from)
     })
   },
 
-  '#list_concat': function<T> (xlist1: X<Array<T>>, xlist2: X<Array<T>>) : X<Array<T>> {
+  '#list_concat': function list_concat <T> (xlist1: X<Array<T>>, xlist2: X<Array<T>>) : X<Array<T>> {
     return now2(xlist1, xlist2, (list1 : Array<T>, list2 : Array<T>) => {
       return list1.concat(list2)
     })
   },
 
-  '#list': varArg(function<T> (...elements: Array<X<T>>) {
+  '#list': varArg(function list<T> (...elements: Array<X<T>>) {
     return elements.slice() // copy
   }),
 
-  '#eq': function (a : X<mixed>, b : X<mixed>) : X<boolean> {
+  '#eq': function eq (a : X<mixed>, b : X<mixed>) : X<boolean> {
     return now2(a, b, (va, vb) => {
       return equal(va, vb)
     })

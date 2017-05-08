@@ -76,7 +76,18 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
       return env.lookup(expr.varId)
 
     case eLiteral.typ:
-      return expr.value
+      const l = expr.value
+      if (typeof l === 'symbol') {
+        /*:: if (!(l instanceof Symbol)) throw l */
+        const x = primitives[l]
+        if (x == null) {
+          // $TypingTrick
+          throw new Error(`Undefined primitive ${Symbol.keyFor(l)}`)
+        }
+        return x
+      } else {
+        return expr.value
+      }
 
     case eLet.typ: {
       const entries = expr.defs.entries()
@@ -115,6 +126,9 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
           if (op instanceof Closure) {
             const frame = new Map()
             const params = op.lambda.params
+            if (params.length !== ops.length) {
+              throw new EvalError(`Argument count ${ops.length} differs from parameter count ${params.length}`)
+            }
 
             for (let i = 0; i < ops.length; i++) {
               frame.set(params[i], eval1(ops[i], env))
@@ -124,18 +138,10 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
             return eval1(op.lambda.body, newEnv)
           }
 
-          // $TypingTrick
-          if (typeof op === 'symbol') {
-            /*:: if (!(op instanceof Symbol)) throw op */
-            const opSymbol = op
-            const f = primitives[opSymbol]
-            if (f == null) {
-              // $TypingTrick keyFor cannot be null
-              throw new Error(`Primitive ${Symbol.keyFor(op)} not defined. Args: ${ops.map(e => e.toString())}`)
-            }
-            if (f.length !== ops.length) {
-              if (f.varArgs) {
-                throw new EvalError(`Argument count ${ops.length} differs from parameter count ${f.length}`)
+          if (typeof op === 'function') {
+            if (op.length !== ops.length) {
+              if (op.varArgs) {
+                throw new EvalError(`Argument count ${ops.length} differs from parameter count ${op.length} (P)`)
               }
             }
             try {
@@ -144,7 +150,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
               for (let i = 0; i < ops.length; i++) {
                 args.push(eval1(ops[i], env))
               }
-              return f.apply(null, args)
+              return op.apply(null, args)
             } catch (e) {
               throw new PrimitiveError(e)
             }
