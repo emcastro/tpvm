@@ -65,6 +65,13 @@ function now (value, f) {
   return f(value)
 }
 
+function now2 (value, f) {
+  if (value instanceof Promise) {
+    return value.then(f)
+  }
+  return f(value)
+}
+
 /**
  * Simple strict evaluation
  */
@@ -77,6 +84,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
 
     case eLiteral.typ:
       const l = expr.value
+      // $TypingTrick
       if (typeof l === 'symbol') {
         /*:: if (!(l instanceof Symbol)) throw l */
         const x = primitives[l]
@@ -86,6 +94,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
         }
         return x
       } else {
+        /*:: if (expr.value instanceof Symbol) throw l */
         return expr.value
       }
 
@@ -138,37 +147,62 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
             return eval1(op.lambda.body, newEnv)
           }
 
+          // Parameter evaluation
+          const args = []  // inlined Array.map
+          for (let i = 0; i < ops.length; i++) {
+            args.push(eval1(ops[i], env))
+          }
+
+          // Primitive function (from Literal)
           if (typeof op === 'function') {
-            if (op.length !== ops.length) {
+            if (op.length !== args.length) {
               if (op.varArgs) {
-                throw new EvalError(`Argument count ${ops.length} differs from parameter count ${op.length} (P)`)
+                throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} (P)`)
               }
             }
             try {
-              // inlined Array.map
-              const args = []
-              for (let i = 0; i < ops.length; i++) {
-                args.push(eval1(ops[i], env))
-              }
               return op.apply(null, args)
             } catch (e) {
               throw new PrimitiveError(e)
             }
           }
 
-          if (typeof op === 'string') {
-            if (ops.length !== 1) {
-              throw new EvalError(`Char access of String can only have 1 argument, was ${ops.length}`)
-            }
-            return now(eval1(ops[0], env), (index) => {
-              if (typeof index !== 'number') {
-                throw new EvalError(`Char access must be a number`)
+          if (args.length === 1) {
+            // Array-like access or method
+            return now2(args[0], (arg1: Value) => {
+              switch (typeof arg1) {
+                case 'number': {
+                  // Array access
+                  const index = arg1
+
+                  if (typeof op === 'string') {
+                    return op.charCodeAt(index)
+                  }
+
+                  if (Array.isArray(op)) {
+                    return op[index]
+                  }
+
+                  const generic: any = op
+                  return generic.get(index) // TODO: ou .apply ?
+                }
+                case 'string': {
+                  // Method call
+                  const method = arg1
+
+                  const generic: any = op
+                  if (op.method === undefined) {
+                    return generic.get(method) // TODO: ou .apply ?
+                  } else {
+                    return generic[method]
+                  }
+                }
               }
-              return op.charCodeAt(index)
+              return 'ERROR 2'
             })
           }
 
-          return 'FALLBACK'
+          return 'ERROR 1'
         } catch (e) {
           if (e instanceof EvalError) throw e
           throw new EvalError(e)

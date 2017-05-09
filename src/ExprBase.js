@@ -7,7 +7,7 @@ import { iteratorToArray } from './prelude'
 import { jsEscape } from './stringTools'
 import _ from 'lodash'
 
-export type LiteralValue = string | number | boolean | Symbol
+export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr];
 
 

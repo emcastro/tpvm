@@ -69,21 +69,21 @@ class Literal extends ExprBase {
   // generated code
 
   typ: typeof LITERAL
-  value: LiteralValue
+  value: LiteralValue | Symbol
 
-  constructor (value: LiteralValue) {
+  constructor (value: LiteralValue | Symbol) {
     // generated code
     super()
     this.typ = LITERAL // typ is faster when set on instances
     this.value = value
   }
 
-  children () : [LiteralValue] {
+  children () : [LiteralValue | Symbol] {
     // generated code
     return [this.value]
   }
 
-  rewrite (subExprs: [LiteralValue]) : Literal {
+  rewrite (subExprs: [LiteralValue | Symbol]) : Literal {
     // generated code
     return eLiteral(subExprs[0])
   }
@@ -103,7 +103,7 @@ class Literal extends ExprBase {
 }
 
 /** Builder for Literal */
-export function eLiteral (value: LiteralValue) : Literal {
+export function eLiteral (value: LiteralValue | Symbol) : Literal {
   // generated code
   return new Literal(value)
 }

@@ -9,7 +9,7 @@ import { equal } from './../prelude'
 
 type X<T> = T | Promise<T>
 
-function now<T, R> (value: X<T>, f : T => X<R>) : X<R> {
+export function now<T, R> (value: X<T>, f : T => X<R>) : X<R> {
   if (value instanceof Promise) {
     return value.then(f)
   }
@@ -46,6 +46,8 @@ export const primitives : { [Symbol] : Function } = symbolize({
       return fsp.readFile(name, 'utf8')
     })
   },
+
+  '#nil': [],
 
   '#list_length': function list_length<T> (xlist: X<Array<T>>) : X<number> {
     return now(xlist, (list : Array<T>) => list.length)

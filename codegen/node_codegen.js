@@ -122,7 +122,7 @@ const files = [data('Expr',
     ],
     constructors: {
       'Var': ['varId: string'],
-      'Literal': ['value: LiteralValue'],
+      'Literal': ['value: LiteralValue | Symbol'],
       'Apply': ['operator: Expr', 'operands: Array<Expr>'],
       'IfElse': ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
       'Lambda': ['params: Array<string>', 'body: Expr'],
