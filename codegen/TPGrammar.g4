@@ -1,4 +1,4 @@
-grammar tpgrammar;
+grammar TPGrammar;
 
 start: definition*? expr EOF;
 
