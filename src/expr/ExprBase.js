@@ -1,16 +1,14 @@
 // @flow
 
-import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda } from './generated/genExpr'
-import type { Expr, Apply, IfElse, Let, Lambda } from './generated/genExpr'
-import { SExprRenderer } from './SExprRenderer'
-import { iteratorToArray } from './prelude'
-import { jsEscape } from './stringTools'
+import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda } from '../generated/genExpr'
+import type { Expr, Apply, IfElse, Let, Lambda } from '../generated/genExpr'
+import { SExprRenderer } from '../utils/SExprRenderer'
+import { iteratorToArray } from '../utils/prelude'
+import { jsEscape } from '../utils/stringTools'
 import _ from 'lodash'
 
 export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr];
-
-
 
 // Debugging print support
 export function subExprs (expr: Apply | IfElse | Let | Lambda): Array<Expr | Binding> {
@@ -37,7 +35,6 @@ export function subExprs (expr: Apply | IfElse | Let | Lambda): Array<Expr | Bin
       return [expr.body]
   }
 }
-
 
 class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
   splitNode (node: Expr | Binding): string | [string, Array<Expr | Binding>] {

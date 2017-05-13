@@ -1,8 +1,8 @@
 // @flow
 
-import { eVar, eLiteral, eApply, eIfElse, eLambda, eLet } from './generated/genExpr'
-import type { Expr, Var, Literal, Apply, IfElse, Lambda, Let } from './generated/genExpr'
-import type { LiteralValue } from './ExprBase'
+import { eVar, eLiteral, eApply, eIfElse, eLambda, eLet } from '../generated/genExpr'
+import type { Expr, Var, Literal, Apply, IfElse, Lambda, Let } from '../generated/genExpr'
+import type { LiteralValue } from '../expr/ExprBase'
 
 // import { SExprRenderer } from './SExprRenderer'
 // import _ from 'lodash'

@@ -2,9 +2,9 @@
 /* eslint-disable  no-multiple-empty-lines */
 // generated code
 
-import { ExprBase } from '../ExprBase'
-import { equal } from '../prelude'
-import type { LiteralValue } from '../ExprBase'
+import { ExprBase } from '../expr/ExprBase'
+import { equal } from '../utils/prelude'
+import type { LiteralValue } from '../expr/ExprBase'
 
 // eslint-disable-next-line no-use-before-define
 export type Expr = Var | Literal | Apply | IfElse | Lambda | Let

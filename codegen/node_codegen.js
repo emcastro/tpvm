@@ -116,9 +116,9 @@ const files = [data('Expr',
   {
     extend: 'ExprBase',
     import: [
-      "import { ExprBase } from '../ExprBase'",
-      "import { equal } from '../prelude'",
-      "import type { LiteralValue } from '../ExprBase'"
+      "import { ExprBase } from '../expr/ExprBase'",
+      "import { equal } from '../utils/prelude'",
+      "import type { LiteralValue } from '../expr/ExprBase'"
     ],
     constructors: {
       'Var': ['varId: string'],

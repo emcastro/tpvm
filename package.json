@@ -63,7 +63,7 @@
     ],
     "ignore": [
       "flow-typed",
-      "src/node_modules/tpvm/generated"
+      "src/generated"
     ]
   },
   "jest": {

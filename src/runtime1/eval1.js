@@ -2,8 +2,8 @@
 
 /* xeslint-disable */
 
-import { eVar, eLiteral, eLet, eLambda, eIfElse, eApply } from '../Expr'
-import type { Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue } from '../Expr' // eslint-disable-line
+import { eVar, eLiteral, eLet, eLambda, eIfElse, eApply } from '../expr/Expr'
+import type { Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue } from '../expr/Expr' // eslint-disable-line
 
 import { primitives } from './primitive1'
 

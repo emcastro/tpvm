@@ -5,7 +5,7 @@
 import fsp from 'fs-es6-promise'
 import { } from './eval1'
 import type { Value } from './eval1' // eslint-disable-line
-import { equal } from './../prelude'
+import { equal } from '../utils/prelude'
 
 type X<T> = T | Promise<T>
 

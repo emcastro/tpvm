@@ -15,7 +15,6 @@ export function iteratorToArray<T> (i : Iterator<T>) : Array<T> {
   return list
 }
 
-
 /** Deep Equals.
  * Compare primitive objects (number, string, boolean),
  * standard Array and Map, and
@@ -68,4 +67,3 @@ export function arrayEqual (a: Array<mixed>, b: Array<mixed>) : boolean {
   // if (!(itemA.done && itemB.done)) throw new Error('Assertion error')
   return true
 }
-

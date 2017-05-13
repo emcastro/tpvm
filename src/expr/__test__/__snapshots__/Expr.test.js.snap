@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Expr prints with .toString() 1`] = `"(Let ($aString : 'a:string') ($aNumber : '1:number') ($aList : '[a,1]:array') ($aSymbol : '#symbol') ($d : (Lambda ($x $y) (If 'true:boolean' $x $y))) ($e : (Apply $foo $a $b)) ($f : (Let $e)) ($g : (Lambda () $g)) $a)"`;
+exports[`Expr prints with .toString() 1`] = `"(Let ($aString : 'a:string') ($aNumber : '1:number') ($aSymbol : '#symbol') ($d : (Lambda ($x $y) (If 'true:boolean' $x $y))) ($e : (Apply $foo $a $b)) ($f : (Let $e)) ($g : (Lambda () $g)) $a)"`;
 
 exports[`Expr prints with .toText() 1`] = `
 "(Let
@@ -8,8 +8,6 @@ exports[`Expr prints with .toText() 1`] = `
                'a:string')
      ($aNumber :
                '1:number')
-     ($aList :
-             '[a,1]:array')
      ($aSymbol :
                '#symbol')
      ($d :

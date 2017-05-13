@@ -1,9 +1,9 @@
 // @flow
 
 import antlr4 from 'antlr4'
-import { TPGrammarParser } from 'tpvm/generated/TPGrammarParser'
-import { TPGrammarLexer } from 'tpvm/generated/TPGrammarLexer'
-// import { TPGrammarVisitor } from 'tpvm/generated/TPGrammarVisitor'
+import { TPGrammarParser } from '../generated/TPGrammarParser'
+import { TPGrammarLexer } from '../generated/TPGrammarLexer'
+// import { TPGrammarVisitor } from '../generated/TPGrammarVisitor'
 
 // const input = 'true'
 const chars = new antlr4.InputStream('a+b+2.0')
