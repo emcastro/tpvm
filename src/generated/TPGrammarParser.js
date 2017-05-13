@@ -1,8 +1,6 @@
 // Generated from /media/ecastro/Store/tpvm/codegen/TPGrammar.g4 by ANTLR 4.7
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
-var TPGrammarVisitor = require('./TPGrammarVisitor').TPGrammarVisitor;
-
 var grammarFileName = "TPGrammar.g4";
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
@@ -180,14 +178,6 @@ StartContext.prototype.definition = function(i) {
     }
 };
 
-StartContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitStart(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
 
 
 
@@ -331,14 +321,6 @@ ExprContext.prototype.AND = function() {
 
 ExprContext.prototype.OR = function() {
     return this.getToken(TPGrammarParser.OR, 0);
-};
-
-ExprContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitExpr(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
 };
 
 
@@ -571,14 +553,6 @@ DefinitionContext.prototype.valueDefinition = function() {
     return this.getTypedRuleContext(ValueDefinitionContext,0);
 };
 
-DefinitionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitDefinition(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
 
 
 
@@ -632,14 +606,6 @@ ValueDefinitionContext.prototype.EQ_DEF = function() {
 
 ValueDefinitionContext.prototype.expr = function() {
     return this.getTypedRuleContext(ExprContext,0);
-};
-
-ValueDefinitionContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitValueDefinition(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
 };
 
 
@@ -697,14 +663,6 @@ TypedVarContext.prototype.typeAnnotation = function() {
     return this.getTypedRuleContext(TypeAnnotationContext,0);
 };
 
-TypedVarContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitTypedVar(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
 
 
 
@@ -754,14 +712,6 @@ UserOpContext.prototype.ID = function() {
     return this.getToken(TPGrammarParser.ID, 0);
 };
 
-UserOpContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitUserOp(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
 
 
 
@@ -809,14 +759,6 @@ VarIdContext.prototype.ID = function() {
     return this.getToken(TPGrammarParser.ID, 0);
 };
 
-VarIdContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitVarId(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
 
 
 
@@ -860,14 +802,6 @@ function TypeAnnotationContext(parser, parent, invokingState) {
 TypeAnnotationContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 TypeAnnotationContext.prototype.constructor = TypeAnnotationContext;
 
-
-TypeAnnotationContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitTypeAnnotation(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
 
 
 
@@ -925,14 +859,6 @@ LiteralExprContext.prototype.BOOLEAN = function() {
 
 LiteralExprContext.prototype.INVALID_LITERAL = function() {
     return this.getToken(TPGrammarParser.INVALID_LITERAL, 0);
-};
-
-LiteralExprContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitLiteralExpr(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
 };
 
 
@@ -1005,14 +931,6 @@ IfElseExprContext.prototype.ELSE = function() {
     return this.getToken(TPGrammarParser.ELSE, 0);
 };
 
-IfElseExprContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitIfElseExpr(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
-};
-
 
 
 
@@ -1070,14 +988,6 @@ VarExprContext.prototype.constructor = VarExprContext;
 
 VarExprContext.prototype.ID = function() {
     return this.getToken(TPGrammarParser.ID, 0);
-};
-
-VarExprContext.prototype.accept = function(visitor) {
-    if ( visitor instanceof TPGrammarVisitor ) {
-        return visitor.visitVarExpr(this);
-    } else {
-        return visitor.visitChildren(this);
-    }
 };
 
 

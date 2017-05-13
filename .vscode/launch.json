@@ -4,16 +4,10 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    // {
-    //   "type": "node",
-    //   "request": "launch",
-    //   "name": "Launch Program Z",
-    //   "program": "${workspaceRoot}/z.js"
-    // },
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch via jest",
+      "name": "Launch Jest",
       "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
       "cwd": "${workspaceRoot}",
       "args": [
@@ -33,6 +27,16 @@
         "${workspaceRoot}/build/**/*.js"
       ]
     },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program (parser.js)",
+      "program": "${workspaceRoot}/build/parsing/parser.js",
+      "protocol": "inspector",
+      "outFiles": [
+        "${workspaceRoot}/build/**/*.js"
+      ]
+    },    
     {
       "type": "node",
       "request": "attach",

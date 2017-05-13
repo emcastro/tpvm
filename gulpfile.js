@@ -48,7 +48,7 @@ gulp.task('antlr4', ['antlr4-download'], () => {
   return gulp.src(ANTLR4)
   .pipe(antlr4({
     parserDir: GENERATED,
-    visitor: true
+    mode: 'none'
   }))
 })
 

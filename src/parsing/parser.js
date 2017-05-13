@@ -3,7 +3,6 @@
 import antlr4 from 'antlr4'
 import { TPGrammarParser } from '../generated/TPGrammarParser'
 import { TPGrammarLexer } from '../generated/TPGrammarLexer'
-// import { TPGrammarVisitor } from '../generated/TPGrammarVisitor'
 
 // const input = 'true'
 const chars = new antlr4.InputStream('a+b+2.0')
