@@ -191,7 +191,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
                   const method = arg1
 
                   const generic: any = op
-                  if (op.method === undefined) {
+                  if (generic[method] === undefined) {
                     return generic.get(method) // TODO: ou .apply ?
                   } else {
                     return generic[method]
