@@ -1,20 +1,29 @@
 grammar TPGrammar;
 
-start: definition*? expr? EOF;
+start: definition* expr | definition* EOF;
 
-expr: ifElseExpr
-    | varExpr
-    | literalExpr
-    | (PLUS | MINUS) expr
-    | expr (MUL | DIV) expr // Multiplicative
-    | expr (PLUS | MINUS) expr // Additive
-    | expr (CONCAT | MINUSMINUS) expr
-    | expr (EQ | LT | LE | GT | GE | NEQ) expr // Comparator
-    | expr userOp expr
-    | NOT expr
-    | expr AND expr
-    | expr OR expr
+expr: simpleExpr # simple
+   // | expr ('(' args ')' | '.' attr)
+    | (PLUS | MINUS) expr               # unOp
+    | expr (MUL | DIV) expr             # binOp // Multiplicative
+    | expr (PLUS | MINUS) expr          # binOp // Additive
+    | expr (CONCAT | MINUSMINUS) expr   # binOpExpr
+    | expr (EQ | LT | LE | GT | GE | NEQ) expr
+                                        # binOpExpr // Comparator
+    | expr userOp expr                  # userOpExpr
+    | NOT expr                          # unOpExpr  // Logic
+    | expr AND expr                     # binOpExpr
+    | expr OR expr                      # binOpExpr
     ;
+
+//applyExpr: expr '(' args ')';
+//attrExpr: expr ;
+//methodExpr: expr '.' method '(' args ')';
+
+simpleExpr: ifElseExpr
+          | varExpr
+          | literalExpr
+          ;
 
 definition: valueDefinition /* | tupleDefinition | functionDefinition */;
 
@@ -30,7 +39,7 @@ typeAnnotation: ;
 
 // Expressions
 
-literalExpr: INTEGER | FLOAT | BOOLEAN /*| STRING | NATIVE*/
+literalExpr: INTEGER | FLOAT | BOOLEAN | STRING | /*NATIVE*/
            | INVALID_LITERAL;
 
 ifElseExpr: IF '(' expr ')' expr ELSE expr;
@@ -67,6 +76,10 @@ INTEGER: DIGIT+ | '0x' HEX_DIGIT+ | '0b' BIN_DIGIT+;
 
 FLOAT: DEC_SIGNIFICANT DEC_EXPONENT?;
 
+STRING: '"' (~['"\r\n] | ESCAPE_SEQUENCE)* '"';
+
+NATIVE: '#' ID;
+
 INVALID_LITERAL: DIGIT+ (J_LETTER | DIGIT)*;
 
 //
@@ -96,6 +109,9 @@ DEC_SIGNIFICANT: DIGIT* '.' DIGIT+
 
 fragment
 DEC_EXPONENT: [eE] [+\-]? DIGIT+;
+
+fragment
+ESCAPE_SEQUENCE: '\\' ~[\r\n];
 
 //
 
