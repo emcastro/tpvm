@@ -1,0 +1,9 @@
+
+let={ foo };;;
+let={ foo }
+
+var=a+b;;;
+
+let(a)={ foo };
+let(a)={ foo }
+

@@ -1,0 +1,74 @@
+// Simple test of every kind of expression
+
+False = not true
+True = true or false
+False = false and true
+True = true
+/*
+additive=a+b+c-d-e
+multiplicative=a*b*c/d/e
+
+doubleop=aa++bb--cc
+
+cmp = a==b==c
+cmp = a≠b!=c
+cmp = a<b<c
+cmp = a≤b<=c
+cmp = a>b>c
+cmp = a≥b>=c
+
+pseudoLet = { hello }
+
+let = {
+    a=a
+    hello
+}
+
+ifElse = if (a) b else c
+
+paren = (a)
+tuple = (a,b)
+tuple = (a,b,c)
+
+//    list = []
+//    list = [a]
+//    list = [a,b]
+//    list = [a,b,c]
+
+//    list = [...a];
+//    list = [a, ...b];
+//    list = [a, ...b, ...c,d]
+
+
+map = {}
+map = {a:1}
+map = {a:1, b:2}
+//    map = {a:1, ...b, c:2}
+
+foo()=bar
+foo(bar)=baz
+foo(bar,baz)=something_else
+
+(a)=A
+(a,b)=AB
+(a,b,c)=ABC
+
+lambda=()->foo
+lambda=(foo)->bar
+lambda=(foo,bar)->baz
+lambda=foo->bar
+
+call=foo()
+call=foo(bar)
+call=foo(bar,baz)
+
+call=foo.bar
+call=foo.bar()
+call=foo.bar(baz)
+call=foo.bar(baz,qux)
+
+call=set1 union set2
+
+lambdaCall=(()->result)()
+*/
+result 

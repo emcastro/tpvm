@@ -1,0 +1,24 @@
+/**
+* Tests for literals
+*/
+
+zero=0
+thousand=1000
+minus1=-1
+
+hex=0x0123456789ABCEDF
+hex=0xFF
+
+bin=0b101010
+bin=0b11111111
+
+zero_F = 0.
+half = .5
+planck = 6.62606957e-34
+
+hello="WORLD"
+hello="\"WORLD\"\n"
+
+notTrue = false
+notFalse = true
+

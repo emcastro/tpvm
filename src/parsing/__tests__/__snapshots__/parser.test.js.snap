@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The Parser parses Empty.tp correctly 1`] = `
+"start
+  <EOF>#-1 <EOF>
+"
+`;
+
+exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
+"start
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID False
+        typeAnnotation
+      EQ_DEF =
+      expr
+        NOT not
+        expr
+          literalExpr
+            BOOLEAN true
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID True
+        typeAnnotation
+      EQ_DEF =
+      expr
+        expr
+          literalExpr
+            BOOLEAN true
+        OR or
+        expr
+          literalExpr
+            BOOLEAN false
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID False
+        typeAnnotation
+      EQ_DEF =
+      expr
+        expr
+          literalExpr
+            BOOLEAN false
+        AND and
+        expr
+          literalExpr
+            BOOLEAN true
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID True
+        typeAnnotation
+      EQ_DEF =
+      expr
+        literalExpr
+          BOOLEAN true
+  expr
+    varExpr
+      ID result
+  <EOF>#-1 <EOF>
+"
+`;

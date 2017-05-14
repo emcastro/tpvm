@@ -1,0 +1,15 @@
+nil = #nil
+uncons: O->(O,O) = #uncons
+cons: (O,O)->O = #cons
+isEmpty: O->O = #isEmpty
+
+map(x) = 0; // unused
+map(list: O, f) = {
+    (head, tail) = list.uncons;
+    if (list.isEmpty) nil
+    else f(head) cons tail.map(f)
+}
+
+data = 1 cons 2 cons 3 cons 4 cons nil
+
+data.map(x -> x+1)

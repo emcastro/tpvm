@@ -1,0 +1,42 @@
+/**
+ * Tests for known operator priority problems
+ */
+
+logic = a==b and not c or a+c or false
+
+ops = a+b*c == (a+b)*c
+
+minus = -a+ +b- -c
+
+concat = -a++b--c
+
+power = a+b pow c  /* must be similar to (a+b) pow c */
+section = x2-x1 div elemSize
+
+
+ifElse = a+if(b) c else d+e // must be similar to a+if(b) c else (d+e)
+
+lambda = (a,b)->a+b*c
+lambda = a op b->a+b*c
+lambda = a op (b:O)->a+b*c
+lambda = a op (b:O->O)->b(c)
+lambda = a op (b:O->O)->c.b
+
+lambdaIf = if (a) (b)->c+d else (b)->d+c
+lambdaIf = (b)->if(a) c+d else d+c
+
+lambdaIf = if (a) b->c+d else b->d+c
+lambdaIf = (b:O)->if(a) c+d else d+c
+
+call=set1(bidule) union set2(bidule)
+
+userOp = -a+b*c union -foo.bar
+
+cmpUserOp = a+b union b == c.d union e
+
+minusApply = -foo(bar)
+
+let1={
+    a=b
+    1+1         // Impose let to be a top rule when no pinning
+}

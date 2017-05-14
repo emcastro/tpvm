@@ -36,14 +36,15 @@
     "antlr4": "^4.7.0",
     "fs-es6-promise": "^0.0.3",
     "lodash": "^4.17.4",
+    "mz": "^2.6.0",
     "wu": "^2.1.0"
   },
   "scripts": {
     "start": "node build/index.js",
-    "build": "gulp default && babel src -d build --source-maps",
+    "build": "gulp default && babel src -d build --source-maps --copy-files",
     "pretest": "npm run build",
     "test": "standard && jest src",
-    "autobuild": "babel src -d build --source-maps --watch",
+    "autobuild": "babel src -d build --source-maps --copy-files --watch",
     "autocodegen": "gulp autocodegen",
     "autotest": "jest src --coverage --watchAll",
     "cleaner": "rm -rf coverage"

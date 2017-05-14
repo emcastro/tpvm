@@ -73,5 +73,5 @@ gulp.task('codegen', () => {
 
 // Continuous build for NodeJS
 gulp.task('autocodegen', ['default'], () => {
-  return gulp.watch(CODEGEN, ['codegen'])
+  return gulp.watch(CODEGEN, ['codegen', 'antlr4'])
 })

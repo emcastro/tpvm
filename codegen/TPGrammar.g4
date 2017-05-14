@@ -1,6 +1,6 @@
 grammar TPGrammar;
 
-start: definition*? expr EOF;
+start: definition*? expr? EOF;
 
 expr: ifElseExpr
     | varExpr
@@ -33,8 +33,6 @@ typeAnnotation: ;
 literalExpr: INTEGER | FLOAT | BOOLEAN /*| STRING | NATIVE*/
            | INVALID_LITERAL;
 
-INVALID_LITERAL: DIGIT+ (J_LETTER | DIGIT)*;
-
 ifElseExpr: IF '(' expr ')' expr ELSE expr;
 
 varExpr: ID;
@@ -65,9 +63,11 @@ MINUS: '-' | '−';
 
 BOOLEAN: 'true' | 'false';
 
-INTEGER: DIGIT+ | '0x' HEX_DIGIT+ | '0b' BIN_DIGIT;
+INTEGER: DIGIT+ | '0x' HEX_DIGIT+ | '0b' BIN_DIGIT+;
 
 FLOAT: DEC_SIGNIFICANT DEC_EXPONENT?;
+
+INVALID_LITERAL: DIGIT+ (J_LETTER | DIGIT)*;
 
 //
 
