@@ -1,8 +1,14 @@
 // @flow
 
+/* eslint-disable */
+
 import antlr4 from 'antlr4'
+import { TerminalNode } from 'antlr4/tree/Tree'
 import { TPGrammarParser } from '../generated/TPGrammarParser'
 import { TPGrammarLexer } from '../generated/TPGrammarLexer'
+import _ from 'lodash'
+import type { Node, Token, Terminal } from './parserSupport'
+import { nodeName, tokenName } from './parserSupport'
 
 // const input = 'true'
 const chars = new antlr4.InputStream('a+b+2.0')
@@ -10,48 +16,25 @@ const lexer = new TPGrammarLexer(chars)
 const tokens = new antlr4.CommonTokenStream(lexer)
 const parser = new TPGrammarParser(tokens)
 parser.buildParseTrees = true
-const tree = parser.start()
-console.log(nodeName(tree))
+const tree: Node = parser.start()
 
-type Token = {
-  text: string,
-  column: number,
-  line: number,
-  tokenIndex: number,
-  type: number,
-  source: [{ literalNames: Array<string>, symbolicNames: Array<string> }, {}]
-}
+function dump(node: Node, tab: string): string {
+  const nextTab = tab+'  '
+  let line = tab + nodeName(node) + '\n'
 
-type Node = {
-  parser: { ruleNames: Array<string> },
-  ruleIndex: number,
-  start: Token,
-  stop: Token
-}
-
-function tokenName (token: Token) {
-  const symbolic = token.source[0].symbolicNames[token.type]
-  if (symbolic != null) return symbolic
-  const litral = token.source[0].literalNames[token.type]
-  if (litral != null) return litral
-  return token.text + '#' + token.type
-}
-
-function nodeName (node: Node) {
-  return node.parser.ruleNames[node.ruleIndex]
-}
-
-class MyWalker extends antlr4.tree.ParseTreeListener {
-  enterEveryRule (ctx: Node) {
-    // console.log(ctx)
-    console.log(nodeName(ctx))
-    if (ctx.ruleIndex === TPGrammarParser.RULE_varExpr) {
-      console.log('VAR')
+  for (let subNode : any of node.children) {
+    if (typeof subNode.symbol !== 'undefined') {
+      line += nextTab + tokenName(subNode.symbol) + ' ' + subNode.symbol.text + '\n'
     }
-    console.log(ctx.start.text, tokenName(ctx.start))
-    console.log(ctx.stop.text, tokenName(ctx.stop))
-    console.log('===========')
+    else {
+      line += dump(subNode, nextTab)
+    }
   }
+  return line
 }
 
-antlr4.tree.ParseTreeWalker.DEFAULT.walk(new MyWalker(), tree)
+function dumpSymbol(node: Terminal, tab: string): string {
+  return tab + tokenName(node.symbol) + ' ' + node.symbol.text + '\n'
+}
+
+console.log(dump(tree, '+'))
