@@ -3,7 +3,7 @@ grammar TPGrammar;
 start: definition* expr | definition* EOF;
 
 expr: simpleExpr # simple
-   // | expr ('(' args ')' | '.' attr)
+    | expr (apply | '.' attr apply?)    # call
     | (PLUS | MINUS) expr               # unOp
     | expr (MUL | DIV) expr             # binOp // Multiplicative
     | expr (PLUS | MINUS) expr          # binOp // Additive
@@ -16,35 +16,61 @@ expr: simpleExpr # simple
     | expr OR expr                      # binOpExpr
     ;
 
-//applyExpr: expr '(' args ')';
-//attrExpr: expr ;
-//methodExpr: expr '.' method '(' args ')';
-
-simpleExpr: ifElseExpr
+simpleExpr: literalExpr
           | varExpr
-          | literalExpr
+          | '(' expr ')'
+          | ifElseExpr
+          | shortLambdaExpr
+          | lambdaExpr
+
+          | letExpr
           ;
 
-definition: valueDefinition /* | tupleDefinition | functionDefinition */;
+definition: valueDefinition /* | tupleDefinition | functionDefinition */ ;
 
 valueDefinition: typedVar EQ_DEF expr;
 
 typedVar: varId typeAnnotation;
 
+typedParam: paramId typeAnnotation;
+
+attr: ID;
+
+method: ID;
+
 userOp: ID;
 
 varId: ID;
 
+paramId: ID;
+
+apply: '(' args? ')';
+
+arg: expr;
+
 typeAnnotation: ;
+
+// Groups
+
+args: (arg ',')* arg;
+
+typedParams: (typedParam ',')* typedParam;
 
 // Expressions
 
-literalExpr: INTEGER | FLOAT | BOOLEAN | STRING | /*NATIVE*/
-           | INVALID_LITERAL;
+literalExpr: INTEGER | FLOAT | BOOLEAN | STRING /* | NATIVE*/
+           | INVALID_LITERAL
+           ;
 
 ifElseExpr: IF '(' expr ')' expr ELSE expr;
 
+lambdaExpr: '(' typedParams? ')' '->' expr;
+
+shortLambdaExpr: paramId '->' expr;
+
 varExpr: ID;
+
+letExpr: '{' definition* expr '}';
 
 //
 
