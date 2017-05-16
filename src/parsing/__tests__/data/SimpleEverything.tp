@@ -4,7 +4,7 @@ False = not true
 True = true or false
 False = false and true
 True = true
-/*
+
 additive=a+b+c-d-e
 multiplicative=a*b*c/d/e
 
@@ -70,5 +70,5 @@ call=foo.bar(baz,qux)
 call=set1 union set2
 
 lambdaCall=(()->result)()
-*/
+
 result 

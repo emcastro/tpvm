@@ -26,9 +26,13 @@ simpleExpr: literalExpr
           | letExpr
           ;
 
-definition: valueDefinition /* | tupleDefinition | functionDefinition */ ;
+definition: valueDefinition | tupleDefinition | functionDefinition;
 
 valueDefinition: typedVar EQ_DEF expr;
+
+functionDefinition: functionId '(' typedParams? ')' typeAnnotation EQ_DEF expr;
+
+tupleDefinition: '(' typedVar (',' typedVar)* ')' EQ_DEF expr;
 
 typedVar: varId typeAnnotation;
 
@@ -42,6 +46,8 @@ userOp: ID;
 
 varId: ID;
 
+functionId: ID;
+
 paramId: ID;
 
 apply: '(' args? ')';
@@ -52,13 +58,13 @@ typeAnnotation: ;
 
 // Groups
 
-args: (arg ',')* arg;
+args: arg (',' arg)*;
 
-typedParams: (typedParam ',')* typedParam;
+typedParams: typedParam (typedParam ',')*;
 
 // Expressions
 
-literalExpr: INTEGER | FLOAT | BOOLEAN | STRING /* | NATIVE*/
+literalExpr: INTEGER | FLOAT | BOOLEAN | STRING | NATIVE
            | INVALID_LITERAL
            ;
 
@@ -143,7 +149,7 @@ ESCAPE_SEQUENCE: '\\' ~[\r\n];
 
 WS:         [ \r\t\f\n] -> skip;
 
-COMMENT:    '/*' .*? '*/' -> skip;
+COMMENT:    '/*' .* '*/' -> skip; // TODO Incomplet
 
 LINE_COMMENT:
             '//' ~[\n\r]* '\r'? '\n' -> skip;
