@@ -18,15 +18,15 @@ ifElse = a+if(b) c else d+e // must be similar to a+if(b) c else (d+e)
 
 lambda = (a,b)->a+b*c
 lambda = a op b->a+b*c
-lambda = a op (b:O)->a+b*c
-lambda = a op (b:O->O)->b(c)
-lambda = a op (b:O->O)->c.b
+lambda = a op (b /*:O*/)->a+b*c
+lambda = a op (b /*:O->O*/)->b(c)
+lambda = a op (b /*:O->O*/)->c.b
 
 lambdaIf = if (a) (b)->c+d else (b)->d+c
 lambdaIf = (b)->if(a) c+d else d+c
 
 lambdaIf = if (a) b->c+d else b->d+c
-lambdaIf = (b:O)->if(a) c+d else d+c
+lambdaIf = (b /*:O*/)->if(a) c+d else d+c
 
 call=set1(bidule) union set2(bidule)
 

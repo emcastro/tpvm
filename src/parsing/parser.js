@@ -3,6 +3,7 @@
 import antlr4 from 'antlr4'
 import { TPGrammarParser } from '../generated/TPGrammarParser'
 import { TPGrammarLexer } from '../generated/TPGrammarLexer'
+import _ from 'lodash'
 
 export type Token = {
   text: string,
@@ -30,8 +31,17 @@ export function tokenName (token: Token) {
   return token.text + '#' + token.type
 }
 
+export function tokenPosition (token: Token) {
+  return `${token.line}:${token.column + 1}`
+}
+
 export function nodeName (node: Node) {
-  return node.parser.ruleNames[node.ruleIndex]
+  // $TypingTrick
+  const ruleClass: string = node.__proto__.constructor.name // eslint-disable-line
+  const ruleCategory = _.lowerFirst(ruleClass.slice(0, ruleClass.length - 7)) // 7 = "Context".length
+
+  const ruleName = node.parser.ruleNames[node.ruleIndex]
+  return ruleName === ruleCategory ? ruleName : ruleCategory + ':' + ruleName
 }
 
 export function dump (node: Node, tab: ?string): string {
@@ -43,7 +53,7 @@ export function dump (node: Node, tab: ?string): string {
     for (let subNode of node.children) {
       if (subNode.symbol != null) {
         const symbol = subNode.symbol
-        line += nextTab + tokenName(symbol) + ' ' + symbol.text + '\n'
+        line += nextTab + tokenName(symbol) + ' ' + symbol.text + '   @' + tokenPosition(symbol) + '\n'
       } else {
         line += dump(subNode, nextTab)
       }

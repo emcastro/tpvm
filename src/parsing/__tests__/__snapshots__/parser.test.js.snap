@@ -1,8 +1,1281 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`The Parser can be tested with snapshots 1`] = `"\\"test\\""`;
+
+exports[`The Parser can be tested with snapshots 2`] = `"\\"\\\\\\"test\\"\\\\\\""`;
+
 exports[`The Parser parses Empty.tp correctly 1`] = `
 "start
-  <EOF>#-1 <EOF>
+  <EOF>#-1 <EOF>   @1:1
+"
+`;
+
+exports[`The Parser parses EndOfLet.tp correctly 1`] = `
+"start
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID let1   @5:1
+        typeAnnotation
+      EQ_DEF =   @5:5
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @5:6
+            definition
+              valueDefinition
+                typedVar
+                  varId
+                    ID a   @6:5
+                  typeAnnotation
+                EQ_DEF =   @6:6
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID b   @6:7
+            binOp:expr
+              simple:expr
+                simpleExpr
+                  literalExpr
+                    INTEGER 1   @7:5
+              PLUS +   @7:6
+              simple:expr
+                simpleExpr
+                  literalExpr
+                    INTEGER 1   @7:7
+            '}' }   @8:1
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID let2   @10:1
+        typeAnnotation
+      EQ_DEF =   @10:5
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @10:6
+            definition
+              valueDefinition
+                typedVar
+                  varId
+                    ID a   @11:5
+                  typeAnnotation
+                EQ_DEF =   @11:6
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID b   @11:7
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @12:5
+            '}' }   @13:1
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID pseudoLet1   @15:1
+        typeAnnotation
+      EQ_DEF =   @15:11
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @15:12
+            binOp:expr
+              simple:expr
+                simpleExpr
+                  literalExpr
+                    INTEGER 1   @16:5
+              PLUS +   @16:6
+              simple:expr
+                simpleExpr
+                  literalExpr
+                    INTEGER 1   @16:7
+            '}' }   @17:1
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID pseudoLet2   @19:1
+        typeAnnotation
+      EQ_DEF =   @19:11
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @19:12
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @20:5
+            '}' }   @21:1
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID innerPseudoLet1   @23:1
+        typeAnnotation
+      EQ_DEF =   @23:16
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @23:17
+            definition
+              valueDefinition
+                typedVar
+                  varId
+                    ID a   @24:5
+                  typeAnnotation
+                EQ_DEF =   @24:6
+                simple:expr
+                  simpleExpr
+                    letExpr
+                      '{' {   @24:7
+                      simple:expr
+                        simpleExpr
+                          varExpr
+                            ID b   @24:8
+                      '}' }   @24:9
+            binOp:expr
+              simple:expr
+                simpleExpr
+                  literalExpr
+                    INTEGER 1   @25:5
+              PLUS +   @25:6
+              simple:expr
+                simpleExpr
+                  literalExpr
+                    INTEGER 1   @25:7
+            '}' }   @26:1
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID innerPseudoLet2   @28:1
+        typeAnnotation
+      EQ_DEF =   @28:16
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @28:17
+            definition
+              valueDefinition
+                typedVar
+                  varId
+                    ID a   @29:5
+                  typeAnnotation
+                EQ_DEF =   @29:6
+                simple:expr
+                  simpleExpr
+                    letExpr
+                      '{' {   @29:7
+                      simple:expr
+                        simpleExpr
+                          varExpr
+                            ID b   @29:8
+                      '}' }   @29:9
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @30:5
+            '}' }   @31:1
+  <EOF>#-1 <EOF>   @33:1
+"
+`;
+
+exports[`The Parser parses Literals.tp correctly 1`] = `
+"start
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID zero   @5:1
+        typeAnnotation
+      EQ_DEF =   @5:5
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 0   @5:6
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID thousand   @6:1
+        typeAnnotation
+      EQ_DEF =   @6:9
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 1000   @6:10
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID minus1   @7:1
+        typeAnnotation
+      EQ_DEF =   @7:7
+      unOp:expr
+        MINUS -   @7:8
+        simple:expr
+          simpleExpr
+            literalExpr
+              INTEGER 1   @7:9
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID hex   @9:1
+        typeAnnotation
+      EQ_DEF =   @9:4
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 0x0123456789ABCEDF   @9:5
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID hex   @10:1
+        typeAnnotation
+      EQ_DEF =   @10:4
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 0xFF   @10:5
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID bin   @12:1
+        typeAnnotation
+      EQ_DEF =   @12:4
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 0b101010   @12:5
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID bin   @13:1
+        typeAnnotation
+      EQ_DEF =   @13:4
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 0b11111111   @13:5
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID zero_F   @15:1
+        typeAnnotation
+      EQ_DEF =   @15:8
+      simple:expr
+        simpleExpr
+          literalExpr
+            FLOAT 0.   @15:10
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID half   @16:1
+        typeAnnotation
+      EQ_DEF =   @16:6
+      simple:expr
+        simpleExpr
+          literalExpr
+            FLOAT .5   @16:8
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID planck   @17:1
+        typeAnnotation
+      EQ_DEF =   @17:8
+      simple:expr
+        simpleExpr
+          literalExpr
+            FLOAT 6.62606957e-34   @17:10
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID hello   @19:1
+        typeAnnotation
+      EQ_DEF =   @19:6
+      simple:expr
+        simpleExpr
+          literalExpr
+            STRING \\"WORLD\\"   @19:7
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID hello   @20:1
+        typeAnnotation
+      EQ_DEF =   @20:6
+      simple:expr
+        simpleExpr
+          literalExpr
+            STRING \\"\\\\\\"WORLD\\\\\\"\\\\n\\"   @20:7
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID notTrue   @22:1
+        typeAnnotation
+      EQ_DEF =   @22:9
+      simple:expr
+        simpleExpr
+          literalExpr
+            BOOLEAN false   @22:11
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID notFalse   @23:1
+        typeAnnotation
+      EQ_DEF =   @23:10
+      simple:expr
+        simpleExpr
+          literalExpr
+            BOOLEAN true   @23:12
+  <EOF>#-1 <EOF>   @25:1
+"
+`;
+
+exports[`The Parser parses Priority.tp correctly 1`] = `
+"start
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID logic   @5:1
+        typeAnnotation
+      EQ_DEF =   @5:7
+      binOp:expr
+        binOp:expr
+          binOp:expr
+            binOp:expr
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID a   @5:9
+              EQ ==   @5:10
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID b   @5:12
+            AND and   @5:14
+            unOp:expr
+              NOT not   @5:18
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID c   @5:22
+          OR or   @5:24
+          binOp:expr
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @5:27
+            PLUS +   @5:28
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID c   @5:29
+        OR or   @5:31
+        simple:expr
+          simpleExpr
+            literalExpr
+              BOOLEAN false   @5:34
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID ops   @7:1
+        typeAnnotation
+      EQ_DEF =   @7:5
+      binOp:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID a   @7:7
+          PLUS +   @7:8
+          binOp:expr
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID b   @7:9
+            MUL *   @7:10
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID c   @7:11
+        EQ ==   @7:13
+        binOp:expr
+          simple:expr
+            simpleExpr
+              '(' (   @7:16
+              binOp:expr
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID a   @7:17
+                PLUS +   @7:18
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID b   @7:19
+              ')' )   @7:20
+          MUL *   @7:21
+          simple:expr
+            simpleExpr
+              varExpr
+                ID c   @7:22
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID minus   @9:1
+        typeAnnotation
+      EQ_DEF =   @9:7
+      binOp:expr
+        binOp:expr
+          unOp:expr
+            MINUS -   @9:9
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @9:10
+          PLUS +   @9:11
+          unOp:expr
+            PLUS +   @9:13
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID b   @9:14
+        MINUS -   @9:15
+        unOp:expr
+          MINUS -   @9:17
+          simple:expr
+            simpleExpr
+              varExpr
+                ID c   @9:18
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID concat   @11:1
+        typeAnnotation
+      EQ_DEF =   @11:8
+      binOp:expr
+        binOp:expr
+          unOp:expr
+            MINUS -   @11:10
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @11:11
+          CONCAT ++   @11:12
+          simple:expr
+            simpleExpr
+              varExpr
+                ID b   @11:14
+        MINUSMINUS --   @11:15
+        simple:expr
+          simpleExpr
+            varExpr
+              ID c   @11:17
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID power   @13:1
+        typeAnnotation
+      EQ_DEF =   @13:7
+      userOpExpr:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID a   @13:9
+          PLUS +   @13:10
+          simple:expr
+            simpleExpr
+              varExpr
+                ID b   @13:11
+        userOp
+          ID pow   @13:13
+        simple:expr
+          simpleExpr
+            varExpr
+              ID c   @13:17
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID section   @14:1
+        typeAnnotation
+      EQ_DEF =   @14:9
+      userOpExpr:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID x2   @14:11
+          MINUS -   @14:13
+          simple:expr
+            simpleExpr
+              varExpr
+                ID x1   @14:14
+        userOp
+          ID div   @14:17
+        simple:expr
+          simpleExpr
+            varExpr
+              ID elemSize   @14:21
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID ifElse   @17:1
+        typeAnnotation
+      EQ_DEF =   @17:8
+      binOp:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID a   @17:10
+        PLUS +   @17:11
+        simple:expr
+          simpleExpr
+            ifElseExpr
+              IF if   @17:12
+              '(' (   @17:14
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID b   @17:15
+              ')' )   @17:16
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID c   @17:18
+              ELSE else   @17:20
+              binOp:expr
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID d   @17:25
+                PLUS +   @17:26
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID e   @17:27
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambda   @19:1
+        typeAnnotation
+      EQ_DEF =   @19:8
+      simple:expr
+        simpleExpr
+          lambdaExpr
+            '(' (   @19:10
+            typedParams
+              typedParam
+                paramId
+                  ID a   @19:11
+                typeAnnotation
+              ',' ,   @19:12
+              typedParam
+                paramId
+                  ID b   @19:13
+                typeAnnotation
+            ')' )   @19:14
+            '->' ->   @19:15
+            binOp:expr
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID a   @19:17
+              PLUS +   @19:18
+              binOp:expr
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID b   @19:19
+                MUL *   @19:20
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID c   @19:21
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambda   @20:1
+        typeAnnotation
+      EQ_DEF =   @20:8
+      userOpExpr:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID a   @20:10
+        userOp
+          ID op   @20:12
+        simple:expr
+          simpleExpr
+            shortLambdaExpr
+              paramId
+                ID b   @20:15
+              '->' ->   @20:16
+              binOp:expr
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID a   @20:18
+                PLUS +   @20:19
+                binOp:expr
+                  simple:expr
+                    simpleExpr
+                      varExpr
+                        ID b   @20:20
+                  MUL *   @20:21
+                  simple:expr
+                    simpleExpr
+                      varExpr
+                        ID c   @20:22
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambda   @21:1
+        typeAnnotation
+      EQ_DEF =   @21:8
+      userOpExpr:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID a   @21:10
+        userOp
+          ID op   @21:12
+        simple:expr
+          simpleExpr
+            lambdaExpr
+              '(' (   @21:15
+              typedParams
+                typedParam
+                  paramId
+                    ID b   @21:16
+                  typeAnnotation
+              ')' )   @21:24
+              '->' ->   @21:25
+              binOp:expr
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID a   @21:27
+                PLUS +   @21:28
+                binOp:expr
+                  simple:expr
+                    simpleExpr
+                      varExpr
+                        ID b   @21:29
+                  MUL *   @21:30
+                  simple:expr
+                    simpleExpr
+                      varExpr
+                        ID c   @21:31
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambda   @22:1
+        typeAnnotation
+      EQ_DEF =   @22:8
+      userOpExpr:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID a   @22:10
+        userOp
+          ID op   @22:12
+        simple:expr
+          simpleExpr
+            lambdaExpr
+              '(' (   @22:15
+              typedParams
+                typedParam
+                  paramId
+                    ID b   @22:16
+                  typeAnnotation
+              ')' )   @22:27
+              '->' ->   @22:28
+              call:expr
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID b   @22:30
+                apply
+                  '(' (   @22:31
+                  args
+                    arg
+                      simple:expr
+                        simpleExpr
+                          varExpr
+                            ID c   @22:32
+                  ')' )   @22:33
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambda   @23:1
+        typeAnnotation
+      EQ_DEF =   @23:8
+      userOpExpr:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID a   @23:10
+        userOp
+          ID op   @23:12
+        simple:expr
+          simpleExpr
+            lambdaExpr
+              '(' (   @23:15
+              typedParams
+                typedParam
+                  paramId
+                    ID b   @23:16
+                  typeAnnotation
+              ')' )   @23:27
+              '->' ->   @23:28
+              call:expr
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID c   @23:30
+                '.' .   @23:31
+                attr
+                  ID b   @23:32
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambdaIf   @25:1
+        typeAnnotation
+      EQ_DEF =   @25:10
+      simple:expr
+        simpleExpr
+          ifElseExpr
+            IF if   @25:12
+            '(' (   @25:15
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @25:16
+            ')' )   @25:17
+            simple:expr
+              simpleExpr
+                lambdaExpr
+                  '(' (   @25:19
+                  typedParams
+                    typedParam
+                      paramId
+                        ID b   @25:20
+                      typeAnnotation
+                  ')' )   @25:21
+                  '->' ->   @25:22
+                  binOp:expr
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID c   @25:24
+                    PLUS +   @25:25
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID d   @25:26
+            ELSE else   @25:28
+            simple:expr
+              simpleExpr
+                lambdaExpr
+                  '(' (   @25:33
+                  typedParams
+                    typedParam
+                      paramId
+                        ID b   @25:34
+                      typeAnnotation
+                  ')' )   @25:35
+                  '->' ->   @25:36
+                  binOp:expr
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID d   @25:38
+                    PLUS +   @25:39
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID c   @25:40
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambdaIf   @26:1
+        typeAnnotation
+      EQ_DEF =   @26:10
+      simple:expr
+        simpleExpr
+          lambdaExpr
+            '(' (   @26:12
+            typedParams
+              typedParam
+                paramId
+                  ID b   @26:13
+                typeAnnotation
+            ')' )   @26:14
+            '->' ->   @26:15
+            simple:expr
+              simpleExpr
+                ifElseExpr
+                  IF if   @26:17
+                  '(' (   @26:19
+                  simple:expr
+                    simpleExpr
+                      varExpr
+                        ID a   @26:20
+                  ')' )   @26:21
+                  binOp:expr
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID c   @26:23
+                    PLUS +   @26:24
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID d   @26:25
+                  ELSE else   @26:27
+                  binOp:expr
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID d   @26:32
+                    PLUS +   @26:33
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID c   @26:34
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambdaIf   @28:1
+        typeAnnotation
+      EQ_DEF =   @28:10
+      simple:expr
+        simpleExpr
+          ifElseExpr
+            IF if   @28:12
+            '(' (   @28:15
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @28:16
+            ')' )   @28:17
+            simple:expr
+              simpleExpr
+                shortLambdaExpr
+                  paramId
+                    ID b   @28:19
+                  '->' ->   @28:20
+                  binOp:expr
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID c   @28:22
+                    PLUS +   @28:23
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID d   @28:24
+            ELSE else   @28:26
+            simple:expr
+              simpleExpr
+                shortLambdaExpr
+                  paramId
+                    ID b   @28:31
+                  '->' ->   @28:32
+                  binOp:expr
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID d   @28:34
+                    PLUS +   @28:35
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID c   @28:36
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambdaIf   @29:1
+        typeAnnotation
+      EQ_DEF =   @29:10
+      simple:expr
+        simpleExpr
+          lambdaExpr
+            '(' (   @29:12
+            typedParams
+              typedParam
+                paramId
+                  ID b   @29:13
+                typeAnnotation
+            ')' )   @29:21
+            '->' ->   @29:22
+            simple:expr
+              simpleExpr
+                ifElseExpr
+                  IF if   @29:24
+                  '(' (   @29:26
+                  simple:expr
+                    simpleExpr
+                      varExpr
+                        ID a   @29:27
+                  ')' )   @29:28
+                  binOp:expr
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID c   @29:30
+                    PLUS +   @29:31
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID d   @29:32
+                  ELSE else   @29:34
+                  binOp:expr
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID d   @29:39
+                    PLUS +   @29:40
+                    simple:expr
+                      simpleExpr
+                        varExpr
+                          ID c   @29:41
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID call   @31:1
+        typeAnnotation
+      EQ_DEF =   @31:5
+      userOpExpr:expr
+        call:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID set1   @31:6
+          apply
+            '(' (   @31:10
+            args
+              arg
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID bidule   @31:11
+            ')' )   @31:17
+        userOp
+          ID union   @31:19
+        call:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID set2   @31:25
+          apply
+            '(' (   @31:29
+            args
+              arg
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID bidule   @31:30
+            ')' )   @31:36
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID userOp   @33:1
+        typeAnnotation
+      EQ_DEF =   @33:8
+      userOpExpr:expr
+        binOp:expr
+          unOp:expr
+            MINUS -   @33:10
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @33:11
+          PLUS +   @33:12
+          binOp:expr
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID b   @33:13
+            MUL *   @33:14
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID c   @33:15
+        userOp
+          ID union   @33:17
+        unOp:expr
+          MINUS -   @33:23
+          call:expr
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID foo   @33:24
+            '.' .   @33:27
+            attr
+              ID bar   @33:28
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID cmpUserOp   @35:1
+        typeAnnotation
+      EQ_DEF =   @35:11
+      userOpExpr:expr
+        userOpExpr:expr
+          binOp:expr
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @35:13
+            PLUS +   @35:14
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID b   @35:15
+          userOp
+            ID union   @35:17
+          binOp:expr
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID b   @35:23
+            EQ ==   @35:25
+            call:expr
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID c   @35:28
+              '.' .   @35:29
+              attr
+                ID d   @35:30
+        userOp
+          ID union   @35:32
+        simple:expr
+          simpleExpr
+            varExpr
+              ID e   @35:38
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID minusApply   @37:1
+        typeAnnotation
+      EQ_DEF =   @37:12
+      unOp:expr
+        MINUS -   @37:14
+        call:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID foo   @37:15
+          apply
+            '(' (   @37:18
+            args
+              arg
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID bar   @37:19
+            ')' )   @37:22
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID let1   @39:1
+        typeAnnotation
+      EQ_DEF =   @39:5
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @39:6
+            definition
+              valueDefinition
+                typedVar
+                  varId
+                    ID a   @40:5
+                  typeAnnotation
+                EQ_DEF =   @40:6
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID b   @40:7
+            binOp:expr
+              simple:expr
+                simpleExpr
+                  literalExpr
+                    INTEGER 1   @41:5
+              PLUS +   @41:6
+              simple:expr
+                simpleExpr
+                  literalExpr
+                    INTEGER 1   @41:7
+            '}' }   @42:1
+  <EOF>#-1 <EOF>   @43:1
+"
+`;
+
+exports[`The Parser parses SemiColon.tp correctly 1`] = `
+"start
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID let   @2:1
+        typeAnnotation
+      EQ_DEF =   @2:4
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @2:5
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID foo   @2:7
+            '}' }   @2:11
+    ';' ;   @2:12
+    ';' ;   @2:13
+    ';' ;   @2:14
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID let   @3:1
+        typeAnnotation
+      EQ_DEF =   @3:4
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @3:5
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID foo   @3:7
+            ';' ;   @3:10
+            '}' }   @3:12
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID let   @4:1
+        typeAnnotation
+      EQ_DEF =   @4:4
+      simple:expr
+        simpleExpr
+          varExpr
+            ID foo   @4:5
+    ';' ;   @4:8
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID let   @5:1
+        typeAnnotation
+      EQ_DEF =   @5:4
+      simple:expr
+        simpleExpr
+          varExpr
+            ID foo   @5:5
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID var   @7:1
+        typeAnnotation
+      EQ_DEF =   @7:4
+      binOp:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID a   @7:5
+        PLUS +   @7:6
+        simple:expr
+          simpleExpr
+            varExpr
+              ID b   @7:7
+    ';' ;   @7:8
+    ';' ;   @7:9
+    ';' ;   @7:10
+  definition
+    functionDefinition
+      functionId
+        ID let   @9:1
+      '(' (   @9:4
+      typedParams
+        typedParam
+          paramId
+            ID a   @9:5
+          typeAnnotation
+      ')' )   @9:6
+      typeAnnotation
+      EQ_DEF =   @9:7
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @9:8
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID foo   @9:10
+            '}' }   @9:14
+    ';' ;   @9:15
+  definition
+    functionDefinition
+      functionId
+        ID let   @10:1
+      '(' (   @10:4
+      typedParams
+        typedParam
+          paramId
+            ID a   @10:5
+          typeAnnotation
+      ')' )   @10:6
+      typeAnnotation
+      EQ_DEF =   @10:7
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @10:8
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID foo   @10:10
+            '}' }   @10:14
+  <EOF>#-1 <EOF>   @12:1
 "
 `;
 
@@ -12,57 +1285,705 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
     valueDefinition
       typedVar
         varId
-          ID False
+          ID False   @3:1
         typeAnnotation
-      EQ_DEF =
-      expr
-        NOT not
-        expr
-          literalExpr
-            BOOLEAN true
+      EQ_DEF =   @3:7
+      unOp:expr
+        NOT not   @3:9
+        simple:expr
+          simpleExpr
+            literalExpr
+              BOOLEAN true   @3:13
   definition
     valueDefinition
       typedVar
         varId
-          ID True
+          ID True   @4:1
         typeAnnotation
-      EQ_DEF =
-      expr
-        expr
-          literalExpr
-            BOOLEAN true
-        OR or
-        expr
-          literalExpr
-            BOOLEAN false
+      EQ_DEF =   @4:6
+      binOp:expr
+        simple:expr
+          simpleExpr
+            literalExpr
+              BOOLEAN true   @4:8
+        OR or   @4:13
+        simple:expr
+          simpleExpr
+            literalExpr
+              BOOLEAN false   @4:16
   definition
     valueDefinition
       typedVar
         varId
-          ID False
+          ID False   @5:1
         typeAnnotation
-      EQ_DEF =
-      expr
-        expr
-          literalExpr
-            BOOLEAN false
-        AND and
-        expr
-          literalExpr
-            BOOLEAN true
+      EQ_DEF =   @5:7
+      binOp:expr
+        simple:expr
+          simpleExpr
+            literalExpr
+              BOOLEAN false   @5:9
+        AND and   @5:15
+        simple:expr
+          simpleExpr
+            literalExpr
+              BOOLEAN true   @5:19
   definition
     valueDefinition
       typedVar
         varId
-          ID True
+          ID True   @6:1
         typeAnnotation
-      EQ_DEF =
-      expr
-        literalExpr
-          BOOLEAN true
-  expr
-    varExpr
-      ID result
-  <EOF>#-1 <EOF>
+      EQ_DEF =   @6:6
+      simple:expr
+        simpleExpr
+          literalExpr
+            BOOLEAN true   @6:8
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID additive   @8:1
+        typeAnnotation
+      EQ_DEF =   @8:9
+      binOp:expr
+        binOp:expr
+          binOp:expr
+            binOp:expr
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID a   @8:10
+              PLUS +   @8:11
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID b   @8:12
+            PLUS +   @8:13
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID c   @8:14
+          MINUS -   @8:15
+          simple:expr
+            simpleExpr
+              varExpr
+                ID d   @8:16
+        MINUS -   @8:17
+        simple:expr
+          simpleExpr
+            varExpr
+              ID e   @8:18
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID multiplicative   @9:1
+        typeAnnotation
+      EQ_DEF =   @9:15
+      binOp:expr
+        binOp:expr
+          binOp:expr
+            binOp:expr
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID a   @9:16
+              MUL *   @9:17
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID b   @9:18
+            MUL *   @9:19
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID c   @9:20
+          DIV /   @9:21
+          simple:expr
+            simpleExpr
+              varExpr
+                ID d   @9:22
+        DIV /   @9:23
+        simple:expr
+          simpleExpr
+            varExpr
+              ID e   @9:24
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID doubleop   @11:1
+        typeAnnotation
+      EQ_DEF =   @11:9
+      binOp:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID aa   @11:10
+          CONCAT ++   @11:12
+          simple:expr
+            simpleExpr
+              varExpr
+                ID bb   @11:14
+        MINUSMINUS --   @11:16
+        simple:expr
+          simpleExpr
+            varExpr
+              ID cc   @11:18
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID cmp   @13:1
+        typeAnnotation
+      EQ_DEF =   @13:5
+      binOp:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID a   @13:7
+          EQ ==   @13:8
+          simple:expr
+            simpleExpr
+              varExpr
+                ID b   @13:10
+        EQ ==   @13:11
+        simple:expr
+          simpleExpr
+            varExpr
+              ID c   @13:13
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID cmp   @14:1
+        typeAnnotation
+      EQ_DEF =   @14:5
+      binOp:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID a   @14:7
+          NEQ ≠   @14:8
+          simple:expr
+            simpleExpr
+              varExpr
+                ID b   @14:9
+        NEQ !=   @14:10
+        simple:expr
+          simpleExpr
+            varExpr
+              ID c   @14:12
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID cmp   @15:1
+        typeAnnotation
+      EQ_DEF =   @15:5
+      binOp:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID a   @15:7
+          LT <   @15:8
+          simple:expr
+            simpleExpr
+              varExpr
+                ID b   @15:9
+        LT <   @15:10
+        simple:expr
+          simpleExpr
+            varExpr
+              ID c   @15:11
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID cmp   @16:1
+        typeAnnotation
+      EQ_DEF =   @16:5
+      binOp:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID a   @16:7
+          LE ≤   @16:8
+          simple:expr
+            simpleExpr
+              varExpr
+                ID b   @16:9
+        LE <=   @16:10
+        simple:expr
+          simpleExpr
+            varExpr
+              ID c   @16:12
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID cmp   @17:1
+        typeAnnotation
+      EQ_DEF =   @17:5
+      binOp:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID a   @17:7
+          GT >   @17:8
+          simple:expr
+            simpleExpr
+              varExpr
+                ID b   @17:9
+        GT >   @17:10
+        simple:expr
+          simpleExpr
+            varExpr
+              ID c   @17:11
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID cmp   @18:1
+        typeAnnotation
+      EQ_DEF =   @18:5
+      binOp:expr
+        binOp:expr
+          simple:expr
+            simpleExpr
+              varExpr
+                ID a   @18:7
+          GE ≥   @18:8
+          simple:expr
+            simpleExpr
+              varExpr
+                ID b   @18:9
+        GE >=   @18:10
+        simple:expr
+          simpleExpr
+            varExpr
+              ID c   @18:12
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID pseudoLet   @20:1
+        typeAnnotation
+      EQ_DEF =   @20:11
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @20:13
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID hello   @20:15
+            '}' }   @20:21
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID let   @22:1
+        typeAnnotation
+      EQ_DEF =   @22:5
+      simple:expr
+        simpleExpr
+          letExpr
+            '{' {   @22:7
+            definition
+              valueDefinition
+                typedVar
+                  varId
+                    ID a   @23:5
+                  typeAnnotation
+                EQ_DEF =   @23:6
+                simple:expr
+                  simpleExpr
+                    varExpr
+                      ID a   @23:7
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID hello   @24:5
+            '}' }   @25:1
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID ifElse   @27:1
+        typeAnnotation
+      EQ_DEF =   @27:8
+      simple:expr
+        simpleExpr
+          ifElseExpr
+            IF if   @27:10
+            '(' (   @27:13
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID a   @27:14
+            ')' )   @27:15
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID b   @27:17
+            ELSE else   @27:19
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID c   @27:24
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID paren   @29:1
+        typeAnnotation
+      EQ_DEF =   @29:7
+      simple:expr
+        simpleExpr
+          '(' (   @29:9
+          simple:expr
+            simpleExpr
+              varExpr
+                ID a   @29:10
+          ')' )   @29:11
+  definition
+    functionDefinition
+      functionId
+        ID foo   @48:1
+      '(' (   @48:4
+      ')' )   @48:5
+      typeAnnotation
+      EQ_DEF =   @48:6
+      simple:expr
+        simpleExpr
+          varExpr
+            ID bar   @48:7
+  definition
+    functionDefinition
+      functionId
+        ID foo   @49:1
+      '(' (   @49:4
+      typedParams
+        typedParam
+          paramId
+            ID bar   @49:5
+          typeAnnotation
+      ')' )   @49:8
+      typeAnnotation
+      EQ_DEF =   @49:9
+      simple:expr
+        simpleExpr
+          varExpr
+            ID baz   @49:10
+  definition
+    functionDefinition
+      functionId
+        ID foo   @50:1
+      '(' (   @50:4
+      typedParams
+        typedParam
+          paramId
+            ID bar   @50:5
+          typeAnnotation
+        ',' ,   @50:8
+        typedParam
+          paramId
+            ID baz   @50:9
+          typeAnnotation
+      ')' )   @50:12
+      typeAnnotation
+      EQ_DEF =   @50:13
+      simple:expr
+        simpleExpr
+          varExpr
+            ID something_else   @50:14
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambda   @56:1
+        typeAnnotation
+      EQ_DEF =   @56:7
+      simple:expr
+        simpleExpr
+          lambdaExpr
+            '(' (   @56:8
+            ')' )   @56:9
+            '->' ->   @56:10
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID foo   @56:12
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambda   @57:1
+        typeAnnotation
+      EQ_DEF =   @57:7
+      simple:expr
+        simpleExpr
+          lambdaExpr
+            '(' (   @57:8
+            typedParams
+              typedParam
+                paramId
+                  ID foo   @57:9
+                typeAnnotation
+            ')' )   @57:12
+            '->' ->   @57:13
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID bar   @57:15
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambda   @58:1
+        typeAnnotation
+      EQ_DEF =   @58:7
+      simple:expr
+        simpleExpr
+          lambdaExpr
+            '(' (   @58:8
+            typedParams
+              typedParam
+                paramId
+                  ID foo   @58:9
+                typeAnnotation
+              ',' ,   @58:12
+              typedParam
+                paramId
+                  ID bar   @58:13
+                typeAnnotation
+            ')' )   @58:16
+            '->' ->   @58:17
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID baz   @58:19
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambda   @59:1
+        typeAnnotation
+      EQ_DEF =   @59:7
+      simple:expr
+        simpleExpr
+          shortLambdaExpr
+            paramId
+              ID foo   @59:8
+            '->' ->   @59:11
+            simple:expr
+              simpleExpr
+                varExpr
+                  ID bar   @59:13
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID call   @61:1
+        typeAnnotation
+      EQ_DEF =   @61:5
+      call:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID foo   @61:6
+        apply
+          '(' (   @61:9
+          ')' )   @61:10
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID call   @62:1
+        typeAnnotation
+      EQ_DEF =   @62:5
+      call:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID foo   @62:6
+        apply
+          '(' (   @62:9
+          args
+            arg
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID bar   @62:10
+          ')' )   @62:13
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID call   @63:1
+        typeAnnotation
+      EQ_DEF =   @63:5
+      call:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID foo   @63:6
+        apply
+          '(' (   @63:9
+          args
+            arg
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID bar   @63:10
+            ',' ,   @63:13
+            arg
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID baz   @63:14
+          ')' )   @63:17
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID call   @65:1
+        typeAnnotation
+      EQ_DEF =   @65:5
+      call:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID foo   @65:6
+        '.' .   @65:9
+        attr
+          ID bar   @65:10
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID call   @66:1
+        typeAnnotation
+      EQ_DEF =   @66:5
+      call:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID foo   @66:6
+        '.' .   @66:9
+        attr
+          ID bar   @66:10
+        apply
+          '(' (   @66:13
+          ')' )   @66:14
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID call   @67:1
+        typeAnnotation
+      EQ_DEF =   @67:5
+      call:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID foo   @67:6
+        '.' .   @67:9
+        attr
+          ID bar   @67:10
+        apply
+          '(' (   @67:13
+          args
+            arg
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID baz   @67:14
+          ')' )   @67:17
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID call   @68:1
+        typeAnnotation
+      EQ_DEF =   @68:5
+      call:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID foo   @68:6
+        '.' .   @68:9
+        attr
+          ID bar   @68:10
+        apply
+          '(' (   @68:13
+          args
+            arg
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID baz   @68:14
+            ',' ,   @68:17
+            arg
+              simple:expr
+                simpleExpr
+                  varExpr
+                    ID qux   @68:18
+          ')' )   @68:21
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID call   @70:1
+        typeAnnotation
+      EQ_DEF =   @70:5
+      userOpExpr:expr
+        simple:expr
+          simpleExpr
+            varExpr
+              ID set1   @70:6
+        userOp
+          ID union   @70:11
+        simple:expr
+          simpleExpr
+            varExpr
+              ID set2   @70:17
+  definition
+    valueDefinition
+      typedVar
+        varId
+          ID lambdaCall   @72:1
+        typeAnnotation
+      EQ_DEF =   @72:11
+      call:expr
+        simple:expr
+          simpleExpr
+            '(' (   @72:12
+            simple:expr
+              simpleExpr
+                lambdaExpr
+                  '(' (   @72:13
+                  ')' )   @72:14
+                  '->' ->   @72:15
+                  simple:expr
+                    simpleExpr
+                      varExpr
+                        ID result   @72:17
+            ')' )   @72:23
+        apply
+          '(' (   @72:24
+          ')' )   @72:25
+  simple:expr
+    simpleExpr
+      varExpr
+        ID result   @74:1
 "
 `;

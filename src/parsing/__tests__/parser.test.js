@@ -5,6 +5,12 @@ import path from 'path'
 import { parse, dump } from '../parser'
 
 describe('The Parser', () => {
+  it('can be tested with snapshots', () => {
+    // Testing the representation of special strings in Jest snapshots
+    expect('"test"').toMatchSnapshot()
+    expect('"\\"test"\\"').toMatchSnapshot()
+  })
+
   const basePath = path.join(__dirname, 'data')
   for (let testPath of fs.readdirSync(basePath)) {
     if (testPath.endsWith('.tp')) {

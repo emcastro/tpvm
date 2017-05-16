@@ -1,19 +1,19 @@
 grammar TPGrammar;
 
-start: definition* expr | definition* EOF;
+start: definition* expr ';'* | definition* EOF;
 
 expr: simpleExpr # simple
     | expr (apply | '.' attr apply?)    # call
     | (PLUS | MINUS) expr               # unOp
     | expr (MUL | DIV) expr             # binOp // Multiplicative
     | expr (PLUS | MINUS) expr          # binOp // Additive
-    | expr (CONCAT | MINUSMINUS) expr   # binOpExpr
+    | expr (CONCAT | MINUSMINUS) expr   # binOp
     | expr (EQ | LT | LE | GT | GE | NEQ) expr
-                                        # binOpExpr // Comparator
+                                        # binOp // Comparator
     | expr userOp expr                  # userOpExpr
-    | NOT expr                          # unOpExpr  // Logic
-    | expr AND expr                     # binOpExpr
-    | expr OR expr                      # binOpExpr
+    | NOT expr                          # unOp  // Logic
+    | expr AND expr                     # binOp
+    | expr OR expr                      # binOp
     ;
 
 simpleExpr: literalExpr
@@ -26,7 +26,7 @@ simpleExpr: literalExpr
           | letExpr
           ;
 
-definition: valueDefinition | tupleDefinition | functionDefinition;
+definition: (valueDefinition | tupleDefinition | functionDefinition) ';'* ;
 
 valueDefinition: typedVar EQ_DEF expr;
 
@@ -60,7 +60,7 @@ typeAnnotation: ;
 
 args: arg (',' arg)*;
 
-typedParams: typedParam (typedParam ',')*;
+typedParams: typedParam (',' typedParam)*;
 
 // Expressions
 
@@ -76,7 +76,7 @@ shortLambdaExpr: paramId '->' expr;
 
 varExpr: ID;
 
-letExpr: '{' definition* expr '}';
+letExpr: '{' definition* expr ';'* '}';
 
 //
 
@@ -149,7 +149,7 @@ ESCAPE_SEQUENCE: '\\' ~[\r\n];
 
 WS:         [ \r\t\f\n] -> skip;
 
-COMMENT:    '/*' .* '*/' -> skip; // TODO Incomplet
+COMMENT:    '/*' .*? '*/' -> skip; // TODO Incomplet
 
 LINE_COMMENT:
             '//' ~[\n\r]* '\r'? '\n' -> skip;

@@ -1,6 +1,8 @@
 
 let={ foo };;;
-let={ foo }
+let={ foo; }
+let=foo;
+let=foo
 
 var=a+b;;;
 

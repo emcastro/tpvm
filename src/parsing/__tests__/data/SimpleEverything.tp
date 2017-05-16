@@ -27,31 +27,31 @@ let = {
 ifElse = if (a) b else c
 
 paren = (a)
-tuple = (a,b)
-tuple = (a,b,c)
+// tuple = (a,b) 
+// tuple = (a,b,c)
 
-//    list = []
-//    list = [a]
-//    list = [a,b]
-//    list = [a,b,c]
+// list = []
+// list = [a]
+// list = [a,b]
+// list = [a,b,c]
 
-//    list = [...a];
-//    list = [a, ...b];
-//    list = [a, ...b, ...c,d]
+// list = [...a];
+// list = [a, ...b];
+// list = [a, ...b, ...c,d]
 
 
-map = {}
-map = {a:1}
-map = {a:1, b:2}
-//    map = {a:1, ...b, c:2}
+// map = {}
+// map = {a:1}
+// map = {a:1, b:2}
+// map = {a:1, ...b, c:2}
 
 foo()=bar
 foo(bar)=baz
 foo(bar,baz)=something_else
 
-(a)=A
-(a,b)=AB
-(a,b,c)=ABC
+// (a)=A
+// (a,b)=AB
+// (a,b,c)=ABC
 
 lambda=()->foo
 lambda=(foo)->bar
