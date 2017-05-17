@@ -5,6 +5,19 @@ import { TPGrammarParser } from '../generated/TPGrammarParser'
 import { TPGrammarLexer } from '../generated/TPGrammarLexer'
 import _ from 'lodash'
 
+function annotateParserWithContextName (parser: antlr4.Parser) {
+  const suffix = 'Context'
+
+  for (let attrName in parser) {
+    if (attrName.endsWith(suffix)) {
+      const contextName = _.lowerFirst(attrName.slice(0, attrName.length - suffix.length))
+      parser[attrName].prototype.contextName = contextName
+    }
+  }
+}
+
+annotateParserWithContextName(TPGrammarParser)
+
 export type Token = {
   text: string,
   column: number,
@@ -18,6 +31,7 @@ export type Node = {
   symbol: ?Token,
   parser: { ruleNames: Array<string> },
   ruleIndex: number,
+  contextName: string,
   start: Token,
   stop: Token,
   children: ?Array<Node>
@@ -38,7 +52,7 @@ export function tokenPosition (token: Token) {
 export function nodeName (node: Node) {
   // $TypingTrick
   const ruleClass: string = node.__proto__.constructor.name // eslint-disable-line
-  const ruleCategory = _.lowerFirst(ruleClass.slice(0, ruleClass.length - 7)) // 7 = "Context".length
+  const ruleCategory = node.contextName
 
   const ruleName = node.parser.ruleNames[node.ruleIndex]
   return ruleName === ruleCategory ? ruleName : ruleCategory + ':' + ruleName
