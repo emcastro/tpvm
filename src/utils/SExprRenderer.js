@@ -24,7 +24,7 @@ export class SExprRenderer<N, T> {
   }
 
   length (name: string): number {
-    const l = _.indexOf(name, ' ')
+    const l = name.indexOf(' ')
     if (l === -1) {
       return name.length
     } else {

@@ -86,7 +86,7 @@ declare module 'lodash' {
     flattenDepth(array: any[], depth?: number): any[];
     fromPairs<T>(pairs: Array<T>): Object;
     head<T>(array: ?Array<T>): T;
-    indexOf<T>(array: ?Array<T> | string, value: T, fromIndex?: number): number;
+    indexOf<T>(array: ?Array<T>, value: T, fromIndex?: number): number;
     initial<T>(array: ?Array<T>): Array<T>;
     intersection<T>(...arrays: Array<Array<T>>): Array<T>;
     //Workaround until (...parameter: T, parameter2: U) works

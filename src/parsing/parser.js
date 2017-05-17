@@ -19,22 +19,22 @@ function annotateParserWithContextName (parser: antlr4.Parser) {
 annotateParserWithContextName(TPGrammarParser)
 
 export type Token = {
-  text: string,
-  column: number,
-  line: number,
-  tokenIndex: number,
-  type: number,
-  source: [{ literalNames: Array<string>, symbolicNames: Array<string> }, {}]
+  +text: string,
+  +column: number,
+  +line: number,
+  +tokenIndex: number,
+  +type: number,
+  +source: [{ literalNames: Array<string>, symbolicNames: Array<string> }, {}]
 }
 
 export type Node = {
-  symbol: ?Token,
-  parser: { ruleNames: Array<string> },
-  ruleIndex: number,
-  contextName: string,
-  start: Token,
-  stop: Token,
-  children: ?Array<Node>
+  +symbol: ?Token,
+  +parser: { ruleNames: Array<string> },
+  +ruleIndex: number,
+  +contextName: string,
+  +start: Token,
+  +stop: Token,
+  +children: ?Array<Node>
 }
 
 export function tokenName (token: Token) {
