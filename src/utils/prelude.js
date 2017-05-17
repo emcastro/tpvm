@@ -6,8 +6,8 @@ export function iterator (o : any) : Iterator<mixed> {
 }
 
 /** Iterator to Array */
-export function iteratorToArray<T> (i : Iterator<T>) : Array<T> {
-  const list : Array<T> = []
+export function iteratorToArray<T> (i : Iterator<T>) : T[] {
+  const list : T[] = []
   let item : { done: boolean, value: T }  // TODO: report type error in Flow
   while (!(item = (i.next() : any)).done) {
     list.push(item.value)
@@ -47,7 +47,7 @@ export function mapEqual (a : Map<mixed, mixed>, b : Map<mixed, mixed>) : boolea
 }
 
 /** Compare Array */
-export function arrayEqual (a: Array<mixed>, b: Array<mixed>) : boolean {
+export function arrayEqual (a: mixed[], b: mixed[]) : boolean {
   if (b === a) return true // fast-track
 
   if (a.length !== b.length) return false

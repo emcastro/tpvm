@@ -7,7 +7,7 @@ import type { Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue } fro
 
 import { primitives } from './primitive1'
 
-export type Value = LiteralValue | Closure | Array<Value> // eslint-disable-line
+export type Value = LiteralValue | Closure | Value[] // eslint-disable-line
 type Frame = Map<string, Value | Promise<Value>>
 
 export class Env { // export for building root env

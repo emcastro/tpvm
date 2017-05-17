@@ -6,12 +6,13 @@ import { SExprRenderer } from '../utils/SExprRenderer'
 import { iteratorToArray } from '../utils/prelude'
 import { jsEscape } from '../utils/stringTools'
 import _ from 'lodash'
+import type { Node } from '../parsing/parser'
 
 export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr];
 
 // Debugging print support
-export function subExprs (expr: Apply | IfElse | Let | Lambda): Array<Expr | Binding> {
+export function subExprs (expr: Apply | IfElse | Let | Lambda): (Expr | Binding)[] {
   switch (expr.typ) {
     // case eVar.typ:
     //   return _emptyChildren
@@ -37,7 +38,7 @@ export function subExprs (expr: Apply | IfElse | Let | Lambda): Array<Expr | Bin
 }
 
 class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
-  splitNode (node: Expr | Binding): string | [string, Array<Expr | Binding>] {
+  splitNode (node: Expr | Binding): string | [string, (Expr | Binding)[]] {
     if (Array.isArray(node)) {
       const [v, e] = node
       return [`$${v} :`, [e]]
@@ -65,7 +66,7 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
           return ['If', subExprs(node)]
 
         case eLet.typ:
-          let elements : Array<Expr | Binding> = iteratorToArray(node.defs.entries())
+          let elements : (Expr | Binding)[] = iteratorToArray(node.defs.entries())
           elements.push(node.body)
           return ['Let', elements]
 
@@ -99,4 +100,7 @@ export class ExprBase {
   toText (): string {
     return exprRenderer.sExprLn((this: any))
   }
+
+  /** */
+  source: Node[]
 }

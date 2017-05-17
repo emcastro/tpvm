@@ -123,9 +123,9 @@ const files = [data('Expr',
     constructors: {
       'Var': ['varId: string'],
       'Literal': ['value: LiteralValue | Symbol'],
-      'Apply': ['operator: Expr', 'operands: Array<Expr>'],
+      'Apply': ['operator: Expr', 'operands: Expr[]'],
       'IfElse': ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
-      'Lambda': ['params: Array<string>', 'body: Expr'],
+      'Lambda': ['params: string[]', 'body: Expr'],
       'Let': ['defs: Map<string, Expr>', 'body: Expr']
     }
   })]

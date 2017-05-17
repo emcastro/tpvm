@@ -49,23 +49,23 @@ export const primitives : { [Symbol] : Function } = symbolize({
 
   '#nil': [],
 
-  '#list_length': function list_length<T> (xlist: X<Array<T>>) : X<number> {
-    return now(xlist, (list : Array<T>) => list.length)
+  '#list_length': function list_length<T> (xlist: X<T[]>) : X<number> {
+    return now(xlist, (list : T[]) => list.length)
   },
 
-  '#list_tailFrom': function list_tailFrom <T> (xlist: X<Array<T>>, xfrom: X<number>) : X<Array<T>> {
-    return now2(xlist, xfrom, (list : Array<T>, from: number) => {
+  '#list_tailFrom': function list_tailFrom <T> (xlist: X<T[]>, xfrom: X<number>) : X<T[]> {
+    return now2(xlist, xfrom, (list : T[], from: number) => {
       return list.slice(from)
     })
   },
 
-  '#list_concat': function list_concat <T> (xlist1: X<Array<T>>, xlist2: X<Array<T>>) : X<Array<T>> {
-    return now2(xlist1, xlist2, (list1 : Array<T>, list2 : Array<T>) => {
+  '#list_concat': function list_concat <T> (xlist1: X<T[]>, xlist2: X<T[]>) : X<T[]> {
+    return now2(xlist1, xlist2, (list1 : T[], list2 : T[]) => {
       return list1.concat(list2)
     })
   },
 
-  '#list': varArg(function list<T> (...elements: Array<X<T>>) {
+  '#list': varArg(function list<T> (...elements: X<T>[]) {
     return elements.slice() // copy
   }),
 

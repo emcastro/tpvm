@@ -9,7 +9,7 @@ import { jsEscape } from './stringTools'
  * @param <T> Terminal node
  */
 export class SExprRenderer<N, T> {
-  splitNode (o: N): T | [string, Array<N>] {
+  splitNode (o: N): T | [string, N[]] {
     throw new Error('Unimplemented')
   }
 

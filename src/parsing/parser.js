@@ -24,17 +24,17 @@ export type Token = {
   +line: number,
   +tokenIndex: number,
   +type: number,
-  +source: [{ literalNames: Array<string>, symbolicNames: Array<string> }, {}]
+  +source: [{ literalNames: string[], symbolicNames: string[] }, {}]
 }
 
 export type Node = {
   +symbol: ?Token,
-  +parser: { ruleNames: Array<string> },
+  +parser: { ruleNames: string[] },
   +ruleIndex: number,
   +contextName: string,
   +start: Token,
   +stop: Token,
-  +children: ?Array<Node>
+  +children: ?Node[]
 }
 
 export function tokenName (token: Token) {

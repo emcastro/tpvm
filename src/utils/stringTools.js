@@ -2,7 +2,7 @@
 
 const stringConcat = String.prototype.concat
 
-export function concat (strings: Array<string>) : string {
+export function concat (strings: string[]) : string {
   return stringConcat.apply('', strings)
 }
 

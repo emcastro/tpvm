@@ -122,9 +122,9 @@ class Apply extends ExprBase {
 
   typ: typeof APPLY
   operator: Expr
-  operands: Array<Expr>
+  operands: Expr[]
 
-  constructor (operator: Expr, operands: Array<Expr>) {
+  constructor (operator: Expr, operands: Expr[]) {
     // generated code
     super()
     this.typ = APPLY // typ is faster when set on instances
@@ -132,12 +132,12 @@ class Apply extends ExprBase {
     this.operands = operands
   }
 
-  children () : [Expr, Array<Expr>] {
+  children () : [Expr, Expr[]] {
     // generated code
     return [this.operator, this.operands]
   }
 
-  rewrite (subExprs: [Expr, Array<Expr>]) : Apply {
+  rewrite (subExprs: [Expr, Expr[]]) : Apply {
     // generated code
     return eApply(subExprs[0], subExprs[1])
   }
@@ -158,7 +158,7 @@ class Apply extends ExprBase {
 }
 
 /** Builder for Apply */
-export function eApply (operator: Expr, operands: Array<Expr>) : Apply {
+export function eApply (operator: Expr, operands: Expr[]) : Apply {
   // generated code
   return new Apply(operator, operands)
 }
@@ -234,10 +234,10 @@ class Lambda extends ExprBase {
   // generated code
 
   typ: typeof LAMBDA
-  params: Array<string>
+  params: string[]
   body: Expr
 
-  constructor (params: Array<string>, body: Expr) {
+  constructor (params: string[], body: Expr) {
     // generated code
     super()
     this.typ = LAMBDA // typ is faster when set on instances
@@ -245,12 +245,12 @@ class Lambda extends ExprBase {
     this.body = body
   }
 
-  children () : [Array<string>, Expr] {
+  children () : [string[], Expr] {
     // generated code
     return [this.params, this.body]
   }
 
-  rewrite (subExprs: [Array<string>, Expr]) : Lambda {
+  rewrite (subExprs: [string[], Expr]) : Lambda {
     // generated code
     return eLambda(subExprs[0], subExprs[1])
   }
@@ -271,7 +271,7 @@ class Lambda extends ExprBase {
 }
 
 /** Builder for Lambda */
-export function eLambda (params: Array<string>, body: Expr) : Lambda {
+export function eLambda (params: string[], body: Expr) : Lambda {
   // generated code
   return new Lambda(params, body)
 }
