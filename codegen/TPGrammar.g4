@@ -1,6 +1,6 @@
 grammar TPGrammar;
 
-start: definition* expr ';'* | definition* EOF;
+topLevel: definition* expr ';'* | definition* EOF; // let-like
 
 expr: simpleExpr # simple
     | expr (apply | '.' attr apply?)    # call
@@ -32,7 +32,7 @@ valueDefinition: typedVar EQ_DEF expr;
 
 functionDefinition: functionId '(' typedParams? ')' typeAnnotation EQ_DEF expr;
 
-tupleDefinition: '(' typedVar (',' typedVar)* ')' EQ_DEF expr;
+tupleDefinition: '(' typedVars ')' EQ_DEF expr;
 
 typedVar: varId typeAnnotation;
 
@@ -61,6 +61,8 @@ typeAnnotation: ;
 args: arg (',' arg)*;
 
 typedParams: typedParam (',' typedParam)*;
+
+typedVars: typedVar (',' typedVar)*;
 
 // Expressions
 

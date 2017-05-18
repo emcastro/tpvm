@@ -4,166 +4,169 @@ var antlr4 = require('antlr4/index');
 var grammarFileName = "TPGrammar.g4";
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
-    "\u0003\'\u00ff\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0003\'\u0102\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
     "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0004",
     "\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004\f\t\f\u0004",
     "\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010\t\u0010\u0004",
     "\u0011\t\u0011\u0004\u0012\t\u0012\u0004\u0013\t\u0013\u0004\u0014\t",
     "\u0014\u0004\u0015\t\u0015\u0004\u0016\t\u0016\u0004\u0017\t\u0017\u0004",
     "\u0018\t\u0018\u0004\u0019\t\u0019\u0004\u001a\t\u001a\u0004\u001b\t",
-    "\u001b\u0003\u0002\u0007\u00028\n\u0002\f\u0002\u000e\u0002;\u000b\u0002",
-    "\u0003\u0002\u0003\u0002\u0007\u0002?\n\u0002\f\u0002\u000e\u0002B\u000b",
-    "\u0002\u0003\u0002\u0007\u0002E\n\u0002\f\u0002\u000e\u0002H\u000b\u0002",
-    "\u0003\u0002\u0005\u0002K\n\u0002\u0003\u0003\u0003\u0003\u0003\u0003",
-    "\u0003\u0003\u0003\u0003\u0003\u0003\u0005\u0003S\n\u0003\u0003\u0003",
+    "\u001b\u0004\u001c\t\u001c\u0003\u0002\u0007\u0002:\n\u0002\f\u0002",
+    "\u000e\u0002=\u000b\u0002\u0003\u0002\u0003\u0002\u0007\u0002A\n\u0002",
+    "\f\u0002\u000e\u0002D\u000b\u0002\u0003\u0002\u0007\u0002G\n\u0002\f",
+    "\u0002\u000e\u0002J\u000b\u0002\u0003\u0002\u0005\u0002M\n\u0002\u0003",
+    "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0005",
+    "\u0003U\n\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
     "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
     "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
     "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
-    "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
-    "\u0003\u0003\u0003\u0003\u0005\u0003p\n\u0003\u0005\u0003r\n\u0003\u0007",
-    "\u0003t\n\u0003\f\u0003\u000e\u0003w\u000b\u0003\u0003\u0004\u0003\u0004",
-    "\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004",
-    "\u0003\u0004\u0003\u0004\u0005\u0004\u0083\n\u0004\u0003\u0005\u0003",
-    "\u0005\u0003\u0005\u0005\u0005\u0088\n\u0005\u0003\u0005\u0007\u0005",
-    "\u008b\n\u0005\f\u0005\u000e\u0005\u008e\u000b\u0005\u0003\u0006\u0003",
-    "\u0006\u0003\u0006\u0003\u0006\u0003\u0007\u0003\u0007\u0003\u0007\u0005",
-    "\u0007\u0097\n\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007",
-    "\u0003\u0007\u0003\b\u0003\b\u0003\b\u0003\b\u0007\b\u00a2\n\b\f\b\u000e",
-    "\b\u00a5\u000b\b\u0003\b\u0003\b\u0003\b\u0003\b\u0003\t\u0003\t\u0003",
-    "\t\u0003\n\u0003\n\u0003\n\u0003\u000b\u0003\u000b\u0003\f\u0003\f\u0003",
-    "\r\u0003\r\u0003\u000e\u0003\u000e\u0003\u000f\u0003\u000f\u0003\u0010",
-    "\u0003\u0010\u0003\u0011\u0003\u0011\u0005\u0011\u00bf\n\u0011\u0003",
-    "\u0011\u0003\u0011\u0003\u0012\u0003\u0012\u0003\u0013\u0003\u0013\u0003",
-    "\u0014\u0003\u0014\u0003\u0014\u0007\u0014\u00ca\n\u0014\f\u0014\u000e",
-    "\u0014\u00cd\u000b\u0014\u0003\u0015\u0003\u0015\u0003\u0015\u0007\u0015",
-    "\u00d2\n\u0015\f\u0015\u000e\u0015\u00d5\u000b\u0015\u0003\u0016\u0003",
-    "\u0016\u0003\u0017\u0003\u0017\u0003\u0017\u0003\u0017\u0003\u0017\u0003",
-    "\u0017\u0003\u0017\u0003\u0017\u0003\u0018\u0003\u0018\u0005\u0018\u00e3",
-    "\n\u0018\u0003\u0018\u0003\u0018\u0003\u0018\u0003\u0018\u0003\u0019",
-    "\u0003\u0019\u0003\u0019\u0003\u0019\u0003\u001a\u0003\u001a\u0003\u001b",
-    "\u0003\u001b\u0007\u001b\u00f1\n\u001b\f\u001b\u000e\u001b\u00f4\u000b",
-    "\u001b\u0003\u001b\u0003\u001b\u0007\u001b\u00f8\n\u001b\f\u001b\u000e",
-    "\u001b\u00fb\u000b\u001b\u0003\u001b\u0003\u001b\u0003\u001b\u0002\u0003",
-    "\u0004\u001c\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018",
-    "\u001a\u001c\u001e \"$&(*,.024\u0002\u0007\u0003\u0002\u001b\u001c\u0003",
-    "\u0002\u0019\u001a\u0003\u0002\u0017\u0018\u0003\u0002\u0011\u0016\u0003",
-    "\u0002\u001d\"\u0002\u0105\u0002J\u0003\u0002\u0002\u0002\u0004R\u0003",
-    "\u0002\u0002\u0002\u0006\u0082\u0003\u0002\u0002\u0002\b\u0087\u0003",
-    "\u0002\u0002\u0002\n\u008f\u0003\u0002\u0002\u0002\f\u0093\u0003\u0002",
-    "\u0002\u0002\u000e\u009d\u0003\u0002\u0002\u0002\u0010\u00aa\u0003\u0002",
-    "\u0002\u0002\u0012\u00ad\u0003\u0002\u0002\u0002\u0014\u00b0\u0003\u0002",
-    "\u0002\u0002\u0016\u00b2\u0003\u0002\u0002\u0002\u0018\u00b4\u0003\u0002",
-    "\u0002\u0002\u001a\u00b6\u0003\u0002\u0002\u0002\u001c\u00b8\u0003\u0002",
-    "\u0002\u0002\u001e\u00ba\u0003\u0002\u0002\u0002 \u00bc\u0003\u0002",
-    "\u0002\u0002\"\u00c2\u0003\u0002\u0002\u0002$\u00c4\u0003\u0002\u0002",
-    "\u0002&\u00c6\u0003\u0002\u0002\u0002(\u00ce\u0003\u0002\u0002\u0002",
-    "*\u00d6\u0003\u0002\u0002\u0002,\u00d8\u0003\u0002\u0002\u0002.\u00e0",
-    "\u0003\u0002\u0002\u00020\u00e8\u0003\u0002\u0002\u00022\u00ec\u0003",
-    "\u0002\u0002\u00024\u00ee\u0003\u0002\u0002\u000268\u0005\b\u0005\u0002",
-    "76\u0003\u0002\u0002\u00028;\u0003\u0002\u0002\u000297\u0003\u0002\u0002",
-    "\u00029:\u0003\u0002\u0002\u0002:<\u0003\u0002\u0002\u0002;9\u0003\u0002",
-    "\u0002\u0002<@\u0005\u0004\u0003\u0002=?\u0007\u0003\u0002\u0002>=\u0003",
-    "\u0002\u0002\u0002?B\u0003\u0002\u0002\u0002@>\u0003\u0002\u0002\u0002",
-    "@A\u0003\u0002\u0002\u0002AK\u0003\u0002\u0002\u0002B@\u0003\u0002\u0002",
-    "\u0002CE\u0005\b\u0005\u0002DC\u0003\u0002\u0002\u0002EH\u0003\u0002",
-    "\u0002\u0002FD\u0003\u0002\u0002\u0002FG\u0003\u0002\u0002\u0002GI\u0003",
-    "\u0002\u0002\u0002HF\u0003\u0002\u0002\u0002IK\u0007\u0002\u0002\u0003",
-    "J9\u0003\u0002\u0002\u0002JF\u0003\u0002\u0002\u0002K\u0003\u0003\u0002",
-    "\u0002\u0002LM\b\u0003\u0001\u0002MS\u0005\u0006\u0004\u0002NO\t\u0002",
-    "\u0002\u0002OS\u0005\u0004\u0003\u000bPQ\u0007\u0010\u0002\u0002QS\u0005",
-    "\u0004\u0003\u0005RL\u0003\u0002\u0002\u0002RN\u0003\u0002\u0002\u0002",
-    "RP\u0003\u0002\u0002\u0002Su\u0003\u0002\u0002\u0002TU\f\n\u0002\u0002",
-    "UV\t\u0003\u0002\u0002Vt\u0005\u0004\u0003\u000bWX\f\t\u0002\u0002X",
-    "Y\t\u0002\u0002\u0002Yt\u0005\u0004\u0003\nZ[\f\b\u0002\u0002[\\\t\u0004",
-    "\u0002\u0002\\t\u0005\u0004\u0003\t]^\f\u0007\u0002\u0002^_\t\u0005",
-    "\u0002\u0002_t\u0005\u0004\u0003\b`a\f\u0006\u0002\u0002ab\u0005\u0018",
-    "\r\u0002bc\u0005\u0004\u0003\u0007ct\u0003\u0002\u0002\u0002de\f\u0004",
-    "\u0002\u0002ef\u0007\u000f\u0002\u0002ft\u0005\u0004\u0003\u0005gh\f",
-    "\u0003\u0002\u0002hi\u0007\u000e\u0002\u0002it\u0005\u0004\u0003\u0004",
-    "jq\f\f\u0002\u0002kr\u0005 \u0011\u0002lm\u0007\u0004\u0002\u0002mo",
-    "\u0005\u0014\u000b\u0002np\u0005 \u0011\u0002on\u0003\u0002\u0002\u0002",
-    "op\u0003\u0002\u0002\u0002pr\u0003\u0002\u0002\u0002qk\u0003\u0002\u0002",
-    "\u0002ql\u0003\u0002\u0002\u0002rt\u0003\u0002\u0002\u0002sT\u0003\u0002",
-    "\u0002\u0002sW\u0003\u0002\u0002\u0002sZ\u0003\u0002\u0002\u0002s]\u0003",
-    "\u0002\u0002\u0002s`\u0003\u0002\u0002\u0002sd\u0003\u0002\u0002\u0002",
-    "sg\u0003\u0002\u0002\u0002sj\u0003\u0002\u0002\u0002tw\u0003\u0002\u0002",
-    "\u0002us\u0003\u0002\u0002\u0002uv\u0003\u0002\u0002\u0002v\u0005\u0003",
-    "\u0002\u0002\u0002wu\u0003\u0002\u0002\u0002x\u0083\u0005*\u0016\u0002",
-    "y\u0083\u00052\u001a\u0002z{\u0007\u0005\u0002\u0002{|\u0005\u0004\u0003",
-    "\u0002|}\u0007\u0006\u0002\u0002}\u0083\u0003\u0002\u0002\u0002~\u0083",
-    "\u0005,\u0017\u0002\u007f\u0083\u00050\u0019\u0002\u0080\u0083\u0005",
-    ".\u0018\u0002\u0081\u0083\u00054\u001b\u0002\u0082x\u0003\u0002\u0002",
-    "\u0002\u0082y\u0003\u0002\u0002\u0002\u0082z\u0003\u0002\u0002\u0002",
-    "\u0082~\u0003\u0002\u0002\u0002\u0082\u007f\u0003\u0002\u0002\u0002",
-    "\u0082\u0080\u0003\u0002\u0002\u0002\u0082\u0081\u0003\u0002\u0002\u0002",
-    "\u0083\u0007\u0003\u0002\u0002\u0002\u0084\u0088\u0005\n\u0006\u0002",
-    "\u0085\u0088\u0005\u000e\b\u0002\u0086\u0088\u0005\f\u0007\u0002\u0087",
-    "\u0084\u0003\u0002\u0002\u0002\u0087\u0085\u0003\u0002\u0002\u0002\u0087",
-    "\u0086\u0003\u0002\u0002\u0002\u0088\u008c\u0003\u0002\u0002\u0002\u0089",
-    "\u008b\u0007\u0003\u0002\u0002\u008a\u0089\u0003\u0002\u0002\u0002\u008b",
-    "\u008e\u0003\u0002\u0002\u0002\u008c\u008a\u0003\u0002\u0002\u0002\u008c",
-    "\u008d\u0003\u0002\u0002\u0002\u008d\t\u0003\u0002\u0002\u0002\u008e",
-    "\u008c\u0003\u0002\u0002\u0002\u008f\u0090\u0005\u0010\t\u0002\u0090",
-    "\u0091\u0007\r\u0002\u0002\u0091\u0092\u0005\u0004\u0003\u0002\u0092",
-    "\u000b\u0003\u0002\u0002\u0002\u0093\u0094\u0005\u001c\u000f\u0002\u0094",
-    "\u0096\u0007\u0005\u0002\u0002\u0095\u0097\u0005(\u0015\u0002\u0096",
-    "\u0095\u0003\u0002\u0002\u0002\u0096\u0097\u0003\u0002\u0002\u0002\u0097",
-    "\u0098\u0003\u0002\u0002\u0002\u0098\u0099\u0007\u0006\u0002\u0002\u0099",
-    "\u009a\u0005$\u0013\u0002\u009a\u009b\u0007\r\u0002\u0002\u009b\u009c",
-    "\u0005\u0004\u0003\u0002\u009c\r\u0003\u0002\u0002\u0002\u009d\u009e",
-    "\u0007\u0005\u0002\u0002\u009e\u00a3\u0005\u0010\t\u0002\u009f\u00a0",
-    "\u0007\u0007\u0002\u0002\u00a0\u00a2\u0005\u0010\t\u0002\u00a1\u009f",
-    "\u0003\u0002\u0002\u0002\u00a2\u00a5\u0003\u0002\u0002\u0002\u00a3\u00a1",
-    "\u0003\u0002\u0002\u0002\u00a3\u00a4\u0003\u0002\u0002\u0002\u00a4\u00a6",
-    "\u0003\u0002\u0002\u0002\u00a5\u00a3\u0003\u0002\u0002\u0002\u00a6\u00a7",
-    "\u0007\u0006\u0002\u0002\u00a7\u00a8\u0007\r\u0002\u0002\u00a8\u00a9",
-    "\u0005\u0004\u0003\u0002\u00a9\u000f\u0003\u0002\u0002\u0002\u00aa\u00ab",
-    "\u0005\u001a\u000e\u0002\u00ab\u00ac\u0005$\u0013\u0002\u00ac\u0011",
-    "\u0003\u0002\u0002\u0002\u00ad\u00ae\u0005\u001e\u0010\u0002\u00ae\u00af",
-    "\u0005$\u0013\u0002\u00af\u0013\u0003\u0002\u0002\u0002\u00b0\u00b1",
-    "\u0007#\u0002\u0002\u00b1\u0015\u0003\u0002\u0002\u0002\u00b2\u00b3",
-    "\u0007#\u0002\u0002\u00b3\u0017\u0003\u0002\u0002\u0002\u00b4\u00b5",
-    "\u0007#\u0002\u0002\u00b5\u0019\u0003\u0002\u0002\u0002\u00b6\u00b7",
-    "\u0007#\u0002\u0002\u00b7\u001b\u0003\u0002\u0002\u0002\u00b8\u00b9",
-    "\u0007#\u0002\u0002\u00b9\u001d\u0003\u0002\u0002\u0002\u00ba\u00bb",
-    "\u0007#\u0002\u0002\u00bb\u001f\u0003\u0002\u0002\u0002\u00bc\u00be",
-    "\u0007\u0005\u0002\u0002\u00bd\u00bf\u0005&\u0014\u0002\u00be\u00bd",
-    "\u0003\u0002\u0002\u0002\u00be\u00bf\u0003\u0002\u0002\u0002\u00bf\u00c0",
-    "\u0003\u0002\u0002\u0002\u00c0\u00c1\u0007\u0006\u0002\u0002\u00c1!",
-    "\u0003\u0002\u0002\u0002\u00c2\u00c3\u0005\u0004\u0003\u0002\u00c3#",
-    "\u0003\u0002\u0002\u0002\u00c4\u00c5\u0003\u0002\u0002\u0002\u00c5%",
-    "\u0003\u0002\u0002\u0002\u00c6\u00cb\u0005\"\u0012\u0002\u00c7\u00c8",
-    "\u0007\u0007\u0002\u0002\u00c8\u00ca\u0005\"\u0012\u0002\u00c9\u00c7",
-    "\u0003\u0002\u0002\u0002\u00ca\u00cd\u0003\u0002\u0002\u0002\u00cb\u00c9",
-    "\u0003\u0002\u0002\u0002\u00cb\u00cc\u0003\u0002\u0002\u0002\u00cc\'",
-    "\u0003\u0002\u0002\u0002\u00cd\u00cb\u0003\u0002\u0002\u0002\u00ce\u00d3",
-    "\u0005\u0012\n\u0002\u00cf\u00d0\u0007\u0007\u0002\u0002\u00d0\u00d2",
-    "\u0005\u0012\n\u0002\u00d1\u00cf\u0003\u0002\u0002\u0002\u00d2\u00d5",
-    "\u0003\u0002\u0002\u0002\u00d3\u00d1\u0003\u0002\u0002\u0002\u00d3\u00d4",
-    "\u0003\u0002\u0002\u0002\u00d4)\u0003\u0002\u0002\u0002\u00d5\u00d3",
-    "\u0003\u0002\u0002\u0002\u00d6\u00d7\t\u0006\u0002\u0002\u00d7+\u0003",
-    "\u0002\u0002\u0002\u00d8\u00d9\u0007\u000b\u0002\u0002\u00d9\u00da\u0007",
-    "\u0005\u0002\u0002\u00da\u00db\u0005\u0004\u0003\u0002\u00db\u00dc\u0007",
-    "\u0006\u0002\u0002\u00dc\u00dd\u0005\u0004\u0003\u0002\u00dd\u00de\u0007",
-    "\f\u0002\u0002\u00de\u00df\u0005\u0004\u0003\u0002\u00df-\u0003\u0002",
-    "\u0002\u0002\u00e0\u00e2\u0007\u0005\u0002\u0002\u00e1\u00e3\u0005(",
-    "\u0015\u0002\u00e2\u00e1\u0003\u0002\u0002\u0002\u00e2\u00e3\u0003\u0002",
-    "\u0002\u0002\u00e3\u00e4\u0003\u0002\u0002\u0002\u00e4\u00e5\u0007\u0006",
-    "\u0002\u0002\u00e5\u00e6\u0007\b\u0002\u0002\u00e6\u00e7\u0005\u0004",
-    "\u0003\u0002\u00e7/\u0003\u0002\u0002\u0002\u00e8\u00e9\u0005\u001e",
-    "\u0010\u0002\u00e9\u00ea\u0007\b\u0002\u0002\u00ea\u00eb\u0005\u0004",
-    "\u0003\u0002\u00eb1\u0003\u0002\u0002\u0002\u00ec\u00ed\u0007#\u0002",
-    "\u0002\u00ed3\u0003\u0002\u0002\u0002\u00ee\u00f2\u0007\t\u0002\u0002",
-    "\u00ef\u00f1\u0005\b\u0005\u0002\u00f0\u00ef\u0003\u0002\u0002\u0002",
-    "\u00f1\u00f4\u0003\u0002\u0002\u0002\u00f2\u00f0\u0003\u0002\u0002\u0002",
-    "\u00f2\u00f3\u0003\u0002\u0002\u0002\u00f3\u00f5\u0003\u0002\u0002\u0002",
-    "\u00f4\u00f2\u0003\u0002\u0002\u0002\u00f5\u00f9\u0005\u0004\u0003\u0002",
-    "\u00f6\u00f8\u0007\u0003\u0002\u0002\u00f7\u00f6\u0003\u0002\u0002\u0002",
-    "\u00f8\u00fb\u0003\u0002\u0002\u0002\u00f9\u00f7\u0003\u0002\u0002\u0002",
-    "\u00f9\u00fa\u0003\u0002\u0002\u0002\u00fa\u00fc\u0003\u0002\u0002\u0002",
-    "\u00fb\u00f9\u0003\u0002\u0002\u0002\u00fc\u00fd\u0007\n\u0002\u0002",
-    "\u00fd5\u0003\u0002\u0002\u0002\u00169@FJRoqsu\u0082\u0087\u008c\u0096",
-    "\u00a3\u00be\u00cb\u00d3\u00e2\u00f2\u00f9"].join("");
+    "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0005\u0003r",
+    "\n\u0003\u0005\u0003t\n\u0003\u0007\u0003v\n\u0003\f\u0003\u000e\u0003",
+    "y\u000b\u0003\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003",
+    "\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0005",
+    "\u0004\u0085\n\u0004\u0003\u0005\u0003\u0005\u0003\u0005\u0005\u0005",
+    "\u008a\n\u0005\u0003\u0005\u0007\u0005\u008d\n\u0005\f\u0005\u000e\u0005",
+    "\u0090\u000b\u0005\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003",
+    "\u0007\u0003\u0007\u0003\u0007\u0005\u0007\u0099\n\u0007\u0003\u0007",
+    "\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003\b\u0003\b\u0003",
+    "\b\u0003\b\u0003\b\u0003\b\u0003\t\u0003\t\u0003\t\u0003\n\u0003\n\u0003",
+    "\n\u0003\u000b\u0003\u000b\u0003\f\u0003\f\u0003\r\u0003\r\u0003\u000e",
+    "\u0003\u000e\u0003\u000f\u0003\u000f\u0003\u0010\u0003\u0010\u0003\u0011",
+    "\u0003\u0011\u0005\u0011\u00ba\n\u0011\u0003\u0011\u0003\u0011\u0003",
+    "\u0012\u0003\u0012\u0003\u0013\u0003\u0013\u0003\u0014\u0003\u0014\u0003",
+    "\u0014\u0007\u0014\u00c5\n\u0014\f\u0014\u000e\u0014\u00c8\u000b\u0014",
+    "\u0003\u0015\u0003\u0015\u0003\u0015\u0007\u0015\u00cd\n\u0015\f\u0015",
+    "\u000e\u0015\u00d0\u000b\u0015\u0003\u0016\u0003\u0016\u0003\u0016\u0007",
+    "\u0016\u00d5\n\u0016\f\u0016\u000e\u0016\u00d8\u000b\u0016\u0003\u0017",
+    "\u0003\u0017\u0003\u0018\u0003\u0018\u0003\u0018\u0003\u0018\u0003\u0018",
+    "\u0003\u0018\u0003\u0018\u0003\u0018\u0003\u0019\u0003\u0019\u0005\u0019",
+    "\u00e6\n\u0019\u0003\u0019\u0003\u0019\u0003\u0019\u0003\u0019\u0003",
+    "\u001a\u0003\u001a\u0003\u001a\u0003\u001a\u0003\u001b\u0003\u001b\u0003",
+    "\u001c\u0003\u001c\u0007\u001c\u00f4\n\u001c\f\u001c\u000e\u001c\u00f7",
+    "\u000b\u001c\u0003\u001c\u0003\u001c\u0007\u001c\u00fb\n\u001c\f\u001c",
+    "\u000e\u001c\u00fe\u000b\u001c\u0003\u001c\u0003\u001c\u0003\u001c\u0002",
+    "\u0003\u0004\u001d\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016",
+    "\u0018\u001a\u001c\u001e \"$&(*,.0246\u0002\u0007\u0003\u0002\u001b",
+    "\u001c\u0003\u0002\u0019\u001a\u0003\u0002\u0017\u0018\u0003\u0002\u0011",
+    "\u0016\u0003\u0002\u001d\"\u0002\u0107\u0002L\u0003\u0002\u0002\u0002",
+    "\u0004T\u0003\u0002\u0002\u0002\u0006\u0084\u0003\u0002\u0002\u0002",
+    "\b\u0089\u0003\u0002\u0002\u0002\n\u0091\u0003\u0002\u0002\u0002\f\u0095",
+    "\u0003\u0002\u0002\u0002\u000e\u009f\u0003\u0002\u0002\u0002\u0010\u00a5",
+    "\u0003\u0002\u0002\u0002\u0012\u00a8\u0003\u0002\u0002\u0002\u0014\u00ab",
+    "\u0003\u0002\u0002\u0002\u0016\u00ad\u0003\u0002\u0002\u0002\u0018\u00af",
+    "\u0003\u0002\u0002\u0002\u001a\u00b1\u0003\u0002\u0002\u0002\u001c\u00b3",
+    "\u0003\u0002\u0002\u0002\u001e\u00b5\u0003\u0002\u0002\u0002 \u00b7",
+    "\u0003\u0002\u0002\u0002\"\u00bd\u0003\u0002\u0002\u0002$\u00bf\u0003",
+    "\u0002\u0002\u0002&\u00c1\u0003\u0002\u0002\u0002(\u00c9\u0003\u0002",
+    "\u0002\u0002*\u00d1\u0003\u0002\u0002\u0002,\u00d9\u0003\u0002\u0002",
+    "\u0002.\u00db\u0003\u0002\u0002\u00020\u00e3\u0003\u0002\u0002\u0002",
+    "2\u00eb\u0003\u0002\u0002\u00024\u00ef\u0003\u0002\u0002\u00026\u00f1",
+    "\u0003\u0002\u0002\u00028:\u0005\b\u0005\u000298\u0003\u0002\u0002\u0002",
+    ":=\u0003\u0002\u0002\u0002;9\u0003\u0002\u0002\u0002;<\u0003\u0002\u0002",
+    "\u0002<>\u0003\u0002\u0002\u0002=;\u0003\u0002\u0002\u0002>B\u0005\u0004",
+    "\u0003\u0002?A\u0007\u0003\u0002\u0002@?\u0003\u0002\u0002\u0002AD\u0003",
+    "\u0002\u0002\u0002B@\u0003\u0002\u0002\u0002BC\u0003\u0002\u0002\u0002",
+    "CM\u0003\u0002\u0002\u0002DB\u0003\u0002\u0002\u0002EG\u0005\b\u0005",
+    "\u0002FE\u0003\u0002\u0002\u0002GJ\u0003\u0002\u0002\u0002HF\u0003\u0002",
+    "\u0002\u0002HI\u0003\u0002\u0002\u0002IK\u0003\u0002\u0002\u0002JH\u0003",
+    "\u0002\u0002\u0002KM\u0007\u0002\u0002\u0003L;\u0003\u0002\u0002\u0002",
+    "LH\u0003\u0002\u0002\u0002M\u0003\u0003\u0002\u0002\u0002NO\b\u0003",
+    "\u0001\u0002OU\u0005\u0006\u0004\u0002PQ\t\u0002\u0002\u0002QU\u0005",
+    "\u0004\u0003\u000bRS\u0007\u0010\u0002\u0002SU\u0005\u0004\u0003\u0005",
+    "TN\u0003\u0002\u0002\u0002TP\u0003\u0002\u0002\u0002TR\u0003\u0002\u0002",
+    "\u0002Uw\u0003\u0002\u0002\u0002VW\f\n\u0002\u0002WX\t\u0003\u0002\u0002",
+    "Xv\u0005\u0004\u0003\u000bYZ\f\t\u0002\u0002Z[\t\u0002\u0002\u0002[",
+    "v\u0005\u0004\u0003\n\\]\f\b\u0002\u0002]^\t\u0004\u0002\u0002^v\u0005",
+    "\u0004\u0003\t_`\f\u0007\u0002\u0002`a\t\u0005\u0002\u0002av\u0005\u0004",
+    "\u0003\bbc\f\u0006\u0002\u0002cd\u0005\u0018\r\u0002de\u0005\u0004\u0003",
+    "\u0007ev\u0003\u0002\u0002\u0002fg\f\u0004\u0002\u0002gh\u0007\u000f",
+    "\u0002\u0002hv\u0005\u0004\u0003\u0005ij\f\u0003\u0002\u0002jk\u0007",
+    "\u000e\u0002\u0002kv\u0005\u0004\u0003\u0004ls\f\f\u0002\u0002mt\u0005",
+    " \u0011\u0002no\u0007\u0004\u0002\u0002oq\u0005\u0014\u000b\u0002pr",
+    "\u0005 \u0011\u0002qp\u0003\u0002\u0002\u0002qr\u0003\u0002\u0002\u0002",
+    "rt\u0003\u0002\u0002\u0002sm\u0003\u0002\u0002\u0002sn\u0003\u0002\u0002",
+    "\u0002tv\u0003\u0002\u0002\u0002uV\u0003\u0002\u0002\u0002uY\u0003\u0002",
+    "\u0002\u0002u\\\u0003\u0002\u0002\u0002u_\u0003\u0002\u0002\u0002ub",
+    "\u0003\u0002\u0002\u0002uf\u0003\u0002\u0002\u0002ui\u0003\u0002\u0002",
+    "\u0002ul\u0003\u0002\u0002\u0002vy\u0003\u0002\u0002\u0002wu\u0003\u0002",
+    "\u0002\u0002wx\u0003\u0002\u0002\u0002x\u0005\u0003\u0002\u0002\u0002",
+    "yw\u0003\u0002\u0002\u0002z\u0085\u0005,\u0017\u0002{\u0085\u00054\u001b",
+    "\u0002|}\u0007\u0005\u0002\u0002}~\u0005\u0004\u0003\u0002~\u007f\u0007",
+    "\u0006\u0002\u0002\u007f\u0085\u0003\u0002\u0002\u0002\u0080\u0085\u0005",
+    ".\u0018\u0002\u0081\u0085\u00052\u001a\u0002\u0082\u0085\u00050\u0019",
+    "\u0002\u0083\u0085\u00056\u001c\u0002\u0084z\u0003\u0002\u0002\u0002",
+    "\u0084{\u0003\u0002\u0002\u0002\u0084|\u0003\u0002\u0002\u0002\u0084",
+    "\u0080\u0003\u0002\u0002\u0002\u0084\u0081\u0003\u0002\u0002\u0002\u0084",
+    "\u0082\u0003\u0002\u0002\u0002\u0084\u0083\u0003\u0002\u0002\u0002\u0085",
+    "\u0007\u0003\u0002\u0002\u0002\u0086\u008a\u0005\n\u0006\u0002\u0087",
+    "\u008a\u0005\u000e\b\u0002\u0088\u008a\u0005\f\u0007\u0002\u0089\u0086",
+    "\u0003\u0002\u0002\u0002\u0089\u0087\u0003\u0002\u0002\u0002\u0089\u0088",
+    "\u0003\u0002\u0002\u0002\u008a\u008e\u0003\u0002\u0002\u0002\u008b\u008d",
+    "\u0007\u0003\u0002\u0002\u008c\u008b\u0003\u0002\u0002\u0002\u008d\u0090",
+    "\u0003\u0002\u0002\u0002\u008e\u008c\u0003\u0002\u0002\u0002\u008e\u008f",
+    "\u0003\u0002\u0002\u0002\u008f\t\u0003\u0002\u0002\u0002\u0090\u008e",
+    "\u0003\u0002\u0002\u0002\u0091\u0092\u0005\u0010\t\u0002\u0092\u0093",
+    "\u0007\r\u0002\u0002\u0093\u0094\u0005\u0004\u0003\u0002\u0094\u000b",
+    "\u0003\u0002\u0002\u0002\u0095\u0096\u0005\u001c\u000f\u0002\u0096\u0098",
+    "\u0007\u0005\u0002\u0002\u0097\u0099\u0005(\u0015\u0002\u0098\u0097",
+    "\u0003\u0002\u0002\u0002\u0098\u0099\u0003\u0002\u0002\u0002\u0099\u009a",
+    "\u0003\u0002\u0002\u0002\u009a\u009b\u0007\u0006\u0002\u0002\u009b\u009c",
+    "\u0005$\u0013\u0002\u009c\u009d\u0007\r\u0002\u0002\u009d\u009e\u0005",
+    "\u0004\u0003\u0002\u009e\r\u0003\u0002\u0002\u0002\u009f\u00a0\u0007",
+    "\u0005\u0002\u0002\u00a0\u00a1\u0005*\u0016\u0002\u00a1\u00a2\u0007",
+    "\u0006\u0002\u0002\u00a2\u00a3\u0007\r\u0002\u0002\u00a3\u00a4\u0005",
+    "\u0004\u0003\u0002\u00a4\u000f\u0003\u0002\u0002\u0002\u00a5\u00a6\u0005",
+    "\u001a\u000e\u0002\u00a6\u00a7\u0005$\u0013\u0002\u00a7\u0011\u0003",
+    "\u0002\u0002\u0002\u00a8\u00a9\u0005\u001e\u0010\u0002\u00a9\u00aa\u0005",
+    "$\u0013\u0002\u00aa\u0013\u0003\u0002\u0002\u0002\u00ab\u00ac\u0007",
+    "#\u0002\u0002\u00ac\u0015\u0003\u0002\u0002\u0002\u00ad\u00ae\u0007",
+    "#\u0002\u0002\u00ae\u0017\u0003\u0002\u0002\u0002\u00af\u00b0\u0007",
+    "#\u0002\u0002\u00b0\u0019\u0003\u0002\u0002\u0002\u00b1\u00b2\u0007",
+    "#\u0002\u0002\u00b2\u001b\u0003\u0002\u0002\u0002\u00b3\u00b4\u0007",
+    "#\u0002\u0002\u00b4\u001d\u0003\u0002\u0002\u0002\u00b5\u00b6\u0007",
+    "#\u0002\u0002\u00b6\u001f\u0003\u0002\u0002\u0002\u00b7\u00b9\u0007",
+    "\u0005\u0002\u0002\u00b8\u00ba\u0005&\u0014\u0002\u00b9\u00b8\u0003",
+    "\u0002\u0002\u0002\u00b9\u00ba\u0003\u0002\u0002\u0002\u00ba\u00bb\u0003",
+    "\u0002\u0002\u0002\u00bb\u00bc\u0007\u0006\u0002\u0002\u00bc!\u0003",
+    "\u0002\u0002\u0002\u00bd\u00be\u0005\u0004\u0003\u0002\u00be#\u0003",
+    "\u0002\u0002\u0002\u00bf\u00c0\u0003\u0002\u0002\u0002\u00c0%\u0003",
+    "\u0002\u0002\u0002\u00c1\u00c6\u0005\"\u0012\u0002\u00c2\u00c3\u0007",
+    "\u0007\u0002\u0002\u00c3\u00c5\u0005\"\u0012\u0002\u00c4\u00c2\u0003",
+    "\u0002\u0002\u0002\u00c5\u00c8\u0003\u0002\u0002\u0002\u00c6\u00c4\u0003",
+    "\u0002\u0002\u0002\u00c6\u00c7\u0003\u0002\u0002\u0002\u00c7\'\u0003",
+    "\u0002\u0002\u0002\u00c8\u00c6\u0003\u0002\u0002\u0002\u00c9\u00ce\u0005",
+    "\u0012\n\u0002\u00ca\u00cb\u0007\u0007\u0002\u0002\u00cb\u00cd\u0005",
+    "\u0012\n\u0002\u00cc\u00ca\u0003\u0002\u0002\u0002\u00cd\u00d0\u0003",
+    "\u0002\u0002\u0002\u00ce\u00cc\u0003\u0002\u0002\u0002\u00ce\u00cf\u0003",
+    "\u0002\u0002\u0002\u00cf)\u0003\u0002\u0002\u0002\u00d0\u00ce\u0003",
+    "\u0002\u0002\u0002\u00d1\u00d6\u0005\u0010\t\u0002\u00d2\u00d3\u0007",
+    "\u0007\u0002\u0002\u00d3\u00d5\u0005\u0010\t\u0002\u00d4\u00d2\u0003",
+    "\u0002\u0002\u0002\u00d5\u00d8\u0003\u0002\u0002\u0002\u00d6\u00d4\u0003",
+    "\u0002\u0002\u0002\u00d6\u00d7\u0003\u0002\u0002\u0002\u00d7+\u0003",
+    "\u0002\u0002\u0002\u00d8\u00d6\u0003\u0002\u0002\u0002\u00d9\u00da\t",
+    "\u0006\u0002\u0002\u00da-\u0003\u0002\u0002\u0002\u00db\u00dc\u0007",
+    "\u000b\u0002\u0002\u00dc\u00dd\u0007\u0005\u0002\u0002\u00dd\u00de\u0005",
+    "\u0004\u0003\u0002\u00de\u00df\u0007\u0006\u0002\u0002\u00df\u00e0\u0005",
+    "\u0004\u0003\u0002\u00e0\u00e1\u0007\f\u0002\u0002\u00e1\u00e2\u0005",
+    "\u0004\u0003\u0002\u00e2/\u0003\u0002\u0002\u0002\u00e3\u00e5\u0007",
+    "\u0005\u0002\u0002\u00e4\u00e6\u0005(\u0015\u0002\u00e5\u00e4\u0003",
+    "\u0002\u0002\u0002\u00e5\u00e6\u0003\u0002\u0002\u0002\u00e6\u00e7\u0003",
+    "\u0002\u0002\u0002\u00e7\u00e8\u0007\u0006\u0002\u0002\u00e8\u00e9\u0007",
+    "\b\u0002\u0002\u00e9\u00ea\u0005\u0004\u0003\u0002\u00ea1\u0003\u0002",
+    "\u0002\u0002\u00eb\u00ec\u0005\u001e\u0010\u0002\u00ec\u00ed\u0007\b",
+    "\u0002\u0002\u00ed\u00ee\u0005\u0004\u0003\u0002\u00ee3\u0003\u0002",
+    "\u0002\u0002\u00ef\u00f0\u0007#\u0002\u0002\u00f05\u0003\u0002\u0002",
+    "\u0002\u00f1\u00f5\u0007\t\u0002\u0002\u00f2\u00f4\u0005\b\u0005\u0002",
+    "\u00f3\u00f2\u0003\u0002\u0002\u0002\u00f4\u00f7\u0003\u0002\u0002\u0002",
+    "\u00f5\u00f3\u0003\u0002\u0002\u0002\u00f5\u00f6\u0003\u0002\u0002\u0002",
+    "\u00f6\u00f8\u0003\u0002\u0002\u0002\u00f7\u00f5\u0003\u0002\u0002\u0002",
+    "\u00f8\u00fc\u0005\u0004\u0003\u0002\u00f9\u00fb\u0007\u0003\u0002\u0002",
+    "\u00fa\u00f9\u0003\u0002\u0002\u0002\u00fb\u00fe\u0003\u0002\u0002\u0002",
+    "\u00fc\u00fa\u0003\u0002\u0002\u0002\u00fc\u00fd\u0003\u0002\u0002\u0002",
+    "\u00fd\u00ff\u0003\u0002\u0002\u0002\u00fe\u00fc\u0003\u0002\u0002\u0002",
+    "\u00ff\u0100\u0007\n\u0002\u0002\u01007\u0003\u0002\u0002\u0002\u0016",
+    ";BHLTqsuw\u0084\u0089\u008e\u0098\u00b9\u00c6\u00ce\u00d6\u00e5\u00f5",
+    "\u00fc"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -184,12 +187,12 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
                       "FLOAT", "STRING", "NATIVE", "INVALID_LITERAL", "ID", 
                       "WS", "COMMENT", "LINE_COMMENT", "LINE_COMMENT_EOF" ];
 
-var ruleNames =  [ "start", "expr", "simpleExpr", "definition", "valueDefinition", 
+var ruleNames =  [ "topLevel", "expr", "simpleExpr", "definition", "valueDefinition", 
                    "functionDefinition", "tupleDefinition", "typedVar", 
                    "typedParam", "attr", "method", "userOp", "varId", "functionId", 
                    "paramId", "apply", "arg", "typeAnnotation", "args", 
-                   "typedParams", "literalExpr", "ifElseExpr", "lambdaExpr", 
-                   "shortLambdaExpr", "varExpr", "letExpr" ];
+                   "typedParams", "typedVars", "literalExpr", "ifElseExpr", 
+                   "lambdaExpr", "shortLambdaExpr", "varExpr", "letExpr" ];
 
 function TPGrammarParser (input) {
 	antlr4.Parser.call(this, input);
@@ -248,7 +251,7 @@ TPGrammarParser.COMMENT = 35;
 TPGrammarParser.LINE_COMMENT = 36;
 TPGrammarParser.LINE_COMMENT_EOF = 37;
 
-TPGrammarParser.RULE_start = 0;
+TPGrammarParser.RULE_topLevel = 0;
 TPGrammarParser.RULE_expr = 1;
 TPGrammarParser.RULE_simpleExpr = 2;
 TPGrammarParser.RULE_definition = 3;
@@ -268,14 +271,15 @@ TPGrammarParser.RULE_arg = 16;
 TPGrammarParser.RULE_typeAnnotation = 17;
 TPGrammarParser.RULE_args = 18;
 TPGrammarParser.RULE_typedParams = 19;
-TPGrammarParser.RULE_literalExpr = 20;
-TPGrammarParser.RULE_ifElseExpr = 21;
-TPGrammarParser.RULE_lambdaExpr = 22;
-TPGrammarParser.RULE_shortLambdaExpr = 23;
-TPGrammarParser.RULE_varExpr = 24;
-TPGrammarParser.RULE_letExpr = 25;
+TPGrammarParser.RULE_typedVars = 20;
+TPGrammarParser.RULE_literalExpr = 21;
+TPGrammarParser.RULE_ifElseExpr = 22;
+TPGrammarParser.RULE_lambdaExpr = 23;
+TPGrammarParser.RULE_shortLambdaExpr = 24;
+TPGrammarParser.RULE_varExpr = 25;
+TPGrammarParser.RULE_letExpr = 26;
 
-function StartContext(parser, parent, invokingState) {
+function TopLevelContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -284,18 +288,18 @@ function StartContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = TPGrammarParser.RULE_start;
+    this.ruleIndex = TPGrammarParser.RULE_topLevel;
     return this;
 }
 
-StartContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-StartContext.prototype.constructor = StartContext;
+TopLevelContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+TopLevelContext.prototype.constructor = TopLevelContext;
 
-StartContext.prototype.expr = function() {
+TopLevelContext.prototype.expr = function() {
     return this.getTypedRuleContext(ExprContext,0);
 };
 
-StartContext.prototype.definition = function(i) {
+TopLevelContext.prototype.definition = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -306,49 +310,49 @@ StartContext.prototype.definition = function(i) {
     }
 };
 
-StartContext.prototype.EOF = function() {
+TopLevelContext.prototype.EOF = function() {
     return this.getToken(TPGrammarParser.EOF, 0);
 };
 
 
 
 
-TPGrammarParser.StartContext = StartContext;
+TPGrammarParser.TopLevelContext = TopLevelContext;
 
-TPGrammarParser.prototype.start = function() {
+TPGrammarParser.prototype.topLevel = function() {
 
-    var localctx = new StartContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 0, TPGrammarParser.RULE_start);
+    var localctx = new TopLevelContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 0, TPGrammarParser.RULE_topLevel);
     var _la = 0; // Token type
     try {
-        this.state = 72;
+        this.state = 74;
         this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,3,this._ctx);
         switch(la_) {
         case 1:
             this.enterOuterAlt(localctx, 1);
-            this.state = 55;
+            this.state = 57;
             this._errHandler.sync(this);
             var _alt = this._interp.adaptivePredict(this._input,0,this._ctx)
             while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
                 if(_alt===1) {
-                    this.state = 52;
+                    this.state = 54;
                     this.definition(); 
                 }
-                this.state = 57;
+                this.state = 59;
                 this._errHandler.sync(this);
                 _alt = this._interp.adaptivePredict(this._input,0,this._ctx);
             }
 
-            this.state = 58;
+            this.state = 60;
             this.expr(0);
-            this.state = 62;
+            this.state = 64;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
             while(_la===TPGrammarParser.T__0) {
-                this.state = 59;
+                this.state = 61;
                 this.match(TPGrammarParser.T__0);
-                this.state = 64;
+                this.state = 66;
                 this._errHandler.sync(this);
                 _la = this._input.LA(1);
             }
@@ -356,17 +360,17 @@ TPGrammarParser.prototype.start = function() {
 
         case 2:
             this.enterOuterAlt(localctx, 2);
-            this.state = 68;
+            this.state = 70;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
             while(_la===TPGrammarParser.T__2 || _la===TPGrammarParser.ID) {
-                this.state = 65;
+                this.state = 67;
                 this.definition();
-                this.state = 70;
+                this.state = 72;
                 this._errHandler.sync(this);
                 _la = this._input.LA(1);
             }
-            this.state = 71;
+            this.state = 73;
             this.match(TPGrammarParser.EOF);
             break;
 
@@ -590,7 +594,7 @@ TPGrammarParser.prototype.expr = function(_p) {
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 80;
+        this.state = 82;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case TPGrammarParser.T__2:
@@ -607,7 +611,7 @@ TPGrammarParser.prototype.expr = function(_p) {
             this._ctx = localctx;
             _prevctx = localctx;
 
-            this.state = 75;
+            this.state = 77;
             this.simpleExpr();
             break;
         case TPGrammarParser.PLUS:
@@ -615,7 +619,7 @@ TPGrammarParser.prototype.expr = function(_p) {
             localctx = new UnOpContext(this, localctx);
             this._ctx = localctx;
             _prevctx = localctx;
-            this.state = 76;
+            this.state = 78;
             _la = this._input.LA(1);
             if(!(_la===TPGrammarParser.PLUS || _la===TPGrammarParser.MINUS)) {
             this._errHandler.recoverInline(this);
@@ -624,23 +628,23 @@ TPGrammarParser.prototype.expr = function(_p) {
             	this._errHandler.reportMatch(this);
                 this.consume();
             }
-            this.state = 77;
+            this.state = 79;
             this.expr(9);
             break;
         case TPGrammarParser.NOT:
             localctx = new UnOpContext(this, localctx);
             this._ctx = localctx;
             _prevctx = localctx;
-            this.state = 78;
+            this.state = 80;
             this.match(TPGrammarParser.NOT);
-            this.state = 79;
+            this.state = 81;
             this.expr(3);
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
         }
         this._ctx.stop = this._input.LT(-1);
-        this.state = 115;
+        this.state = 117;
         this._errHandler.sync(this);
         var _alt = this._interp.adaptivePredict(this._input,8,this._ctx)
         while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
@@ -649,18 +653,18 @@ TPGrammarParser.prototype.expr = function(_p) {
                     this.triggerExitRuleEvent();
                 }
                 _prevctx = localctx;
-                this.state = 113;
+                this.state = 115;
                 this._errHandler.sync(this);
                 var la_ = this._interp.adaptivePredict(this._input,7,this._ctx);
                 switch(la_) {
                 case 1:
                     localctx = new BinOpContext(this, new ExprContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, TPGrammarParser.RULE_expr);
-                    this.state = 82;
+                    this.state = 84;
                     if (!( this.precpred(this._ctx, 8))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 8)");
                     }
-                    this.state = 83;
+                    this.state = 85;
                     _la = this._input.LA(1);
                     if(!(_la===TPGrammarParser.MUL || _la===TPGrammarParser.DIV)) {
                     this._errHandler.recoverInline(this);
@@ -669,18 +673,18 @@ TPGrammarParser.prototype.expr = function(_p) {
                     	this._errHandler.reportMatch(this);
                         this.consume();
                     }
-                    this.state = 84;
+                    this.state = 86;
                     this.expr(9);
                     break;
 
                 case 2:
                     localctx = new BinOpContext(this, new ExprContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, TPGrammarParser.RULE_expr);
-                    this.state = 85;
+                    this.state = 87;
                     if (!( this.precpred(this._ctx, 7))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 7)");
                     }
-                    this.state = 86;
+                    this.state = 88;
                     _la = this._input.LA(1);
                     if(!(_la===TPGrammarParser.PLUS || _la===TPGrammarParser.MINUS)) {
                     this._errHandler.recoverInline(this);
@@ -689,18 +693,18 @@ TPGrammarParser.prototype.expr = function(_p) {
                     	this._errHandler.reportMatch(this);
                         this.consume();
                     }
-                    this.state = 87;
+                    this.state = 89;
                     this.expr(8);
                     break;
 
                 case 3:
                     localctx = new BinOpContext(this, new ExprContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, TPGrammarParser.RULE_expr);
-                    this.state = 88;
+                    this.state = 90;
                     if (!( this.precpred(this._ctx, 6))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 6)");
                     }
-                    this.state = 89;
+                    this.state = 91;
                     _la = this._input.LA(1);
                     if(!(_la===TPGrammarParser.CONCAT || _la===TPGrammarParser.MINUSMINUS)) {
                     this._errHandler.recoverInline(this);
@@ -709,18 +713,18 @@ TPGrammarParser.prototype.expr = function(_p) {
                     	this._errHandler.reportMatch(this);
                         this.consume();
                     }
-                    this.state = 90;
+                    this.state = 92;
                     this.expr(7);
                     break;
 
                 case 4:
                     localctx = new BinOpContext(this, new ExprContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, TPGrammarParser.RULE_expr);
-                    this.state = 91;
+                    this.state = 93;
                     if (!( this.precpred(this._ctx, 5))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 5)");
                     }
-                    this.state = 92;
+                    this.state = 94;
                     _la = this._input.LA(1);
                     if(!((((_la) & ~0x1f) == 0 && ((1 << _la) & ((1 << TPGrammarParser.EQ) | (1 << TPGrammarParser.LT) | (1 << TPGrammarParser.LE) | (1 << TPGrammarParser.GT) | (1 << TPGrammarParser.GE) | (1 << TPGrammarParser.NEQ))) !== 0))) {
                     this._errHandler.recoverInline(this);
@@ -729,73 +733,73 @@ TPGrammarParser.prototype.expr = function(_p) {
                     	this._errHandler.reportMatch(this);
                         this.consume();
                     }
-                    this.state = 93;
+                    this.state = 95;
                     this.expr(6);
                     break;
 
                 case 5:
                     localctx = new UserOpExprContext(this, new ExprContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, TPGrammarParser.RULE_expr);
-                    this.state = 94;
+                    this.state = 96;
                     if (!( this.precpred(this._ctx, 4))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 4)");
                     }
-                    this.state = 95;
+                    this.state = 97;
                     this.userOp();
-                    this.state = 96;
+                    this.state = 98;
                     this.expr(5);
                     break;
 
                 case 6:
                     localctx = new BinOpContext(this, new ExprContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, TPGrammarParser.RULE_expr);
-                    this.state = 98;
+                    this.state = 100;
                     if (!( this.precpred(this._ctx, 2))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 2)");
                     }
-                    this.state = 99;
+                    this.state = 101;
                     this.match(TPGrammarParser.AND);
-                    this.state = 100;
+                    this.state = 102;
                     this.expr(3);
                     break;
 
                 case 7:
                     localctx = new BinOpContext(this, new ExprContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, TPGrammarParser.RULE_expr);
-                    this.state = 101;
+                    this.state = 103;
                     if (!( this.precpred(this._ctx, 1))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 1)");
                     }
-                    this.state = 102;
+                    this.state = 104;
                     this.match(TPGrammarParser.OR);
-                    this.state = 103;
+                    this.state = 105;
                     this.expr(2);
                     break;
 
                 case 8:
                     localctx = new CallContext(this, new ExprContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, TPGrammarParser.RULE_expr);
-                    this.state = 104;
+                    this.state = 106;
                     if (!( this.precpred(this._ctx, 10))) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 10)");
                     }
-                    this.state = 111;
+                    this.state = 113;
                     this._errHandler.sync(this);
                     switch(this._input.LA(1)) {
                     case TPGrammarParser.T__2:
-                        this.state = 105;
+                        this.state = 107;
                         this.apply();
                         break;
                     case TPGrammarParser.T__1:
-                        this.state = 106;
+                        this.state = 108;
                         this.match(TPGrammarParser.T__1);
-                        this.state = 107;
-                        this.attr();
                         this.state = 109;
+                        this.attr();
+                        this.state = 111;
                         this._errHandler.sync(this);
                         var la_ = this._interp.adaptivePredict(this._input,5,this._ctx);
                         if(la_===1) {
-                            this.state = 108;
+                            this.state = 110;
                             this.apply();
 
                         }
@@ -807,7 +811,7 @@ TPGrammarParser.prototype.expr = function(_p) {
 
                 } 
             }
-            this.state = 117;
+            this.state = 119;
             this._errHandler.sync(this);
             _alt = this._interp.adaptivePredict(this._input,8,this._ctx);
         }
@@ -880,53 +884,53 @@ TPGrammarParser.prototype.simpleExpr = function() {
     var localctx = new SimpleExprContext(this, this._ctx, this.state);
     this.enterRule(localctx, 4, TPGrammarParser.RULE_simpleExpr);
     try {
-        this.state = 128;
+        this.state = 130;
         this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,9,this._ctx);
         switch(la_) {
         case 1:
             this.enterOuterAlt(localctx, 1);
-            this.state = 118;
+            this.state = 120;
             this.literalExpr();
             break;
 
         case 2:
             this.enterOuterAlt(localctx, 2);
-            this.state = 119;
+            this.state = 121;
             this.varExpr();
             break;
 
         case 3:
             this.enterOuterAlt(localctx, 3);
-            this.state = 120;
-            this.match(TPGrammarParser.T__2);
-            this.state = 121;
-            this.expr(0);
             this.state = 122;
+            this.match(TPGrammarParser.T__2);
+            this.state = 123;
+            this.expr(0);
+            this.state = 124;
             this.match(TPGrammarParser.T__3);
             break;
 
         case 4:
             this.enterOuterAlt(localctx, 4);
-            this.state = 124;
+            this.state = 126;
             this.ifElseExpr();
             break;
 
         case 5:
             this.enterOuterAlt(localctx, 5);
-            this.state = 125;
+            this.state = 127;
             this.shortLambdaExpr();
             break;
 
         case 6:
             this.enterOuterAlt(localctx, 6);
-            this.state = 126;
+            this.state = 128;
             this.lambdaExpr();
             break;
 
         case 7:
             this.enterOuterAlt(localctx, 7);
-            this.state = 127;
+            this.state = 129;
             this.letExpr();
             break;
 
@@ -985,33 +989,33 @@ TPGrammarParser.prototype.definition = function() {
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 133;
+        this.state = 135;
         this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,10,this._ctx);
         switch(la_) {
         case 1:
-            this.state = 130;
+            this.state = 132;
             this.valueDefinition();
             break;
 
         case 2:
-            this.state = 131;
+            this.state = 133;
             this.tupleDefinition();
             break;
 
         case 3:
-            this.state = 132;
+            this.state = 134;
             this.functionDefinition();
             break;
 
         }
-        this.state = 138;
+        this.state = 140;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
         while(_la===TPGrammarParser.T__0) {
-            this.state = 135;
+            this.state = 137;
             this.match(TPGrammarParser.T__0);
-            this.state = 140;
+            this.state = 142;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
         }
@@ -1068,11 +1072,11 @@ TPGrammarParser.prototype.valueDefinition = function() {
     this.enterRule(localctx, 8, TPGrammarParser.RULE_valueDefinition);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 141;
-        this.typedVar();
-        this.state = 142;
-        this.match(TPGrammarParser.EQ_DEF);
         this.state = 143;
+        this.typedVar();
+        this.state = 144;
+        this.match(TPGrammarParser.EQ_DEF);
+        this.state = 145;
         this.expr(0);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1136,25 +1140,25 @@ TPGrammarParser.prototype.functionDefinition = function() {
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 145;
+        this.state = 147;
         this.functionId();
-        this.state = 146;
-        this.match(TPGrammarParser.T__2);
         this.state = 148;
+        this.match(TPGrammarParser.T__2);
+        this.state = 150;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
         if(_la===TPGrammarParser.ID) {
-            this.state = 147;
+            this.state = 149;
             this.typedParams();
         }
 
-        this.state = 150;
-        this.match(TPGrammarParser.T__3);
-        this.state = 151;
-        this.typeAnnotation();
         this.state = 152;
-        this.match(TPGrammarParser.EQ_DEF);
+        this.match(TPGrammarParser.T__3);
         this.state = 153;
+        this.typeAnnotation();
+        this.state = 154;
+        this.match(TPGrammarParser.EQ_DEF);
+        this.state = 155;
         this.expr(0);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1186,15 +1190,8 @@ function TupleDefinitionContext(parser, parent, invokingState) {
 TupleDefinitionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 TupleDefinitionContext.prototype.constructor = TupleDefinitionContext;
 
-TupleDefinitionContext.prototype.typedVar = function(i) {
-    if(i===undefined) {
-        i = null;
-    }
-    if(i===null) {
-        return this.getTypedRuleContexts(TypedVarContext);
-    } else {
-        return this.getTypedRuleContext(TypedVarContext,i);
-    }
+TupleDefinitionContext.prototype.typedVars = function() {
+    return this.getTypedRuleContext(TypedVarsContext,0);
 };
 
 TupleDefinitionContext.prototype.EQ_DEF = function() {
@@ -1214,30 +1211,17 @@ TPGrammarParser.prototype.tupleDefinition = function() {
 
     var localctx = new TupleDefinitionContext(this, this._ctx, this.state);
     this.enterRule(localctx, 12, TPGrammarParser.RULE_tupleDefinition);
-    var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 155;
+        this.state = 157;
         this.match(TPGrammarParser.T__2);
-        this.state = 156;
-        this.typedVar();
-        this.state = 161;
-        this._errHandler.sync(this);
-        _la = this._input.LA(1);
-        while(_la===TPGrammarParser.T__4) {
-            this.state = 157;
-            this.match(TPGrammarParser.T__4);
-            this.state = 158;
-            this.typedVar();
-            this.state = 163;
-            this._errHandler.sync(this);
-            _la = this._input.LA(1);
-        }
-        this.state = 164;
+        this.state = 158;
+        this.typedVars();
+        this.state = 159;
         this.match(TPGrammarParser.T__3);
-        this.state = 165;
+        this.state = 160;
         this.match(TPGrammarParser.EQ_DEF);
-        this.state = 166;
+        this.state = 161;
         this.expr(0);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1288,9 +1272,9 @@ TPGrammarParser.prototype.typedVar = function() {
     this.enterRule(localctx, 14, TPGrammarParser.RULE_typedVar);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 168;
+        this.state = 163;
         this.varId();
-        this.state = 169;
+        this.state = 164;
         this.typeAnnotation();
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1341,9 +1325,9 @@ TPGrammarParser.prototype.typedParam = function() {
     this.enterRule(localctx, 16, TPGrammarParser.RULE_typedParam);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 171;
+        this.state = 166;
         this.paramId();
-        this.state = 172;
+        this.state = 167;
         this.typeAnnotation();
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1390,7 +1374,7 @@ TPGrammarParser.prototype.attr = function() {
     this.enterRule(localctx, 18, TPGrammarParser.RULE_attr);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 174;
+        this.state = 169;
         this.match(TPGrammarParser.ID);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1437,7 +1421,7 @@ TPGrammarParser.prototype.method = function() {
     this.enterRule(localctx, 20, TPGrammarParser.RULE_method);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 176;
+        this.state = 171;
         this.match(TPGrammarParser.ID);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1484,7 +1468,7 @@ TPGrammarParser.prototype.userOp = function() {
     this.enterRule(localctx, 22, TPGrammarParser.RULE_userOp);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 178;
+        this.state = 173;
         this.match(TPGrammarParser.ID);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1531,7 +1515,7 @@ TPGrammarParser.prototype.varId = function() {
     this.enterRule(localctx, 24, TPGrammarParser.RULE_varId);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 180;
+        this.state = 175;
         this.match(TPGrammarParser.ID);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1578,7 +1562,7 @@ TPGrammarParser.prototype.functionId = function() {
     this.enterRule(localctx, 26, TPGrammarParser.RULE_functionId);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 182;
+        this.state = 177;
         this.match(TPGrammarParser.ID);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1625,7 +1609,7 @@ TPGrammarParser.prototype.paramId = function() {
     this.enterRule(localctx, 28, TPGrammarParser.RULE_paramId);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 184;
+        this.state = 179;
         this.match(TPGrammarParser.ID);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1673,17 +1657,17 @@ TPGrammarParser.prototype.apply = function() {
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 186;
+        this.state = 181;
         this.match(TPGrammarParser.T__2);
-        this.state = 188;
+        this.state = 183;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
         if(((((_la - 3)) & ~0x1f) == 0 && ((1 << (_la - 3)) & ((1 << (TPGrammarParser.T__2 - 3)) | (1 << (TPGrammarParser.T__6 - 3)) | (1 << (TPGrammarParser.IF - 3)) | (1 << (TPGrammarParser.NOT - 3)) | (1 << (TPGrammarParser.PLUS - 3)) | (1 << (TPGrammarParser.MINUS - 3)) | (1 << (TPGrammarParser.BOOLEAN - 3)) | (1 << (TPGrammarParser.INTEGER - 3)) | (1 << (TPGrammarParser.FLOAT - 3)) | (1 << (TPGrammarParser.STRING - 3)) | (1 << (TPGrammarParser.NATIVE - 3)) | (1 << (TPGrammarParser.INVALID_LITERAL - 3)) | (1 << (TPGrammarParser.ID - 3)))) !== 0)) {
-            this.state = 187;
+            this.state = 182;
             this.args();
         }
 
-        this.state = 190;
+        this.state = 185;
         this.match(TPGrammarParser.T__3);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1730,7 +1714,7 @@ TPGrammarParser.prototype.arg = function() {
     this.enterRule(localctx, 32, TPGrammarParser.RULE_arg);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 192;
+        this.state = 187;
         this.expr(0);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -1828,17 +1812,17 @@ TPGrammarParser.prototype.args = function() {
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 196;
+        this.state = 191;
         this.arg();
-        this.state = 201;
+        this.state = 196;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
         while(_la===TPGrammarParser.T__4) {
-            this.state = 197;
+            this.state = 192;
             this.match(TPGrammarParser.T__4);
-            this.state = 198;
+            this.state = 193;
             this.arg();
-            this.state = 203;
+            this.state = 198;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
         }
@@ -1895,17 +1879,84 @@ TPGrammarParser.prototype.typedParams = function() {
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 204;
+        this.state = 199;
         this.typedParam();
-        this.state = 209;
+        this.state = 204;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
         while(_la===TPGrammarParser.T__4) {
-            this.state = 205;
+            this.state = 200;
             this.match(TPGrammarParser.T__4);
-            this.state = 206;
+            this.state = 201;
             this.typedParam();
-            this.state = 211;
+            this.state = 206;
+            this._errHandler.sync(this);
+            _la = this._input.LA(1);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function TypedVarsContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = TPGrammarParser.RULE_typedVars;
+    return this;
+}
+
+TypedVarsContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+TypedVarsContext.prototype.constructor = TypedVarsContext;
+
+TypedVarsContext.prototype.typedVar = function(i) {
+    if(i===undefined) {
+        i = null;
+    }
+    if(i===null) {
+        return this.getTypedRuleContexts(TypedVarContext);
+    } else {
+        return this.getTypedRuleContext(TypedVarContext,i);
+    }
+};
+
+
+
+
+TPGrammarParser.TypedVarsContext = TypedVarsContext;
+
+TPGrammarParser.prototype.typedVars = function() {
+
+    var localctx = new TypedVarsContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 40, TPGrammarParser.RULE_typedVars);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 207;
+        this.typedVar();
+        this.state = 212;
+        this._errHandler.sync(this);
+        _la = this._input.LA(1);
+        while(_la===TPGrammarParser.T__4) {
+            this.state = 208;
+            this.match(TPGrammarParser.T__4);
+            this.state = 209;
+            this.typedVar();
+            this.state = 214;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
         }
@@ -1971,11 +2022,11 @@ TPGrammarParser.LiteralExprContext = LiteralExprContext;
 TPGrammarParser.prototype.literalExpr = function() {
 
     var localctx = new LiteralExprContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 40, TPGrammarParser.RULE_literalExpr);
+    this.enterRule(localctx, 42, TPGrammarParser.RULE_literalExpr);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 212;
+        this.state = 215;
         _la = this._input.LA(1);
         if(!(((((_la - 27)) & ~0x1f) == 0 && ((1 << (_la - 27)) & ((1 << (TPGrammarParser.BOOLEAN - 27)) | (1 << (TPGrammarParser.INTEGER - 27)) | (1 << (TPGrammarParser.FLOAT - 27)) | (1 << (TPGrammarParser.STRING - 27)) | (1 << (TPGrammarParser.NATIVE - 27)) | (1 << (TPGrammarParser.INVALID_LITERAL - 27)))) !== 0))) {
         this._errHandler.recoverInline(this);
@@ -2041,22 +2092,22 @@ TPGrammarParser.IfElseExprContext = IfElseExprContext;
 TPGrammarParser.prototype.ifElseExpr = function() {
 
     var localctx = new IfElseExprContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 42, TPGrammarParser.RULE_ifElseExpr);
+    this.enterRule(localctx, 44, TPGrammarParser.RULE_ifElseExpr);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 214;
-        this.match(TPGrammarParser.IF);
-        this.state = 215;
-        this.match(TPGrammarParser.T__2);
-        this.state = 216;
-        this.expr(0);
         this.state = 217;
-        this.match(TPGrammarParser.T__3);
+        this.match(TPGrammarParser.IF);
         this.state = 218;
-        this.expr(0);
+        this.match(TPGrammarParser.T__2);
         this.state = 219;
-        this.match(TPGrammarParser.ELSE);
+        this.expr(0);
         this.state = 220;
+        this.match(TPGrammarParser.T__3);
+        this.state = 221;
+        this.expr(0);
+        this.state = 222;
+        this.match(TPGrammarParser.ELSE);
+        this.state = 223;
         this.expr(0);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -2104,25 +2155,25 @@ TPGrammarParser.LambdaExprContext = LambdaExprContext;
 TPGrammarParser.prototype.lambdaExpr = function() {
 
     var localctx = new LambdaExprContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 44, TPGrammarParser.RULE_lambdaExpr);
+    this.enterRule(localctx, 46, TPGrammarParser.RULE_lambdaExpr);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 222;
+        this.state = 225;
         this.match(TPGrammarParser.T__2);
-        this.state = 224;
+        this.state = 227;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
         if(_la===TPGrammarParser.ID) {
-            this.state = 223;
+            this.state = 226;
             this.typedParams();
         }
 
-        this.state = 226;
+        this.state = 229;
         this.match(TPGrammarParser.T__3);
-        this.state = 227;
+        this.state = 230;
         this.match(TPGrammarParser.T__5);
-        this.state = 228;
+        this.state = 231;
         this.expr(0);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -2170,14 +2221,14 @@ TPGrammarParser.ShortLambdaExprContext = ShortLambdaExprContext;
 TPGrammarParser.prototype.shortLambdaExpr = function() {
 
     var localctx = new ShortLambdaExprContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 46, TPGrammarParser.RULE_shortLambdaExpr);
+    this.enterRule(localctx, 48, TPGrammarParser.RULE_shortLambdaExpr);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 230;
+        this.state = 233;
         this.paramId();
-        this.state = 231;
+        this.state = 234;
         this.match(TPGrammarParser.T__5);
-        this.state = 232;
+        this.state = 235;
         this.expr(0);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -2221,10 +2272,10 @@ TPGrammarParser.VarExprContext = VarExprContext;
 TPGrammarParser.prototype.varExpr = function() {
 
     var localctx = new VarExprContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 48, TPGrammarParser.RULE_varExpr);
+    this.enterRule(localctx, 50, TPGrammarParser.RULE_varExpr);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 234;
+        this.state = 237;
         this.match(TPGrammarParser.ID);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -2279,38 +2330,38 @@ TPGrammarParser.LetExprContext = LetExprContext;
 TPGrammarParser.prototype.letExpr = function() {
 
     var localctx = new LetExprContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 50, TPGrammarParser.RULE_letExpr);
+    this.enterRule(localctx, 52, TPGrammarParser.RULE_letExpr);
     var _la = 0; // Token type
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 236;
+        this.state = 239;
         this.match(TPGrammarParser.T__6);
-        this.state = 240;
+        this.state = 243;
         this._errHandler.sync(this);
         var _alt = this._interp.adaptivePredict(this._input,18,this._ctx)
         while(_alt!=2 && _alt!=antlr4.atn.ATN.INVALID_ALT_NUMBER) {
             if(_alt===1) {
-                this.state = 237;
+                this.state = 240;
                 this.definition(); 
             }
-            this.state = 242;
+            this.state = 245;
             this._errHandler.sync(this);
             _alt = this._interp.adaptivePredict(this._input,18,this._ctx);
         }
 
-        this.state = 243;
+        this.state = 246;
         this.expr(0);
-        this.state = 247;
+        this.state = 250;
         this._errHandler.sync(this);
         _la = this._input.LA(1);
         while(_la===TPGrammarParser.T__0) {
-            this.state = 244;
+            this.state = 247;
             this.match(TPGrammarParser.T__0);
-            this.state = 249;
+            this.state = 252;
             this._errHandler.sync(this);
             _la = this._input.LA(1);
         }
-        this.state = 250;
+        this.state = 253;
         this.match(TPGrammarParser.T__7);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {

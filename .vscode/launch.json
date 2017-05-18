@@ -36,6 +36,16 @@
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"
       ]
+    },     
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program (corefier.js)",
+      "program": "${workspaceRoot}/build/parsing/corefier.js",
+      "protocol": "inspector",
+      "outFiles": [
+        "${workspaceRoot}/build/**/*.js"
+      ]
     },    
     {
       "type": "node",

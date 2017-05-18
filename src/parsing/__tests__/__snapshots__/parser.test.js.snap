@@ -5,13 +5,13 @@ exports[`The Parser can be tested with snapshots 1`] = `"\\"test\\""`;
 exports[`The Parser can be tested with snapshots 2`] = `"\\"\\\\\\"test\\"\\\\\\""`;
 
 exports[`The Parser parses Empty.tp correctly 1`] = `
-"start
+"topLevel
   <EOF>#-1 <EOF>   @1:1
 "
 `;
 
 exports[`The Parser parses EndOfLet.tp correctly 1`] = `
-"start
+"topLevel
   definition
     valueDefinition
       typedVar
@@ -185,7 +185,7 @@ exports[`The Parser parses EndOfLet.tp correctly 1`] = `
 `;
 
 exports[`The Parser parses Literals.tp correctly 1`] = `
-"start
+"topLevel
   definition
     valueDefinition
       typedVar
@@ -347,7 +347,7 @@ exports[`The Parser parses Literals.tp correctly 1`] = `
 `;
 
 exports[`The Parser parses Priority.tp correctly 1`] = `
-"start
+"topLevel
   definition
     valueDefinition
       typedVar
@@ -1150,7 +1150,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
 `;
 
 exports[`The Parser parses SemiColon.tp correctly 1`] = `
-"start
+"topLevel
   definition
     valueDefinition
       typedVar
@@ -1280,7 +1280,7 @@ exports[`The Parser parses SemiColon.tp correctly 1`] = `
 `;
 
 exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
-"start
+"topLevel
   definition
     valueDefinition
       typedVar
@@ -1705,6 +1705,63 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
         simpleExpr
           varExpr
             ID something_else   @50:14
+  definition
+    tupleDefinition
+      '(' (   @52:1
+      typedVars
+        typedVar
+          varId
+            ID a   @52:2
+          typeAnnotation
+      ')' )   @52:3
+      EQ_DEF =   @52:4
+      simple:expr
+        simpleExpr
+          varExpr
+            ID A   @52:5
+  definition
+    tupleDefinition
+      '(' (   @53:1
+      typedVars
+        typedVar
+          varId
+            ID a   @53:2
+          typeAnnotation
+        ',' ,   @53:3
+        typedVar
+          varId
+            ID b   @53:4
+          typeAnnotation
+      ')' )   @53:5
+      EQ_DEF =   @53:6
+      simple:expr
+        simpleExpr
+          varExpr
+            ID AB   @53:7
+  definition
+    tupleDefinition
+      '(' (   @54:1
+      typedVars
+        typedVar
+          varId
+            ID a   @54:2
+          typeAnnotation
+        ',' ,   @54:3
+        typedVar
+          varId
+            ID b   @54:4
+          typeAnnotation
+        ',' ,   @54:5
+        typedVar
+          varId
+            ID c   @54:6
+          typeAnnotation
+      ')' )   @54:7
+      EQ_DEF =   @54:8
+      simple:expr
+        simpleExpr
+          varExpr
+            ID ABC   @54:9
   definition
     valueDefinition
       typedVar

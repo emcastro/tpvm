@@ -49,9 +49,9 @@ foo()=bar
 foo(bar)=baz
 foo(bar,baz)=something_else
 
-// (a)=A
-// (a,b)=AB
-// (a,b,c)=ABC
+(a)=A
+(a,b)=AB
+(a,b,c)=ABC
 
 lambda=()->foo
 lambda=(foo)->bar
