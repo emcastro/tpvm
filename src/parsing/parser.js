@@ -21,6 +21,8 @@ function annotateParserWithContextName (parser: antlr4.Parser) {
 
 annotateParserWithContextName(TPGrammarParser)
 
+// Improvement of Antlr4
+
 antlr4.ParserRuleContext.prototype.loneChild = function () {
   const c = this.children
   if (c == null || c.length !== 1) {
@@ -28,15 +30,28 @@ antlr4.ParserRuleContext.prototype.loneChild = function () {
     for (let e of this.children) {
       // if (!(e instanceof TerminalNode)) {
       if (e.constructor !== TerminalNodeImpl) {
-        if (result !== undefined) throw new Error('Not a lone-child node: too many children')
+        if (result !== undefined) {
+          throw new Error('Not a lone-child node: too many children')
+        }
         result = e
       }
     }
-    if (result === undefined) throw new Error('Not a lone-child node: no children')
+    if (result === undefined) {
+      throw new Error('Not a lone-child node: no children')
+    }
     return result
   }
   return c[0]
 }
+
+antlr4.ParserRuleContext.prototype.token = function () {
+  if (this.start !== this.stop) {
+    throw new Error('Not a token node')
+  }
+  return this.start
+}
+
+// Antlr4 typing
 
 export type Token = {
   text: string,
@@ -73,11 +88,13 @@ export type BinOp = N<'binOp'> & { expr: A<Expr[]> }
 export type UserOpExpr = N<'userOpExpr'> & { expr: A<Expr[]>, userOp: A<UserOp> }
 
 export type SimpleExpr = N<'simpleExpr'> & {
-  loneChild: A<?(LiteralExpr | Expr | VarExpr | IfElseExpr | ShortLambdaExpr | LambdaExpr | LetExpr)>,
-  // expr: A<?Expr>
+  loneChild: A<LiteralExpr | Expr | VarExpr | IfElseExpr | ShortLambdaExpr | LambdaExpr | LetExpr>,
 } // transparent node
 
-export type Definition = N<'definition'> & { loneChild: A<ValueDefinition | TupleDefinition | FunctionDefinition> } // transparent node
+export type Definition = N<'definition'> & {
+  loneChild: A<ValueDefinition | TupleDefinition | FunctionDefinition>
+} // transparent node
+
 export type ValueDefinition = N<'valueDefinition'> & { typedVar: A<TypedVar>, expr: A<Expr> }
 export type FunctionDefinition = N<'functionDefintion'> & { functionId: A<FunctionId>, typedParams: A<?TypedParams>}
 export type TupleDefinition = N<'tupleDefinition'> & { typedVars: A<TypedVars>, expr: A<Expr> }
@@ -85,7 +102,7 @@ export type TupleDefinition = N<'tupleDefinition'> & { typedVars: A<TypedVars>, 
 export type TypedVar = N<'typedVar'> & { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
 export type TypedParam = N<'typedParam'> & { varId: A<ParamId>, typeAnnotation: A<TypeAnnotation> }
 
-type TOKEN<n> = N<n> & { /* accesseur à déterminer */ }
+type TOKEN<n> = N<n> & { token: () => Token }
 
 export type Attr = TOKEN<'attr'>
 export type Method = TOKEN<'method'>
@@ -126,6 +143,8 @@ export type TPNode = (
 
 /* eslint-enable no-use-before-define */
 
+// Information accessors
+
 export function tokenName (token: Token) {
   const symbolic = token.source[0].symbolicNames[token.type]
   if (symbolic != null) return symbolic
@@ -145,6 +164,13 @@ export function nodeName (node: TPNode) {
 
   const ruleName = node.parser.ruleNames[node.ruleIndex]
   return ruleName === ruleCategory ? ruleName : ruleCategory + ':' + ruleName
+}
+
+export function nodePosition (node: TPNode) {
+  if (node.start.line === node.stop.line) {
+    return `${node.start.line}:${node.start.column + 1}-${node.stop.column + 1}`
+  }
+  return `${node.start.line}:${node.start.column + 1}`
 }
 
 export function dump (node: TPNode, tab: ?string): string {
@@ -173,4 +199,12 @@ export function parse (input: string): TPNode {
   parser.buildParseTrees = true
   const start = parser.topLevel()
   return start
+}
+
+export class ParseError extends Error {
+  node: TPNode
+
+  constructor (msg: string, node: TPNode) {
+    super(msg + ' ' + nodePosition(node))
+  }
 }

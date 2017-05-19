@@ -5,7 +5,7 @@
 import type { Expr, Var, Literal, Apply, IfElse, Lambda, Let, LiteralValue } from '../expr/Expr' // eslint-disable-line
 import type { TPNode } from '../parsing/parser'
 
-import { parser, nodeName, tokenName, tokenPosition, parse } from '../parsing/parser' // eslint-disable-line
+import { parser, nodeName, tokenName, tokenPosition, parse, ParseError } from '../parsing/parser' // eslint-disable-line
 
 import { eApply, eVar, eLet, eLiteral, eLambda, eIfElse } from '../expr/Expr'
 
@@ -43,23 +43,37 @@ export function toCore(expr: TPNode, env: Env): Expr {
   switch (expr.contextName) {
     // let-like
     case 'topLevel':
-    case 'letExpr':
+    case 'letExpr': {
       const defs = expr.definition()
       if (defs.length !== 0) {
         throw new Error("Pas fini")
       }
       return toCore(expr.expr(), env)
-
-    case 'simple':
+    }
+    case 'simple': {
       return toCore(expr.simpleExpr(), env)
+    }
+    case 'simpleExpr': {
+      return toCore(expr.loneChild(), env)
+    }
+    case 'literalExpr': {
+      const token = expr.token()
+      switch (token.type) {
+        case parser.INTEGER:
+          return eLiteral(parseInt(token.text))
+        case parser.FLOAT:
+          return eLiteral(parseFloat(token.text))
 
-    case 'simpleExpr':
-      const child = expr.loneChild()
-      if (child == null) throw new TypeError('Unexpected child')
-      return toCore(child, env)
+        case parser.BOOLEAN:
 
-    case 'literalExpr':
-      return eLiteral(42) // TODO: !!!!
+        case parser.STRING:
+
+        case parser.NATIVE:
+
+        default:
+          throw new ParseError("Invalid literal", expr)
+      }
+    }
   }
 
   throw new Error('À coder: ' + expr.contextName)
@@ -69,7 +83,7 @@ const emptyEnv = new Map()
 
 try {
   const tree: any = parse(`
-  (1)
+  (15b)
   `)
   const core = toCore(tree, emptyEnv)
 

@@ -14,17 +14,11 @@ export type Binding = [string, Expr];
 // Debugging print support
 export function subExprs (expr: Apply | IfElse | Let | Lambda): (Expr | Binding)[] {
   switch (expr.typ) {
-    // case eVar.typ:
-    //   return _emptyChildren
-
     case eApply.typ:
       return [expr.operator, ...expr.operands]
 
     case eIfElse.typ:
       return [expr.ifClause, expr.thenClause, expr.elseClause]
-
-    // case eLiteral.typ:
-    //   return _emptyChildren
 
     case eLet.typ:
       const elements = iteratorToArray(expr.defs.values())
