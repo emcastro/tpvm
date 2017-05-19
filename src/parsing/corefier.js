@@ -7,9 +7,11 @@ import type { TPNode } from '../parsing/parser'
 
 import { parser, nodeName, tokenName, tokenPosition, parse } from '../parsing/parser' // eslint-disable-line
 
+import { eApply, eVar, eLet, eLiteral, eLambda, eIfElse } from '../expr/Expr'
+
 type Env = Map<string, string>
 
-function newEnv (env: Env, ids: string[]): Env {
+function newEnv(env: Env, ids: string[]): Env {
   throw Error('à coder')
 }
 
@@ -37,15 +39,27 @@ const unOpFunctionName = new Map([
   [parser.MINUS, '__unary_minus__']
 ])
 
-export function toCore (expr: TPNode, env: Env): Expr {
+export function toCore(expr: TPNode, env: Env): Expr {
   switch (expr.contextName) {
     // let-like
     case 'topLevel':
     case 'letExpr':
       const defs = expr.definition()
-      console.log(expr)
-      console.log('==', defs)
-    //   return resolveVar(expr)
+      if (defs.length !== 0) {
+        throw new Error("Pas fini")
+      }
+      return toCore(expr.expr(), env)
+
+    case 'simple':
+      return toCore(expr.simpleExpr(), env)
+
+    case 'simpleExpr':
+      const child = expr.loneChild()
+      if (child == null) throw new TypeError('Unexpected child')
+      return toCore(child, env)
+
+    case 'literalExpr':
+      return eLiteral(42) // TODO: !!!!
   }
 
   throw new Error('À coder: ' + expr.contextName)
@@ -53,13 +67,13 @@ export function toCore (expr: TPNode, env: Env): Expr {
 
 const emptyEnv = new Map()
 
-// try {
-//   const tree: any = parse(`
-//   1
-//   `)
-//   const core = toCore(tree, emptyEnv)
+try {
+  const tree: any = parse(`
+  (1)
+  `)
+  const core = toCore(tree, emptyEnv)
 
-//   console.log(core.toText())
-// } catch (e) {
-//   console.log(e)
-// }
+  console.log(core.toText())
+} catch (e) {
+  console.log(e)
+}

@@ -1,6 +1,7 @@
 // @flow
 
 import antlr4 from 'antlr4'
+import { TerminalNode, TerminalNodeImpl } from 'antlr4/tree/Tree' // eslint-disable-line
 import { TPGrammarParser } from '../generated/TPGrammarParser'
 import { TPGrammarLexer } from '../generated/TPGrammarLexer'
 import _ from 'lodash'
@@ -20,6 +21,23 @@ function annotateParserWithContextName (parser: antlr4.Parser) {
 
 annotateParserWithContextName(TPGrammarParser)
 
+antlr4.ParserRuleContext.prototype.loneChild = function () {
+  const c = this.children
+  if (c == null || c.length !== 1) {
+    let result
+    for (let e of this.children) {
+      // if (!(e instanceof TerminalNode)) {
+      if (e.constructor !== TerminalNodeImpl) {
+        if (result !== undefined) throw new Error('Not a lone-child node: too many children')
+        result = e
+      }
+    }
+    if (result === undefined) throw new Error('Not a lone-child node: no children')
+    return result
+  }
+  return c[0]
+}
+
 export type Token = {
   text: string,
   column: number,
@@ -29,77 +47,84 @@ export type Token = {
   source: [{ literalNames: string[], symbolicNames: string[] }, {}]
 }
 
-export type Node = {
+/* eslint-disable no-use-before-define */
+
+type Node = {
   symbol: ?Token,
   parser: { ruleNames: string[] },
   ruleIndex: number,
   start: Token,
   stop: Token,
-  children: ?Node[]
+  children: ?TPNode[]
 }
 
-/* eslint-disable */
-
-// Typed version of Node for TPGrammar
-type A<T> = () => T
-
-type LetLike = Node & {
-  definition: A<Definition[]>,
-  expr: A<Expr>
-}
+// Typeing assistance for Nodes for TPGrammar
+type A<T> = () => (T)
 
 type N<n> = Node & { contextName: n }
-type TopLevel = LetLike & N<'topLevel'> 
 
-type Expr = Simple | Call | UnOp | BinOp | UserOp
-type Simple = N<'simple'> & { simpleExpr: A<SimpleExpr> }
-type Call = N<'call'> & { expr: A<Expr>, apply: A<?Apply>, attr: A<?Attr> }
-type UnOp= N<'unOp'> & { expr: A<Expr> }
-type BinOp= N<'binOp'> & { expr: A<Expr[]> }
-type UserOpExpr= N<'userOpExpr'> & { expr: A<Expr[]>, userOp: A<UserOp> }
+export type TopLevel = N<'topLevel'> & { definition: A<Definition[]>, expr: A<Expr> }
 
-type SimpleExpr = Node & { contextName: 'simpleExpr' } // transparent node
+export type Expr = Simple | Call | UnOp | BinOp | UserOpExpr
+export type Simple = N<'simple'> & { simpleExpr: A<SimpleExpr> }
+export type Call = N<'call'> & { expr: A<Expr>, apply: A<?Apply>, attr: A <?Attr > }
+export type UnOp = N<'unOp'> & { expr: A<Expr> }
+export type BinOp = N<'binOp'> & { expr: A<Expr[]> }
+export type UserOpExpr = N<'userOpExpr'> & { expr: A<Expr[]>, userOp: A<UserOp> }
 
-type Definition = Node & { contextName: 'definition' } // transparent node
-type ValueDefinition = N<'valueDefinition'> & { typedVar: A<TypedVar>, expr: A<Expr> }
-type FunctionDefinition = N<'functionDefintion'> & { functionId: A<FunctionId>, typedParams: A<?TypedParams>}
-type TupleDefinition = N<'tupleDefinition'> & { typedVars : A<TypedVars>, expr: A<Expr> }
+export type SimpleExpr = N<'simpleExpr'> & {
+  loneChild: A<?(LiteralExpr | Expr | VarExpr | IfElseExpr | ShortLambdaExpr | LambdaExpr | LetExpr)>,
+  // expr: A<?Expr>
+} // transparent node
 
-type TypedVar = N<'typedVar'> & { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
-type TypedParam = N<'typedParam'> & { varId: A<ParamId>, typeAnnotation: A<TypeAnnotation> }
+export type Definition = N<'definition'> & { loneChild: A<ValueDefinition | TupleDefinition | FunctionDefinition> } // transparent node
+export type ValueDefinition = N<'valueDefinition'> & { typedVar: A<TypedVar>, expr: A<Expr> }
+export type FunctionDefinition = N<'functionDefintion'> & { functionId: A<FunctionId>, typedParams: A<?TypedParams>}
+export type TupleDefinition = N<'tupleDefinition'> & { typedVars: A<TypedVars>, expr: A<Expr> }
+
+export type TypedVar = N<'typedVar'> & { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
+export type TypedParam = N<'typedParam'> & { varId: A<ParamId>, typeAnnotation: A<TypeAnnotation> }
 
 type TOKEN<n> = N<n> & { /* accesseur à déterminer */ }
 
-type Attr = TOKEN<'attr'>
-type Method = TOKEN<'method'>
-type UserOp = TOKEN<'userOp'>
-type VarId = TOKEN<'varId'>
-type FunctionId = TOKEN<'functionId'>
-type ParamId = TOKEN<'paramId'>
+export type Attr = TOKEN<'attr'>
+export type Method = TOKEN<'method'>
+export type UserOp = TOKEN<'userOp'>
+export type VarId = TOKEN<'varId'>
+export type FunctionId = TOKEN<'functionId'>
+export type ParamId = TOKEN<'paramId'>
 
-type Apply = N<'apply'> & { args: A<?Args> }
+export type Apply = N<'apply'> & { args: A<?Args> }
 
-type Arg = N<'args'> & { expr: A<Expr> }
+export type Arg = N<'args'> & { expr: A<Expr> }
 
-type TypeAnnotation = N<'typeAnnotation'>
+export type TypeAnnotation = N<'typeAnnotation'>
 
-type LiteralExpr = TOKEN<'literalExpr'>
+export type LiteralExpr = TOKEN<'literalExpr'>
 
-type IfElseExpr = N<'ifElseExpr'> & { expr: A<Expr[]> }
-type LambdaExpr = N<'lambdaExpr'> & { typedParams: A<?TypedParams>, expr: A<Expr> }
-type ShortLambdaExpr = N<'shortLambdaExpr'> & { paramId: A<ParamId>, expr: A<Expr> }
+export type IfElseExpr = N<'ifElseExpr'> & { expr: A<Expr[]> }
+export type LambdaExpr = N<'lambdaExpr'> & { typedParams: A<?TypedParams>, expr: A<Expr> }
+export type ShortLambdaExpr = N<'shortLambdaExpr'> & { paramId: A<ParamId>, expr: A<Expr> }
 
-type VarExpr = TOKEN<'varExpr'>
+export type VarExpr = TOKEN<'varExpr'>
 
-type LetExpr = LetLike & { contextName: 'letExpr' } 
+export type LetExpr = N<'letExpr'> & { definition: A<Definition[]>, expr: A<Expr> }
 
-type Args = N<'arg'> & { args: A<Arg> }
-type TypedParams = N<'typedParams'> & { args: A<TypedParam> }
-type TypedVars = N<'typedArg'> & { args: A<TypedVars> }
+export type Args = N<'arg'> & { args: A<Arg> }
+export type TypedParams = N<'typedParams'> & { args: A<TypedParam> }
+export type TypedVars = N<'typedArg'> & { args: A<TypedVars> }
 
+export type TPNode = (
+  TopLevel | LetExpr
+  | Definition | ValueDefinition | FunctionDefinition | TupleDefinition
+  | TypedVar | TypedVars | Arg | Args | TypedParams | TypedParam
+  | Attr | Method | UserOp | VarId | FunctionId | ParamId
+  | Apply | TypeAnnotation
+  | IfElseExpr | LambdaExpr | ShortLambdaExpr
+  | VarExpr | LiteralExpr | SimpleExpr | Expr
+)
 
-
-export type TPNode = (TopLevel | LetExpr | ValueDefinition)
+/* eslint-enable no-use-before-define */
 
 export function tokenName (token: Token) {
   const symbolic = token.source[0].symbolicNames[token.type]
@@ -113,7 +138,7 @@ export function tokenPosition (token: Token) {
   return `${token.line}:${token.column + 1}`
 }
 
-export function nodeName (node: Node) {
+export function nodeName (node: TPNode) {
   // $TypingTrick
   const ruleClass: string = node.__proto__.constructor.name // eslint-disable-line
   const ruleCategory = node.contextName
@@ -122,7 +147,7 @@ export function nodeName (node: Node) {
   return ruleName === ruleCategory ? ruleName : ruleCategory + ':' + ruleName
 }
 
-export function dump (node: Node, tab: ?string): string {
+export function dump (node: TPNode, tab: ?string): string {
   const _tab = tab || ''
   const nextTab = _tab + '  '
   let line = _tab + nodeName(node) + '\n'
@@ -140,7 +165,7 @@ export function dump (node: Node, tab: ?string): string {
   return line
 }
 
-export function parse (input: string): Node {
+export function parse (input: string): TPNode {
   const chars = new antlr4.InputStream(input)
   const lexer = new TPGrammarLexer(chars)
   const tokens = new antlr4.CommonTokenStream(lexer)

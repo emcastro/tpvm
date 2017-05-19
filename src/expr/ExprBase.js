@@ -6,7 +6,7 @@ import { SExprRenderer } from '../utils/SExprRenderer'
 import { iteratorToArray } from '../utils/prelude'
 import { jsEscape } from '../utils/stringTools'
 import _ from 'lodash'
-import type { Node } from '../parsing/parser'
+import type { TPNode } from '../parsing/parser'
 
 export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr];
@@ -102,5 +102,5 @@ export class ExprBase {
   }
 
   /** */
-  source: Node[]
+  source: TPNode[]
 }
