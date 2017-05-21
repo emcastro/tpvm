@@ -4,7 +4,6 @@ import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda } from '../generated/gen
 import type { Expr, Apply, IfElse, Let, Lambda } from '../generated/genExpr'
 import { SExprRenderer } from '../utils/SExprRenderer'
 import { iteratorToArray } from '../utils/prelude'
-import { jsEscape } from '../utils/stringTools'
 import _ from 'lodash'
 import type { TPNode } from '../parsing/parser'
 
@@ -77,7 +76,8 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
 
   escape (o: mixed): string {
     if (typeof o === 'string' && _.startsWith(o, '$')) {
-      return jsEscape(o)
+      const s = JSON.stringify(o)
+      return s.slice(1, s.length - 1)
     } else {
       return super.escape.call(this, o)
     }
@@ -95,6 +95,15 @@ export class ExprBase {
     return exprRenderer.sExprLn((this: any))
   }
 
-  /** */
+  /** Link to the source code */
   source: TPNode[]
+
+  setSource (source: TPNode | TPNode[]): this{
+    if (Array.isArray(source)) {
+      this.source = source
+    } else {
+      this.source = [source]
+    }
+    return this
+  }
 }

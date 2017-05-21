@@ -1,7 +1,6 @@
 // @flow
 
 import _ from 'lodash'
-import { jsEscape } from './stringTools'
 
 /**
  * Generic S-Expression renderer.js
@@ -48,7 +47,10 @@ export class SExprRenderer<N, T> {
     }
   }
 
-  escape (o: T): string { return "'" + jsEscape(String(o)) + "'" }
+  escape (o: T): string {
+    const s = JSON.stringify(o)
+    return "'" + s.slice(1, s.length - 1) + "'"
+  }
 }
 
 export default SExprRenderer

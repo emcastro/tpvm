@@ -9,7 +9,7 @@ describe('Expr', () => {
         // Literals with different types of data
         ['aString', eLiteral('a')],
         ['aNumber', eLiteral(1)],
-        ['aSymbol', eLiteral(Symbol.for('#symbol'))], // TODO: à modifier avec isSymbol
+        ['aSymbol', eLiteral(Symbol.for('#symbol'))],
         // Lambda, IfElse, and Var
         ['d', eLambda(['x', 'y'],
           eIfElse(eLiteral(true),

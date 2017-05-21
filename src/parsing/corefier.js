@@ -6,7 +6,6 @@ import type { Expr, Var, Literal, Apply, IfElse, Lambda, Let, LiteralValue } fro
 import type { TPNode } from '../parsing/parser'
 
 import { parser, nodeName, tokenName, tokenPosition, parse, ParseError } from '../parsing/parser' // eslint-disable-line
-
 import { eApply, eVar, eLet, eLiteral, eLambda, eIfElse } from '../expr/Expr'
 
 type Env = Map<string, string>
@@ -39,7 +38,13 @@ const unOpFunctionName = new Map([
   [parser.MINUS, '__unary_minus__']
 ])
 
-export function toCore(expr: TPNode, env: Env): Expr {
+function toCore(expr: TPNode, env: Env): Expr {
+  const core = _toCore(expr, env)
+  core.source = [expr]  // TODO: arbitrer par rapport à ExprBase.setSource
+  return core
+}
+
+function _toCore(expr: TPNode, env: Env): Expr {
   switch (expr.contextName) {
     // let-like
     case 'topLevel':
@@ -65,10 +70,13 @@ export function toCore(expr: TPNode, env: Env): Expr {
           return eLiteral(parseFloat(token.text))
 
         case parser.BOOLEAN:
+          return eLiteral(token.text === 'true')
 
         case parser.STRING:
+          return eLiteral(JSON.parse(token.text))
 
         case parser.NATIVE:
+          return eLiteral(Symbol.for(token.text.slice(1)))
 
         default:
           throw new ParseError("Invalid literal", expr)
@@ -83,7 +91,7 @@ const emptyEnv = new Map()
 
 try {
   const tree: any = parse(`
-  (15b)
+  (#true)
   `)
   const core = toCore(tree, emptyEnv)
 
