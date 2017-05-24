@@ -11,7 +11,9 @@
       "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
       "cwd": "${workspaceRoot}",
       "args": [
-        "--runInBand", "--coverage", "build"
+        "--runInBand",
+        "--coverage",
+        "build"
       ],
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"
@@ -36,7 +38,7 @@
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"
       ]
-    },     
+    },
     {
       "type": "node",
       "request": "launch",
@@ -46,7 +48,17 @@
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"
       ]
-    },    
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program (bench)",
+      "program": "${workspaceRoot}/bench/functional.foreach.bench.js",
+      "protocol": "inspector",
+      "outFiles": [
+        "${workspaceRoot}/build/**/*.js"
+      ]
+    },
     {
       "type": "node",
       "request": "attach",

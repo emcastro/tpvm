@@ -1,6 +1,6 @@
 // @flow
 
-export function fastmap<T, R> (array : T[], f : T=>R) : R[] {
+export function map<T, R> (array: T[], f: T=>R): R[] {
   const length = array.length
   switch (length) {
     case 0: return []
@@ -20,3 +20,10 @@ export function fastmap<T, R> (array : T[], f : T=>R) : R[] {
   return result
 }
 
+export function foreach<T> (array: T[], f: T=>mixed): void {
+  const length = array.length
+  if (length === 0) return  // entering the loop with length 0 cause deoptimisation problems
+  for (let i = 0; i < length; i++) {
+    f(array[i])
+  }
+}
