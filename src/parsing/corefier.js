@@ -82,6 +82,10 @@ function _toCore(expr: TPNode, env: Env): Expr {
           throw new ParseError("Invalid literal", expr)
       }
     }
+    // case 'binOp': {
+    //   // Apply(resolveVarString(binOpFunctionName(o.operator.tokenType), o), Seq(o.left, o.right))
+    //   eApply(binOpFunctionName[expr.token(1)], expr.expr())
+    // }
   }
 
   throw new Error('À coder: ' + expr.contextName)
@@ -91,7 +95,7 @@ const emptyEnv = new Map()
 
 try {
   const tree: any = parse(`
-  (#true)
+  (1+1)
   `)
   const core = toCore(tree, emptyEnv)
 

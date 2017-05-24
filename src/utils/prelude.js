@@ -8,7 +8,7 @@ export function iterator (o : any) : Iterator<mixed> {
 /** Iterator to Array */
 export function iteratorToArray<T> (i : Iterator<T>) : T[] {
   const list : T[] = []
-  let item : { done: boolean, value: T }  // TODO: report type error in Flow
+  let item : { done: boolean, value: T }  // TODO: report type error in Flow about IteratorResult
   while (!(item = (i.next() : any)).done) {
     list.push(item.value)
   }
