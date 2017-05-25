@@ -1,14 +1,14 @@
 // @flow
 
 /** Typed version of o[Symbol.iterator]() */
-export function iterator (o : any) : Iterator<mixed> {
+export function iterator (o: any): Iterator<mixed> {
   return o[Symbol.iterator]()
 }
 
 /** Iterator to Array */
-export function iteratorToArray<T> (i : Iterator<T>) : T[] {
-  const list : T[] = []
-  let item : { done: boolean, value: T }  // TODO: report type error in Flow about IteratorResult
+export function iteratorToArray<T> (i: Iterator<T>): T[] {
+  const list: T[] = []
+  let item: { done: boolean, value: T }  // TODO: report type error in Flow about IteratorResult
   while (!(item = (i.next() : any)).done) {
     list.push(item.value)
   }
@@ -20,7 +20,7 @@ export function iteratorToArray<T> (i : Iterator<T>) : T[] {
  * standard Array and Map, and
  * objects with that have .equals() method.
  */
-export function equal (a: mixed, b: mixed) : boolean {
+export function equal (a: mixed, b: mixed): boolean {
   if (a === b) return true // fast-track
   if (a != null && typeof a === 'object') {
     if (typeof a.equals === 'function' && b != null) return a.equals(b)
@@ -33,7 +33,7 @@ export function equal (a: mixed, b: mixed) : boolean {
 }
 
 /** Compare Map */
-export function mapEqual (a : Map<mixed, mixed>, b : Map<mixed, mixed>) : boolean {
+export function mapEqual (a: Map<mixed, mixed>, b: Map<mixed, mixed>): boolean {
   if (b === a) return true // fast-track
 
   if (a.size !== b.size) return false
@@ -47,7 +47,7 @@ export function mapEqual (a : Map<mixed, mixed>, b : Map<mixed, mixed>) : boolea
 }
 
 /** Compare Array */
-export function arrayEqual (a: mixed[], b: mixed[]) : boolean {
+export function arrayEqual (a: mixed[], b: mixed[]): boolean {
   if (b === a) return true // fast-track
 
   if (a.length !== b.length) return false
@@ -68,7 +68,15 @@ export function arrayEqual (a: mixed[], b: mixed[]) : boolean {
   return true
 }
 
-export function notnull<T> (value: ?T) : T {
+export function notnull<T> (value: ?T): T {
   if (value == null) throw new Error('Null or undefined value')
   return value
+}
+
+export function switchMap<T1, R> (object: { [string]: (T1) => R }): Map<string, (T1) => R> {
+  return (new Map(Object.entries(object)) : any)
+}
+
+export function switchMap2<T1, T2, R> (object: { [string]: (T1, T2) => R }): Map<string, (T1, T2) => R> {
+  return (new Map(Object.entries(object)) : any)
 }

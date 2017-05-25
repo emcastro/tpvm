@@ -9,7 +9,7 @@ import { parser, nodeName, tokenName, tokenPosition, parse, ParseError } from '.
 import { eApply, eVar, eLet, eLiteral, eLambda, eIfElse } from '../expr/Expr'
 
 import { fastmap } from '../utils/fastArray'
-import { notnull } from '../utils/prelude'
+import { notnull, switchMap2 } from '../utils/prelude'
 
 type Env = Map<string, string>
 
@@ -41,88 +41,85 @@ const unOpFunctionName = new Map([
   [parser.MINUS, '__unary_minus__']
 ])
 
+import type { 
+  LetExpr, TopLevel, Simple, VarExpr, LiteralExpr,
+    BinOp, UnOp, UserOpExpr
+} from './parser'
+
+
+const toCoreSwitchMap = switchMap2({
+  letExpr(expr: LetExpr | TopLevel, env: Env) {
+    const defs = expr.definition()
+    if (defs.length !== 0) {
+      throw new Error('Pas fini')
+    }
+    return toCore(expr.expr(), env)
+  },
+
+  simple(expr: Simple, env: Env) { // includes parenthesis expressions
+    return toCore(expr.simpleExpr().loneChild(), env)
+  },
+
+  varExpr(expr: VarExpr, env: Env) {
+    const varExpr = eVar(expr.token().text)
+    varExpr.source = [expr]
+    return varExpr
+  },
+
+  literalExpr(expr: LiteralExpr, env: Env) {
+    const token = expr.token()
+    switch (token.type) {
+      case parser.INTEGER:
+        return eLiteral(parseInt(token.text))
+      case parser.FLOAT:
+        return eLiteral(parseFloat(token.text))
+
+      case parser.BOOLEAN:
+        return eLiteral(token.text === 'true')
+
+      case parser.STRING:
+        return eLiteral(JSON.parse(token.text))
+
+      case parser.NATIVE:
+        return eLiteral(Symbol.for(token.text.slice(1)))
+
+      default:
+        throw new ParseError('Invalid literal', expr)
+    }
+  },
+
+  binOp(expr: BinOp, env: Env) {
+    const opToken = expr.tokenAt(1)
+    const varExpr = eVar(notnull(binOpFunctionName.get(opToken.type)))
+    varExpr.source = [opToken]
+    return eApply(varExpr, toCoreMap(expr.expr(), env))
+  },
+
+  userOpExpr(expr: UserOpExpr, env: Env) {
+    const opToken = expr.userOp()
+    const varExpr = eVar(opToken.token().text)
+    varExpr.source = [opToken]
+    return eApply(varExpr, toCoreMap(expr.expr(), env))
+  },
+
+  unOp(expr: UnOp, env: Env) {
+    const opToken = expr.tokenAt(0)
+    const varExpr = eVar(notnull(unOpFunctionName.get(opToken.type)))
+    varExpr.source = [opToken]
+    return eApply(varExpr, [toCore(expr.expr(), env)])
+  }
+
+})
+
+toCoreSwitchMap.set('topLevel', notnull(toCoreSwitchMap.get('letExpr')))
+
 function toCore(expr: TPNode, env: Env): Expr {
-  const core = _toCore(expr, env)
+  const toCoreExpr : any = toCoreSwitchMap.get(expr.contextName)
+  if (toCoreExpr == null) throw new Error('À coder : ' + expr.contextName)
+  const core = toCoreExpr(expr, env)
   core.source = [expr]  // TODO: arbitrer par rapport à ExprBase.setSource
   return core
 }
-
-function _toCore(expr: TPNode, env: Env): Expr {
-  switch (expr.contextName) {
-    // let-like
-    case 'topLevel':
-    case 'letExpr': {
-      const defs = expr.definition()
-      if (defs.length !== 0) {
-        throw new Error('Pas fini')
-      }
-      return toCore(expr.expr(), env)
-    }
-    case 'simple': { // includes parenthesis expressions
-      return toCore(expr.simpleExpr().loneChild(), env)
-    }
-
-    case 'varExpr': {
-      const varExpr = eVar(expr.token().text)
-      varExpr.source = [expr]
-      return varExpr
-    }
-
-    case 'literalExpr': {
-      const token = expr.token()
-      switch (token.type) {
-        case parser.INTEGER:
-          return eLiteral(parseInt(token.text))
-        case parser.FLOAT:
-          return eLiteral(parseFloat(token.text))
-
-        case parser.BOOLEAN:
-          return eLiteral(token.text === 'true')
-
-        case parser.STRING:
-          return eLiteral(JSON.parse(token.text))
-
-        case parser.NATIVE:
-          return eLiteral(Symbol.for(token.text.slice(1)))
-
-        default:
-          throw new ParseError('Invalid literal', expr)
-      }
-    }
-
-    case 'binOp': {
-      const opToken = expr.tokenAt(1)
-      const varExpr = eVar(notnull(binOpFunctionName.get(opToken.type)))
-      varExpr.source = [opToken]
-      return eApply(varExpr, toCoreMap(expr.expr(), env))
-    }
-
-    case 'userOpExpr': {
-      const opToken = expr.userOp()
-      const varExpr = eVar(opToken.token().text)
-      varExpr.source = [opToken]
-      return eApply(varExpr, toCoreMap(expr.expr(), env))
-    }
-
-    case 'unOp': {
-      const opToken = expr.tokenAt(0)
-      const varExpr = eVar(notnull(unOpFunctionName.get(opToken.type)))
-      varExpr.source = [opToken]
-      return eApply(varExpr, [toCore(expr.expr(), env)])
-    }
-
-    // case 'call': {
-    //   const apply = expr.apply()
-    //   if (apply != null) {
-    //     const args = apply.args() //.arg()
-    //   }
-    // }
-  }
-
-  throw new Error('À coder: ' + expr.contextName)
-}
-
-// function listUnNull(nullOrList)
 
 function toCoreMap(expr: $ReadOnlyArray<TPNode>, env: Env): Expr[] {
   return fastmap(expr, e => toCore(e, env))
