@@ -67,3 +67,8 @@ export function arrayEqual (a: mixed[], b: mixed[]) : boolean {
   // if (!(itemA.done && itemB.done)) throw new Error('Assertion error')
   return true
 }
+
+export function notnull<T> (value: ?T) : T {
+  if (value == null) throw new Error('Null or undefined value')
+  return value
+}

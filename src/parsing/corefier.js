@@ -8,6 +8,9 @@ import type { TPNode } from '../parsing/parser'
 import { parser, nodeName, tokenName, tokenPosition, parse, ParseError } from '../parsing/parser' // eslint-disable-line
 import { eApply, eVar, eLet, eLiteral, eLambda, eIfElse } from '../expr/Expr'
 
+import { fastmap } from '../utils/fastArray'
+import { notnull } from '../utils/prelude'
+
 type Env = Map<string, string>
 
 function newEnv(env: Env, ids: string[]): Env {
@@ -51,7 +54,7 @@ function _toCore(expr: TPNode, env: Env): Expr {
     case 'letExpr': {
       const defs = expr.definition()
       if (defs.length !== 0) {
-        throw new Error("Pas fini")
+        throw new Error('Pas fini')
       }
       return toCore(expr.expr(), env)
     }
@@ -79,16 +82,22 @@ function _toCore(expr: TPNode, env: Env): Expr {
           return eLiteral(Symbol.for(token.text.slice(1)))
 
         default:
-          throw new ParseError("Invalid literal", expr)
+          throw new ParseError('Invalid literal', expr)
       }
     }
-    // case 'binOp': {
-    //   // Apply(resolveVarString(binOpFunctionName(o.operator.tokenType), o), Seq(o.left, o.right))
-    //   eApply(binOpFunctionName[expr.token(1)], expr.expr())
-    // }
+    case 'binOp': {
+      const optoken = expr.tokenAt(1)
+      const varExpr = eVar(notnull(binOpFunctionName.get(optoken.type)))
+      varExpr.source = [optoken]
+      return eApply(varExpr, toCoreMap(expr.expr(), env))
+    }
   }
 
   throw new Error('À coder: ' + expr.contextName)
+}
+
+function toCoreMap(expr: $ReadOnlyArray<TPNode>, env: Env): Expr[] {
+  return fastmap(expr, e => toCore(e, env))
 }
 
 const emptyEnv = new Map()

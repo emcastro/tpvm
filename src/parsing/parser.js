@@ -5,6 +5,7 @@ import { TerminalNode, TerminalNodeImpl } from 'antlr4/tree/Tree' // eslint-disa
 import { TPGrammarParser } from '../generated/TPGrammarParser'
 import { TPGrammarLexer } from '../generated/TPGrammarLexer'
 import _ from 'lodash'
+import { fasteach } from '../utils/fastArray'
 
 export { TPGrammarParser as parser }
 
@@ -27,7 +28,7 @@ antlr4.ParserRuleContext.prototype.loneChild = function () {
   const c = this.children
   if (c == null || c.length !== 1) {
     let result
-    for (let e of this.children) {
+    fasteach(this.children, e => {
       // if (!(e instanceof TerminalNode)) {
       if (e.constructor !== TerminalNodeImpl) {
         if (result !== undefined) {
@@ -35,7 +36,7 @@ antlr4.ParserRuleContext.prototype.loneChild = function () {
         }
         result = e
       }
-    }
+    })
     if (result === undefined) {
       throw new Error('Not a lone-child node: no children')
     }
@@ -49,6 +50,14 @@ antlr4.ParserRuleContext.prototype.token = function () {
     throw new Error('Not a token node')
   }
   return this.start
+}
+
+antlr4.ParserRuleContext.prototype.tokenAt = function (idx) {
+  const terminal = this.children[idx]
+  if (terminal.symbol == null) {
+    throw new Error('Not a token node')
+  }
+  return terminal.symbol
 }
 
 // Antlr4 typing
@@ -76,7 +85,7 @@ type Node = {
 // Typeing assistance for Nodes for TPGrammar
 type A<T> = () => (T)
 
-type N<n> = Node & { contextName: n }
+type N<n> = Node & { contextName: n, tokenAt: number => Token }
 
 export type TopLevel = N<'topLevel'> & { definition: A<Definition[]>, expr: A<Expr> }
 

@@ -62,7 +62,8 @@
       "it",
       "expect",
       "Iterator",
-      "IteratorResult"
+      "IteratorResult",
+      "$ReadOnlyArray"
     ],
     "ignore": [
       "flow-typed",

@@ -5,7 +5,7 @@ import type { Expr, Apply, IfElse, Let, Lambda } from '../generated/genExpr'
 import { SExprRenderer } from '../utils/SExprRenderer'
 import { iteratorToArray } from '../utils/prelude'
 import _ from 'lodash'
-import type { TPNode } from '../parsing/parser'
+import type { TPNode, Token } from '../parsing/parser'
 
 export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr];
@@ -96,14 +96,14 @@ export class ExprBase {
   }
 
   /** Link to the source code */
-  source: TPNode[]
+  source: (TPNode | Token)[]
 
-  setSource (source: TPNode | TPNode[]): this{
-    if (Array.isArray(source)) {
-      this.source = source
-    } else {
-      this.source = [source]
-    }
-    return this
-  }
+  // setSource (source: TPNode | TPNode[]): this{
+  //   if (Array.isArray(source)) {
+  //     this.source = source
+  //   } else {
+  //     this.source = [source]
+  //   }
+  //   return this
+  // }
 }
