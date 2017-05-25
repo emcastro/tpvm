@@ -91,7 +91,7 @@ export type TopLevel = N<'topLevel'> & { definition: A<Definition[]>, expr: A<Ex
 
 export type Expr = Simple | Call | UnOp | BinOp | UserOpExpr
 export type Simple = N<'simple'> & { simpleExpr: A<SimpleExpr> }
-export type Call = N<'call'> & { expr: A<Expr>, apply: A<?Apply>, attr: A <?Attr > }
+export type Call = N<'call'> & { expr: A<Expr>, apply: A<?Apply>, attr: A <?Attr> }
 export type UnOp = N<'unOp'> & { expr: A<Expr> }
 export type BinOp = N<'binOp'> & { expr: A<Expr[]> }
 export type UserOpExpr = N<'userOpExpr'> & { expr: A<Expr[]>, userOp: A<UserOp> }

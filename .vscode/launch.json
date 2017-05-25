@@ -53,7 +53,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program (bench)",
-      "program": "${workspaceRoot}/bench/functional.foreach.bench.js",
+      "program": "${workspaceRoot}/bench/switchcase.bench.js",
       "protocol": "inspector",
       "outFiles": [
         "${workspaceRoot}/build/**/*.js"

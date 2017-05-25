@@ -3,9 +3,9 @@
 const { color, usage, newSuite, run } = require('./utils/bench')
 const _ = require('lodash')
 
-const { foreach } = require('../build/utils/fastArray')
+const { fasteach } = require('../build/utils/fastArray')
 
-usage('foreach', ['_.forEach', 'for of', 'Array.forEach'])
+usage('fasteach', ['_.forEach', 'for of', 'Array.forEach'])
 
 for (let i = 0; i < 15; i++) {
   console.log(color.yellow('list.length = ' + i))
@@ -24,9 +24,9 @@ for (let i = 0; i < 15; i++) {
   //   return r
   // })
 
-  suite.add('foreach', () => {
+  suite.add('fasteach', () => {
     const r = []
-    foreach(list, x => r.push(`(${x})`))
+    fasteach(list, x => r.push(`(${x})`))
     return r
   })
 
@@ -50,5 +50,5 @@ for (let i = 0; i < 15; i++) {
     return r
   })
 
-  run(suite, 'foreach')
+  run(suite, 'fasteach')
 }

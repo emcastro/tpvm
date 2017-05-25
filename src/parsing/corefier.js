@@ -58,12 +58,16 @@ function _toCore(expr: TPNode, env: Env): Expr {
       }
       return toCore(expr.expr(), env)
     }
-    case 'simple': {
-      return toCore(expr.simpleExpr(), env)
+    case 'simple': { // includes parenthesis expressions
+      return toCore(expr.simpleExpr().loneChild(), env)
     }
-    case 'simpleExpr': {
-      return toCore(expr.loneChild(), env)
+
+    case 'varExpr': {
+      const varExpr = eVar(expr.token().text)
+      varExpr.source = [expr]
+      return varExpr
     }
+
     case 'literalExpr': {
       const token = expr.token()
       switch (token.type) {
@@ -85,16 +89,40 @@ function _toCore(expr: TPNode, env: Env): Expr {
           throw new ParseError('Invalid literal', expr)
       }
     }
+
     case 'binOp': {
-      const optoken = expr.tokenAt(1)
-      const varExpr = eVar(notnull(binOpFunctionName.get(optoken.type)))
-      varExpr.source = [optoken]
+      const opToken = expr.tokenAt(1)
+      const varExpr = eVar(notnull(binOpFunctionName.get(opToken.type)))
+      varExpr.source = [opToken]
       return eApply(varExpr, toCoreMap(expr.expr(), env))
     }
+
+    case 'userOpExpr': {
+      const opToken = expr.userOp()
+      const varExpr = eVar(opToken.token().text)
+      varExpr.source = [opToken]
+      return eApply(varExpr, toCoreMap(expr.expr(), env))
+    }
+
+    case 'unOp': {
+      const opToken = expr.tokenAt(0)
+      const varExpr = eVar(notnull(unOpFunctionName.get(opToken.type)))
+      varExpr.source = [opToken]
+      return eApply(varExpr, [toCore(expr.expr(), env)])
+    }
+
+    // case 'call': {
+    //   const apply = expr.apply()
+    //   if (apply != null) {
+    //     const args = apply.args() //.arg()
+    //   }
+    // }
   }
 
   throw new Error('À coder: ' + expr.contextName)
 }
+
+// function listUnNull(nullOrList)
 
 function toCoreMap(expr: $ReadOnlyArray<TPNode>, env: Env): Expr[] {
   return fastmap(expr, e => toCore(e, env))
@@ -104,7 +132,7 @@ const emptyEnv = new Map()
 
 try {
   const tree: any = parse(`
-  (1+1)
+  {plus(a,b)}
   `)
   const core = toCore(tree, emptyEnv)
 
