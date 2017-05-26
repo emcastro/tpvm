@@ -189,9 +189,9 @@ var symbolicNames = [ null, null, null, null, null, null, null, null, null,
 
 var ruleNames =  [ "topLevel", "expr", "simpleExpr", "definition", "valueDefinition", 
                    "functionDefinition", "tupleDefinition", "typedVar", 
-                   "typedParam", "attr", "method", "userOp", "varId", "functionId", 
-                   "paramId", "apply", "arg", "typeAnnotation", "args", 
-                   "typedParams", "typedVars", "literalExpr", "ifElseExpr", 
+                   "typedParam", "attr", "method", "userOpId", "varId", 
+                   "functionId", "paramId", "apply", "arg", "typeAnnotation", 
+                   "args", "typedParams", "typedVars", "literalExpr", "ifElseExpr", 
                    "lambdaExpr", "shortLambdaExpr", "varExpr", "letExpr" ];
 
 function TPGrammarParser (input) {
@@ -262,7 +262,7 @@ TPGrammarParser.RULE_typedVar = 7;
 TPGrammarParser.RULE_typedParam = 8;
 TPGrammarParser.RULE_attr = 9;
 TPGrammarParser.RULE_method = 10;
-TPGrammarParser.RULE_userOp = 11;
+TPGrammarParser.RULE_userOpId = 11;
 TPGrammarParser.RULE_varId = 12;
 TPGrammarParser.RULE_functionId = 13;
 TPGrammarParser.RULE_paramId = 14;
@@ -456,8 +456,8 @@ UserOpExprContext.prototype.expr = function(i) {
     }
 };
 
-UserOpExprContext.prototype.userOp = function() {
-    return this.getTypedRuleContext(UserOpContext,0);
+UserOpExprContext.prototype.userOpId = function() {
+    return this.getTypedRuleContext(UserOpIdContext,0);
 };
 
 function SimpleContext(parser, ctx) {
@@ -745,7 +745,7 @@ TPGrammarParser.prototype.expr = function(_p) {
                         throw new antlr4.error.FailedPredicateException(this, "this.precpred(this._ctx, 4)");
                     }
                     this.state = 97;
-                    this.userOp();
+                    this.userOpId();
                     this.state = 98;
                     this.expr(5);
                     break;
@@ -1437,7 +1437,7 @@ TPGrammarParser.prototype.method = function() {
     return localctx;
 };
 
-function UserOpContext(parser, parent, invokingState) {
+function UserOpIdContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -1446,26 +1446,26 @@ function UserOpContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = TPGrammarParser.RULE_userOp;
+    this.ruleIndex = TPGrammarParser.RULE_userOpId;
     return this;
 }
 
-UserOpContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-UserOpContext.prototype.constructor = UserOpContext;
+UserOpIdContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+UserOpIdContext.prototype.constructor = UserOpIdContext;
 
-UserOpContext.prototype.ID = function() {
+UserOpIdContext.prototype.ID = function() {
     return this.getToken(TPGrammarParser.ID, 0);
 };
 
 
 
 
-TPGrammarParser.UserOpContext = UserOpContext;
+TPGrammarParser.UserOpIdContext = UserOpIdContext;
 
-TPGrammarParser.prototype.userOp = function() {
+TPGrammarParser.prototype.userOpId = function() {
 
-    var localctx = new UserOpContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 22, TPGrammarParser.RULE_userOp);
+    var localctx = new UserOpIdContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 22, TPGrammarParser.RULE_userOpId);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 173;

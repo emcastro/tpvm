@@ -10,7 +10,7 @@ expr: simpleExpr # simple
     | expr (CONCAT | MINUSMINUS) expr   # binOp
     | expr (EQ | LT | LE | GT | GE | NEQ) expr
                                         # binOp // Comparator
-    | expr userOp expr                  # userOpExpr
+    | expr userOpId expr                # userOpExpr
     | NOT expr                          # unOp  // Logic
     | expr AND expr                     # binOp
     | expr OR expr                      # binOp
@@ -42,7 +42,7 @@ attr: ID;
 
 method: ID;
 
-userOp: ID;
+userOpId: ID;
 
 varId: ID;
 

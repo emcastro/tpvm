@@ -89,12 +89,12 @@ type N<n> = Node & { contextName: n, tokenAt: number => Token }
 
 export type TopLevel = N<'topLevel'> & { definition: A<Definition[]>, expr: A<Expr> }
 
-export type Expr = Simple | Call | UnOp | BinOp | UserOpExpr
+export type Expr = Simple | Call | UnOp | BinOp | UserOp
 export type Simple = N<'simple'> & { simpleExpr: A<SimpleExpr> }
 export type Call = N<'call'> & { expr: A<Expr>, apply: A<?Apply>, attr: A <?Attr> }
 export type UnOp = N<'unOp'> & { expr: A<Expr> }
 export type BinOp = N<'binOp'> & { expr: A<Expr[]> }
-export type UserOpExpr = N<'userOpExpr'> & { expr: A<Expr[]>, userOp: A<UserOp> }
+export type UserOp = N<'userOpExpr'> & { expr: A<Expr[]>, userOp: A<UserOpId> }
 
 export type SimpleExpr = N<'simpleExpr'> & {
   loneChild: A<LiteralExpr | Expr | VarExpr | IfElseExpr | ShortLambdaExpr | LambdaExpr | LetExpr>,
@@ -115,7 +115,7 @@ type TOKEN<n> = N<n> & { token: () => Token }
 
 export type Attr = TOKEN<'attr'>
 export type Method = TOKEN<'method'>
-export type UserOp = TOKEN<'userOp'>
+export type UserOpId = TOKEN<'userOp'>
 export type VarId = TOKEN<'varId'>
 export type FunctionId = TOKEN<'functionId'>
 export type ParamId = TOKEN<'paramId'>
@@ -144,7 +144,7 @@ export type TPNode = (
   TopLevel | LetExpr
   | Definition | ValueDefinition | FunctionDefinition | TupleDefinition
   | TypedVar | TypedVars | Arg | Args | TypedParams | TypedParam
-  | Attr | Method | UserOp | VarId | FunctionId | ParamId
+  | Attr | Method | UserOpId | VarId | FunctionId | ParamId
   | Apply | TypeAnnotation
   | IfElseExpr | LambdaExpr | ShortLambdaExpr
   | VarExpr | LiteralExpr | SimpleExpr | Expr

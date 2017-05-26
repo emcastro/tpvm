@@ -43,7 +43,7 @@ const unOpFunctionName = new Map([
 
 import type { 
   LetExpr, TopLevel, Simple, VarExpr, LiteralExpr,
-    BinOp, UnOp, UserOpExpr
+    BinOp, UnOp, UserOp, Call
 } from './parser'
 
 
@@ -95,7 +95,7 @@ const toCoreSwitchMap = switchMap2({
     return eApply(varExpr, toCoreMap(expr.expr(), env))
   },
 
-  userOpExpr(expr: UserOpExpr, env: Env) {
+  userOp(expr: UserOp, env: Env) {
     const opToken = expr.userOp()
     const varExpr = eVar(opToken.token().text)
     varExpr.source = [opToken]
@@ -107,6 +107,10 @@ const toCoreSwitchMap = switchMap2({
     const varExpr = eVar(notnull(unOpFunctionName.get(opToken.type)))
     varExpr.source = [opToken]
     return eApply(varExpr, [toCore(expr.expr(), env)])
+  },
+
+  call(expr: Call, env: Env) {
+    throw 'BOOO'
   }
 
 })

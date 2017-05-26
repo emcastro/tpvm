@@ -508,7 +508,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
             simpleExpr
               varExpr
                 ID b   @13:11
-        userOp
+        userOpId
           ID pow   @13:13
         simple:expr
           simpleExpr
@@ -532,7 +532,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
             simpleExpr
               varExpr
                 ID x1   @14:14
-        userOp
+        userOpId
           ID div   @14:17
         simple:expr
           simpleExpr
@@ -627,7 +627,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           simpleExpr
             varExpr
               ID a   @20:10
-        userOp
+        userOpId
           ID op   @20:12
         simple:expr
           simpleExpr
@@ -663,7 +663,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           simpleExpr
             varExpr
               ID a   @21:10
-        userOp
+        userOpId
           ID op   @21:12
         simple:expr
           simpleExpr
@@ -704,7 +704,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           simpleExpr
             varExpr
               ID a   @22:10
-        userOp
+        userOpId
           ID op   @22:12
         simple:expr
           simpleExpr
@@ -743,7 +743,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           simpleExpr
             varExpr
               ID a   @23:10
-        userOp
+        userOpId
           ID op   @23:12
         simple:expr
           simpleExpr
@@ -994,7 +994,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
                     varExpr
                       ID bidule   @31:11
             ')' )   @31:17
-        userOp
+        userOpId
           ID union   @31:19
         call:expr
           simple:expr
@@ -1036,7 +1036,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
               simpleExpr
                 varExpr
                   ID c   @33:15
-        userOp
+        userOpId
           ID union   @33:17
         unOp:expr
           MINUS -   @33:23
@@ -1067,7 +1067,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
               simpleExpr
                 varExpr
                   ID b   @35:15
-          userOp
+          userOpId
             ID union   @35:17
           binOp:expr
             simple:expr
@@ -1083,7 +1083,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
               '.' .   @35:29
               attr
                 ID d   @35:30
-        userOp
+        userOpId
           ID union   @35:32
         simple:expr
           simpleExpr
@@ -2007,7 +2007,7 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
           simpleExpr
             varExpr
               ID set1   @70:6
-        userOp
+        userOpId
           ID union   @70:11
         simple:expr
           simpleExpr
