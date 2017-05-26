@@ -96,7 +96,7 @@ const toCoreSwitchMap = switchMap2({
   },
 
   userOp(expr: UserOp, env: Env) {
-    const opToken = expr.userOp()
+    const opToken = expr.userOpId()
     const varExpr = eVar(opToken.token().text)
     varExpr.source = [opToken]
     return eApply(varExpr, toCoreMap(expr.expr(), env))
@@ -110,34 +110,56 @@ const toCoreSwitchMap = switchMap2({
   },
 
   call(expr: Call, env: Env) {
-    throw 'BOOO'
+    const operator = toCore(expr.expr(), env)
+
+    const apply = expr.apply()
+    if (apply != null) {
+      const operands = fastmap(argList(apply.args()), x => toCore(x.expr(), env))
+      return eApply(operator, operands)
+    }
+
+    throw 'PAS FINI'
+
   }
 
 })
 
+import type { Args, TypedParams, TypedVars } from './parser'
+
+const emptyList = []
+
+function argList(args: ?Args) {
+  return (args == null) ? emptyList : args.arg()
+}
+
+function typedParamList(params: ?TypedParams) {
+  return (params == null) ? emptyList : params.typedParam()
+}
+
+function typedVarList(vars: ?TypedVars) {
+  return (vars == null) ? emptyList : vars.typedVar()
+}
+
+
 toCoreSwitchMap.set('topLevel', notnull(toCoreSwitchMap.get('letExpr')))
 
 function toCore(expr: TPNode, env: Env): Expr {
-  const toCoreExpr : any = toCoreSwitchMap.get(expr.contextName)
+  const toCoreExpr: any = toCoreSwitchMap.get(expr.contextName)
   if (toCoreExpr == null) throw new Error('À coder : ' + expr.contextName)
   const core = toCoreExpr(expr, env)
   core.source = [expr]  // TODO: arbitrer par rapport à ExprBase.setSource
   return core
 }
 
-function toCoreMap(expr: $ReadOnlyArray<TPNode>, env: Env): Expr[] {
-  return fastmap(expr, e => toCore(e, env))
+function toCoreMap(exprs: $ReadOnlyArray<TPNode>, env: Env): Expr[] {
+  return fastmap(exprs, e => toCore(e, env))
 }
 
 const emptyEnv = new Map()
 
-try {
-  const tree: any = parse(`
-  {plus(a,b)}
+const tree: any = parse(`
+  {plus(a,b.c)}
   `)
-  const core = toCore(tree, emptyEnv)
+const core = toCore(tree, emptyEnv)
 
-  console.log(core.toText())
-} catch (e) {
-  console.log(e)
-}
+console.log(core.toText())

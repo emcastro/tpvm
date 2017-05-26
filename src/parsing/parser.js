@@ -94,7 +94,7 @@ export type Simple = N<'simple'> & { simpleExpr: A<SimpleExpr> }
 export type Call = N<'call'> & { expr: A<Expr>, apply: A<?Apply>, attr: A <?Attr> }
 export type UnOp = N<'unOp'> & { expr: A<Expr> }
 export type BinOp = N<'binOp'> & { expr: A<Expr[]> }
-export type UserOp = N<'userOpExpr'> & { expr: A<Expr[]>, userOp: A<UserOpId> }
+export type UserOp = N<'userOp'> & { expr: A<Expr[]>, userOpId: A<UserOpId> }
 
 export type SimpleExpr = N<'simpleExpr'> & {
   loneChild: A<LiteralExpr | Expr | VarExpr | IfElseExpr | ShortLambdaExpr | LambdaExpr | LetExpr>,
@@ -115,14 +115,14 @@ type TOKEN<n> = N<n> & { token: () => Token }
 
 export type Attr = TOKEN<'attr'>
 export type Method = TOKEN<'method'>
-export type UserOpId = TOKEN<'userOp'>
+export type UserOpId = TOKEN<'userOpId'>
 export type VarId = TOKEN<'varId'>
 export type FunctionId = TOKEN<'functionId'>
 export type ParamId = TOKEN<'paramId'>
 
 export type Apply = N<'apply'> & { args: A<?Args> }
 
-export type Arg = N<'args'> & { expr: A<Expr> }
+export type Arg = N<'arg'> & { expr: A<Expr> }
 
 export type TypeAnnotation = N<'typeAnnotation'>
 
@@ -136,9 +136,9 @@ export type VarExpr = TOKEN<'varExpr'>
 
 export type LetExpr = N<'letExpr'> & { definition: A<Definition[]>, expr: A<Expr> }
 
-export type Args = N<'arg'> & { args: A<Arg> }
-export type TypedParams = N<'typedParams'> & { args: A<TypedParam> }
-export type TypedVars = N<'typedArg'> & { args: A<TypedVars> }
+export type Args = N<'args'> & { arg: A<Arg[]> }
+export type TypedParams = N<'typedParams'> & { typedParam: A<TypedParam[]> }
+export type TypedVars = N<'typedArg'> & { typedVar: A<TypedVars[]> }
 
 export type TPNode = (
   TopLevel | LetExpr
