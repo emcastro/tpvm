@@ -105,8 +105,8 @@ export type Definition = N<'definition'> & {
 } // transparent node
 
 export type ValueDefinition = N<'valueDefinition'> & { typedVar: A<TypedVar>, expr: A<Expr> }
-export type FunctionDefinition = N<'functionDefintion'> & { functionId: A<FunctionId>, typedParams: A<?TypedParams>}
-export type TupleDefinition = N<'tupleDefinition'> & { typedVars: A<TypedVars>, expr: A<Expr> }
+export type FunctionDefinition = N<'functionDefinition'> & { functionId: A<FunctionId>, typedParams: A<?TypedParams>}
+export type TupleDefinition = N<'tupleDefinition'> & { typedVars: A<?TypedVars>, expr: A<Expr> }
 
 export type TypedVar = N<'typedVar'> & { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
 export type TypedParam = N<'typedParam'> & { varId: A<ParamId>, typeAnnotation: A<TypeAnnotation> }
@@ -138,7 +138,7 @@ export type LetExpr = N<'letExpr'> & { definition: A<Definition[]>, expr: A<Expr
 
 export type Args = N<'args'> & { arg: A<Arg[]> }
 export type TypedParams = N<'typedParams'> & { typedParam: A<TypedParam[]> }
-export type TypedVars = N<'typedArg'> & { typedVar: A<TypedVars[]> }
+export type TypedVars = N<'typedArg'> & { typedVar: A<TypedVar[]> }
 
 export type TPNode = (
   TopLevel | LetExpr

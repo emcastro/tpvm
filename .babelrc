@@ -4,6 +4,7 @@
     // "transform-es2015-arrow-functions",
     // "transform-es2015-block-scoped-functions",
     // "transform-es2015-block-scoping",
+    "transform-class-properties",
     "transform-object-rest-spread",
     "transform-es2015-modules-commonjs",
     "transform-inline-consecutive-adds",

@@ -32,7 +32,7 @@ valueDefinition: typedVar EQ_DEF expr;
 
 functionDefinition: functionId '(' typedParams? ')' typeAnnotation EQ_DEF expr;
 
-tupleDefinition: '(' typedVars ')' EQ_DEF expr;
+tupleDefinition: '(' typedVars? ')' EQ_DEF expr;
 
 typedVar: varId typeAnnotation;
 

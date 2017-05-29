@@ -27,3 +27,28 @@ export function fasteach<T> (array: $ReadOnlyArray<T>, f: T=>mixed): void {
     f(array[i])
   }
 }
+
+export function flapmap<T, R> (array: Array<T>, f: T=>(R | R[])): R[] {
+  const length = array.length
+  const result = []
+  let j = 0
+  for (let i = 0; i < length; i++) {
+    const r = f(array[i])
+    if (Array.isArray(r)) {
+      for (let k = 0; k < r.length; k++) {
+        result[j++] = r[k]
+      }
+    } else {
+      if (r !== undefined) {
+        result[j++] = r
+      }
+    }
+  }
+  return result
+}
+
+
+export function zip<A, B> (array1: A[], array2: B[]): [A, B][] {
+  throw 'À coder'
+  return []
+}
