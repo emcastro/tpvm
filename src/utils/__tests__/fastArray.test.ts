@@ -1,6 +1,5 @@
-// @flow
 
-import _ from 'lodash'
+import * as _ from 'lodash'
 
 import { fastmap, fasteach, flapmap } from '../fastArray'
 
@@ -18,8 +17,8 @@ describe('fasteach', () => {
     for (let i = 0; i < 15; i++) {
       const list = _.times(i)
 
-      const foreachResult = []
-      const arrayForEachResult = []
+      const foreachResult : string[] = []
+      const arrayForEachResult : string[] = []
       fasteach(list, x => foreachResult.push(`(${x})`))
       list.forEach(x => arrayForEachResult.push(`(${x})`))
 
@@ -30,14 +29,14 @@ describe('fasteach', () => {
 
 describe('flatmap', () => {
   it('flattens when needed', () => {
-    expect(flapmap([1, [2, 3], [], null, undefined, [[5]]], x => x)).toEqual([1, 2, 3, null, [5]])
+    expect(flapmap<any,any>([1, [2, 3], [], null, undefined, [[5]]], x => x)).toEqual([1, 2, 3, null, [5]])
   })
 
   it('works like _.flatMap', () => {
     for (let i = 0; i < 5; i++) {
       const list = _.times(i)
 
-      const flattened = _.flatMap((list: any), x => _.times(x))
+      const flattened = _.flatMap(list, x => _.times(x))
       expect(flapmap(list, x => _.times(x))).toEqual(flattened)
     }
   })

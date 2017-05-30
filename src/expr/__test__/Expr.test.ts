@@ -1,11 +1,11 @@
 // @flow
 
-import { eApply, eIfElse, eLambda, eLet, eLiteral, eVar } from '../Expr.js'
+import { eApply, eIfElse, eLambda, eLet, eLiteral, eVar, Expr } from '../Expr.js'
 
 describe('Expr', () => {
   function build () {
     return eLet(
-      new Map([
+      new Map<string, Expr>([
         // Literals with different types of data
         ['aString', eLiteral('a')],
         ['aNumber', eLiteral(1)],

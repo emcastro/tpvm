@@ -1,4 +1,3 @@
-// @flow
 
 import { eApply, eVar, eLet, eLiteral, eLambda, eIfElse } from './expr/Expr'
 import eval1, { Env } from './runtime1/eval1'

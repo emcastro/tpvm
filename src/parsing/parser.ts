@@ -1,15 +1,15 @@
 // @flow
 
-import antlr4 from 'antlr4'
-import { TerminalNode, TerminalNodeImpl } from 'antlr4/tree/Tree' // eslint-disable-line
-import { TPGrammarParser } from '../generated/TPGrammarParser'
-import { TPGrammarLexer } from '../generated/TPGrammarLexer'
-import _ from 'lodash'
+const antlr4 = require('antlr4')
+const { TerminalNode, TerminalNodeImpl } = require('antlr4/tree/Tree') // eslint-disable-line
+const { TPGrammarParser } = require('../generated/TPGrammarParser')
+const { TPGrammarLexer } = require('../generated/TPGrammarLexer')
+import * as _ from 'lodash'
 import { fasteach } from '../utils/fastArray'
 
 export { TPGrammarParser as parser }
 
-function annotateParserWithContextName (parser: antlr4.Parser) {
+function annotateParserWithContextName (parser : any) {
   const suffix = 'Context'
 
   for (let attrName in parser) {
@@ -27,7 +27,7 @@ annotateParserWithContextName(TPGrammarParser)
 antlr4.ParserRuleContext.prototype.loneChild = function () {
   const c = this.children
   if (c == null || c.length !== 1) {
-    let result
+    let result : any
     fasteach(this.children, e => {
       // if (!(e instanceof TerminalNode)) {
       if (e.constructor !== TerminalNodeImpl) {
@@ -52,7 +52,7 @@ antlr4.ParserRuleContext.prototype.token = function () {
   return this.start
 }
 
-antlr4.ParserRuleContext.prototype.tokenAt = function (idx) {
+antlr4.ParserRuleContext.prototype.tokenAt = function (idx : number) {
   const terminal = this.children[idx]
   if (terminal.symbol == null) {
     throw new Error('Not a token node')
@@ -74,24 +74,25 @@ export type Token = {
 /* eslint-disable no-use-before-define */
 
 type Node = {
-  symbol: ?Token,
+  symbol?: Token,
   parser: { ruleNames: string[] },
   ruleIndex: number,
   start: Token,
   stop: Token,
-  children: ?TPNode[]
+  children?: TPNode[]
 }
 
 // Typeing assistance for Nodes for TPGrammar
 type A<T> = () => (T)
+type NA<T> = () => (T | null)
 
-type N<n> = Node & { contextName: n, tokenAt: number => Token }
+type N<n> = Node & { contextName: n, tokenAt: (n:number) => Token }
 
 export type TopLevel = N<'topLevel'> & { definition: A<Definition[]>, expr: A<Expr> }
 
 export type Expr = Simple | Call | UnOp | BinOp | UserOp
 export type Simple = N<'simple'> & { simpleExpr: A<SimpleExpr> }
-export type Call = N<'call'> & { expr: A<Expr>, apply: A<?Apply>, attr: A <?Attr> }
+export type Call = N<'call'> & { expr: A<Expr>, apply: NA<Apply>, attr: NA<Attr> }
 export type UnOp = N<'unOp'> & { expr: A<Expr> }
 export type BinOp = N<'binOp'> & { expr: A<Expr[]> }
 export type UserOp = N<'userOp'> & { expr: A<Expr[]>, userOpId: A<UserOpId> }
@@ -105,8 +106,8 @@ export type Definition = N<'definition'> & {
 } // transparent node
 
 export type ValueDefinition = N<'valueDefinition'> & { typedVar: A<TypedVar>, expr: A<Expr> }
-export type FunctionDefinition = N<'functionDefinition'> & { functionId: A<FunctionId>, typedParams: A<?TypedParams>}
-export type TupleDefinition = N<'tupleDefinition'> & { typedVars: A<?TypedVars>, expr: A<Expr> }
+export type FunctionDefinition = N<'functionDefinition'> & { functionId: A<FunctionId>, typedParams: NA<TypedParams>}
+export type TupleDefinition = N<'tupleDefinition'> & { typedVars: NA<TypedVars>, expr: A<Expr> }
 
 export type TypedVar = N<'typedVar'> & { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
 export type TypedParam = N<'typedParam'> & { varId: A<ParamId>, typeAnnotation: A<TypeAnnotation> }
@@ -120,7 +121,7 @@ export type VarId = TOKEN<'varId'>
 export type FunctionId = TOKEN<'functionId'>
 export type ParamId = TOKEN<'paramId'>
 
-export type Apply = N<'apply'> & { args: A<?Args> }
+export type Apply = N<'apply'> & { args: NA<Args> }
 
 export type Arg = N<'arg'> & { expr: A<Expr> }
 
@@ -129,7 +130,7 @@ export type TypeAnnotation = N<'typeAnnotation'>
 export type LiteralExpr = TOKEN<'literalExpr'>
 
 export type IfElseExpr = N<'ifElseExpr'> & { expr: A<Expr[]> }
-export type LambdaExpr = N<'lambdaExpr'> & { typedParams: A<?TypedParams>, expr: A<Expr> }
+export type LambdaExpr = N<'lambdaExpr'> & { typedParams: NA<TypedParams>, expr: A<Expr> }
 export type ShortLambdaExpr = N<'shortLambdaExpr'> & { paramId: A<ParamId>, expr: A<Expr> }
 
 export type VarExpr = TOKEN<'varExpr'>
@@ -167,8 +168,7 @@ export function tokenPosition (token: Token) {
 }
 
 export function nodeName (node: TPNode) {
-  // $TypingTrick
-  const ruleClass: string = node.__proto__.constructor.name // eslint-disable-line
+  const ruleClass: string = (node as any).__proto__.constructor.name // eslint-disable-line
   const ruleCategory = node.contextName
 
   const ruleName = node.parser.ruleNames[node.ruleIndex]
@@ -182,7 +182,7 @@ export function nodePosition (node: TPNode) {
   return `${node.start.line}:${node.start.column + 1}`
 }
 
-export function dump (node: TPNode, tab: ?string): string {
+export function dump (node: TPNode, tab?: string): string {
   const _tab = tab || ''
   const nextTab = _tab + '  '
   let line = _tab + nodeName(node) + '\n'

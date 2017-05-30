@@ -1,10 +1,9 @@
-// @flow
+
 /* eslint-disable  no-multiple-empty-lines */
 // generated code
 
-import { ExprBase } from '../expr/ExprBase'
+import { ExprBase, LiteralValue } from '../expr/ExprBase'
 import { equal } from '../utils/prelude'
-import type { LiteralValue } from '../expr/ExprBase'
 
 // eslint-disable-next-line no-use-before-define
 export type Expr = Var | Literal | Apply | IfElse | Lambda | Let
@@ -13,10 +12,11 @@ export type Expr = Var | Literal | Apply | IfElse | Lambda | Let
 
 export const VAR = 0
 
-class Var extends ExprBase {
+export class Var extends ExprBase {
   // generated code
 
   typ: typeof VAR
+
   varId: string
 
   constructor (varId: string) {
@@ -36,7 +36,7 @@ class Var extends ExprBase {
     return eVar(subExprs[0])
   }
 
-  equals (that: mixed | Var) : boolean {
+  equals (that: any) : boolean { // Var
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -47,48 +47,49 @@ class Var extends ExprBase {
     return false
   }
 
-  notEquals (that: mixed) : boolean { return !(this.equals(that)) }
+  notEquals (that: any) : boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Var */
-export function eVar (varId: string) : Var {
+export let eVar: ((varId: string) => Var) & { typ: typeof VAR }
+
+eVar = ((varId: string) => {
   // generated code
   return new Var(varId)
-}
+}) as typeof eVar
 
 eVar.typ = VAR // Shortcut that avoids importing VAR
-
-export type { Var } // Export type only, not the class implementation
 
 //
 
 
 export const LITERAL = 1
 
-class Literal extends ExprBase {
+export class Literal extends ExprBase {
   // generated code
 
   typ: typeof LITERAL
-  value: LiteralValue | Symbol
 
-  constructor (value: LiteralValue | Symbol) {
+  value: LiteralValue | symbol
+
+  constructor (value: LiteralValue | symbol) {
     // generated code
     super()
     this.typ = LITERAL // typ is faster when set on instances
     this.value = value
   }
 
-  children () : [LiteralValue | Symbol] {
+  children () : [LiteralValue | symbol] {
     // generated code
     return [this.value]
   }
 
-  rewrite (subExprs: [LiteralValue | Symbol]) : Literal {
+  rewrite (subExprs: [LiteralValue | symbol]) : Literal {
     // generated code
     return eLiteral(subExprs[0])
   }
 
-  equals (that: mixed | Literal) : boolean {
+  equals (that: any) : boolean { // Literal
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -99,28 +100,29 @@ class Literal extends ExprBase {
     return false
   }
 
-  notEquals (that: mixed) : boolean { return !(this.equals(that)) }
+  notEquals (that: any) : boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Literal */
-export function eLiteral (value: LiteralValue | Symbol) : Literal {
+export let eLiteral: ((value: LiteralValue | symbol) => Literal) & { typ: typeof LITERAL }
+
+eLiteral = ((value: LiteralValue | symbol) => {
   // generated code
   return new Literal(value)
-}
+}) as typeof eLiteral
 
 eLiteral.typ = LITERAL // Shortcut that avoids importing LITERAL
-
-export type { Literal } // Export type only, not the class implementation
 
 //
 
 
 export const APPLY = 2
 
-class Apply extends ExprBase {
+export class Apply extends ExprBase {
   // generated code
 
   typ: typeof APPLY
+
   operator: Expr
   operands: Expr[]
 
@@ -142,7 +144,7 @@ class Apply extends ExprBase {
     return eApply(subExprs[0], subExprs[1])
   }
 
-  equals (that: mixed | Apply) : boolean {
+  equals (that: any) : boolean { // Apply
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -154,28 +156,29 @@ class Apply extends ExprBase {
     return false
   }
 
-  notEquals (that: mixed) : boolean { return !(this.equals(that)) }
+  notEquals (that: any) : boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Apply */
-export function eApply (operator: Expr, operands: Expr[]) : Apply {
+export let eApply: ((operator: Expr, operands: Expr[]) => Apply) & { typ: typeof APPLY }
+
+eApply = ((operator: Expr, operands: Expr[]) => {
   // generated code
   return new Apply(operator, operands)
-}
+}) as typeof eApply
 
 eApply.typ = APPLY // Shortcut that avoids importing APPLY
-
-export type { Apply } // Export type only, not the class implementation
 
 //
 
 
 export const IFELSE = 3
 
-class IfElse extends ExprBase {
+export class IfElse extends ExprBase {
   // generated code
 
   typ: typeof IFELSE
+
   ifClause: Expr
   thenClause: Expr
   elseClause: Expr
@@ -199,7 +202,7 @@ class IfElse extends ExprBase {
     return eIfElse(subExprs[0], subExprs[1], subExprs[2])
   }
 
-  equals (that: mixed | IfElse) : boolean {
+  equals (that: any) : boolean { // IfElse
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -212,28 +215,29 @@ class IfElse extends ExprBase {
     return false
   }
 
-  notEquals (that: mixed) : boolean { return !(this.equals(that)) }
+  notEquals (that: any) : boolean { return !(this.equals(that)) }
 }
 
 /** Builder for IfElse */
-export function eIfElse (ifClause: Expr, thenClause: Expr, elseClause: Expr) : IfElse {
+export let eIfElse: ((ifClause: Expr, thenClause: Expr, elseClause: Expr) => IfElse) & { typ: typeof IFELSE }
+
+eIfElse = ((ifClause: Expr, thenClause: Expr, elseClause: Expr) => {
   // generated code
   return new IfElse(ifClause, thenClause, elseClause)
-}
+}) as typeof eIfElse
 
 eIfElse.typ = IFELSE // Shortcut that avoids importing IFELSE
-
-export type { IfElse } // Export type only, not the class implementation
 
 //
 
 
 export const LAMBDA = 4
 
-class Lambda extends ExprBase {
+export class Lambda extends ExprBase {
   // generated code
 
   typ: typeof LAMBDA
+
   params: string[]
   body: Expr
 
@@ -255,7 +259,7 @@ class Lambda extends ExprBase {
     return eLambda(subExprs[0], subExprs[1])
   }
 
-  equals (that: mixed | Lambda) : boolean {
+  equals (that: any) : boolean { // Lambda
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -267,28 +271,29 @@ class Lambda extends ExprBase {
     return false
   }
 
-  notEquals (that: mixed) : boolean { return !(this.equals(that)) }
+  notEquals (that: any) : boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Lambda */
-export function eLambda (params: string[], body: Expr) : Lambda {
+export let eLambda: ((params: string[], body: Expr) => Lambda) & { typ: typeof LAMBDA }
+
+eLambda = ((params: string[], body: Expr) => {
   // generated code
   return new Lambda(params, body)
-}
+}) as typeof eLambda
 
 eLambda.typ = LAMBDA // Shortcut that avoids importing LAMBDA
-
-export type { Lambda } // Export type only, not the class implementation
 
 //
 
 
 export const LET = 5
 
-class Let extends ExprBase {
+export class Let extends ExprBase {
   // generated code
 
   typ: typeof LET
+
   defs: Map<string, Expr>
   body: Expr
 
@@ -310,7 +315,7 @@ class Let extends ExprBase {
     return eLet(subExprs[0], subExprs[1])
   }
 
-  equals (that: mixed | Let) : boolean {
+  equals (that: any) : boolean { // Let
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -322,18 +327,18 @@ class Let extends ExprBase {
     return false
   }
 
-  notEquals (that: mixed) : boolean { return !(this.equals(that)) }
+  notEquals (that: any) : boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Let */
-export function eLet (defs: Map<string, Expr>, body: Expr) : Let {
+export let eLet: ((defs: Map<string, Expr>, body: Expr) => Let) & { typ: typeof LET }
+
+eLet = ((defs: Map<string, Expr>, body: Expr) => {
   // generated code
   return new Let(defs, body)
-}
+}) as typeof eLet
 
 eLet.typ = LET // Shortcut that avoids importing LET
-
-export type { Let } // Export type only, not the class implementation
 
 //
 

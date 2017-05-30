@@ -1,4 +1,3 @@
-// @flow
 
 import { equal, arrayEqual, mapEqual } from '../prelude'
 
@@ -6,7 +5,7 @@ describe('arrayEqual', () => {
   it('does not have to handle nulls because of typing (Flow)', () => { })
 
   it('returns true when comparing self', () => {
-    const empty = []
+    const empty : any[] = []
     expect(arrayEqual(empty, empty)).toBe(true)
 
     const array = [1, 2, 'b', []]
@@ -37,7 +36,7 @@ describe('mapEqual', () => {
     const empty = new Map()
     expect(mapEqual(empty, empty)).toBe(true)
 
-    const array = new Map([['one', 1], ['two', 2], ['b', 'b'], ['emptyArray', []]])
+    const array = new Map<string, any>([['one', 1], ['two', 2], ['b', 'b'], ['emptyArray', []]])
     expect(mapEqual(array, array)).toBe(true)
   })
 
@@ -45,8 +44,8 @@ describe('mapEqual', () => {
     expect(mapEqual(new Map(), new Map())).toBe(true)
 
     expect(mapEqual(
-      new Map([['one', 1], ['two', 2], ['b', 'b']]),
-      new Map([['one', 1], ['two', 2], ['b', 'b']]))).toBe(true)
+      new Map<string, any>([['one', 1], ['two', 2], ['b', 'b']]),
+      new Map<string, any>([['one', 1], ['two', 2], ['b', 'b']]))).toBe(true)
 
     const complexKey = { key: 1 }
     expect(mapEqual(new Map([[complexKey, 1]]), new Map([[complexKey, 1]]))).toBe(true)
@@ -68,10 +67,10 @@ describe('mapEqual', () => {
 describe('equal', () => {
   it('works on maps', () => {
     expect(equal(
-      new Map([['one', 1], ['two', 2], ['b', 'b']]),
-      new Map([['one', 1], ['two', 2], ['b', 'b']]))).toBe(true)
+      new Map<string, any>([['one', 1], ['two', 2], ['b', 'b']]),
+      new Map<string, any>([['one', 1], ['two', 2], ['b', 'b']]))).toBe(true)
     expect(equal(
-      new Map([['one', 1], ['two', 2], ['b', 'b']]), [])).toBe(false)
+      new Map<string, any>([['one', 1], ['two', 2], ['b', 'b']]), [])).toBe(false)
   })
 
   it('works on arrays', () => {
@@ -81,7 +80,7 @@ describe('equal', () => {
 
   const object1 = {
     value: 42,
-    equals: function (that) { return this.value === that.value }
+    equals: function (that: {value: number}) { return this.value === that.value }
   }
 
   it('works on objects with equals() method', () => {
@@ -108,17 +107,17 @@ describe('equal', () => {
   it('fails on poorly coded equals() method', () => {
     const poor = {
       value: () => 42,
-      equals: function (that) { return this.value() === that.value() }
+      equals: function (that: {value: () => number}) { return this.value() === that.value() }
     }
 
     expect(poor.equals(poor)).toBe(true)
 
-    expect(() => equal(poor, 2)).toThrowError(new TypeError('that.value is not a function'))
+    expect(() => equal(poor, 2)).toThrowError(TypeError)
   })
 
   it('override equals() when comparing self', () => {
     const strange = {
-      equals: (that: mixed) => false
+      equals: (that: any) => false
     }
 
     expect(strange.equals(strange)).toBe(false)

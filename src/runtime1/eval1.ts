@@ -1,25 +1,28 @@
-// @flow
 
 /* xeslint-disable */
 
-import { eVar, eLiteral, eLet, eLambda, eIfElse, eApply } from '../expr/Expr'
-import type { Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue } from '../expr/Expr' // eslint-disable-line
+import {
+  eVar, eLiteral, eLet, eLambda, eIfElse, eApply,
+  Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue
+} from '../expr/Expr' // eslint-disable-line
 
 import { primitives } from './primitive1'
 
-export type Value = LiteralValue | Closure | Value[] // eslint-disable-line
+export type Value = LiteralValue | Closure | ValueArray | Function // eslint-disable-line
+interface ValueArray extends Array<Value> { } // Pseudo interface to avoid cyclic type
+
 type Frame = Map<string, Value | Promise<Value>>
 
 export class Env { // export for building root env
   frame: Frame
-  parent: ?Env
+  parent?: Env
 
-  constructor (frame: Frame, parent?: Env) {
+  constructor(frame: Frame, parent?: Env) {
     this.frame = frame
     this.parent = parent
   }
 
-  lookup (varId: string): Value | Promise<Value> {
+  lookup(varId: string): Value | Promise<Value> {
     // There should not be indefined variable at this level
     const value = this.frame.get(varId)
     if (value !== undefined) { // we don't intend to use undefined as a value
@@ -38,7 +41,7 @@ export class Closure {
   lambda: Lambda
   defEnv: Env
 
-  constructor (code: Lambda, defEnv: Env) {
+  constructor(code: Lambda, defEnv: Env) {
     this.lambda = code
     this.defEnv = defEnv
   }
@@ -51,21 +54,7 @@ class PrimitiveError extends EvalError {
 
 }
 
-// export function now<T, Q> (value: T | Promise<T>, f: (T | Promise<T>) => Q) : Q | Promise<Q> {
-//   if (value instanceof Promise) {
-//     return value.then(f)
-//   }
-//   return f(value)
-// }
-
-function now (value, f) {
-  if (value instanceof Promise) {
-    return value.then(f)
-  }
-  return f(value)
-}
-
-function now2 (value, f) {
+function now<T, Q>(value: T | Promise<T>, f: (t: T | Promise<T>) => Q): Q | Promise<Q> {
   if (value instanceof Promise) {
     return value.then(f)
   }
@@ -75,7 +64,7 @@ function now2 (value, f) {
 /**
  * Simple strict evaluation
  */
-export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
+export default function eval1(expr: Expr, env: Env): Value | Promise<Value> {
   console.log('+++', expr.toString())
 
   switch (expr.typ) {
@@ -84,24 +73,20 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
 
     case eLiteral.typ:
       const l = expr.value
-      // $TypingTrick
       if (typeof l === 'symbol') {
-        /*:: if (!(l instanceof Symbol)) throw l */
         const x = primitives[l]
         if (x == null) {
-          // $TypingTrick
           throw new Error(`Undefined primitive ${Symbol.keyFor(l)}`)
         }
         return x
       } else {
-        /*:: if (expr.value instanceof Symbol) throw l */
-        return expr.value
+        return l
       }
 
     case eLet.typ: {
       const entries = expr.defs.entries()
       const newEnv: Env = new Env(new Map(), env)
-      for (const [k : string, subExpr] of entries) {
+      for (const [k, subExpr] of entries) {
         // Launch all computations
         newEnv.frame.set(k, eval1(subExpr, newEnv))   // TODO: simple - no letrec - fuzzy semantics
       }
@@ -156,7 +141,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
           // Primitive function (from Literal)
           if (typeof op === 'function') {
             if (op.length !== args.length) {
-              if (op.varArgs) {
+              if ((op as any).varArgs) {
                 throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} (P)`)
               }
             }
@@ -169,33 +154,27 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
 
           if (args.length === 1) {
             // Array-like access or method
-            return now2(args[0], (arg1: Value) => {
-              switch (typeof arg1) {
-                case 'number': {
-                  // Array access
-                  const index = arg1
-
-                  if (typeof op === 'string') {
-                    return op.charCodeAt(index)
-                  }
-
-                  if (Array.isArray(op)) {
-                    return op[index]
-                  }
-
-                  const generic: any = op
-                  return generic.get(index) // TODO: ou .apply ?
+            return now(args[0], (arg1) => {
+              if (typeof arg1 === 'number') {
+                // Array access
+                if (typeof op === 'string') {
+                  return op.charCodeAt(arg1)
                 }
-                case 'string': {
-                  // Method call
-                  const method = arg1
 
-                  const generic: any = op
-                  if (generic[method] === undefined) {
-                    return generic.get(method) // TODO: ou .apply ?
-                  } else {
-                    return generic[method]
-                  }
+                if (Array.isArray(op)) {
+                  return op[arg1]
+                }
+
+                const generic: any = op
+                return generic.get(arg1) // TODO: ou .apply ?
+              }
+              if (typeof arg1 === 'string') {
+                // Method call
+                const generic: any = op
+                if (generic[arg1] === undefined) {
+                  return generic.get(arg1) // TODO: ou .apply ?
+                } else {
+                  return generic[arg1]
                 }
               }
               return 'ERROR 2'

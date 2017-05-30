@@ -8,6 +8,9 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^19.2.3",
+    "@types/lodash": "^4.14.64",
+    "@types/node": "^7.0.22",
     "ansi-colorizer": "^1.0.1",
     "babel-cli": "^6.24.0",
     "babel-eslint": "^7.2.3",

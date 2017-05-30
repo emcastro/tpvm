@@ -21,10 +21,11 @@ function defCaseClass (name, extend, implement, typedAttributes) {
   const sourceCode = (`
 export const ${name.toUpperCase()} = ${typ}
 
-class ${name}${kw('extends', extend)}${kw('implements', implement)} {
+export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
   // generated code
 
   typ: typeof ${name.toUpperCase()}
+
   ${_.join(typedAttributes, '\n  ')}
 
   constructor (${typedAttributes.join(', ')}) {
@@ -44,7 +45,7 @@ ${extend ? '    super()' : ''}
     return e${_.upperFirst(name)}(${_.join(_.map(attributes, (a, idx) => `subExprs[${idx}]`), ', ')})
   }
 
-  equals (that: mixed | ${name}) : boolean {
+  equals (that: any) : boolean { // ${name}
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -55,18 +56,18 @@ ${extend ? '    super()' : ''}
     return false
   }
 
-  notEquals (that: mixed) : boolean { return !(this.equals(that)) }
+  notEquals (that: any) : boolean { return !(this.equals(that)) }
 }
 
 /** Builder for ${name} */
-export function e${_.upperFirst(name)} (${typedAttributes.join(', ')}) : ${name} {
+export let e${_.upperFirst(name)}: ((${typedAttributes.join(', ')}) => ${name}) & { typ: typeof ${name.toUpperCase()} }
+
+e${_.upperFirst(name)} = ((${typedAttributes.join(', ')}) => {
   // generated code
   return new ${name}(${attributes.join(', ')})
-}
+}) as typeof e${_.upperFirst(name)}
 
 e${_.upperFirst(name)}.typ = ${name.toUpperCase()} // Shortcut that avoids importing ${name.toUpperCase()}
-
-export type { ${name} } // Export type only, not the class implementation
 
 //
 `)
@@ -90,7 +91,7 @@ type dataParams = {
 */
 
 function data (name /* :string */, params /* :dataParams */) {
-  const header = (`// @flow
+  const header = (`
 /* eslint-disable  no-multiple-empty-lines */
 // generated code
 
@@ -109,20 +110,19 @@ export type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
 // EOF
 `)
 
-  return { path: 'gen' + _.upperFirst(name) + '.js', sourceCode: [header, ...entries, footer].join('\n') }
+  return { path: 'gen' + _.upperFirst(name) + '.ts', sourceCode: [header, ...entries, footer].join('\n') }
 }
 
 const files = [data('Expr',
   {
     extend: 'ExprBase',
     import: [
-      "import { ExprBase } from '../expr/ExprBase'",
-      "import { equal } from '../utils/prelude'",
-      "import type { LiteralValue } from '../expr/ExprBase'"
+      "import { ExprBase, LiteralValue } from '../expr/ExprBase'",
+      "import { equal } from '../utils/prelude'"
     ],
     constructors: {
       'Var': ['varId: string'],
-      'Literal': ['value: LiteralValue | Symbol'],
+      'Literal': ['value: LiteralValue | symbol'],
       'Apply': ['operator: Expr', 'operands: Expr[]'],
       'IfElse': ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
       'Lambda': ['params: string[]', 'body: Expr'],

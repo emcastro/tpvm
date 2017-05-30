@@ -1,8 +1,10 @@
-// @flow
 
-import { eVar, eLiteral, eApply, eIfElse, eLambda, eLet } from '../generated/genExpr'
-import type { Expr, Var, Literal, Apply, IfElse, Lambda, Let } from '../generated/genExpr'
-import type { LiteralValue } from '../expr/ExprBase'
+import {
+  eVar, eLiteral, eApply, eIfElse, eLambda, eLet,
+  Expr, Var, Literal, Apply, IfElse, Lambda, Let
+} from '../generated/genExpr'
+
+import { LiteralValue } from '../expr/ExprBase'
 
 // import { SExprRenderer } from './SExprRenderer'
 // import _ from 'lodash'
@@ -23,4 +25,4 @@ ExprRewriter.children = function (obj) {
 */
 
 export { eVar, eLiteral, eApply, eIfElse, eLambda, eLet }
-export type { Expr, Var, Literal, Apply, IfElse, Lambda, Let, LiteralValue }
+export { Expr, Var, Literal, Apply, IfElse, Lambda, Let, LiteralValue }

@@ -1,17 +1,16 @@
-// @flow
 
-import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda } from '../generated/genExpr'
-import type { Expr, Apply, IfElse, Let, Lambda } from '../generated/genExpr'
+import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Expr } from '../generated/genExpr'
 import { SExprRenderer } from '../utils/SExprRenderer'
 import { iteratorToArray } from '../utils/prelude'
-import _ from 'lodash'
-import type { TPNode, Token } from '../parsing/parser'
+import * as _ from 'lodash'
+import { TPNode, Token } from '../parsing/parser'
+
 
 export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr];
 
 // Debugging print support
-export function subExprs (expr: Apply | IfElse | Let | Lambda): (Expr | Binding)[] {
+export function subExprs(expr: Apply | IfElse | Let | Lambda): (Expr | Binding)[] {
   switch (expr.typ) {
     case eApply.typ:
       return [expr.operator, ...expr.operands]
@@ -30,8 +29,8 @@ export function subExprs (expr: Apply | IfElse | Let | Lambda): (Expr | Binding)
   }
 }
 
-class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
-  splitNode (node: Expr | Binding): string | [string, (Expr | Binding)[]] {
+class ExprRenderer extends SExprRenderer<Expr | Binding, any> {
+  splitNode(node: Expr | Binding): string | [string, (Expr | Binding)[]] {
     if (Array.isArray(node)) {
       const [v, e] = node
       return [`$${v} :`, [e]]
@@ -42,10 +41,8 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
 
         case eLiteral.typ:
           const v = node.value
-          // $TypingTrick
           if (typeof v === 'symbol') {
-            // $TypingTrick
-            return Symbol.keyFor(v)
+            return Symbol.keyFor(v) as string
           } else if (Array.isArray(v)) {
             return '[' + String(v) + ']:array'
           } else {
@@ -59,7 +56,7 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
           return ['If', subExprs(node)]
 
         case eLet.typ:
-          let elements : (Expr | Binding)[] = iteratorToArray(node.defs.entries())
+          let elements: (Expr | Binding)[] = iteratorToArray(node.defs.entries())
           elements.push(node.body)
           return ['Let', elements]
 
@@ -74,7 +71,7 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
     }
   }
 
-  escape (o: mixed): string {
+  escape(o: any): string {
     if (typeof o === 'string' && _.startsWith(o, '$')) {
       const s = JSON.stringify(o)
       return s.slice(1, s.length - 1)
@@ -87,12 +84,12 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, mixed> {
 const exprRenderer = new ExprRenderer()
 
 export class ExprBase {
-  toString (): string {
-    return exprRenderer.sExpr((this: any))
+  toString(): string {
+    return exprRenderer.sExpr(this as never)
   }
 
-  toText (): string {
-    return exprRenderer.sExprLn((this: any))
+  toText(): string {
+    return exprRenderer.sExprLn(this as never)
   }
 
   /** Link to the source code */

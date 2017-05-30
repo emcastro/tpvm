@@ -1,6 +1,5 @@
-// @flow
 
-import _ from 'lodash'
+import * as _ from 'lodash'
 
 /**
  * Generic S-Expression renderer.js
@@ -8,21 +7,21 @@ import _ from 'lodash'
  * @param <T> Terminal node
  */
 export class SExprRenderer<N, T> {
-  splitNode (o: N): T | [string, N[]] {
+  splitNode(o: N): T | [string, N[]] {
     throw new Error('Unimplemented')
   }
 
-  sExpr (o: N) {
+  sExpr(o: N): string {
     const m = this.splitNode(o)
     if (m instanceof Array) {
       const [name, seq] = m
-      return '(' + name + ' ' + _.join(_.map(seq, e => this.sExpr(e)), ' ') + ')'
+      return '(' + name + ' ' + _.join(_.map(seq, (e: N) => this.sExpr(e)), ' ') + ')'
     } else {
       return this.escape(m)
     }
   }
 
-  length (name: string): number {
+  length(name: string): number {
     const l = name.indexOf(' ')
     if (l === -1) {
       return name.length
@@ -31,7 +30,7 @@ export class SExprRenderer<N, T> {
     }
   }
 
-  sExprLn (o: N, tab: number = 0): string {
+  sExprLn(o: N, tab: number = 0): string {
     const m = this.splitNode(o)
     if (m instanceof Array) {
       const [name, seq] = m
@@ -40,14 +39,14 @@ export class SExprRenderer<N, T> {
       if (seq.length === 0) {
         return tabs + '(' + name + ')' // Does not happen with Expr
       } else {
-        return tabs + '(' + name + _.join(_.map(seq, e => '\n' + this.sExprLn(e, newTab)), '') + ')'
+        return tabs + '(' + name + _.join(_.map(seq, (e: N) => '\n' + this.sExprLn(e, newTab)), '') + ')'
       }
     } else {
       return _.repeat(' ', tab) + this.escape(m)
     }
   }
 
-  escape (o: T): string {
+  escape(o: T): string {
     const s = JSON.stringify(o)
     return "'" + s.slice(1, s.length - 1) + "'"
   }
