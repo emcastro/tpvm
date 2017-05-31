@@ -1,4 +1,3 @@
-// @flow
 
 const antlr4 = require('antlr4')
 const { TerminalNode, TerminalNodeImpl } = require('antlr4/tree/Tree') // eslint-disable-line

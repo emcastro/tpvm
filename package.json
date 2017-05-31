@@ -12,16 +12,6 @@
     "@types/lodash": "^4.14.64",
     "@types/node": "^7.0.22",
     "ansi-colorizer": "^1.0.1",
-    "babel-cli": "^6.24.0",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-minify-constant-folding": "^0.1.1",
-    "babel-plugin-minify-dead-code-elimination": "^0.1.4",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-do-expressions": "^6.22.0",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-plugin-transform-inline-consecutive-adds": "^0.1.1",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-env": "^1.2.2",
     "benchmark": "^2.1.4",
     "chai": "^3.5.0",
     "child-process-data": "^0.5.1",
@@ -37,7 +27,8 @@
     "gulp-file": "^0.3.0",
     "gulp-sequence": "^0.4.6",
     "jest": "^20.0.3",
-    "standard": "^10.0.2"
+    "standard": "^10.0.2",
+    "typescript": "^2.3.4"
   },
   "dependencies": {
     "antlr4": "^4.7.0",
@@ -47,11 +38,10 @@
   },
   "scripts": {
     "start": "node build/index.js",
-    "build": "gulp default && babel src -d build --source-maps --copy-files",
+    "build": "gulp default && tsc",
     "pretest": "npm run build",
     "test": "standard && jest src",
-    "autobuild": "babel src -d build --source-maps --copy-files --watch",
-    "autocodegen": "gulp autocodegen",
+    "autobuild": "(gulp auto &) ; tsc -w",
     "autotest": "jest src --coverage --watchAll",
     "cleaner": "rm -rf coverage"
   },

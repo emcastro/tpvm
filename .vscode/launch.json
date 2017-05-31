@@ -13,40 +13,40 @@
       "args": [
         "--runInBand",
         "--coverage",
-        "build"
+        "dist"
       ],
       "outFiles": [
-        "${workspaceRoot}/build/**/*.js"
+        "${workspaceRoot}/dist/**/*.js"
       ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program (index.js)",
-      "program": "${workspaceRoot}/build/index.js",
+      "program": "${workspaceRoot}/dist/index.js",
       "protocol": "inspector",
       "outFiles": [
-        "${workspaceRoot}/build/**/*.js"
+        "${workspaceRoot}/dist/**/*.js"
       ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program (parser.js)",
-      "program": "${workspaceRoot}/build/parsing/parser.js",
+      "program": "${workspaceRoot}/dist/parsing/parser.js",
       "protocol": "inspector",
       "outFiles": [
-        "${workspaceRoot}/build/**/*.js"
+        "${workspaceRoot}/dist/**/*.js"
       ]
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program (corefier.js)",
-      "program": "${workspaceRoot}/build/parsing/corefier.js",
+      "program": "${workspaceRoot}/dist/parsing/corefier.js",
       "protocol": "inspector",
       "outFiles": [
-        "${workspaceRoot}/build/**/*.js"
+        "${workspaceRoot}/dist/**/*.js"
       ]
     },
     {
@@ -56,7 +56,7 @@
       "program": "${workspaceRoot}/bench/switchcase.bench.js",
       "protocol": "inspector",
       "outFiles": [
-        "${workspaceRoot}/build/**/*.js"
+        "${workspaceRoot}/dist/**/*.js"
       ]
     },
     {

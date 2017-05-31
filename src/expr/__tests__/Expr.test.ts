@@ -1,6 +1,5 @@
-// @flow
 
-import { eApply, eIfElse, eLambda, eLet, eLiteral, eVar, Expr } from '../Expr.js'
+import { eApply, eIfElse, eLambda, eLet, eLiteral, eVar, Expr } from '../Expr'
 
 describe('Expr', () => {
   function build () {
