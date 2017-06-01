@@ -1,5 +1,5 @@
 
-export function fastmap<T, R>(array: T[], f: (t: T) => R): R[] {
+export function fastmap<T, R> (array: T[], f: (t: T) => R): R[] {
   const length = array.length
   switch (length) {
     case 0: return []
@@ -19,7 +19,7 @@ export function fastmap<T, R>(array: T[], f: (t: T) => R): R[] {
   return result
 }
 
-export function fasteach<T>(array: T[], f: (t: T) => void): void {
+export function fasteach<T> (array: T[], f: (t: T) => void): void {
   const length = array.length
   if (length === 0) return  // entering the loop with length 0 cause deoptimisation problems
   for (let i = 0; i < length; i++) {
@@ -27,7 +27,7 @@ export function fasteach<T>(array: T[], f: (t: T) => void): void {
   }
 }
 
-export function flapmap<T, R>(array: Array<T>, f: (t: T) => (R | R[])): R[] {
+export function flapmap<T, R> (array: Array<T>, f: (t: T) => (R | R[])): R[] {
   const length = array.length
   const result = []
   let j = 0
@@ -46,7 +46,6 @@ export function flapmap<T, R>(array: Array<T>, f: (t: T) => (R | R[])): R[] {
   return result
 }
 
-
-export function zip<A, B>(array1: A[], array2: B[]): [A, B][] {
-  throw 'À coder'
+export function zip<A, B> (array1: A[], array2: B[]): [A, B][] {
+  throw new Error('À coder')
 }

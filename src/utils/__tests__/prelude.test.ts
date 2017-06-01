@@ -2,10 +2,10 @@
 import { equal, arrayEqual, mapEqual } from '../prelude'
 
 describe('arrayEqual', () => {
-  it('does not have to handle nulls because of typing (Flow)', () => { })
+  it('does not have to handle nulls because of typing (Flow)', () => { /* */ })
 
   it('returns true when comparing self', () => {
-    const empty : any[] = []
+    const empty: any[] = []
     expect(arrayEqual(empty, empty)).toBe(true)
 
     const array = [1, 2, 'b', []]
@@ -30,7 +30,7 @@ describe('arrayEqual', () => {
 })
 
 describe('mapEqual', () => {
-  it('does not have to handle nulls because of typing (Flow)', () => { })
+  it('does not have to handle nulls because of typing (Flow)', () => { /* */ })
 
   it('returns true when comparing self', () => {
     const empty = new Map()

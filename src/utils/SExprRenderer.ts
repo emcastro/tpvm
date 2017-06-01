@@ -7,11 +7,11 @@ import * as _ from 'lodash'
  * @param <T> Terminal node
  */
 export class SExprRenderer<N, T> {
-  splitNode(o: N): T | [string, N[]] {
+  splitNode (o: N): T | [string, N[]] {
     throw new Error('Unimplemented')
   }
 
-  sExpr(o: N): string {
+  sExpr (o: N): string {
     const m = this.splitNode(o)
     if (m instanceof Array) {
       const [name, seq] = m
@@ -21,7 +21,7 @@ export class SExprRenderer<N, T> {
     }
   }
 
-  length(name: string): number {
+  length (name: string): number {
     const l = name.indexOf(' ')
     if (l === -1) {
       return name.length
@@ -30,7 +30,7 @@ export class SExprRenderer<N, T> {
     }
   }
 
-  sExprLn(o: N, tab: number = 0): string {
+  sExprLn (o: N, tab: number = 0): string {
     const m = this.splitNode(o)
     if (m instanceof Array) {
       const [name, seq] = m
@@ -46,7 +46,7 @@ export class SExprRenderer<N, T> {
     }
   }
 
-  escape(o: T): string {
+  escape (o: T): string {
     const s = JSON.stringify(o)
     return "'" + s.slice(1, s.length - 1) + "'"
   }

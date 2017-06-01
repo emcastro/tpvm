@@ -17,8 +17,8 @@ describe('fasteach', () => {
     for (let i = 0; i < 15; i++) {
       const list = _.times(i)
 
-      const foreachResult : string[] = []
-      const arrayForEachResult : string[] = []
+      const foreachResult: string[] = []
+      const arrayForEachResult: string[] = []
       fasteach(list, x => foreachResult.push(`(${x})`))
       list.forEach(x => arrayForEachResult.push(`(${x})`))
 

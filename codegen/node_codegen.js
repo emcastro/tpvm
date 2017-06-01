@@ -30,22 +30,22 @@ export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
 
   constructor (${typedAttributes.join(', ')}) {
     // generated code
-${extend ? '    super()' : ''}
+${extend ? '    super()': ''}
     this.typ = ${name.toUpperCase()} // typ is faster when set on instances
     ${_.join(_.map(attributes, a => `this.${a} = ${a}`), '\n    ')}
   }
 
-  children () : [${_.join(types, ', ')}] {
+  children (): [${_.join(types, ', ')}] {
     // generated code
     return [${_.join(_.map(attributes, a => `this.${a}`), ', ')}]
   }
 
-  rewrite (subExprs: [${_.join(types, ', ')}]) : ${name} {
+  rewrite (subExprs: [${_.join(types, ', ')}]): ${name} {
     // generated code
-    return e${_.upperFirst(name)}(${_.join(_.map(attributes, (a, idx) => `subExprs[${idx}]`), ', ')})
+    return new ${_.upperFirst(name)}(${_.join(_.map(attributes, (a, idx) => `subExprs[${idx}]`), ', ')})
   }
 
-  equals (that: any) : boolean { // ${name}
+  equals (that: any): boolean { // ${name}
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -56,7 +56,7 @@ ${extend ? '    super()' : ''}
     return false
   }
 
-  notEquals (that: any) : boolean { return !(this.equals(that)) }
+  notEquals (that: any): boolean { return !(this.equals(that)) }
 }
 
 /** Builder for ${name} */
@@ -69,8 +69,7 @@ e${_.upperFirst(name)} = ((${typedAttributes.join(', ')}) => {
 
 e${_.upperFirst(name)}.typ = ${name.toUpperCase()} // Shortcut that avoids importing ${name.toUpperCase()}
 
-//
-`)
+//`)
 
   return sourceCode
 }
@@ -92,12 +91,10 @@ type dataParams = {
 
 function data (name /* :string */, params /* :dataParams */) {
   const header = (`
-/* eslint-disable  no-multiple-empty-lines */
 // generated code
 
 ${params.import ? params.import.join('\n') : ''}
 
-// eslint-disable-next-line no-use-before-define
 export type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
 
 //`)

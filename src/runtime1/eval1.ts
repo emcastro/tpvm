@@ -1,14 +1,12 @@
 
-/* xeslint-disable */
-
 import {
   eVar, eLiteral, eLet, eLambda, eIfElse, eApply,
   Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue
-} from '../expr/Expr' // eslint-disable-line
+} from '../expr/Expr'
 
 import { primitives } from './primitive1'
 
-export type Value = LiteralValue | Closure | ValueArray | Function // eslint-disable-line
+export type Value = LiteralValue | Closure | ValueArray | Function
 interface ValueArray extends Array<Value> { } // Pseudo interface to avoid cyclic type
 
 type Frame = Map<string, Value | Promise<Value>>
@@ -17,18 +15,18 @@ export class Env { // export for building root env
   frame: Frame
   parent?: Env
 
-  constructor(frame: Frame, parent?: Env) {
+  constructor (frame: Frame, parent?: Env) {
     this.frame = frame
     this.parent = parent
   }
 
-  lookup(varId: string): Value | Promise<Value> {
+  lookup (varId: string): Value | Promise<Value> {
     // There should not be indefined variable at this level
     const value = this.frame.get(varId)
     if (value !== undefined) { // we don't intend to use undefined as a value
       return value
     } else {
-      if (this.parent != null) {
+      if (this.parent !== undefined) {
         return this.parent.lookup(varId)
       } else {
         throw new Error('Undefined var ' + varId)
@@ -41,7 +39,7 @@ export class Closure {
   lambda: Lambda
   defEnv: Env
 
-  constructor(code: Lambda, defEnv: Env) {
+  constructor (code: Lambda, defEnv: Env) {
     this.lambda = code
     this.defEnv = defEnv
   }
@@ -54,7 +52,7 @@ class PrimitiveError extends EvalError {
 
 }
 
-function now<T, Q>(value: T | Promise<T>, f: (t: T | Promise<T>) => Q): Q | Promise<Q> {
+function now<T, Q> (value: T | Promise<T>, f: (t: T | Promise<T>) => Q): Q | Promise<Q> {
   if (value instanceof Promise) {
     return value.then(f)
   }
@@ -64,7 +62,7 @@ function now<T, Q>(value: T | Promise<T>, f: (t: T | Promise<T>) => Q): Q | Prom
 /**
  * Simple strict evaluation
  */
-export default function eval1(expr: Expr, env: Env): Value | Promise<Value> {
+export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
   console.log('+++', expr.toString())
 
   switch (expr.typ) {

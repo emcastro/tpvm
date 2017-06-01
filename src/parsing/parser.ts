@@ -1,6 +1,6 @@
 
 const antlr4 = require('antlr4')
-const { TerminalNode, TerminalNodeImpl } = require('antlr4/tree/Tree') // eslint-disable-line
+const { TerminalNode, TerminalNodeImpl } = require('antlr4/tree/Tree')
 const { TPGrammarParser } = require('../generated/TPGrammarParser')
 const { TPGrammarLexer } = require('../generated/TPGrammarLexer')
 import * as _ from 'lodash'
@@ -8,7 +8,7 @@ import { fasteach } from '../utils/fastArray'
 
 export { TPGrammarParser as parser }
 
-function annotateParserWithContextName (parser : any) {
+function annotateParserWithContextName (parser: any) {
   const suffix = 'Context'
 
   for (let attrName in parser) {
@@ -26,7 +26,7 @@ annotateParserWithContextName(TPGrammarParser)
 antlr4.ParserRuleContext.prototype.loneChild = function () {
   const c = this.children
   if (c == null || c.length !== 1) {
-    let result : any
+    let result: any
     fasteach(this.children, e => {
       // if (!(e instanceof TerminalNode)) {
       if (e.constructor !== TerminalNodeImpl) {
@@ -51,7 +51,7 @@ antlr4.ParserRuleContext.prototype.token = function () {
   return this.start
 }
 
-antlr4.ParserRuleContext.prototype.tokenAt = function (idx : number) {
+antlr4.ParserRuleContext.prototype.tokenAt = function (idx: number) {
   const terminal = this.children[idx]
   if (terminal.symbol == null) {
     throw new Error('Not a token node')
@@ -67,10 +67,8 @@ export type Token = {
   line: number,
   tokenIndex: number,
   type: number,
-  source: [{ literalNames: string[], symbolicNames: string[] }, {}]
+  source: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
 }
-
-/* eslint-disable no-use-before-define */
 
 type Node = {
   symbol?: Token,
@@ -78,14 +76,14 @@ type Node = {
   ruleIndex: number,
   start: Token,
   stop: Token,
-  children?: TPNode[]
+  children: TPNode[] | null
 }
 
 // Typeing assistance for Nodes for TPGrammar
 type A<T> = () => (T)
 type NA<T> = () => (T | null)
 
-type N<n> = Node & { contextName: n, tokenAt: (n:number) => Token }
+type N<n> = Node & { contextName: n, tokenAt: (n: number) => Token }
 
 export type TopLevel = N<'topLevel'> & { definition: A<Definition[]>, expr: A<Expr> }
 
@@ -97,7 +95,7 @@ export type BinOp = N<'binOp'> & { expr: A<Expr[]> }
 export type UserOp = N<'userOp'> & { expr: A<Expr[]>, userOpId: A<UserOpId> }
 
 export type SimpleExpr = N<'simpleExpr'> & {
-  loneChild: A<LiteralExpr | Expr | VarExpr | IfElseExpr | ShortLambdaExpr | LambdaExpr | LetExpr>,
+  loneChild: A<LiteralExpr | Expr | VarExpr | IfElseExpr | ShortLambdaExpr | LambdaExpr | LetExpr>
 } // transparent node
 
 export type Definition = N<'definition'> & {
@@ -150,15 +148,13 @@ export type TPNode = (
   | VarExpr | LiteralExpr | SimpleExpr | Expr
 )
 
-/* eslint-enable no-use-before-define */
-
 // Information accessors
 
 export function tokenName (token: Token) {
   const symbolic = token.source[0].symbolicNames[token.type]
-  if (symbolic != null) return symbolic
+  if (symbolic !== null) return symbolic
   const literal = token.source[0].literalNames[token.type]
-  if (literal != null) return literal
+  if (literal !== null) return literal
   return token.text + '#' + token.type
 }
 
@@ -167,7 +163,7 @@ export function tokenPosition (token: Token) {
 }
 
 export function nodeName (node: TPNode) {
-  const ruleClass: string = (node as any).__proto__.constructor.name // eslint-disable-line
+  const ruleClass: string = (node as any).__proto__.constructor.name
   const ruleCategory = node.contextName
 
   const ruleName = node.parser.ruleNames[node.ruleIndex]
@@ -186,9 +182,9 @@ export function dump (node: TPNode, tab?: string): string {
   const nextTab = _tab + '  '
   let line = _tab + nodeName(node) + '\n'
 
-  if (node.children != null) {
+  if (node.children !== null) {
     for (let subNode of node.children) {
-      if (subNode.symbol != null) {
+      if (subNode.symbol !== undefined) {
         const symbol = subNode.symbol
         line += nextTab + tokenName(symbol) + ' ' + symbol.text + '   @' + tokenPosition(symbol) + '\n'
       } else {

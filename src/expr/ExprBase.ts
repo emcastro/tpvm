@@ -1,16 +1,15 @@
 
-import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Expr } from '../generated/genExpr'
+import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Expr, Var } from '../generated/genExpr'
 import { SExprRenderer } from '../utils/SExprRenderer'
 import { iteratorToArray } from '../utils/prelude'
 import * as _ from 'lodash'
 import { TPNode, Token } from '../parsing/parser'
 
-
 export type LiteralValue = string | number | boolean
-export type Binding = [string, Expr];
+export type Binding = [string, Expr]
 
 // Debugging print support
-export function subExprs(expr: Apply | IfElse | Let | Lambda): (Expr | Binding)[] {
+export function subExprs (expr: Apply | IfElse | Let | Lambda): (Expr | Binding)[] {
   switch (expr.typ) {
     case eApply.typ:
       return [expr.operator, ...expr.operands]
@@ -30,7 +29,7 @@ export function subExprs(expr: Apply | IfElse | Let | Lambda): (Expr | Binding)[
 }
 
 class ExprRenderer extends SExprRenderer<Expr | Binding, any> {
-  splitNode(node: Expr | Binding): string | [string, (Expr | Binding)[]] {
+  splitNode (node: Expr | Binding): string | [string, (Expr | Binding)[]] {
     if (Array.isArray(node)) {
       const [v, e] = node
       return [`$${v} :`, [e]]
@@ -71,7 +70,7 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, any> {
     }
   }
 
-  escape(o: any): string {
+  escape (o: any): string {
     if (typeof o === 'string' && _.startsWith(o, '$')) {
       const s = JSON.stringify(o)
       return s.slice(1, s.length - 1)
@@ -84,11 +83,11 @@ class ExprRenderer extends SExprRenderer<Expr | Binding, any> {
 const exprRenderer = new ExprRenderer()
 
 export class ExprBase {
-  toString(): string {
+  toString (): string {
     return exprRenderer.sExpr(this as never)
   }
 
-  toText(): string {
+  toText (): string {
     return exprRenderer.sExprLn(this as never)
   }
 

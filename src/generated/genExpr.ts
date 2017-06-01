@@ -1,11 +1,9 @@
 
-/* eslint-disable  no-multiple-empty-lines */
 // generated code
 
 import { ExprBase, LiteralValue } from '../expr/ExprBase'
 import { equal } from '../utils/prelude'
 
-// eslint-disable-next-line no-use-before-define
 export type Expr = Var | Literal | Apply | IfElse | Lambda | Let
 
 //
@@ -26,17 +24,17 @@ export class Var extends ExprBase {
     this.varId = varId
   }
 
-  children () : [string] {
+  children (): [string] {
     // generated code
     return [this.varId]
   }
 
-  rewrite (subExprs: [string]) : Var {
+  rewrite (subExprs: [string]): Var {
     // generated code
-    return eVar(subExprs[0])
+    return new Var(subExprs[0])
   }
 
-  equals (that: any) : boolean { // Var
+  equals (that: any): boolean { // Var
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -47,7 +45,7 @@ export class Var extends ExprBase {
     return false
   }
 
-  notEquals (that: any) : boolean { return !(this.equals(that)) }
+  notEquals (that: any): boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Var */
@@ -61,7 +59,6 @@ eVar = ((varId: string) => {
 eVar.typ = VAR // Shortcut that avoids importing VAR
 
 //
-
 
 export const LITERAL = 1
 
@@ -79,17 +76,17 @@ export class Literal extends ExprBase {
     this.value = value
   }
 
-  children () : [LiteralValue | symbol] {
+  children (): [LiteralValue | symbol] {
     // generated code
     return [this.value]
   }
 
-  rewrite (subExprs: [LiteralValue | symbol]) : Literal {
+  rewrite (subExprs: [LiteralValue | symbol]): Literal {
     // generated code
-    return eLiteral(subExprs[0])
+    return new Literal(subExprs[0])
   }
 
-  equals (that: any) : boolean { // Literal
+  equals (that: any): boolean { // Literal
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -100,7 +97,7 @@ export class Literal extends ExprBase {
     return false
   }
 
-  notEquals (that: any) : boolean { return !(this.equals(that)) }
+  notEquals (that: any): boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Literal */
@@ -114,7 +111,6 @@ eLiteral = ((value: LiteralValue | symbol) => {
 eLiteral.typ = LITERAL // Shortcut that avoids importing LITERAL
 
 //
-
 
 export const APPLY = 2
 
@@ -134,17 +130,17 @@ export class Apply extends ExprBase {
     this.operands = operands
   }
 
-  children () : [Expr, Expr[]] {
+  children (): [Expr, Expr[]] {
     // generated code
     return [this.operator, this.operands]
   }
 
-  rewrite (subExprs: [Expr, Expr[]]) : Apply {
+  rewrite (subExprs: [Expr, Expr[]]): Apply {
     // generated code
-    return eApply(subExprs[0], subExprs[1])
+    return new Apply(subExprs[0], subExprs[1])
   }
 
-  equals (that: any) : boolean { // Apply
+  equals (that: any): boolean { // Apply
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -156,7 +152,7 @@ export class Apply extends ExprBase {
     return false
   }
 
-  notEquals (that: any) : boolean { return !(this.equals(that)) }
+  notEquals (that: any): boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Apply */
@@ -170,7 +166,6 @@ eApply = ((operator: Expr, operands: Expr[]) => {
 eApply.typ = APPLY // Shortcut that avoids importing APPLY
 
 //
-
 
 export const IFELSE = 3
 
@@ -192,17 +187,17 @@ export class IfElse extends ExprBase {
     this.elseClause = elseClause
   }
 
-  children () : [Expr, Expr, Expr] {
+  children (): [Expr, Expr, Expr] {
     // generated code
     return [this.ifClause, this.thenClause, this.elseClause]
   }
 
-  rewrite (subExprs: [Expr, Expr, Expr]) : IfElse {
+  rewrite (subExprs: [Expr, Expr, Expr]): IfElse {
     // generated code
-    return eIfElse(subExprs[0], subExprs[1], subExprs[2])
+    return new IfElse(subExprs[0], subExprs[1], subExprs[2])
   }
 
-  equals (that: any) : boolean { // IfElse
+  equals (that: any): boolean { // IfElse
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -215,7 +210,7 @@ export class IfElse extends ExprBase {
     return false
   }
 
-  notEquals (that: any) : boolean { return !(this.equals(that)) }
+  notEquals (that: any): boolean { return !(this.equals(that)) }
 }
 
 /** Builder for IfElse */
@@ -229,7 +224,6 @@ eIfElse = ((ifClause: Expr, thenClause: Expr, elseClause: Expr) => {
 eIfElse.typ = IFELSE // Shortcut that avoids importing IFELSE
 
 //
-
 
 export const LAMBDA = 4
 
@@ -249,17 +243,17 @@ export class Lambda extends ExprBase {
     this.body = body
   }
 
-  children () : [string[], Expr] {
+  children (): [string[], Expr] {
     // generated code
     return [this.params, this.body]
   }
 
-  rewrite (subExprs: [string[], Expr]) : Lambda {
+  rewrite (subExprs: [string[], Expr]): Lambda {
     // generated code
-    return eLambda(subExprs[0], subExprs[1])
+    return new Lambda(subExprs[0], subExprs[1])
   }
 
-  equals (that: any) : boolean { // Lambda
+  equals (that: any): boolean { // Lambda
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -271,7 +265,7 @@ export class Lambda extends ExprBase {
     return false
   }
 
-  notEquals (that: any) : boolean { return !(this.equals(that)) }
+  notEquals (that: any): boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Lambda */
@@ -285,7 +279,6 @@ eLambda = ((params: string[], body: Expr) => {
 eLambda.typ = LAMBDA // Shortcut that avoids importing LAMBDA
 
 //
-
 
 export const LET = 5
 
@@ -305,17 +298,17 @@ export class Let extends ExprBase {
     this.body = body
   }
 
-  children () : [Map<string, Expr>, Expr] {
+  children (): [Map<string, Expr>, Expr] {
     // generated code
     return [this.defs, this.body]
   }
 
-  rewrite (subExprs: [Map<string, Expr>, Expr]) : Let {
+  rewrite (subExprs: [Map<string, Expr>, Expr]): Let {
     // generated code
-    return eLet(subExprs[0], subExprs[1])
+    return new Let(subExprs[0], subExprs[1])
   }
 
-  equals (that: any) : boolean { // Let
+  equals (that: any): boolean { // Let
     // generated code
     if (that === this) return true // fast-track
     if (that == null) return false
@@ -327,7 +320,7 @@ export class Let extends ExprBase {
     return false
   }
 
-  notEquals (that: any) : boolean { return !(this.equals(that)) }
+  notEquals (that: any): boolean { return !(this.equals(that)) }
 }
 
 /** Builder for Let */
@@ -341,6 +334,5 @@ eLet = ((defs: Map<string, Expr>, body: Expr) => {
 eLet.typ = LET // Shortcut that avoids importing LET
 
 //
-
 
 // EOF
