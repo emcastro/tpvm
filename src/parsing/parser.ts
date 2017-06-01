@@ -107,7 +107,7 @@ export type FunctionDefinition = N<'functionDefinition'> & { functionId: A<Funct
 export type TupleDefinition = N<'tupleDefinition'> & { typedVars: NA<TypedVars>, expr: A<Expr> }
 
 export type TypedVar = N<'typedVar'> & { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
-export type TypedParam = N<'typedParam'> & { varId: A<ParamId>, typeAnnotation: A<TypeAnnotation> }
+export type TypedParam = N<'typedParam'> & { paramId: A<ParamId>, typeAnnotation: A<TypeAnnotation> }
 
 type TOKEN<n> = N<n> & { token: () => Token }
 

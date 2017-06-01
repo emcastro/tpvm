@@ -20,7 +20,7 @@ class VarMapping {
     const id = token.text
     const r = this.storage.get(id)
     if (r === undefined) {
-      throw new Error('Undefined var ' + id + ' ' + tokenPosition(token))
+      throw new Error(`Undefined var ${id} @${tokenPosition(token)}`)
     }
     return r
   }
@@ -29,7 +29,7 @@ class VarMapping {
     const id = mapping.get(token.type)
     if (id === undefined) throw Error('Unexpected token type: ' + token.type)
     const r = this.storage.get(id)
-    if (r === undefined) throw new Error('Undefined var ' + token.text + ' ' + tokenPosition(token))
+    if (r === undefined) throw new Error(`Undefined var ${id}(${token.text}) @${tokenPosition(token)}`)
     return r
   }
 
@@ -39,7 +39,7 @@ class VarMapping {
     const newMap = new Map(this.storage)
 
     fasteach(ids, id => {
-      newMap.set(id, `_${++VarMapping.varCounter}_${id}`)
+      newMap.set(id, `${id}_${++VarMapping.varCounter}`)
     })
 
     return new VarMapping(newMap)
@@ -77,16 +77,25 @@ import {
   BinOp, UnOp, UserOp, Call, Definition, ValueDefinition, TupleDefinition, FunctionDefinition
 } from './parser'
 
-function extractIds (def: ValueDefinition | TupleDefinition | FunctionDefinition): Token | Token[] {
+function extractIds (def: ValueDefinition | TupleDefinition | FunctionDefinition) {
   switch (def.contextName) {
-    case 'valueDefinition':
-      return def.typedVar().varId().token()
-    case 'tupleDefinition':
-      return fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
+    case 'valueDefinition': return extractValueId(def)
+    case 'tupleDefinition': return extractTupleIds(def)
     // case 'functionDefinition':
-    default:
-      return def.functionId().token()
+    default: return extractFunctionId(def)
   }
+}
+
+function extractValueId (def: ValueDefinition) {
+  return def.typedVar().varId().token()
+}
+
+function extractTupleIds (def: TupleDefinition): Token[] {
+  return fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
+}
+
+function extractFunctionId (def: FunctionDefinition) {
+  return def.functionId().token()
 }
 
 const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
@@ -101,22 +110,29 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
 
       const newEnv = env.extends(ids.map(i => i.text))
 
-      const zipped = zip(ids, defs)
+      const bindings: [string, Expr][] = fastmap(defs, (def): [string, Expr] => {
+        switch (def.contextName) {
+          case 'valueDefinition': {
+            const id = extractValueId(def)
 
-      throw new Error('BAD')
-      // const bindings = fastmap(zipped, (id, def) => {
-      //   switch (def.contextName) {
-      //     case 'valueDefinition':
-      //       return [newEnv.get(id), eVar('A999s')]
-      //     case 'tupleDefinition':
-      //     // case 'functionDefinition':
-      //     default:
-      //       throw new Error('À Faire')
-      //   }
-      // })
+            return [newEnv.resolve(id), toCore(def.expr(), newEnv)]
+          }
+          case 'tupleDefinition':
+          // case 'functionDefinition':
+          default:
+            throw new Error('À Faire')
+        }
+      })
 
-      // return eLet(new Map(bindings), toCore(expr.expr(), newEnv))
+      return eLet(new Map(bindings), toCore(expr.expr(), newEnv))
     }
+  },
+
+  lambdaExpr (expr: LambdaExpr, env: Env): Expr {
+    const params = fastmap(typedParamList( expr.typedParams()), p => p.paramId().token())
+    const newEnv = env.extends(fastmap(params, p => p.text))
+
+    return eLambda(fastmap(params, p => newEnv.resolve(p)), toCore(expr.expr(), newEnv))
   },
 
   simple (expr: Simple, env: Env): Expr { // includes parenthesis expressions
@@ -189,13 +205,14 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
 
 toCoreSwitchMap.set('topLevel', notnull(toCoreSwitchMap.get('letExpr')))
 
-import { Args, TypedParams, TypedVars } from './parser'
+import { Args, TypedParams, TypedVars, LambdaExpr, Arg, TypedParam, TypedVar } from './parser'
 
-const emptyList: any[] = []
+const _emptyList: any[] = []
+function emptyList<T> () { return _emptyList as T[] }
 
-function argList (args: Args | null) { return (args === null) ? emptyList : args.arg() }
-function typedParamList (params: TypedParams | null) { return (params === null) ? emptyList : params.typedParam() }
-function typedVarList (vars: TypedVars | null) { return (vars === null) ? emptyList : vars.typedVar() }
+function argList (args: Args | null) { return (args === null) ? emptyList<Arg>() : args.arg() }
+function typedParamList (params: TypedParams | null) { return (params === null) ? emptyList<TypedParam>() : params.typedParam() }
+function typedVarList (vars: TypedVars | null) { return (vars === null) ? emptyList<TypedVar>() : vars.typedVar() }
 
 function toCore (expr: TPNode, env: Env): Expr {
   const toCoreExpr: any = toCoreSwitchMap.get(expr.contextName)
@@ -229,10 +246,12 @@ const emptyEnv = new VarMapping(new Map())
 
 const tree: any = parse(`
 {
-//  a=1
-//  (b,c)=1
-//  foo(x)=x+1
-  2+2
+  __plus__=#plus
+  a=1
+  b=(x)->x+1
+ // (b,c)=1
+ //foo(x)=x+1
+  a+2
 }
 `)
 const core = toCore(tree, emptyEnv)

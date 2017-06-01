@@ -1,7 +1,7 @@
 
 import * as _ from 'lodash'
 
-import { fastmap, fasteach, flapmap } from '../fastArray'
+import { fastmap, fasteach, flapmap, zip } from '../fastArray'
 
 describe('fastmap', () => {
   it('works like Array.map on non-spare arrays', () => {
@@ -48,5 +48,19 @@ describe('flatmap', () => {
       const flattened = _.map(list, x => x * 10)
       expect(flapmap(list, x => x * 10)).toEqual(flattened)
     }
+  })
+})
+
+describe('zip', () => {
+  it('zips', () => {
+    expect(zip(['A','b','©'], [1,2,3])).toEqual([['A',1], ['b', 2], ['©',3]])
+  })
+
+  it('works on empty lists', () => {
+    expect(zip([], [])).toEqual([])
+  })
+
+  it('throws Error when list sizes do not match', () => {
+    expect(() => zip([], [1])).toThrowError(Error)
   })
 })

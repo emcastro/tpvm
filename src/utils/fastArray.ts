@@ -27,7 +27,7 @@ export function fasteach<T> (array: T[], f: (t: T) => void): void {
   }
 }
 
-export function flapmap<T, R> (array: Array<T>, f: (t: T) => (R | R[])): R[] {
+export function flapmap<T, R> (array: T[], f: (t: T) => (R | R[])): R[] {
   const length = array.length
   const result = []
   let j = 0
@@ -46,6 +46,18 @@ export function flapmap<T, R> (array: Array<T>, f: (t: T) => (R | R[])): R[] {
   return result
 }
 
+const id = <T>(x: T) => x
+
+export function flatten<T> (array: (T|T[])[]): T[] {
+  return flapmap(array, id)
+}
+
 export function zip<A, B> (array1: A[], array2: B[]): [A, B][] {
-  throw new Error('À coder')
+  if (array1.length !== array2.length) throw new Error('zipping list of different sizes')
+  const result: [A,B][] = []
+  const length = array1.length
+  for (let i = 0; i < length; i++) {
+    result[i] = [array1[i], array2[i]]
+  }
+  return result
 }
