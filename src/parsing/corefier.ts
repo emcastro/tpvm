@@ -12,12 +12,6 @@ import { notnull, switchMap2 } from '../utils/prelude'
 class ReferenceError extends Error {
 }
 
-type MicroToken = {
-  text: string,
-  line: number,
-  column: number
-}
-
 class VarMapping {
   storage: Map<string, string>
 
@@ -44,7 +38,7 @@ class VarMapping {
 
   private static varCounter = 0
 
-  extends (ids: MicroToken[]): VarMapping {
+  extends (ids: Token[]): VarMapping {
     const newMap = new Map(this.storage)
 
     fasteach(ids, id => {
@@ -58,14 +52,22 @@ class VarMapping {
   }
 }
 
-let freshVarCounter = 0
+class FreshToken {
+  text: string
+  column: number
+  line: number
+  tokenIndex: number
+  type: number
+  source: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
 
-function freshvar (): MicroToken {
-  return {
-    text: `fv ${freshVarCounter++}`,
-    line: 0,
-    column: 0
+  constructor (baseToken: Token | undefined, alternateToken: Token) {
+    const token = baseToken !== undefined ? baseToken : alternateToken
+
+    Object.assign(this, token)
+    this.text = `fv${FreshToken.counter++}`
   }
+
+  static counter = 0
 }
 
 type Env = VarMapping
@@ -108,17 +110,17 @@ function extractIds (def: ValueDefinition | TupleDefinition | FunctionDefinition
   }
 }
 
-function extractValueId (def: ValueDefinition) {
+function extractValueId (def: ValueDefinition): Token {
   return def.typedVar().varId().token()
 }
 
-function extractTupleIds (def: TupleDefinition): MicroToken[] {
-  const ids: MicroToken[] = fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
-  ids.push(freshvar())
+function extractTupleIds (def: TupleDefinition): Token[] {
+  const ids = fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
+  ids.push(new FreshToken(ids[0], def.start))
   return ids
 }
 
-function extractFunctionId (def: FunctionDefinition) {
+function extractFunctionId (def: FunctionDefinition): Token {
   return def.functionId().token()
 }
 
@@ -130,7 +132,7 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
       return toCore(expr.expr(), env)
     } else {
 
-      const ids: MicroToken[] = flapmap(defs, extractIds)
+      const ids = flapmap(defs, extractIds)
 
       const newEnv = env.extends(ids)
 
@@ -143,7 +145,7 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
 
           case 'functionDefinition': {
             const id = extractFunctionId(def)
-            return [[newEnv.resolve(id), lambdaExpr(def, newEnv) ]]
+            return [[newEnv.resolve(id), lambdaExpr(def, newEnv)]]
           }
 
           // case 'tupleDefinition':
@@ -229,7 +231,7 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
 
 })
 
-function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams| null), expr: () => PExpr }, env: Env): Expr {
+function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams | null), expr: () => PExpr }, env: Env): Expr {
   const params = fastmap(typedParamList(lambdaLike.typedParams()), p => p.paramId().token())
   const newEnv = env.extends(params)
 
@@ -281,8 +283,8 @@ const tree: any = parse(`
 {
   __plus__=#plus
   a=1
-  b=(x)->x+1
- // (b,c)=1
+  bar=(x)->x+1
+  (b,c)=1
   foo(x)=x+1
   a+2
 }
