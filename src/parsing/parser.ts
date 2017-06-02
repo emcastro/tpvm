@@ -103,7 +103,7 @@ export type Definition = N<'definition'> & {
 } // transparent node
 
 export type ValueDefinition = N<'valueDefinition'> & { typedVar: A<TypedVar>, expr: A<Expr> }
-export type FunctionDefinition = N<'functionDefinition'> & { functionId: A<FunctionId>, typedParams: NA<TypedParams>}
+export type FunctionDefinition = N<'functionDefinition'> & { functionId: A<FunctionId>, typedParams: NA<TypedParams>, typeAnnotation: N<TypeAnnotation>, expr: A<Expr>}
 export type TupleDefinition = N<'tupleDefinition'> & { typedVars: NA<TypedVars>, expr: A<Expr> }
 
 export type TypedVar = N<'typedVar'> & { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
@@ -158,7 +158,7 @@ export function tokenName (token: Token) {
   return token.text + '#' + token.type
 }
 
-export function tokenPosition (token: Token) {
+export function position (token: {line: number, column: number}) {
   return `${token.line}:${token.column + 1}`
 }
 
@@ -186,7 +186,7 @@ export function dump (node: TPNode, tab?: string): string {
     for (let subNode of node.children) {
       if (subNode.symbol !== undefined) {
         const symbol = subNode.symbol
-        line += nextTab + tokenName(symbol) + ' ' + symbol.text + '   @' + tokenPosition(symbol) + '\n'
+        line += nextTab + tokenName(symbol) + ' ' + symbol.text + '   @' + position(symbol) + '\n'
       } else {
         line += dump(subNode, nextTab)
       }

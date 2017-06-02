@@ -1,4 +1,6 @@
 
+import * as _ from 'lodash'
+
 export function fastmap<T, R> (array: T[], f: (t: T) => R): R[] {
   const length = array.length
   switch (length) {
@@ -29,7 +31,7 @@ export function fasteach<T> (array: T[], f: (t: T) => void): void {
 
 export function flapmap<T, R> (array: T[], f: (t: T) => (R | R[])): R[] {
   const length = array.length
-  const result = []
+  const result: R[] = []
   let j = 0
   for (let i = 0; i < length; i++) {
     const r = f(array[i])
@@ -60,4 +62,12 @@ export function zip<A, B> (array1: A[], array2: B[]): [A, B][] {
     result[i] = [array1[i], array2[i]]
   }
   return result
+}
+
+export function safeNewMap<K,V> (values: [K, V][]): Map < K,V > {
+  const map = new Map(values)
+  if (map.size !== values.length) {
+    throw new Error(`Duplicate keys`)
+  }
+  return map
 }

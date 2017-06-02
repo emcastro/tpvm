@@ -4,10 +4,19 @@ import {
   eApply, eVar, eLet, eLiteral, eLambda, eIfElse
 } from '../expr/Expr'
 
-import { TPNode, Token, parser, nodeName, tokenName, tokenPosition, parse, ParseError } from '../parsing/parser'
+import { TPNode, Token, parser, nodeName, tokenName, position, parse, ParseError, Expr as PExpr } from '../parsing/parser'
 
-import { fastmap, flapmap, fasteach, zip } from '../utils/fastArray'
+import { fastmap, flapmap, fasteach, zip, safeNewMap } from '../utils/fastArray'
 import { notnull, switchMap2 } from '../utils/prelude'
+
+class ReferenceError extends Error {
+}
+
+type MicroToken = {
+  text: string,
+  line: number,
+  column: number
+}
 
 class VarMapping {
   storage: Map<string, string>
@@ -20,35 +29,48 @@ class VarMapping {
     const id = token.text
     const r = this.storage.get(id)
     if (r === undefined) {
-      throw new Error(`Undefined var ${id} @${tokenPosition(token)}`)
+      throw new ReferenceError(`Undefined var ${id} @${position(token)}`)
     }
     return r
   }
 
   resolveSpecial (token: Token, mapping: Map<number, string>): string {
     const id = mapping.get(token.type)
-    if (id === undefined) throw Error('Unexpected token type: ' + token.type)
+    if (id === undefined) throw Error('Unexpected token type: ' + tokenName(token))
     const r = this.storage.get(id)
-    if (r === undefined) throw new Error(`Undefined var ${id}(${token.text}) @${tokenPosition(token)}`)
+    if (r === undefined) throw new ReferenceError(`Undefined var ${id}(${token.text}) @${position(token)}`)
     return r
   }
 
   private static varCounter = 0
 
-  extends (ids: string[]): VarMapping {
+  extends (ids: MicroToken[]): VarMapping {
     const newMap = new Map(this.storage)
 
     fasteach(ids, id => {
-      newMap.set(id, `${id}_${++VarMapping.varCounter}`)
+      if (newMap.has(id.text)) {
+        throw new ReferenceError(`Duplicate var ${id.text} @${position(id)}`)
+      }
+      newMap.set(id.text, `${id.text}_${++VarMapping.varCounter}`)
     })
 
     return new VarMapping(newMap)
   }
 }
 
+let freshVarCounter = 0
+
+function freshvar (): MicroToken {
+  return {
+    text: `fv ${freshVarCounter++}`,
+    line: 0,
+    column: 0
+  }
+}
+
 type Env = VarMapping
 
-const binOpFunctionName = new Map([
+const binOpFunctionName = safeNewMap([
   [parser.OR, '__or__'],
   [parser.AND, '__and__'],
   [parser.CONCAT, '__concat__'],
@@ -66,7 +88,7 @@ const binOpFunctionName = new Map([
   [parser.NEQ, '__neq__']
 ])
 
-const unOpFunctionName = new Map([
+const unOpFunctionName = safeNewMap([
   [parser.NOT, '__not__'],
   [parser.PLUS, '__unary_plus__'],
   [parser.MINUS, '__unary_minus__']
@@ -90,8 +112,10 @@ function extractValueId (def: ValueDefinition) {
   return def.typedVar().varId().token()
 }
 
-function extractTupleIds (def: TupleDefinition): Token[] {
-  return fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
+function extractTupleIds (def: TupleDefinition): MicroToken[] {
+  const ids: MicroToken[] = fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
+  ids.push(freshvar())
+  return ids
 }
 
 function extractFunctionId (def: FunctionDefinition) {
@@ -106,33 +130,33 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
       return toCore(expr.expr(), env)
     } else {
 
-      const ids: Token[] = flapmap(defs, extractIds)
+      const ids: MicroToken[] = flapmap(defs, extractIds)
 
-      const newEnv = env.extends(ids.map(i => i.text))
+      const newEnv = env.extends(ids)
 
-      const bindings: [string, Expr][] = fastmap(defs, (def): [string, Expr] => {
+      const bindings: [string, Expr][] = flapmap(defs, (def): [string, Expr][] => {
         switch (def.contextName) {
           case 'valueDefinition': {
             const id = extractValueId(def)
-
-            return [newEnv.resolve(id), toCore(def.expr(), newEnv)]
+            return [[newEnv.resolve(id), toCore(def.expr(), newEnv)]]
           }
-          case 'tupleDefinition':
-          // case 'functionDefinition':
+
+          case 'functionDefinition': {
+            const id = extractFunctionId(def)
+            return [[newEnv.resolve(id), lambdaExpr(def, newEnv) ]]
+          }
+
+          // case 'tupleDefinition':
           default:
+            const ids = extractTupleIds(def)
+            // const
+
             throw new Error('À Faire')
         }
       })
 
-      return eLet(new Map(bindings), toCore(expr.expr(), newEnv))
+      return eLet(safeNewMap(bindings), toCore(expr.expr(), newEnv))
     }
-  },
-
-  lambdaExpr (expr: LambdaExpr, env: Env): Expr {
-    const params = fastmap(typedParamList( expr.typedParams()), p => p.paramId().token())
-    const newEnv = env.extends(fastmap(params, p => p.text))
-
-    return eLambda(fastmap(params, p => newEnv.resolve(p)), toCore(expr.expr(), newEnv))
   },
 
   simple (expr: Simple, env: Env): Expr { // includes parenthesis expressions
@@ -199,9 +223,18 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
     }
 
     throw new Error('PAS FINI')
-  }
+  },
+
+  lambdaExpr: lambdaExpr
 
 })
+
+function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams| null), expr: () => PExpr }, env: Env): Expr {
+  const params = fastmap(typedParamList(lambdaLike.typedParams()), p => p.paramId().token())
+  const newEnv = env.extends(params)
+
+  return eLambda(fastmap(params, p => newEnv.resolve(p)), toCore(lambdaLike.expr(), newEnv))
+}
 
 toCoreSwitchMap.set('topLevel', notnull(toCoreSwitchMap.get('letExpr')))
 
@@ -250,7 +283,7 @@ const tree: any = parse(`
   a=1
   b=(x)->x+1
  // (b,c)=1
- //foo(x)=x+1
+  foo(x)=x+1
   a+2
 }
 `)
