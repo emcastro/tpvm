@@ -1,5 +1,6 @@
 
 import * as _ from 'lodash'
+import { OneOrMany } from './prelude'
 
 export function fastmap<T, R> (array: T[], f: (t: T) => R): R[] {
   const length = array.length
@@ -29,7 +30,7 @@ export function fasteach<T> (array: T[], f: (t: T) => void): void {
   }
 }
 
-export function flapmap<T, R> (array: T[], f: (t: T) => (R | R[])): R[] {
+export function flapmap<T, R> (array: T[], f: (t: T) => OneOrMany<R>): R[] {
   const length = array.length
   const result: R[] = []
   let j = 0

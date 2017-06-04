@@ -79,3 +79,31 @@ export function switchMap<T1, R> (object: { [switchKey: string]: <K extends T1>(
 export function switchMap2<T1, T2, R> (object: { [switchKey: string]: <K extends T1>(switchValue: K, arg: T2) => R }): Map<string, (switchValue: T1, arg: T2) => R> {
   return new Map(Object.entries(object)) as Map<string, (switchValue: T1, arg: T2) => R>
 }
+
+export type MayBe<T> = T | undefined
+
+export type OneOrMany<T> = T | T[]
+
+export class Pair<A,B> {
+  _0: A
+  _1: B
+
+  constructor (a: A, b: B) {
+    this._0 = a
+    this._1 = b
+  }
+}
+
+export function memo<F extends Function> (f: F) {
+  const store = new Map()
+
+  return ((arg: any) => {
+    let result = store.get(arg)
+    if (result === undefined) {
+      result = f(arg)
+      store.set(arg, result)
+    }
+
+    return result
+  }) as any as F
+}

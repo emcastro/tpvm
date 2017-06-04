@@ -7,7 +7,7 @@ import {
 import { TPNode, Token, parser, nodeName, tokenName, position, parse, ParseError, Expr as PExpr } from '../parsing/parser'
 
 import { fastmap, flapmap, fasteach, zip, safeNewMap } from '../utils/fastArray'
-import { notnull, switchMap2 } from '../utils/prelude'
+import { notnull, switchMap2, OneOrMany, memo } from '../utils/prelude'
 
 class ReferenceError extends Error {
 }
@@ -60,9 +60,7 @@ class FreshToken {
   type: number
   source: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
 
-  constructor (baseToken: Token | undefined, alternateToken: Token) {
-    const token = baseToken !== undefined ? baseToken : alternateToken
-
+  constructor (token: Token) {
     Object.assign(this, token)
     this.text = `fv${FreshToken.counter++}`
   }
@@ -101,23 +99,14 @@ import {
   BinOp, UnOp, UserOp, Call, Definition, ValueDefinition, TupleDefinition, FunctionDefinition
 } from './parser'
 
-function extractIds (def: ValueDefinition | TupleDefinition | FunctionDefinition) {
-  switch (def.contextName) {
-    case 'valueDefinition': return extractValueId(def)
-    case 'tupleDefinition': return extractTupleIds(def)
-    // case 'functionDefinition':
-    default: return extractFunctionId(def)
-  }
-}
+type AnyDefinition = ValueDefinition | TupleDefinition | FunctionDefinition
 
 function extractValueId (def: ValueDefinition): Token {
   return def.typedVar().varId().token()
 }
 
 function extractTupleIds (def: TupleDefinition): Token[] {
-  const ids = fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
-  ids.push(new FreshToken(ids[0], def.start))
-  return ids
+  return fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
 }
 
 function extractFunctionId (def: FunctionDefinition): Token {
@@ -126,40 +115,8 @@ function extractFunctionId (def: FunctionDefinition): Token {
 
 const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
 
-  letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
-    const defs = fastmap(expr.definition(), d => d.loneChild())
-    if (defs.length === 0) {
-      return toCore(expr.expr(), env)
-    } else {
-
-      const ids = flapmap(defs, extractIds)
-
-      const newEnv = env.extends(ids)
-
-      const bindings: [string, Expr][] = flapmap(defs, (def): [string, Expr][] => {
-        switch (def.contextName) {
-          case 'valueDefinition': {
-            const id = extractValueId(def)
-            return [[newEnv.resolve(id), toCore(def.expr(), newEnv)]]
-          }
-
-          case 'functionDefinition': {
-            const id = extractFunctionId(def)
-            return [[newEnv.resolve(id), lambdaExpr(def, newEnv)]]
-          }
-
-          // case 'tupleDefinition':
-          default:
-            const ids = extractTupleIds(def)
-            // const
-
-            throw new Error('À Faire')
-        }
-      })
-
-      return eLet(safeNewMap(bindings), toCore(expr.expr(), newEnv))
-    }
-  },
+  letExpr: letExpr,
+  topLevel: letExpr,
 
   simple (expr: Simple, env: Env): Expr { // includes parenthesis expressions
     return toCore(expr.simpleExpr().loneChild(), env)
@@ -231,6 +188,62 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
 
 })
 
+function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
+  const defs = fastmap(expr.definition(), d => d.loneChild())
+  if (defs.length === 0) {
+    return toCore(expr.expr(), env)
+  } else {
+    // Memoization of fresh var building, because each fresh var must be built only once
+    const freshVar = memo((def: AnyDefinition) => new FreshToken(def.start))
+
+    const ids = flapmap(defs, (def) => {
+      switch (def.contextName) {
+        case 'valueDefinition': return extractValueId(def)
+        case 'functionDefinition': return extractFunctionId(def)
+        // case 'tupleDefinition':
+        default: {
+          const ids = extractTupleIds(def)
+          ids.push(freshVar(def)) // One fresh var for each tuple definition
+          return ids
+        }
+      }
+    })
+
+    const newEnv = env.extends(ids)
+
+    const bindings: [string, Expr][] = flapmap(defs, (def): [string, Expr][] => {
+      switch (def.contextName) {
+        case 'valueDefinition': {
+          const id = extractValueId(def)
+          return [[newEnv.resolve(id), toCore(def.expr(), newEnv)]]
+        }
+
+        case 'functionDefinition': {
+          const id = extractFunctionId(def)
+          return [[newEnv.resolve(id), lambdaExpr(def, newEnv)]]
+        }
+
+        // case 'tupleDefinition':
+        default:
+          const ids = extractTupleIds(def)
+          const fresh = freshVar(def)
+          const freshId = newEnv.resolve(fresh)
+          const mainBinding: [string, Expr] = [freshId, toCore(def.expr(), newEnv)]
+          const mainVar = eVar(freshId)
+          mainVar.source = ids
+          const bindings = ids.map((id, idx): [string, Expr] => {
+            return [newEnv.resolve(id), eApply(mainVar, [eLiteral(idx)])]
+          })
+          bindings.unshift(mainBinding)
+
+          return bindings
+      }
+    })
+
+    return eLet(safeNewMap(bindings), toCore(expr.expr(), newEnv))
+  }
+}
+
 function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams | null), expr: () => PExpr }, env: Env): Expr {
   const params = fastmap(typedParamList(lambdaLike.typedParams()), p => p.paramId().token())
   const newEnv = env.extends(params)
@@ -238,7 +251,7 @@ function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams | null), expr
   return eLambda(fastmap(params, p => newEnv.resolve(p)), toCore(lambdaLike.expr(), newEnv))
 }
 
-toCoreSwitchMap.set('topLevel', notnull(toCoreSwitchMap.get('letExpr')))
+// Utils ↓↓↓↓
 
 import { Args, TypedParams, TypedVars, LambdaExpr, Arg, TypedParam, TypedVar } from './parser'
 

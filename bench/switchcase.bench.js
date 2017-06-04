@@ -5,7 +5,7 @@ console.log()
 const { usage, newSuite, run } = require('./utils/bench')
 const _ = require('lodash')
 
-const { fastmap } = require('../build/utils/fastArray')
+const { fastmap } = require('../dist/utils/fastArray')
 
 usage('switch Map', ['switch case', 'switch {object}'])
 

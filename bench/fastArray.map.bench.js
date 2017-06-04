@@ -3,7 +3,7 @@
 const { color, usage, newSuite, run } = require('./utils/bench')
 const _ = require('lodash')
 
-const { fastmap } = require('../build/utils/fastArray')
+const { fastmap } = require('../dist/utils/fastArray')
 
 usage('fastmap', ['_.map', 'Array.map'])
 

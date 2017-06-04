@@ -3,7 +3,7 @@
 const { color, usage, newSuite, run } = require('./utils/bench')
 const _ = require('lodash')
 
-const { fasteach } = require('../build/utils/fastArray')
+const { fasteach } = require('../dist/utils/fastArray')
 
 usage('fasteach', ['_.forEach', 'for of', 'Array.forEach'])
 
