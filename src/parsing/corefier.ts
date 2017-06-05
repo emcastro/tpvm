@@ -9,6 +9,8 @@ import { TPNode, Token, parser, nodeName, tokenName, position, parse, ParseError
 import { fastmap, flapmap, fasteach, zip, safeNewMap } from '../utils/fastArray'
 import { notnull, switchMap2, OneOrMany, memo, MayBe } from '../utils/prelude'
 
+const METHOD_PREFIX = '_'
+
 class ReferenceError extends Error {
 }
 
@@ -28,8 +30,8 @@ class VarMapping {
     return r
   }
 
-  resolveIfDefined (token: Token): MayBe<string> {
-    const id = token.text
+  resolveIfDefined (prefix: string, token: Token): MayBe<string> {
+    const id = prefix + token.text
     return this.storage.get(id)
   }
 
@@ -46,10 +48,12 @@ class VarMapping {
   extends (ids: Token[]): VarMapping {
     const newMap = new Map(this.storage)
 
+    const added = new Set()
     fasteach(ids, id => {
-      if (newMap.has(id.text)) {
+      if (added.has(id.text)) {
         throw new ReferenceError(`Duplicate var ${id.text} @${position(id)}`)
       }
+      added.add(id.text)
       newMap.set(id.text, `${id.text}_${++VarMapping.varCounter}`)
     })
 
@@ -102,7 +106,7 @@ const unOpFunctionName = safeNewMap([
 import {
   LetExpr, TopLevel, Simple, VarExpr, LiteralExpr,
   BinOp, UnOp, UserOp, Call, Definition, ValueDefinition, TupleDefinition, FunctionDefinition,
-  IfElseExpr
+  IfElseExpr, Apply as PApply, ShortLambdaExpr
 } from './parser'
 
 type AnyDefinition = ValueDefinition | TupleDefinition | FunctionDefinition
@@ -129,9 +133,7 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
   },
 
   varExpr (expr: VarExpr, env: Env): Expr {
-    const varExpr = eVar(env.resolve(expr.token()))
-    varExpr.source = [expr]
-    return varExpr
+    return eVar(env.resolve(expr.token())).setSource(expr)
   },
 
   literalExpr (expr: LiteralExpr, env: Env): Expr {
@@ -164,57 +166,62 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
 
   binOp (expr: BinOp, env: Env): Expr {
     const opToken = expr.tokenAt(1)
-    const varExpr = eVar(env.resolveSpecial(opToken, binOpFunctionName))
-    varExpr.source = [opToken]
+    const varExpr = eVar(env.resolveSpecial(opToken, binOpFunctionName)).setSource(opToken)
     return eApply(varExpr, toCoreMap(expr.expr(), env))
   },
 
   userOp (expr: UserOp, env: Env): Expr {
     const opToken = expr.userOpId()
-    const varExpr = eVar(env.resolve(opToken.token()))
-    varExpr.source = [opToken]
+    const varExpr = eVar(env.resolve(opToken.token())).setSource(opToken)
     return eApply(varExpr, toCoreMap(expr.expr(), env))
   },
 
   unOp (expr: UnOp, env: Env): Expr {
     const opToken = expr.tokenAt(0)
-    const varExpr = eVar(env.resolveSpecial(opToken, unOpFunctionName))
-    varExpr.source = [opToken]
+    const varExpr = eVar(env.resolveSpecial(opToken, unOpFunctionName)).setSource(opToken)
     return eApply(varExpr, [toCore(expr.expr(), env)])
   },
 
   call (expr: Call, env: Env): Expr {
-    const operator = toCore(expr.expr(), env)
-
     const apply = expr.apply()
     const attr = expr.attr()
 
+    const operator = toCore(expr.expr(), env)
+
     if (attr !== null) {
-      const attrName = env.resolveIfDefined(attr.token())
+      const attrName = env.resolveIfDefined(METHOD_PREFIX, attr.token())
 
       if (attrName === undefined) {
+        const attrLiteral = [eLiteral(attr.token().text).setSource(attr)]
         if (apply === null) { // expr.attr => expr('attr')
-
+          return eApply(operator, attrLiteral)
         } else { // expr.attr(apply) => expr('attr')(apply...)
-
+          return eApply(eApply(operator, attrLiteral), operands(apply, env))
         }
       } else {
-        if (apply === null) { // expr.attr => attr(expr)
-
-        } else { // expr.attr(apply) => attr(expr, apply...)
-
+        const attrVar = eVar(attrName).setSource(attr);
+        if (apply === null) { // expr.attr => _attr(expr)
+          return eApply(attrVar, [operator])
+        } else { // expr.attr(apply) => _attr(expr, apply...)
+          const ops = operands(apply, env)
+          ops.unshift(operator)
+          return eApply(attrVar, ops)
         }
       }
     } else { // expr(apply...)
       if (apply === null) throw new Error('Unexpected missing apply')
-      const operands = fastmap(argList(apply.args()), a => toCore(a.expr(), env))
-      return eApply(operator, operands)
+      return eApply(operator, operands(apply, env))
     }
-
-    throw new Error('PAS FINI')
   },
 
-  lambdaExpr: lambdaExpr
+  lambdaExpr: lambdaExpr,
+
+  shortLambdaExpr (lambda: ShortLambdaExpr, env: Env): Expr {
+    const param = lambda.paramId().token()
+    const newEnv = env.extends([param])
+
+    return eLambda([newEnv.resolve(param)], toCore(lambda.expr(), newEnv))
+  }
 
 })
 
@@ -259,8 +266,7 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
           const fresh = freshVar(def)
           const freshId = newEnv.resolve(fresh)
           const mainBinding: [string, Expr] = [freshId, toCore(def.expr(), newEnv)]
-          const mainVar = eVar(freshId)
-          mainVar.source = ids
+          const mainVar = eVar(freshId).setSource(ids)
           const bindings = ids.map((id, idx): [string, Expr] => {
             return [newEnv.resolve(id), eApply(mainVar, [eLiteral(idx)])]
           })
@@ -292,12 +298,14 @@ function argList (args: Args | null) { return (args === null) ? emptyList<Arg>()
 function typedParamList (params: TypedParams | null) { return (params === null) ? emptyList<TypedParam>() : params.typedParam() }
 function typedVarList (vars: TypedVars | null) { return (vars === null) ? emptyList<TypedVar>() : vars.typedVar() }
 
+function operands (apply: PApply, env: Env) {
+  return fastmap(argList(apply.args()), a => toCore(a.expr(), env))
+}
+
 function toCore (expr: TPNode, env: Env): Expr {
   const toCoreExpr: any = toCoreSwitchMap.get(expr.contextName)
   if (toCoreExpr == null) throw new Error('À coder : ' + expr.contextName)
-  const core = toCoreExpr(expr, env)
-  core.source = [expr]  // TODO: arbitrer par rapport à ExprBase.setSource
-  return core
+  return toCoreExpr(expr, env).setSource(expr)
 }
 
 function toCoreMap (exprs: TPNode[], env: Env): Expr[] {

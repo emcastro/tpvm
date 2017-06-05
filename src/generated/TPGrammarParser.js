@@ -436,18 +436,18 @@ CallContext.prototype.attr = function() {
     return this.getTypedRuleContext(AttrContext,0);
 };
 
-function UserOpExprContext(parser, ctx) {
+function UserOpContext(parser, ctx) {
 	ExprContext.call(this, parser);
     ExprContext.prototype.copyFrom.call(this, ctx);
     return this;
 }
 
-UserOpExprContext.prototype = Object.create(ExprContext.prototype);
-UserOpExprContext.prototype.constructor = UserOpExprContext;
+UserOpContext.prototype = Object.create(ExprContext.prototype);
+UserOpContext.prototype.constructor = UserOpContext;
 
-TPGrammarParser.UserOpExprContext = UserOpExprContext;
+TPGrammarParser.UserOpContext = UserOpContext;
 
-UserOpExprContext.prototype.expr = function(i) {
+UserOpContext.prototype.expr = function(i) {
     if(i===undefined) {
         i = null;
     }
@@ -458,7 +458,7 @@ UserOpExprContext.prototype.expr = function(i) {
     }
 };
 
-UserOpExprContext.prototype.userOpId = function() {
+UserOpContext.prototype.userOpId = function() {
     return this.getTypedRuleContext(UserOpIdContext,0);
 };
 
@@ -740,7 +740,7 @@ TPGrammarParser.prototype.expr = function(_p) {
                     break;
 
                 case 5:
-                    localctx = new UserOpExprContext(this, new ExprContext(this, _parentctx, _parentState));
+                    localctx = new UserOpContext(this, new ExprContext(this, _parentctx, _parentState));
                     this.pushNewRecursionContext(localctx, _startState, TPGrammarParser.RULE_expr);
                     this.state = 96;
                     if (!( this.precpred(this._ctx, 4))) {

@@ -10,7 +10,7 @@ expr: simpleExpr # simple
     | expr (CONCAT | MINUSMINUS) expr   # binOp
     | expr (EQ | LT | LE | GT | GE | NEQ) expr
                                         # binOp // Comparator
-    | expr userOpId expr                # userOpExpr
+    | expr userOpId expr                # userOp
     | NOT expr                          # unOp  // Logic
     | expr AND expr                     # binOp
     | expr OR expr                      # binOp

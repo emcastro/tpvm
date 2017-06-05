@@ -3,28 +3,28 @@ __eq__=#eq
 __concat__=#list_concat
 
 // Lists
-head(list)=list(0)
-tail(list)=list.tailFrom(1)
-tailFrom(list,n) = #list_tailFrom(list,n)
-sublist(list,from,to) = #list_sublist(list,from,to)
-length(list)=#list_length(list)
-empty(list)=length(list)==0
+_head(list)=list(0)
+_tail(list)=list.tailFrom(1)
+_tailFrom(list,n) = #list_tailFrom(list,n)
+_sublist(list,from,to) = #list_sublist(list,from,to)
+_length(list)=#list_length(list)
+_empty(list)=list.length==0
 
 lone(list)=if(list.length == 1) list(0) else #error("Size must be 1")
 char = lone
 
 //
 
-flatmap(list, f) = {
+_flatmap(list, f) = {
     if (list.empty) #nil
     else {
         f(list.head) ++ list.map(f)
     }
 }
 
-map(list, f) = flatmap(list, e->#list(f(e))) // flêche double
+_map(list, f) = list.flatmap(e->#list(f(e))) // flêche double
 
-filter(list, f) = {
+_filter(list, f) = {
     if (list.empty) #nil
     else {
         if (f(list.head))
@@ -49,7 +49,7 @@ split(list, isDelim) = {
     }
 }
 
-foldLeft(list, zero, op) = {
+_foldLeft(list, zero, op) = {
     loop(list, state) = {
         if (list.empty) state
         else {

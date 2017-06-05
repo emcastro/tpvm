@@ -1,7 +1,7 @@
 
 import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Expr, Var } from '../generated/genExpr'
 import { SExprRenderer } from '../utils/SExprRenderer'
-import { iteratorToArray } from '../utils/prelude'
+import { iteratorToArray, OneOrMany } from '../utils/prelude'
 import * as _ from 'lodash'
 import { TPNode, Token } from '../parsing/parser'
 
@@ -92,14 +92,10 @@ export class ExprBase {
   }
 
   /** Link to the source code */
-  source: (TPNode | Token)[]
+  source: OneOrMany<TPNode | Token>
 
-  // setSource (source: TPNode | TPNode[]): this{
-  //   if (Array.isArray(source)) {
-  //     this.source = source
-  //   } else {
-  //     this.source = [source]
-  //   }
-  //   return this
-  // }
+  setSource (source: OneOrMany<TPNode | Token>): this {
+    this.source = source
+    return this
+  }
 }

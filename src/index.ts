@@ -10,9 +10,9 @@ const source = fs.readFileSync('tp/test.tp', 'utf-8')
 const parsed = parse(source)
 const cored = core(parsed)
 
-console.log(cored)
+console.log(cored.toText())
 
-// const p = eval1(code, new Env(new Map()))
+const p = eval1(cored, new Env(new Map()))
 
 // if (p instanceof Promise) {
 //   p.then((v) => {
