@@ -6,7 +6,7 @@ exports[`The Parser can be tested with snapshots 2`] = `"\\"\\\\\\"test\\"\\\\\\
 
 exports[`The Parser parses Empty.tp correctly 1`] = `
 "topLevel
-  <EOF>#-1 <EOF>   @1:1
+  undefined <EOF>   @1:1
 "
 `;
 
@@ -180,7 +180,7 @@ exports[`The Parser parses EndOfLet.tp correctly 1`] = `
                 varExpr
                   ID a   @30:5
             '}' }   @31:1
-  <EOF>#-1 <EOF>   @33:1
+  undefined <EOF>   @33:1
 "
 `;
 
@@ -342,7 +342,7 @@ exports[`The Parser parses Literals.tp correctly 1`] = `
         simpleExpr
           literalExpr
             BOOLEAN true   @23:12
-  <EOF>#-1 <EOF>   @25:1
+  undefined <EOF>   @25:1
 "
 `;
 
@@ -497,7 +497,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           ID power   @13:1
         typeAnnotation
       EQ_DEF =   @13:7
-      userOpExpr:expr
+      userOp:expr
         binOp:expr
           simple:expr
             simpleExpr
@@ -521,7 +521,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           ID section   @14:1
         typeAnnotation
       EQ_DEF =   @14:9
-      userOpExpr:expr
+      userOp:expr
         binOp:expr
           simple:expr
             simpleExpr
@@ -622,7 +622,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           ID lambda   @20:1
         typeAnnotation
       EQ_DEF =   @20:8
-      userOpExpr:expr
+      userOp:expr
         simple:expr
           simpleExpr
             varExpr
@@ -658,7 +658,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           ID lambda   @21:1
         typeAnnotation
       EQ_DEF =   @21:8
-      userOpExpr:expr
+      userOp:expr
         simple:expr
           simpleExpr
             varExpr
@@ -699,7 +699,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           ID lambda   @22:1
         typeAnnotation
       EQ_DEF =   @22:8
-      userOpExpr:expr
+      userOp:expr
         simple:expr
           simpleExpr
             varExpr
@@ -738,7 +738,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           ID lambda   @23:1
         typeAnnotation
       EQ_DEF =   @23:8
-      userOpExpr:expr
+      userOp:expr
         simple:expr
           simpleExpr
             varExpr
@@ -979,7 +979,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           ID call   @31:1
         typeAnnotation
       EQ_DEF =   @31:5
-      userOpExpr:expr
+      userOp:expr
         call:expr
           simple:expr
             simpleExpr
@@ -1017,7 +1017,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           ID userOp   @33:1
         typeAnnotation
       EQ_DEF =   @33:8
-      userOpExpr:expr
+      userOp:expr
         binOp:expr
           unOp:expr
             MINUS -   @33:10
@@ -1055,8 +1055,8 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
           ID cmpUserOp   @35:1
         typeAnnotation
       EQ_DEF =   @35:11
-      userOpExpr:expr
-        userOpExpr:expr
+      userOp:expr
+        userOp:expr
           binOp:expr
             simple:expr
               simpleExpr
@@ -1145,7 +1145,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
                   literalExpr
                     INTEGER 1   @41:7
             '}' }   @42:1
-  <EOF>#-1 <EOF>   @43:1
+  undefined <EOF>   @43:1
 "
 `;
 
@@ -1275,7 +1275,7 @@ exports[`The Parser parses SemiColon.tp correctly 1`] = `
                 varExpr
                   ID foo   @10:10
             '}' }   @10:14
-  <EOF>#-1 <EOF>   @12:1
+  undefined <EOF>   @12:1
 "
 `;
 
@@ -2002,7 +2002,7 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
           ID call   @70:1
         typeAnnotation
       EQ_DEF =   @70:5
-      userOpExpr:expr
+      userOp:expr
         simple:expr
           simpleExpr
             varExpr
