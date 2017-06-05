@@ -16,7 +16,7 @@
     "lint-fix": "tslint -p tsconfig.json --type-check --fix",
     "autobuild": "(gulp auto &) ; tsc -w",
     "autotest": "jest --coverage --watchAll",
-    "cleaner": "rm -rf coverage build"
+    "cleaner": "rm -rf coverage dist"
   },
   "dependencies": {
     "antlr4": "^4.7.0",

@@ -7,7 +7,7 @@ import {
 import { TPNode, Token, parser, nodeName, tokenName, position, parse, ParseError, Expr as PExpr } from '../parsing/parser'
 
 import { fastmap, flapmap, fasteach, zip, safeNewMap } from '../utils/fastArray'
-import { notnull, switchMap2, OneOrMany, memo } from '../utils/prelude'
+import { notnull, switchMap2, OneOrMany, memo, MayBe } from '../utils/prelude'
 
 class ReferenceError extends Error {
 }
@@ -26,6 +26,11 @@ class VarMapping {
       throw new ReferenceError(`Undefined var ${id} @${position(token)}`)
     }
     return r
+  }
+
+  resolveIfDefined (token: Token): MayBe<string> {
+    const id = token.text
+    return this.storage.get(id)
   }
 
   resolveSpecial (token: Token, mapping: Map<number, string>): string {
@@ -96,7 +101,8 @@ const unOpFunctionName = safeNewMap([
 
 import {
   LetExpr, TopLevel, Simple, VarExpr, LiteralExpr,
-  BinOp, UnOp, UserOp, Call, Definition, ValueDefinition, TupleDefinition, FunctionDefinition
+  BinOp, UnOp, UserOp, Call, Definition, ValueDefinition, TupleDefinition, FunctionDefinition,
+  IfElseExpr
 } from './parser'
 
 type AnyDefinition = ValueDefinition | TupleDefinition | FunctionDefinition
@@ -151,6 +157,11 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
     }
   },
 
+  ifElseExpr (expr: IfElseExpr, env: Env): Expr {
+    const exprs = expr.expr()
+    return eIfElse(toCore(exprs[0], env), toCore(exprs[1], env), toCore(exprs[2], env))
+  },
+
   binOp (expr: BinOp, env: Env): Expr {
     const opToken = expr.tokenAt(1)
     const varExpr = eVar(env.resolveSpecial(opToken, binOpFunctionName))
@@ -176,8 +187,27 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
     const operator = toCore(expr.expr(), env)
 
     const apply = expr.apply()
-    if (apply !== null) {
-      const operands = fastmap(argList(apply.args()), x => toCore(x.expr(), env))
+    const attr = expr.attr()
+
+    if (attr !== null) {
+      const attrName = env.resolveIfDefined(attr.token())
+
+      if (attrName === undefined) {
+        if (apply === null) { // expr.attr => expr('attr')
+
+        } else { // expr.attr(apply) => expr('attr')(apply...)
+
+        }
+      } else {
+        if (apply === null) { // expr.attr => attr(expr)
+
+        } else { // expr.attr(apply) => attr(expr, apply...)
+
+        }
+      }
+    } else { // expr(apply...)
+      if (apply === null) throw new Error('Unexpected missing apply')
+      const operands = fastmap(argList(apply.args()), a => toCore(a.expr(), env))
       return eApply(operator, operands)
     }
 
@@ -288,20 +318,24 @@ function parseIntAuto (text: string) {
   return parseInt(match[4], 10)
 }
 
-console.log('start')
+// console.log('start')
 
 const emptyEnv = new VarMapping(new Map())
 
-const tree: any = parse(`
-{
-  __plus__=#plus
-  a=1
-  bar=(x)->x+1
-  (b,c)=1
-  foo(x)=x+1
-  a+2
+export function core (source: TPNode) {
+  return toCore(source, emptyEnv)
 }
-`)
-const core = toCore(tree, emptyEnv)
 
-console.log(core.toText())
+// const tree: any = parse(`
+// {
+//   __plus__=#plus
+//   a=1
+//   bar=(x)->x+1
+//   (b,c)=1
+//   foo(x)=x+1
+//   a+2
+// }
+// `)
+// const core = toCore(tree, emptyEnv)
+
+// console.log(core.toText())

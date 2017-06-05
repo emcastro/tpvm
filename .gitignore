@@ -5,3 +5,4 @@
 .idea
 /coverage
 /antlr-*-complete.jar
+/codegen/.antlr
