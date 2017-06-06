@@ -92,9 +92,9 @@ export class ExprBase {
   }
 
   /** Link to the source code */
-  source: OneOrMany<TPNode | Token>
+  source?: OneOrMany<TPNode | Token | null>
 
-  setSource (source: OneOrMany<TPNode | Token>): this {
+  setSource (source: OneOrMany<TPNode | Token | null>): this {
     this.source = source
     return this
   }

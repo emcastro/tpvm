@@ -199,7 +199,7 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
           return eApply(eApply(operator, attrLiteral), operands(apply, env))
         }
       } else {
-        const attrVar = eVar(attrName).setSource(attr);
+        const attrVar = eVar(attrName).setSource(attr)
         if (apply === null) { // expr.attr => _attr(expr)
           return eApply(attrVar, [operator])
         } else { // expr.attr(apply) => _attr(expr, apply...)
@@ -257,7 +257,7 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
 
         case 'functionDefinition': {
           const id = extractFunctionId(def)
-          return [[newEnv.resolve(id), lambdaExpr(def, newEnv)]]
+          return [[newEnv.resolve(id), lambdaExpr(def, newEnv).setSource([def.typedParams(), def.expr()])]]
         }
 
         // case 'tupleDefinition':

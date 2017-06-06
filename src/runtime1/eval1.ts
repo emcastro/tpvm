@@ -5,6 +5,9 @@ import {
 } from '../expr/Expr'
 
 import { primitives } from './primitive1'
+import { OneOrMany } from '../utils/prelude'
+import { TPNode, Token, position, isToken, nodePosition } from '../parsing/parser'
+import { fastmap } from '../utils/fastArray'
 
 export type Value = LiteralValue | Closure | ValueArray | Function
 interface ValueArray extends Array<Value> { } // Pseudo interface to avoid cyclic type
@@ -29,7 +32,7 @@ export class Env { // export for building root env
       if (this.parent !== undefined) {
         return this.parent.lookup(varId)
       } else {
-        throw new Error('Undefined var ' + varId)
+        throw new Error(`Undefined var ${varId}`)
       }
     }
   }
@@ -59,11 +62,32 @@ function now<T, Q> (value: T | Promise<T>, f: (t: T | Promise<T>) => Q): Q | Pro
   return f(value)
 }
 
+function sourcePosition (source: TPNode | Token) {
+  if (isToken(source)) {
+    return position(source)
+  } else {
+    return nodePosition(source)
+  }
+}
+
+function debugInfo (data: { source?: OneOrMany<TPNode | Token | null>}) {
+  const type = Object.getPrototypeOf(data).constructor.name
+
+  const source = data.source
+  if (source == null) {
+    return type + ' @ ' + 'unknown location'
+  } else if (!Array.isArray(source)) {
+    return type + ' @ ' + sourcePosition(source)
+  } else {
+    return type + ' @ ' + fastmap(source.filter(p => p !== null), sourcePosition).join('|')
+  }
+}
+
 /**
  * Simple strict evaluation
  */
 export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
-  console.log('+++', expr.toString())
+  console.log('+++', debugInfo(expr))
 
   switch (expr.typ) {
     case eVar.typ:

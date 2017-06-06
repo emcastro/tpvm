@@ -29,35 +29,35 @@ function varArg (f: any) {
 const s = Symbol.for
 
 export const primitives = {
-  [s('#readFile')]: function readFile (xname: X<string>): X<string> {
+  [s('readFile')]: function readFile (xname: X<string>): X<string> {
     return now(xname, (name: string) => {
       return fsp.readFile(name, 'utf8')
     })
   },
 
-  [s('#nil')]: [],
+  [s('nil')]: [],
 
-  [s('#list_length')]: function list_length<T> (xlist: X<T[]>): X<number> {
+  [s('list_length')]: function list_length<T> (xlist: X<T[]>): X<number> {
     return now(xlist, (list: T[]) => list.length)
   },
 
-  [s('#list_tailFrom')]: function list_tailFrom <T> (xlist: X<T[]>, xfrom: X<number>): X<T[]> {
+  [s('list_tailFrom')]: function list_tailFrom <T> (xlist: X<T[]>, xfrom: X<number>): X<T[]> {
     return now2(xlist, xfrom, (list: T[], from: number) => {
       return list.slice(from)
     })
   },
 
-  [s('#list_concat')]: function list_concat <T> (xlist1: X<T[]>, xlist2: X<T[]>): X<T[]> {
+  [s('list_concat')]: function list_concat <T> (xlist1: X<T[]>, xlist2: X<T[]>): X<T[]> {
     return now2(xlist1, xlist2, (list1: T[], list2: T[]) => {
       return list1.concat(list2)
     })
   },
 
-  [s('#list')]: varArg(function list<T> (...elements: X<T>[]) {
+  [s('list')]: varArg(function list<T> (...elements: X<T>[]) {
     return elements.slice() // copy
   }),
 
-  [s('#eq')]: function eq (a: X<any>, b: X<any>): X<boolean> {
+  [s('eq')]: function eq (a: X<any>, b: X<any>): X<boolean> {
     return now2(a, b, (va, vb) => {
       return equal(va, vb)
     })

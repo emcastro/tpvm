@@ -18,7 +18,7 @@ char = lone
 _flatmap(list, f) = {
     if (list.empty) #nil
     else {
-        f(list.head) ++ list.map(f)
+        f(list.head) ++ list.flatmap(f)
     }
 }
 
@@ -34,13 +34,13 @@ _filter(list, f) = {
     }
 }
 
-split(list, isDelim) = {
+_split(list, isDelim) = {
     if (list.empty) #nil
     else {
         if (isDelim(list.head)) // [ delim, a, b, c ] => [[],[a,b,c]]
-            #list(#nil) ++ split(list.tail, isDelim)
+            #list(#nil) ++ list.tail.split(isDelim)
         else {
-            suite = split(list.tail, isDelim)
+            suite = list.tail.split(isDelim)
             if (suite.isEmpty)
                 #list(#list(list.head))
             else

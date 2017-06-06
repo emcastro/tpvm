@@ -70,8 +70,12 @@ export type Token = {
   source: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
 }
 
+export function isToken (t: any): t is Token {
+  return t.text !== undefined && t.line !== undefined && t.column !== undefined // TODO: should check real Antlr4 token type
+}
+
 type Node = {
-  symbol?: Token,
+  symbol?: Token, // TODO: analyze symbol field
   parser: { ruleNames: string[] },
   ruleIndex: number,
   start: Token,
@@ -158,8 +162,8 @@ export function tokenName (token: Token) {
   return token.text + '#' + token.type
 }
 
-export function position (token: {line: number, column: number}) {
-  return `${token.line}:${token.column + 1}`
+export function position (token: {line: number, column: number, text: { length: number }}) {
+  return `${token.line}:${token.column + 1}-${token.column + 1 + token.text.length}`
 }
 
 export function nodeName (node: TPNode) {
@@ -172,9 +176,9 @@ export function nodeName (node: TPNode) {
 
 export function nodePosition (node: TPNode) {
   if (node.start.line === node.stop.line) {
-    return `${node.start.line}:${node.start.column + 1}-${node.stop.column + 1}`
+    return `${node.start.line}:${node.start.column + 1}-${node.stop.column + 1 + node.stop.text.length}`
   }
-  return `${node.start.line}:${node.start.column + 1}`
+  return `${node.start.line}:${node.start.column + 1}-${node.stop.line}:${node.stop.column + 1 + node.stop.text.length}`
 }
 
 export function dump (node: TPNode, tab?: string): string {
