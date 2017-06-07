@@ -41,7 +41,7 @@ _split(list, isDelim) = {
             #list(#nil) ++ list.tail.split(isDelim)
         else {
             suite = list.tail.split(isDelim)
-            if (suite.isEmpty)
+            if (suite.empty)
                 #list(#list(list.head))
             else
                 #list(#list(list.head)++suite.head)++suite.tail
@@ -60,7 +60,7 @@ _foldLeft(list, zero, op) = {
     loop(list,zero)
 }
 
-join(list, delimList) = {
+_join(list, delimList) = {
     list.map(item->delimList++list).foldLeft(#nil, (x,y)->x++y)
 }
 
@@ -71,4 +71,4 @@ file = #readFile("test")
 lines = file.split(c->c == char(","))
 
 // main
-lines.join(char(""))
+#spy(lines) //.join(char("|"))

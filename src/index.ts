@@ -14,10 +14,10 @@ console.log(cored.toText())
 
 const p = eval1(cored, new Env(new Map()))
 
-// if (p instanceof Promise) {
-//   p.then((v) => {
-//     console.log('!End', v)
-//   }).catch((e) => {
-//     console.error('!Error', e)
-//   })
-// }
+if (p instanceof Promise) {
+  p.then((v) => {
+    console.log('!End', v)
+  }, (e) => {
+    console.error('!Error', e)
+  })
+}

@@ -48,12 +48,9 @@ export class Closure {
   }
 }
 
-class EvalError extends Error {
-}
+class EvalError extends Error {}
 
-class PrimitiveError extends EvalError {
-
-}
+class PrimitiveError extends EvalError {}
 
 function now<T, Q> (value: T | Promise<T>, f: (t: T | Promise<T>) => Q): Q | Promise<Q> {
   if (value instanceof Promise) {
@@ -70,7 +67,7 @@ function sourcePosition (source: TPNode | Token) {
   }
 }
 
-function debugInfo (data: { source?: OneOrMany<TPNode | Token | null>}) {
+function debugInfo (data: { source?: OneOrMany<TPNode | Token | null> }) {
   const type = Object.getPrototypeOf(data).constructor.name
 
   const source = data.source
@@ -98,7 +95,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
       if (typeof l === 'symbol') {
         const x = primitives[l]
         if (x == null) {
-          throw new Error(`Undefined primitive ${Symbol.keyFor(l)}`)
+          throw new Error(`Undefined primitive #${Symbol.keyFor(l)}`)
         }
         return x
       } else {
@@ -152,58 +149,59 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
             const newEnv: Env = new Env(frame, op.defEnv)
 
             return eval1(op.lambda.body, newEnv)
-          }
 
-          // Parameter evaluation
-          const args = []  // inlined Array.map
-          for (let i = 0; i < ops.length; i++) {
-            args.push(eval1(ops[i], env))
-          }
+          } else {
+            // Spécial case: primitve, array or object access
 
-          // Primitive function (from Literal)
-          if (typeof op === 'function') {
-            if (op.length !== args.length) {
-              if ((op as any).varArgs) {
-                throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} (P)`)
-              }
+            // Parameter evaluation
+            const args = []  // inlined Array.map
+            for (let i = 0; i < ops.length; i++) {
+              args.push(eval1(ops[i], env))
             }
-            try {
-              return op.apply(null, args)
-            } catch (e) {
-              throw new PrimitiveError(e)
+
+            // Primitive function (from Literal)
+            if (typeof op === 'function') {
+              if (op.length !== args.length) {
+                if ((op as any).varArgs) {
+                  throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} (P)`)
+                }
+              }
+              try {
+                return op.apply(null, args)
+              } catch (e) {
+                console.error(debugInfo(expr))
+                throw new PrimitiveError(e)
+              }
+            } else {
+              // Other cases: array or object
+
+              if (args.length === 1) {
+                // Array-like access or method
+                return now(args[0], (arg1) => {
+                  if (typeof arg1 === 'number') {
+                    // Array access
+                    if (typeof op === 'string') {
+                      return op.charCodeAt(arg1)
+                    }
+
+                    if (Array.isArray(op)) {
+                      return op[arg1]
+                    }
+                  }
+                  if (typeof arg1 === 'string') {
+                    // Method call
+                    const generic: any = op
+                    if (generic[arg1] !== undefined) {
+                      return generic[arg1]
+                    }
+                  }
+                  throw new EvalError('No method or special application available')
+                })
+              }
+
+              throw new EvalError('No method or special application available')
             }
           }
-
-          if (args.length === 1) {
-            // Array-like access or method
-            return now(args[0], (arg1) => {
-              if (typeof arg1 === 'number') {
-                // Array access
-                if (typeof op === 'string') {
-                  return op.charCodeAt(arg1)
-                }
-
-                if (Array.isArray(op)) {
-                  return op[arg1]
-                }
-
-                const generic: any = op
-                return generic.get(arg1) // TODO: ou .apply ?
-              }
-              if (typeof arg1 === 'string') {
-                // Method call
-                const generic: any = op
-                if (generic[arg1] === undefined) {
-                  return generic.get(arg1) // TODO: ou .apply ?
-                } else {
-                  return generic[arg1]
-                }
-              }
-              return 'ERROR 2'
-            })
-          }
-
-          return 'ERROR 1'
         } catch (e) {
           if (e instanceof EvalError) throw e
           throw new EvalError(e)

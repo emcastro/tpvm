@@ -28,6 +28,8 @@ function varArg (f: any) {
 
 const s = Symbol.for
 
+class RuntimeError extends Error {}
+
 export const primitives = {
   [s('readFile')]: function readFile (xname: X<string>): X<string> {
     return now(xname, (name: string) => {
@@ -60,6 +62,17 @@ export const primitives = {
   [s('eq')]: function eq (a: X<any>, b: X<any>): X<boolean> {
     return now2(a, b, (va, vb) => {
       return equal(va, vb)
+    })
+  },
+
+  [s('error')]: function error (cause: any) {
+    throw new RuntimeError(cause)
+  },
+
+  [s('spy')]: function spy (data: any) {
+    return now(data, d => {
+      console.log(d)
+      return d
     })
   }
 }
