@@ -8,6 +8,7 @@ import { primitives } from './primitive1'
 import { OneOrMany } from '../utils/prelude'
 import { TPNode, Token, position, isToken, nodePosition } from '../parsing/parser'
 import { fastmap } from '../utils/fastArray'
+import { then, Promise } from './optimisticPromise'
 
 export type Value = LiteralValue | Closure | ValueArray | Function
 interface ValueArray extends Array<Value> { } // Pseudo interface to avoid cyclic type
@@ -50,54 +51,7 @@ export class Closure {
 
 class EvalError extends Error {}
 
-const stats = {
-  value: 0,
-  resolved: 0,
-  pending: 0
-}
-
-process.on('exit', () => {
-  console.log('=================')
-  console.log(stats)
-})
-
 class PrimitiveError extends EvalError {}
-
-function extractDone<Q> (value: Q | Promise<Q>): Q | Promise<Q> {
-  if (value instanceof Promise) {
-    let p: any = value
-    if (p.done) {
-      const r = p.result
-      if (r instanceof Promise) {
-        return extractDone(r)
-      } else {
-        stats.resolved++
-        return r
-      }
-    }
-    stats.pending++
-    return value
-  } else {
-    stats.value++
-    return value
-  }
-}
-
-function now<T, Q> (value: T | Promise<T>, f: (t: T | Promise<T>) => Q): Q | Promise<Q> {
-  value = extractDone(value)
-
-  if (value instanceof Promise) {
-    const promise = value.then(v => {
-      const p: any = promise as any
-      const result = f(v)
-      p.result = result
-      p.done = true
-      return p.result
-    })
-    return promise
-  }
-  return f(value)
-}
 
 function sourcePosition (source: TPNode | Token) {
   if (isToken(source)) {
@@ -158,7 +112,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
 
     case eIfElse.typ: // eval if...
       const ifExpr = expr
-      return now(eval1(expr.ifClause, env), b => {
+      return then(eval1(expr.ifClause, env), b => {
         if (typeof b === 'boolean') {
           if (b) {
             return eval1(ifExpr.thenClause, env)
@@ -173,7 +127,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
     default:
     case eApply.typ:
       const applyExpr = expr
-      return now(eval1(expr.operator, env), (op) => {
+      return then(eval1(expr.operator, env), (op) => {
         const ops = applyExpr.operands
         try {
           if (op instanceof Closure) {
@@ -217,7 +171,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
 
               if (args.length === 1) {
                 // Array-like access or method
-                return now(args[0], (arg1) => {
+                return then(args[0], (arg1) => {
                   if (typeof arg1 === 'number') {
                     // Array access
                     if (typeof op === 'string') {

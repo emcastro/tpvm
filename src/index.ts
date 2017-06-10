@@ -12,12 +12,10 @@ const cored = core(parsed)
 
 console.log(cored.toText())
 
-const p = eval1(cored, new Env(new Map()))
+const p: any = eval1(cored, new Env(new Map()))
 
-if (p instanceof Promise) {
-  p.then((v) => {
-    console.log('!End', v)
-  }, (e) => {
-    console.error('!Error', e)
-  })
-}
+p.then((v: any) => {
+  console.log('!End', v)
+}, (e: any) => {
+  console.error('!Error', e)
+})
