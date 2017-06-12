@@ -1,6 +1,7 @@
 // Testbed 1
 __eq__=#eq
 __concat__=#list_concat
+__plus__=#plus
 
 // Lists
 _head(list)=list(0)
@@ -15,30 +16,32 @@ char = lone
 
 //
 
+_spy(self) = #spy(self)
+
 _flatmap(list, f) = {
-    if (list.empty) #nil
+    if (list.empty) #nil(list)
     else {
-        f(list.head) ++ list.flatmap(f)
+        f(list.head) ++ list.tail.flatmap(f)
     }
 }
 
-_map(list, f) = list.flatmap(e->#list(f(e))) // flêche double
+_map(list, f) = list.flatmap(e->#list(f(e))) // ici problème de type
 
 _filter(list, f) = {
-    if (list.empty) #nil
+    if (list.empty) #nil(list)
     else {
         if (f(list.head))
-            #list(list.head) ++ list.tail.filter(f)
+            #list(list.head) ++ list.tail.filter(f) // ici problème de type
         else
             list.tail.filter(f)
     }
 }
 
 _split(list, isDelim) = {
-    if (list.empty) #nil
+    if (list.empty) #nil(list)
     else {
         if (isDelim(list.head)) // [ delim, a, b, c ] => [[],[a,b,c]]
-            #list(#nil) ++ list.tail.split(isDelim)
+            #list(#nil(list)) ++ list.tail.split(isDelim)
         else {
             suite = list.tail.split(isDelim)
             if (suite.empty)
@@ -60,15 +63,22 @@ _foldLeft(list, zero, op) = {
     loop(list,zero)
 }
 
-_join(list, delimList) = {
-    list.map(item->delimList++list).foldLeft(#nil, (x,y)->x++y)
+_join(list, delim) = {
+    delimPseudoLine = #list(#list(delim))
+    list.flatmap(item->delimPseudoLine++list).foldLeft(#nil(list), (x,y)->x++y)
 }
 
 /* ------------------ */
 
-file = #readFile("test")
+//file = #readFile("test")
 
-lines = file.split(c->c == char(","))
+//lines = file.split(c->c == char(","))
 
 // main
-#spy(lines) //.join(char("|"))
+//lines.join(char("|"))
+#list(
+    "@1".map(x->x), 
+    #list(4,6).map(x->x),
+    #nil("toto"),
+    #nil(#list(1,2))    
+)

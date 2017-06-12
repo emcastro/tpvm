@@ -1,9 +1,9 @@
 grammar TPGrammar;
 
-topLevel: definition* expr ';'* | definition* EOF; // let-like
+topLevel: definition* expr ';'*; // let-like
 
 expr: simpleExpr # simple
-    | expr (apply | '.' attr apply?)    # call
+    | expr (apply | '.' attr apply?)    # call    // attr => method ?
     | (PLUS | MINUS) expr               # unOp
     | expr (MUL | DIV) expr             # binOp // Multiplicative
     | expr (PLUS | MINUS) expr          # binOp // Additive

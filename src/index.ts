@@ -14,8 +14,12 @@ console.log(cored.toText())
 
 const p: any = eval1(cored, new Env(new Map()))
 
-p.then((v: any) => {
-  console.log('!End', v)
-}, (e: any) => {
-  console.error('!Error', e)
-})
+if (p != null && p.then) {
+  p.then((v: any) => {
+    console.log('!End', v)
+  }, (e: any) => {
+    console.error('!Error', e)
+  })
+} else {
+  console.log(':End', p)
+}

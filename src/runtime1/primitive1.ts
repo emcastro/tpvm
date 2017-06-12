@@ -35,9 +35,15 @@ export const primitives = {
     })
   },
 
-  [s('nil')]: [],
+  [s('nil')]: function nil (x: any) {
+    if (typeof x === 'string') {
+      return ''
+    } else {
+      return []
+    }
+  },
 
-  [s('list_length')]: function list_length<T> (xlist: X<T[]>): X<number> {
+  [s('list_length')]: function list_length<T> (xlist: X<T[]>): X<number > {
     return then(xlist, (list: T[]) => list.length)
   },
 
@@ -60,6 +66,12 @@ export const primitives = {
   [s('eq')]: function eq (a: X<any>, b: X<any>): X<boolean> {
     return then2(a, b, (va, vb) => {
       return equal(va, vb)
+    })
+  },
+
+  [s('plus')]: function plus (a: X<any>, b: X<any>): X<any> {
+    return then2(a, b, (va, vb) => {
+      return a + b
     })
   },
 

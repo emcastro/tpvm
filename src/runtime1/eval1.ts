@@ -78,7 +78,7 @@ function debugInfo (data: { source?: OneOrMany<TPNode | Token | null> }) {
  * Simple strict evaluation
  */
 export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
-  console.log('+++', debugInfo(expr))
+  //console.log('+++', debugInfo(expr))
 
   switch (expr.typ) {
     case eVar.typ:
