@@ -2,6 +2,7 @@
 __eq__=#eq
 __concat__=#list_concat
 __plus__=#plus
+__minus__=#minus
 
 // Lists
 _head(list)=list(0)
@@ -11,15 +12,18 @@ _sublist(list,from,to) = #list_sublist(list,from,to)
 _length(list)=#list_length(list)
 _empty(list)=list.length==0
 
+_asList=#string_asList
+_asString=#list_asString
+
 lone(list)=if(list.length == 1) list(0) else #error("Size must be 1")
-char = lone
+char(s) = lone(s.asList)
 
 //
 
 _spy(self) = #spy(self)
 
 _flatmap(list, f) = {
-    if (list.empty) #nil(list)
+    if (list.empty) #nil
     else {
         f(list.head) ++ list.tail.flatmap(f)
     }
@@ -28,7 +32,7 @@ _flatmap(list, f) = {
 _map(list, f) = list.flatmap(e->#list(f(e))) // ici problème de type
 
 _filter(list, f) = {
-    if (list.empty) #nil(list)
+    if (list.empty) #nil
     else {
         if (f(list.head))
             #list(list.head) ++ list.tail.filter(f) // ici problème de type
@@ -38,10 +42,10 @@ _filter(list, f) = {
 }
 
 _split(list, isDelim) = {
-    if (list.empty) #nil(list)
+    if (list.empty) #nil
     else {
         if (isDelim(list.head)) // [ delim, a, b, c ] => [[],[a,b,c]]
-            #list(#nil(list)) ++ list.tail.split(isDelim)
+            #list(#nil) ++ list.tail.split(isDelim)
         else {
             suite = list.tail.split(isDelim)
             if (suite.empty)
@@ -65,20 +69,19 @@ _foldLeft(list, zero, op) = {
 
 _join(list, delim) = {
     delimPseudoLine = #list(#list(delim))
-    list.flatmap(item->delimPseudoLine++list).foldLeft(#nil(list), (x,y)->x++y)
+    list.flatmap(item->delimPseudoLine++list).foldLeft(#nil, (x,y)->x++y)
 }
 
 /* ------------------ */
 
-//file = #readFile("test")
+//file = #readFile("test").asList
 
 //lines = file.split(c->c == char(","))
 
-// main
-//lines.join(char("|"))
-#list(
-    "@1".map(x->x), 
-    #list(4,6).map(x->x),
-    #nil("toto"),
-    #nil(#list(1,2))    
-)
+//#list("abc".asList, "123".asList).join(char("|")).asString
+
+//lines.asList.asString
+
+l = #list(1,10,100)
+l.foldLeft(0, (s,v)->s+v)
+

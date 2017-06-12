@@ -30,31 +30,45 @@ const readFile = promisify((fs.readFile as (name: string, enc: string, cb: (err:
 
 export const primitives = {
   [s('readFile')]: function _readFile (xname: X<string>): X<string> {
-    return then(xname, (name: string) => {
+    return then(xname, (name) => {
       return readFile(name, 'utf8')
     })
   },
 
-  [s('nil')]: function nil (x: any) {
-    if (typeof x === 'string') {
-      return ''
-    } else {
-      return []
-    }
+  [s('string_asList')]: function string_asList (xstr: X<string>): X<number[]> {
+    return then(xstr, (str) => {
+      const array: number[] = []
+      for (let i = 0; i < str.length; i++) {
+        array[i] = str.charCodeAt(i)
+      }
+      return array
+    })
   },
 
-  [s('list_length')]: function list_length<T> (xlist: X<T[]>): X<number > {
-    return then(xlist, (list: T[]) => list.length)
+  [s('list_asString')]: function list_asString (xarray: X<number[]>): X<string> {
+    return then(xarray, (array) => {
+      let s: string = ''
+      for (let i = 0; i < array.length; i++) {
+        s += String.fromCharCode(array[i])
+      }
+      return s
+    })
+  },
+
+  [s('nil')]: [],
+
+  [s('list_length')]: function list_length<T> (xlist: X<T[]>): X<number> {
+    return then(xlist, (list) => list.length)
   },
 
   [s('list_tailFrom')]: function list_tailFrom<T> (xlist: X<T[]>, xfrom: X<number>): X<T[]> {
-    return then2(xlist, xfrom, (list: T[], from: number) => {
+    return then2(xlist, xfrom, (list, from) => {
       return list.slice(from)
     })
   },
 
   [s('list_concat')]: function list_concat<T> (xlist1: X<T[]>, xlist2: X<T[]>): X<T[]> {
-    return then2(xlist1, xlist2, (list1: T[], list2: T[]) => {
+    return then2(xlist1, xlist2, (list1, list2) => {
       return list1.concat(list2)
     })
   },
@@ -72,6 +86,12 @@ export const primitives = {
   [s('plus')]: function plus (a: X<any>, b: X<any>): X<any> {
     return then2(a, b, (va, vb) => {
       return a + b
+    })
+  },
+
+  [s('minus')]: function minus (a: X<any>, b: X<any>): X<any> {
+    return then2(a, b, (va, vb) => {
+      return a - b
     })
   },
 

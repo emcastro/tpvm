@@ -1,6 +1,6 @@
 grammar TPGrammar;
 
-topLevel: definition* expr ';'*; // let-like
+topLevel: definition* expr ';'* EOF; // let-like
 
 expr: simpleExpr # simple
     | expr (apply | '.' attr apply?)    # call    // attr => method ?

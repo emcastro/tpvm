@@ -174,10 +174,6 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
                 return then(args[0], (arg1) => {
                   if (typeof arg1 === 'number') {
                     // Array access
-                    if (typeof op === 'string') {
-                      return op.charCodeAt(arg1)
-                    }
-
                     if (Array.isArray(op)) {
                       return op[arg1]
                     }
