@@ -3,7 +3,7 @@ grammar TPGrammar;
 topLevel: definition* expr ';'* EOF; // let-like
 
 expr: simpleExpr # simple
-    | expr (apply | '.' attr apply?)    # call    // attr => method ?
+    | expr (apply | '.' attr apply?)    # call
     | (PLUS | MINUS) expr               # unOp
     | expr (MUL | DIV) expr             # binOp // Multiplicative
     | expr (PLUS | MINUS) expr          # binOp // Additive
@@ -39,8 +39,6 @@ typedVar: varId typeAnnotation;
 typedParam: paramId typeAnnotation;
 
 attr: ID;
-
-method: ID;
 
 userOpId: ID;
 

@@ -6,7 +6,7 @@ exports[`The Parser can be tested with snapshots 2`] = `"\\"\\\\\\"test\\"\\\\\\
 
 exports[`The Parser parses Empty.tp correctly 1`] = `
 "topLevel
-  undefined <EOF>   @1:1
+  undefined <EOF>   @1:1-6
 "
 `;
 
@@ -16,171 +16,171 @@ exports[`The Parser parses EndOfLet.tp correctly 1`] = `
     valueDefinition
       typedVar
         varId
-          ID let1   @5:1
+          ID let1   @5:1-5
         typeAnnotation
-      EQ_DEF =   @5:5
+      EQ_DEF =   @5:5-6
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @5:6
+            '{' {   @5:6-7
             definition
               valueDefinition
                 typedVar
                   varId
-                    ID a   @6:5
+                    ID a   @6:5-6
                   typeAnnotation
-                EQ_DEF =   @6:6
+                EQ_DEF =   @6:6-7
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID b   @6:7
+                      ID b   @6:7-8
             binOp:expr
               simple:expr
                 simpleExpr
                   literalExpr
-                    INTEGER 1   @7:5
-              PLUS +   @7:6
+                    INTEGER 1   @7:5-6
+              PLUS +   @7:6-7
               simple:expr
                 simpleExpr
                   literalExpr
-                    INTEGER 1   @7:7
-            '}' }   @8:1
+                    INTEGER 1   @7:7-8
+            '}' }   @8:1-2
   definition
     valueDefinition
       typedVar
         varId
-          ID let2   @10:1
+          ID let2   @10:1-5
         typeAnnotation
-      EQ_DEF =   @10:5
+      EQ_DEF =   @10:5-6
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @10:6
+            '{' {   @10:6-7
             definition
               valueDefinition
                 typedVar
                   varId
-                    ID a   @11:5
+                    ID a   @11:5-6
                   typeAnnotation
-                EQ_DEF =   @11:6
+                EQ_DEF =   @11:6-7
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID b   @11:7
+                      ID b   @11:7-8
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @12:5
-            '}' }   @13:1
+                  ID a   @12:5-6
+            '}' }   @13:1-2
   definition
     valueDefinition
       typedVar
         varId
-          ID pseudoLet1   @15:1
+          ID pseudoLet1   @15:1-11
         typeAnnotation
-      EQ_DEF =   @15:11
+      EQ_DEF =   @15:11-12
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @15:12
+            '{' {   @15:12-13
             binOp:expr
               simple:expr
                 simpleExpr
                   literalExpr
-                    INTEGER 1   @16:5
-              PLUS +   @16:6
+                    INTEGER 1   @16:5-6
+              PLUS +   @16:6-7
               simple:expr
                 simpleExpr
                   literalExpr
-                    INTEGER 1   @16:7
-            '}' }   @17:1
+                    INTEGER 1   @16:7-8
+            '}' }   @17:1-2
   definition
     valueDefinition
       typedVar
         varId
-          ID pseudoLet2   @19:1
+          ID pseudoLet2   @19:1-11
         typeAnnotation
-      EQ_DEF =   @19:11
+      EQ_DEF =   @19:11-12
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @19:12
+            '{' {   @19:12-13
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @20:5
-            '}' }   @21:1
+                  ID a   @20:5-6
+            '}' }   @21:1-2
   definition
     valueDefinition
       typedVar
         varId
-          ID innerPseudoLet1   @23:1
+          ID innerPseudoLet1   @23:1-16
         typeAnnotation
-      EQ_DEF =   @23:16
+      EQ_DEF =   @23:16-17
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @23:17
+            '{' {   @23:17-18
             definition
               valueDefinition
                 typedVar
                   varId
-                    ID a   @24:5
+                    ID a   @24:5-6
                   typeAnnotation
-                EQ_DEF =   @24:6
+                EQ_DEF =   @24:6-7
                 simple:expr
                   simpleExpr
                     letExpr
-                      '{' {   @24:7
+                      '{' {   @24:7-8
                       simple:expr
                         simpleExpr
                           varExpr
-                            ID b   @24:8
-                      '}' }   @24:9
+                            ID b   @24:8-9
+                      '}' }   @24:9-10
             binOp:expr
               simple:expr
                 simpleExpr
                   literalExpr
-                    INTEGER 1   @25:5
-              PLUS +   @25:6
+                    INTEGER 1   @25:5-6
+              PLUS +   @25:6-7
               simple:expr
                 simpleExpr
                   literalExpr
-                    INTEGER 1   @25:7
-            '}' }   @26:1
+                    INTEGER 1   @25:7-8
+            '}' }   @26:1-2
   definition
     valueDefinition
       typedVar
         varId
-          ID innerPseudoLet2   @28:1
+          ID innerPseudoLet2   @28:1-16
         typeAnnotation
-      EQ_DEF =   @28:16
+      EQ_DEF =   @28:16-17
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @28:17
+            '{' {   @28:17-18
             definition
               valueDefinition
                 typedVar
                   varId
-                    ID a   @29:5
+                    ID a   @29:5-6
                   typeAnnotation
-                EQ_DEF =   @29:6
+                EQ_DEF =   @29:6-7
                 simple:expr
                   simpleExpr
                     letExpr
-                      '{' {   @29:7
+                      '{' {   @29:7-8
                       simple:expr
                         simpleExpr
                           varExpr
-                            ID b   @29:8
-                      '}' }   @29:9
+                            ID b   @29:8-9
+                      '}' }   @29:9-10
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @30:5
-            '}' }   @31:1
-  undefined <EOF>   @33:1
+                  ID a   @30:5-6
+            '}' }   @31:1-2
+  undefined <EOF>   @33:1-6
 "
 `;
 
@@ -190,159 +190,159 @@ exports[`The Parser parses Literals.tp correctly 1`] = `
     valueDefinition
       typedVar
         varId
-          ID zero   @5:1
+          ID zero   @5:1-5
         typeAnnotation
-      EQ_DEF =   @5:5
+      EQ_DEF =   @5:5-6
       simple:expr
         simpleExpr
           literalExpr
-            INTEGER 0   @5:6
+            INTEGER 0   @5:6-7
   definition
     valueDefinition
       typedVar
         varId
-          ID thousand   @6:1
+          ID thousand   @6:1-9
         typeAnnotation
-      EQ_DEF =   @6:9
+      EQ_DEF =   @6:9-10
       simple:expr
         simpleExpr
           literalExpr
-            INTEGER 1000   @6:10
+            INTEGER 1000   @6:10-14
   definition
     valueDefinition
       typedVar
         varId
-          ID minus1   @7:1
+          ID minus1   @7:1-7
         typeAnnotation
-      EQ_DEF =   @7:7
+      EQ_DEF =   @7:7-8
       unOp:expr
-        MINUS -   @7:8
+        MINUS -   @7:8-9
         simple:expr
           simpleExpr
             literalExpr
-              INTEGER 1   @7:9
+              INTEGER 1   @7:9-10
   definition
     valueDefinition
       typedVar
         varId
-          ID hex   @9:1
+          ID hex   @9:1-4
         typeAnnotation
-      EQ_DEF =   @9:4
+      EQ_DEF =   @9:4-5
       simple:expr
         simpleExpr
           literalExpr
-            INTEGER 0x0123456789ABCEDF   @9:5
+            INTEGER 0x0123456789ABCEDF   @9:5-23
   definition
     valueDefinition
       typedVar
         varId
-          ID hex   @10:1
+          ID hex   @10:1-4
         typeAnnotation
-      EQ_DEF =   @10:4
+      EQ_DEF =   @10:4-5
       simple:expr
         simpleExpr
           literalExpr
-            INTEGER 0xFF   @10:5
+            INTEGER 0xFF   @10:5-9
   definition
     valueDefinition
       typedVar
         varId
-          ID bin   @12:1
+          ID bin   @12:1-4
         typeAnnotation
-      EQ_DEF =   @12:4
+      EQ_DEF =   @12:4-5
       simple:expr
         simpleExpr
           literalExpr
-            INTEGER 0b101010   @12:5
+            INTEGER 0b101010   @12:5-13
   definition
     valueDefinition
       typedVar
         varId
-          ID bin   @13:1
+          ID bin   @13:1-4
         typeAnnotation
-      EQ_DEF =   @13:4
+      EQ_DEF =   @13:4-5
       simple:expr
         simpleExpr
           literalExpr
-            INTEGER 0b11111111   @13:5
+            INTEGER 0b11111111   @13:5-15
   definition
     valueDefinition
       typedVar
         varId
-          ID zero_F   @15:1
+          ID zero_F   @15:1-7
         typeAnnotation
-      EQ_DEF =   @15:8
+      EQ_DEF =   @15:8-9
       simple:expr
         simpleExpr
           literalExpr
-            FLOAT 0.   @15:10
+            FLOAT 0.   @15:10-12
   definition
     valueDefinition
       typedVar
         varId
-          ID half   @16:1
+          ID half   @16:1-5
         typeAnnotation
-      EQ_DEF =   @16:6
+      EQ_DEF =   @16:6-7
       simple:expr
         simpleExpr
           literalExpr
-            FLOAT .5   @16:8
+            FLOAT .5   @16:8-10
   definition
     valueDefinition
       typedVar
         varId
-          ID planck   @17:1
+          ID planck   @17:1-7
         typeAnnotation
-      EQ_DEF =   @17:8
+      EQ_DEF =   @17:8-9
       simple:expr
         simpleExpr
           literalExpr
-            FLOAT 6.62606957e-34   @17:10
+            FLOAT 6.62606957e-34   @17:10-24
   definition
     valueDefinition
       typedVar
         varId
-          ID hello   @19:1
+          ID hello   @19:1-6
         typeAnnotation
-      EQ_DEF =   @19:6
+      EQ_DEF =   @19:6-7
       simple:expr
         simpleExpr
           literalExpr
-            STRING \\"WORLD\\"   @19:7
+            STRING \\"WORLD\\"   @19:7-14
   definition
     valueDefinition
       typedVar
         varId
-          ID hello   @20:1
+          ID hello   @20:1-6
         typeAnnotation
-      EQ_DEF =   @20:6
+      EQ_DEF =   @20:6-7
       simple:expr
         simpleExpr
           literalExpr
-            STRING \\"\\\\\\"WORLD\\\\\\"\\\\n\\"   @20:7
+            STRING \\"\\\\\\"WORLD\\\\\\"\\\\n\\"   @20:7-20
   definition
     valueDefinition
       typedVar
         varId
-          ID notTrue   @22:1
+          ID notTrue   @22:1-8
         typeAnnotation
-      EQ_DEF =   @22:9
+      EQ_DEF =   @22:9-10
       simple:expr
         simpleExpr
           literalExpr
-            BOOLEAN false   @22:11
+            BOOLEAN false   @22:11-16
   definition
     valueDefinition
       typedVar
         varId
-          ID notFalse   @23:1
+          ID notFalse   @23:1-9
         typeAnnotation
-      EQ_DEF =   @23:10
+      EQ_DEF =   @23:10-11
       simple:expr
         simpleExpr
           literalExpr
-            BOOLEAN true   @23:12
-  undefined <EOF>   @25:1
+            BOOLEAN true   @23:12-16
+  undefined <EOF>   @25:1-6
 "
 `;
 
@@ -352,9 +352,9 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
     valueDefinition
       typedVar
         varId
-          ID logic   @5:1
+          ID logic   @5:1-6
         typeAnnotation
-      EQ_DEF =   @5:7
+      EQ_DEF =   @5:7-8
       binOp:expr
         binOp:expr
           binOp:expr
@@ -362,790 +362,790 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
               simple:expr
                 simpleExpr
                   varExpr
-                    ID a   @5:9
-              EQ ==   @5:10
+                    ID a   @5:9-10
+              EQ ==   @5:10-12
               simple:expr
                 simpleExpr
                   varExpr
-                    ID b   @5:12
-            AND and   @5:14
+                    ID b   @5:12-13
+            AND and   @5:14-17
             unOp:expr
-              NOT not   @5:18
+              NOT not   @5:18-21
               simple:expr
                 simpleExpr
                   varExpr
-                    ID c   @5:22
-          OR or   @5:24
+                    ID c   @5:22-23
+          OR or   @5:24-26
           binOp:expr
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @5:27
-            PLUS +   @5:28
+                  ID a   @5:27-28
+            PLUS +   @5:28-29
             simple:expr
               simpleExpr
                 varExpr
-                  ID c   @5:29
-        OR or   @5:31
+                  ID c   @5:29-30
+        OR or   @5:31-33
         simple:expr
           simpleExpr
             literalExpr
-              BOOLEAN false   @5:34
+              BOOLEAN false   @5:34-39
   definition
     valueDefinition
       typedVar
         varId
-          ID ops   @7:1
+          ID ops   @7:1-4
         typeAnnotation
-      EQ_DEF =   @7:5
+      EQ_DEF =   @7:5-6
       binOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID a   @7:7
-          PLUS +   @7:8
+                ID a   @7:7-8
+          PLUS +   @7:8-9
           binOp:expr
             simple:expr
               simpleExpr
                 varExpr
-                  ID b   @7:9
-            MUL *   @7:10
+                  ID b   @7:9-10
+            MUL *   @7:10-11
             simple:expr
               simpleExpr
                 varExpr
-                  ID c   @7:11
-        EQ ==   @7:13
+                  ID c   @7:11-12
+        EQ ==   @7:13-15
         binOp:expr
           simple:expr
             simpleExpr
-              '(' (   @7:16
+              '(' (   @7:16-17
               binOp:expr
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID a   @7:17
-                PLUS +   @7:18
+                      ID a   @7:17-18
+                PLUS +   @7:18-19
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID b   @7:19
-              ')' )   @7:20
-          MUL *   @7:21
+                      ID b   @7:19-20
+              ')' )   @7:20-21
+          MUL *   @7:21-22
           simple:expr
             simpleExpr
               varExpr
-                ID c   @7:22
+                ID c   @7:22-23
   definition
     valueDefinition
       typedVar
         varId
-          ID minus   @9:1
+          ID minus   @9:1-6
         typeAnnotation
-      EQ_DEF =   @9:7
+      EQ_DEF =   @9:7-8
       binOp:expr
         binOp:expr
           unOp:expr
-            MINUS -   @9:9
+            MINUS -   @9:9-10
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @9:10
-          PLUS +   @9:11
+                  ID a   @9:10-11
+          PLUS +   @9:11-12
           unOp:expr
-            PLUS +   @9:13
+            PLUS +   @9:13-14
             simple:expr
               simpleExpr
                 varExpr
-                  ID b   @9:14
-        MINUS -   @9:15
+                  ID b   @9:14-15
+        MINUS -   @9:15-16
         unOp:expr
-          MINUS -   @9:17
+          MINUS -   @9:17-18
           simple:expr
             simpleExpr
               varExpr
-                ID c   @9:18
+                ID c   @9:18-19
   definition
     valueDefinition
       typedVar
         varId
-          ID concat   @11:1
+          ID concat   @11:1-7
         typeAnnotation
-      EQ_DEF =   @11:8
+      EQ_DEF =   @11:8-9
       binOp:expr
         binOp:expr
           unOp:expr
-            MINUS -   @11:10
+            MINUS -   @11:10-11
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @11:11
-          CONCAT ++   @11:12
+                  ID a   @11:11-12
+          CONCAT ++   @11:12-14
           simple:expr
             simpleExpr
               varExpr
-                ID b   @11:14
-        MINUSMINUS --   @11:15
+                ID b   @11:14-15
+        MINUSMINUS --   @11:15-17
         simple:expr
           simpleExpr
             varExpr
-              ID c   @11:17
+              ID c   @11:17-18
   definition
     valueDefinition
       typedVar
         varId
-          ID power   @13:1
+          ID power   @13:1-6
         typeAnnotation
-      EQ_DEF =   @13:7
+      EQ_DEF =   @13:7-8
       userOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID a   @13:9
-          PLUS +   @13:10
+                ID a   @13:9-10
+          PLUS +   @13:10-11
           simple:expr
             simpleExpr
               varExpr
-                ID b   @13:11
+                ID b   @13:11-12
         userOpId
-          ID pow   @13:13
+          ID pow   @13:13-16
         simple:expr
           simpleExpr
             varExpr
-              ID c   @13:17
+              ID c   @13:17-18
   definition
     valueDefinition
       typedVar
         varId
-          ID section   @14:1
+          ID section   @14:1-8
         typeAnnotation
-      EQ_DEF =   @14:9
+      EQ_DEF =   @14:9-10
       userOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID x2   @14:11
-          MINUS -   @14:13
+                ID x2   @14:11-13
+          MINUS -   @14:13-14
           simple:expr
             simpleExpr
               varExpr
-                ID x1   @14:14
+                ID x1   @14:14-16
         userOpId
-          ID div   @14:17
+          ID div   @14:17-20
         simple:expr
           simpleExpr
             varExpr
-              ID elemSize   @14:21
+              ID elemSize   @14:21-29
   definition
     valueDefinition
       typedVar
         varId
-          ID ifElse   @17:1
+          ID ifElse   @17:1-7
         typeAnnotation
-      EQ_DEF =   @17:8
+      EQ_DEF =   @17:8-9
       binOp:expr
         simple:expr
           simpleExpr
             varExpr
-              ID a   @17:10
-        PLUS +   @17:11
+              ID a   @17:10-11
+        PLUS +   @17:11-12
         simple:expr
           simpleExpr
             ifElseExpr
-              IF if   @17:12
-              '(' (   @17:14
+              IF if   @17:12-14
+              '(' (   @17:14-15
               simple:expr
                 simpleExpr
                   varExpr
-                    ID b   @17:15
-              ')' )   @17:16
+                    ID b   @17:15-16
+              ')' )   @17:16-17
               simple:expr
                 simpleExpr
                   varExpr
-                    ID c   @17:18
-              ELSE else   @17:20
+                    ID c   @17:18-19
+              ELSE else   @17:20-24
               binOp:expr
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID d   @17:25
-                PLUS +   @17:26
+                      ID d   @17:25-26
+                PLUS +   @17:26-27
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID e   @17:27
+                      ID e   @17:27-28
   definition
     valueDefinition
       typedVar
         varId
-          ID lambda   @19:1
+          ID lambda   @19:1-7
         typeAnnotation
-      EQ_DEF =   @19:8
+      EQ_DEF =   @19:8-9
       simple:expr
         simpleExpr
           lambdaExpr
-            '(' (   @19:10
+            '(' (   @19:10-11
             typedParams
               typedParam
                 paramId
-                  ID a   @19:11
+                  ID a   @19:11-12
                 typeAnnotation
-              ',' ,   @19:12
+              ',' ,   @19:12-13
               typedParam
                 paramId
-                  ID b   @19:13
+                  ID b   @19:13-14
                 typeAnnotation
-            ')' )   @19:14
-            '->' ->   @19:15
+            ')' )   @19:14-15
+            '->' ->   @19:15-17
             binOp:expr
               simple:expr
                 simpleExpr
                   varExpr
-                    ID a   @19:17
-              PLUS +   @19:18
+                    ID a   @19:17-18
+              PLUS +   @19:18-19
               binOp:expr
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID b   @19:19
-                MUL *   @19:20
+                      ID b   @19:19-20
+                MUL *   @19:20-21
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID c   @19:21
+                      ID c   @19:21-22
   definition
     valueDefinition
       typedVar
         varId
-          ID lambda   @20:1
+          ID lambda   @20:1-7
         typeAnnotation
-      EQ_DEF =   @20:8
+      EQ_DEF =   @20:8-9
       userOp:expr
         simple:expr
           simpleExpr
             varExpr
-              ID a   @20:10
+              ID a   @20:10-11
         userOpId
-          ID op   @20:12
+          ID op   @20:12-14
         simple:expr
           simpleExpr
             shortLambdaExpr
               paramId
-                ID b   @20:15
-              '->' ->   @20:16
+                ID b   @20:15-16
+              '->' ->   @20:16-18
               binOp:expr
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID a   @20:18
-                PLUS +   @20:19
+                      ID a   @20:18-19
+                PLUS +   @20:19-20
                 binOp:expr
                   simple:expr
                     simpleExpr
                       varExpr
-                        ID b   @20:20
-                  MUL *   @20:21
+                        ID b   @20:20-21
+                  MUL *   @20:21-22
                   simple:expr
                     simpleExpr
                       varExpr
-                        ID c   @20:22
+                        ID c   @20:22-23
   definition
     valueDefinition
       typedVar
         varId
-          ID lambda   @21:1
+          ID lambda   @21:1-7
         typeAnnotation
-      EQ_DEF =   @21:8
+      EQ_DEF =   @21:8-9
       userOp:expr
         simple:expr
           simpleExpr
             varExpr
-              ID a   @21:10
+              ID a   @21:10-11
         userOpId
-          ID op   @21:12
+          ID op   @21:12-14
         simple:expr
           simpleExpr
             lambdaExpr
-              '(' (   @21:15
+              '(' (   @21:15-16
               typedParams
                 typedParam
                   paramId
-                    ID b   @21:16
+                    ID b   @21:16-17
                   typeAnnotation
-              ')' )   @21:24
-              '->' ->   @21:25
+              ')' )   @21:24-25
+              '->' ->   @21:25-27
               binOp:expr
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID a   @21:27
-                PLUS +   @21:28
+                      ID a   @21:27-28
+                PLUS +   @21:28-29
                 binOp:expr
                   simple:expr
                     simpleExpr
                       varExpr
-                        ID b   @21:29
-                  MUL *   @21:30
+                        ID b   @21:29-30
+                  MUL *   @21:30-31
                   simple:expr
                     simpleExpr
                       varExpr
-                        ID c   @21:31
+                        ID c   @21:31-32
   definition
     valueDefinition
       typedVar
         varId
-          ID lambda   @22:1
+          ID lambda   @22:1-7
         typeAnnotation
-      EQ_DEF =   @22:8
+      EQ_DEF =   @22:8-9
       userOp:expr
         simple:expr
           simpleExpr
             varExpr
-              ID a   @22:10
+              ID a   @22:10-11
         userOpId
-          ID op   @22:12
+          ID op   @22:12-14
         simple:expr
           simpleExpr
             lambdaExpr
-              '(' (   @22:15
+              '(' (   @22:15-16
               typedParams
                 typedParam
                   paramId
-                    ID b   @22:16
+                    ID b   @22:16-17
                   typeAnnotation
-              ')' )   @22:27
-              '->' ->   @22:28
+              ')' )   @22:27-28
+              '->' ->   @22:28-30
               call:expr
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID b   @22:30
+                      ID b   @22:30-31
                 apply
-                  '(' (   @22:31
+                  '(' (   @22:31-32
                   args
                     arg
                       simple:expr
                         simpleExpr
                           varExpr
-                            ID c   @22:32
-                  ')' )   @22:33
+                            ID c   @22:32-33
+                  ')' )   @22:33-34
   definition
     valueDefinition
       typedVar
         varId
-          ID lambda   @23:1
+          ID lambda   @23:1-7
         typeAnnotation
-      EQ_DEF =   @23:8
+      EQ_DEF =   @23:8-9
       userOp:expr
         simple:expr
           simpleExpr
             varExpr
-              ID a   @23:10
+              ID a   @23:10-11
         userOpId
-          ID op   @23:12
+          ID op   @23:12-14
         simple:expr
           simpleExpr
             lambdaExpr
-              '(' (   @23:15
+              '(' (   @23:15-16
               typedParams
                 typedParam
                   paramId
-                    ID b   @23:16
+                    ID b   @23:16-17
                   typeAnnotation
-              ')' )   @23:27
-              '->' ->   @23:28
+              ')' )   @23:27-28
+              '->' ->   @23:28-30
               call:expr
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID c   @23:30
-                '.' .   @23:31
-                attr
-                  ID b   @23:32
+                      ID c   @23:30-31
+                '.' .   @23:31-32
+                method
+                  ID b   @23:32-33
   definition
     valueDefinition
       typedVar
         varId
-          ID lambdaIf   @25:1
+          ID lambdaIf   @25:1-9
         typeAnnotation
-      EQ_DEF =   @25:10
+      EQ_DEF =   @25:10-11
       simple:expr
         simpleExpr
           ifElseExpr
-            IF if   @25:12
-            '(' (   @25:15
+            IF if   @25:12-14
+            '(' (   @25:15-16
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @25:16
-            ')' )   @25:17
+                  ID a   @25:16-17
+            ')' )   @25:17-18
             simple:expr
               simpleExpr
                 lambdaExpr
-                  '(' (   @25:19
+                  '(' (   @25:19-20
                   typedParams
                     typedParam
                       paramId
-                        ID b   @25:20
+                        ID b   @25:20-21
                       typeAnnotation
-                  ')' )   @25:21
-                  '->' ->   @25:22
+                  ')' )   @25:21-22
+                  '->' ->   @25:22-24
                   binOp:expr
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID c   @25:24
-                    PLUS +   @25:25
+                          ID c   @25:24-25
+                    PLUS +   @25:25-26
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID d   @25:26
-            ELSE else   @25:28
+                          ID d   @25:26-27
+            ELSE else   @25:28-32
             simple:expr
               simpleExpr
                 lambdaExpr
-                  '(' (   @25:33
+                  '(' (   @25:33-34
                   typedParams
                     typedParam
                       paramId
-                        ID b   @25:34
+                        ID b   @25:34-35
                       typeAnnotation
-                  ')' )   @25:35
-                  '->' ->   @25:36
+                  ')' )   @25:35-36
+                  '->' ->   @25:36-38
                   binOp:expr
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID d   @25:38
-                    PLUS +   @25:39
+                          ID d   @25:38-39
+                    PLUS +   @25:39-40
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID c   @25:40
+                          ID c   @25:40-41
   definition
     valueDefinition
       typedVar
         varId
-          ID lambdaIf   @26:1
+          ID lambdaIf   @26:1-9
         typeAnnotation
-      EQ_DEF =   @26:10
+      EQ_DEF =   @26:10-11
       simple:expr
         simpleExpr
           lambdaExpr
-            '(' (   @26:12
+            '(' (   @26:12-13
             typedParams
               typedParam
                 paramId
-                  ID b   @26:13
+                  ID b   @26:13-14
                 typeAnnotation
-            ')' )   @26:14
-            '->' ->   @26:15
+            ')' )   @26:14-15
+            '->' ->   @26:15-17
             simple:expr
               simpleExpr
                 ifElseExpr
-                  IF if   @26:17
-                  '(' (   @26:19
+                  IF if   @26:17-19
+                  '(' (   @26:19-20
                   simple:expr
                     simpleExpr
                       varExpr
-                        ID a   @26:20
-                  ')' )   @26:21
+                        ID a   @26:20-21
+                  ')' )   @26:21-22
                   binOp:expr
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID c   @26:23
-                    PLUS +   @26:24
+                          ID c   @26:23-24
+                    PLUS +   @26:24-25
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID d   @26:25
-                  ELSE else   @26:27
+                          ID d   @26:25-26
+                  ELSE else   @26:27-31
                   binOp:expr
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID d   @26:32
-                    PLUS +   @26:33
+                          ID d   @26:32-33
+                    PLUS +   @26:33-34
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID c   @26:34
+                          ID c   @26:34-35
   definition
     valueDefinition
       typedVar
         varId
-          ID lambdaIf   @28:1
+          ID lambdaIf   @28:1-9
         typeAnnotation
-      EQ_DEF =   @28:10
+      EQ_DEF =   @28:10-11
       simple:expr
         simpleExpr
           ifElseExpr
-            IF if   @28:12
-            '(' (   @28:15
+            IF if   @28:12-14
+            '(' (   @28:15-16
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @28:16
-            ')' )   @28:17
+                  ID a   @28:16-17
+            ')' )   @28:17-18
             simple:expr
               simpleExpr
                 shortLambdaExpr
                   paramId
-                    ID b   @28:19
-                  '->' ->   @28:20
+                    ID b   @28:19-20
+                  '->' ->   @28:20-22
                   binOp:expr
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID c   @28:22
-                    PLUS +   @28:23
+                          ID c   @28:22-23
+                    PLUS +   @28:23-24
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID d   @28:24
-            ELSE else   @28:26
+                          ID d   @28:24-25
+            ELSE else   @28:26-30
             simple:expr
               simpleExpr
                 shortLambdaExpr
                   paramId
-                    ID b   @28:31
-                  '->' ->   @28:32
+                    ID b   @28:31-32
+                  '->' ->   @28:32-34
                   binOp:expr
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID d   @28:34
-                    PLUS +   @28:35
+                          ID d   @28:34-35
+                    PLUS +   @28:35-36
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID c   @28:36
+                          ID c   @28:36-37
   definition
     valueDefinition
       typedVar
         varId
-          ID lambdaIf   @29:1
+          ID lambdaIf   @29:1-9
         typeAnnotation
-      EQ_DEF =   @29:10
+      EQ_DEF =   @29:10-11
       simple:expr
         simpleExpr
           lambdaExpr
-            '(' (   @29:12
+            '(' (   @29:12-13
             typedParams
               typedParam
                 paramId
-                  ID b   @29:13
+                  ID b   @29:13-14
                 typeAnnotation
-            ')' )   @29:21
-            '->' ->   @29:22
+            ')' )   @29:21-22
+            '->' ->   @29:22-24
             simple:expr
               simpleExpr
                 ifElseExpr
-                  IF if   @29:24
-                  '(' (   @29:26
+                  IF if   @29:24-26
+                  '(' (   @29:26-27
                   simple:expr
                     simpleExpr
                       varExpr
-                        ID a   @29:27
-                  ')' )   @29:28
+                        ID a   @29:27-28
+                  ')' )   @29:28-29
                   binOp:expr
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID c   @29:30
-                    PLUS +   @29:31
+                          ID c   @29:30-31
+                    PLUS +   @29:31-32
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID d   @29:32
-                  ELSE else   @29:34
+                          ID d   @29:32-33
+                  ELSE else   @29:34-38
                   binOp:expr
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID d   @29:39
-                    PLUS +   @29:40
+                          ID d   @29:39-40
+                    PLUS +   @29:40-41
                     simple:expr
                       simpleExpr
                         varExpr
-                          ID c   @29:41
+                          ID c   @29:41-42
   definition
     valueDefinition
       typedVar
         varId
-          ID call   @31:1
+          ID call   @31:1-5
         typeAnnotation
-      EQ_DEF =   @31:5
+      EQ_DEF =   @31:5-6
       userOp:expr
         call:expr
           simple:expr
             simpleExpr
               varExpr
-                ID set1   @31:6
+                ID set1   @31:6-10
           apply
-            '(' (   @31:10
+            '(' (   @31:10-11
             args
               arg
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID bidule   @31:11
-            ')' )   @31:17
+                      ID bidule   @31:11-17
+            ')' )   @31:17-18
         userOpId
-          ID union   @31:19
+          ID union   @31:19-24
         call:expr
           simple:expr
             simpleExpr
               varExpr
-                ID set2   @31:25
+                ID set2   @31:25-29
           apply
-            '(' (   @31:29
+            '(' (   @31:29-30
             args
               arg
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID bidule   @31:30
-            ')' )   @31:36
+                      ID bidule   @31:30-36
+            ')' )   @31:36-37
   definition
     valueDefinition
       typedVar
         varId
-          ID userOp   @33:1
+          ID userOp   @33:1-7
         typeAnnotation
-      EQ_DEF =   @33:8
+      EQ_DEF =   @33:8-9
       userOp:expr
         binOp:expr
           unOp:expr
-            MINUS -   @33:10
+            MINUS -   @33:10-11
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @33:11
-          PLUS +   @33:12
+                  ID a   @33:11-12
+          PLUS +   @33:12-13
           binOp:expr
             simple:expr
               simpleExpr
                 varExpr
-                  ID b   @33:13
-            MUL *   @33:14
+                  ID b   @33:13-14
+            MUL *   @33:14-15
             simple:expr
               simpleExpr
                 varExpr
-                  ID c   @33:15
+                  ID c   @33:15-16
         userOpId
-          ID union   @33:17
+          ID union   @33:17-22
         unOp:expr
-          MINUS -   @33:23
+          MINUS -   @33:23-24
           call:expr
             simple:expr
               simpleExpr
                 varExpr
-                  ID foo   @33:24
-            '.' .   @33:27
-            attr
-              ID bar   @33:28
+                  ID foo   @33:24-27
+            '.' .   @33:27-28
+            method
+              ID bar   @33:28-31
   definition
     valueDefinition
       typedVar
         varId
-          ID cmpUserOp   @35:1
+          ID cmpUserOp   @35:1-10
         typeAnnotation
-      EQ_DEF =   @35:11
+      EQ_DEF =   @35:11-12
       userOp:expr
         userOp:expr
           binOp:expr
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @35:13
-            PLUS +   @35:14
+                  ID a   @35:13-14
+            PLUS +   @35:14-15
             simple:expr
               simpleExpr
                 varExpr
-                  ID b   @35:15
+                  ID b   @35:15-16
           userOpId
-            ID union   @35:17
+            ID union   @35:17-22
           binOp:expr
             simple:expr
               simpleExpr
                 varExpr
-                  ID b   @35:23
-            EQ ==   @35:25
+                  ID b   @35:23-24
+            EQ ==   @35:25-27
             call:expr
               simple:expr
                 simpleExpr
                   varExpr
-                    ID c   @35:28
-              '.' .   @35:29
-              attr
-                ID d   @35:30
+                    ID c   @35:28-29
+              '.' .   @35:29-30
+              method
+                ID d   @35:30-31
         userOpId
-          ID union   @35:32
+          ID union   @35:32-37
         simple:expr
           simpleExpr
             varExpr
-              ID e   @35:38
+              ID e   @35:38-39
   definition
     valueDefinition
       typedVar
         varId
-          ID minusApply   @37:1
+          ID minusApply   @37:1-11
         typeAnnotation
-      EQ_DEF =   @37:12
+      EQ_DEF =   @37:12-13
       unOp:expr
-        MINUS -   @37:14
+        MINUS -   @37:14-15
         call:expr
           simple:expr
             simpleExpr
               varExpr
-                ID foo   @37:15
+                ID foo   @37:15-18
           apply
-            '(' (   @37:18
+            '(' (   @37:18-19
             args
               arg
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID bar   @37:19
-            ')' )   @37:22
+                      ID bar   @37:19-22
+            ')' )   @37:22-23
   definition
     valueDefinition
       typedVar
         varId
-          ID let1   @39:1
+          ID let1   @39:1-5
         typeAnnotation
-      EQ_DEF =   @39:5
+      EQ_DEF =   @39:5-6
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @39:6
+            '{' {   @39:6-7
             definition
               valueDefinition
                 typedVar
                   varId
-                    ID a   @40:5
+                    ID a   @40:5-6
                   typeAnnotation
-                EQ_DEF =   @40:6
+                EQ_DEF =   @40:6-7
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID b   @40:7
+                      ID b   @40:7-8
             binOp:expr
               simple:expr
                 simpleExpr
                   literalExpr
-                    INTEGER 1   @41:5
-              PLUS +   @41:6
+                    INTEGER 1   @41:5-6
+              PLUS +   @41:6-7
               simple:expr
                 simpleExpr
                   literalExpr
-                    INTEGER 1   @41:7
-            '}' }   @42:1
-  undefined <EOF>   @43:1
+                    INTEGER 1   @41:7-8
+            '}' }   @42:1-2
+  undefined <EOF>   @43:1-6
 "
 `;
 
@@ -1155,127 +1155,127 @@ exports[`The Parser parses SemiColon.tp correctly 1`] = `
     valueDefinition
       typedVar
         varId
-          ID let   @2:1
+          ID let   @2:1-4
         typeAnnotation
-      EQ_DEF =   @2:4
+      EQ_DEF =   @2:4-5
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @2:5
+            '{' {   @2:5-6
             simple:expr
               simpleExpr
                 varExpr
-                  ID foo   @2:7
-            '}' }   @2:11
-    ';' ;   @2:12
-    ';' ;   @2:13
-    ';' ;   @2:14
+                  ID foo   @2:7-10
+            '}' }   @2:11-12
+    ';' ;   @2:12-13
+    ';' ;   @2:13-14
+    ';' ;   @2:14-15
   definition
     valueDefinition
       typedVar
         varId
-          ID let   @3:1
+          ID let   @3:1-4
         typeAnnotation
-      EQ_DEF =   @3:4
+      EQ_DEF =   @3:4-5
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @3:5
+            '{' {   @3:5-6
             simple:expr
               simpleExpr
                 varExpr
-                  ID foo   @3:7
-            ';' ;   @3:10
-            '}' }   @3:12
+                  ID foo   @3:7-10
+            ';' ;   @3:10-11
+            '}' }   @3:12-13
   definition
     valueDefinition
       typedVar
         varId
-          ID let   @4:1
+          ID let   @4:1-4
         typeAnnotation
-      EQ_DEF =   @4:4
+      EQ_DEF =   @4:4-5
       simple:expr
         simpleExpr
           varExpr
-            ID foo   @4:5
-    ';' ;   @4:8
+            ID foo   @4:5-8
+    ';' ;   @4:8-9
   definition
     valueDefinition
       typedVar
         varId
-          ID let   @5:1
+          ID let   @5:1-4
         typeAnnotation
-      EQ_DEF =   @5:4
+      EQ_DEF =   @5:4-5
       simple:expr
         simpleExpr
           varExpr
-            ID foo   @5:5
+            ID foo   @5:5-8
   definition
     valueDefinition
       typedVar
         varId
-          ID var   @7:1
+          ID var   @7:1-4
         typeAnnotation
-      EQ_DEF =   @7:4
+      EQ_DEF =   @7:4-5
       binOp:expr
         simple:expr
           simpleExpr
             varExpr
-              ID a   @7:5
-        PLUS +   @7:6
+              ID a   @7:5-6
+        PLUS +   @7:6-7
         simple:expr
           simpleExpr
             varExpr
-              ID b   @7:7
-    ';' ;   @7:8
-    ';' ;   @7:9
-    ';' ;   @7:10
+              ID b   @7:7-8
+    ';' ;   @7:8-9
+    ';' ;   @7:9-10
+    ';' ;   @7:10-11
   definition
     functionDefinition
       functionId
-        ID let   @9:1
-      '(' (   @9:4
+        ID let   @9:1-4
+      '(' (   @9:4-5
       typedParams
         typedParam
           paramId
-            ID a   @9:5
+            ID a   @9:5-6
           typeAnnotation
-      ')' )   @9:6
+      ')' )   @9:6-7
       typeAnnotation
-      EQ_DEF =   @9:7
+      EQ_DEF =   @9:7-8
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @9:8
+            '{' {   @9:8-9
             simple:expr
               simpleExpr
                 varExpr
-                  ID foo   @9:10
-            '}' }   @9:14
-    ';' ;   @9:15
+                  ID foo   @9:10-13
+            '}' }   @9:14-15
+    ';' ;   @9:15-16
   definition
     functionDefinition
       functionId
-        ID let   @10:1
-      '(' (   @10:4
+        ID let   @10:1-4
+      '(' (   @10:4-5
       typedParams
         typedParam
           paramId
-            ID a   @10:5
+            ID a   @10:5-6
           typeAnnotation
-      ')' )   @10:6
+      ')' )   @10:6-7
       typeAnnotation
-      EQ_DEF =   @10:7
+      EQ_DEF =   @10:7-8
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @10:8
+            '{' {   @10:8-9
             simple:expr
               simpleExpr
                 varExpr
-                  ID foo   @10:10
-            '}' }   @10:14
-  undefined <EOF>   @12:1
+                  ID foo   @10:10-13
+            '}' }   @10:14-15
+  undefined <EOF>   @12:1-6
 "
 `;
 
@@ -1285,67 +1285,67 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
     valueDefinition
       typedVar
         varId
-          ID False   @3:1
+          ID False   @3:1-6
         typeAnnotation
-      EQ_DEF =   @3:7
+      EQ_DEF =   @3:7-8
       unOp:expr
-        NOT not   @3:9
+        NOT not   @3:9-12
         simple:expr
           simpleExpr
             literalExpr
-              BOOLEAN true   @3:13
+              BOOLEAN true   @3:13-17
   definition
     valueDefinition
       typedVar
         varId
-          ID True   @4:1
+          ID True   @4:1-5
         typeAnnotation
-      EQ_DEF =   @4:6
+      EQ_DEF =   @4:6-7
       binOp:expr
         simple:expr
           simpleExpr
             literalExpr
-              BOOLEAN true   @4:8
-        OR or   @4:13
+              BOOLEAN true   @4:8-12
+        OR or   @4:13-15
         simple:expr
           simpleExpr
             literalExpr
-              BOOLEAN false   @4:16
+              BOOLEAN false   @4:16-21
   definition
     valueDefinition
       typedVar
         varId
-          ID False   @5:1
+          ID False   @5:1-6
         typeAnnotation
-      EQ_DEF =   @5:7
+      EQ_DEF =   @5:7-8
       binOp:expr
         simple:expr
           simpleExpr
             literalExpr
-              BOOLEAN false   @5:9
-        AND and   @5:15
+              BOOLEAN false   @5:9-14
+        AND and   @5:15-18
         simple:expr
           simpleExpr
             literalExpr
-              BOOLEAN true   @5:19
+              BOOLEAN true   @5:19-23
   definition
     valueDefinition
       typedVar
         varId
-          ID True   @6:1
+          ID True   @6:1-5
         typeAnnotation
-      EQ_DEF =   @6:6
+      EQ_DEF =   @6:6-7
       simple:expr
         simpleExpr
           literalExpr
-            BOOLEAN true   @6:8
+            BOOLEAN true   @6:8-12
   definition
     valueDefinition
       typedVar
         varId
-          ID additive   @8:1
+          ID additive   @8:1-9
         typeAnnotation
-      EQ_DEF =   @8:9
+      EQ_DEF =   @8:9-10
       binOp:expr
         binOp:expr
           binOp:expr
@@ -1353,34 +1353,34 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
               simple:expr
                 simpleExpr
                   varExpr
-                    ID a   @8:10
-              PLUS +   @8:11
+                    ID a   @8:10-11
+              PLUS +   @8:11-12
               simple:expr
                 simpleExpr
                   varExpr
-                    ID b   @8:12
-            PLUS +   @8:13
+                    ID b   @8:12-13
+            PLUS +   @8:13-14
             simple:expr
               simpleExpr
                 varExpr
-                  ID c   @8:14
-          MINUS -   @8:15
+                  ID c   @8:14-15
+          MINUS -   @8:15-16
           simple:expr
             simpleExpr
               varExpr
-                ID d   @8:16
-        MINUS -   @8:17
+                ID d   @8:16-17
+        MINUS -   @8:17-18
         simple:expr
           simpleExpr
             varExpr
-              ID e   @8:18
+              ID e   @8:18-19
   definition
     valueDefinition
       typedVar
         varId
-          ID multiplicative   @9:1
+          ID multiplicative   @9:1-15
         typeAnnotation
-      EQ_DEF =   @9:15
+      EQ_DEF =   @9:15-16
       binOp:expr
         binOp:expr
           binOp:expr
@@ -1388,659 +1388,660 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
               simple:expr
                 simpleExpr
                   varExpr
-                    ID a   @9:16
-              MUL *   @9:17
+                    ID a   @9:16-17
+              MUL *   @9:17-18
               simple:expr
                 simpleExpr
                   varExpr
-                    ID b   @9:18
-            MUL *   @9:19
+                    ID b   @9:18-19
+            MUL *   @9:19-20
             simple:expr
               simpleExpr
                 varExpr
-                  ID c   @9:20
-          DIV /   @9:21
+                  ID c   @9:20-21
+          DIV /   @9:21-22
           simple:expr
             simpleExpr
               varExpr
-                ID d   @9:22
-        DIV /   @9:23
+                ID d   @9:22-23
+        DIV /   @9:23-24
         simple:expr
           simpleExpr
             varExpr
-              ID e   @9:24
+              ID e   @9:24-25
   definition
     valueDefinition
       typedVar
         varId
-          ID doubleop   @11:1
+          ID doubleop   @11:1-9
         typeAnnotation
-      EQ_DEF =   @11:9
+      EQ_DEF =   @11:9-10
       binOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID aa   @11:10
-          CONCAT ++   @11:12
+                ID aa   @11:10-12
+          CONCAT ++   @11:12-14
           simple:expr
             simpleExpr
               varExpr
-                ID bb   @11:14
-        MINUSMINUS --   @11:16
+                ID bb   @11:14-16
+        MINUSMINUS --   @11:16-18
         simple:expr
           simpleExpr
             varExpr
-              ID cc   @11:18
+              ID cc   @11:18-20
   definition
     valueDefinition
       typedVar
         varId
-          ID cmp   @13:1
+          ID cmp   @13:1-4
         typeAnnotation
-      EQ_DEF =   @13:5
+      EQ_DEF =   @13:5-6
       binOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID a   @13:7
-          EQ ==   @13:8
+                ID a   @13:7-8
+          EQ ==   @13:8-10
           simple:expr
             simpleExpr
               varExpr
-                ID b   @13:10
-        EQ ==   @13:11
+                ID b   @13:10-11
+        EQ ==   @13:11-13
         simple:expr
           simpleExpr
             varExpr
-              ID c   @13:13
+              ID c   @13:13-14
   definition
     valueDefinition
       typedVar
         varId
-          ID cmp   @14:1
+          ID cmp   @14:1-4
         typeAnnotation
-      EQ_DEF =   @14:5
+      EQ_DEF =   @14:5-6
       binOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID a   @14:7
-          NEQ ≠   @14:8
+                ID a   @14:7-8
+          NEQ ≠   @14:8-9
           simple:expr
             simpleExpr
               varExpr
-                ID b   @14:9
-        NEQ !=   @14:10
+                ID b   @14:9-10
+        NEQ !=   @14:10-12
         simple:expr
           simpleExpr
             varExpr
-              ID c   @14:12
+              ID c   @14:12-13
   definition
     valueDefinition
       typedVar
         varId
-          ID cmp   @15:1
+          ID cmp   @15:1-4
         typeAnnotation
-      EQ_DEF =   @15:5
+      EQ_DEF =   @15:5-6
       binOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID a   @15:7
-          LT <   @15:8
+                ID a   @15:7-8
+          LT <   @15:8-9
           simple:expr
             simpleExpr
               varExpr
-                ID b   @15:9
-        LT <   @15:10
+                ID b   @15:9-10
+        LT <   @15:10-11
         simple:expr
           simpleExpr
             varExpr
-              ID c   @15:11
+              ID c   @15:11-12
   definition
     valueDefinition
       typedVar
         varId
-          ID cmp   @16:1
+          ID cmp   @16:1-4
         typeAnnotation
-      EQ_DEF =   @16:5
+      EQ_DEF =   @16:5-6
       binOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID a   @16:7
-          LE ≤   @16:8
+                ID a   @16:7-8
+          LE ≤   @16:8-9
           simple:expr
             simpleExpr
               varExpr
-                ID b   @16:9
-        LE <=   @16:10
+                ID b   @16:9-10
+        LE <=   @16:10-12
         simple:expr
           simpleExpr
             varExpr
-              ID c   @16:12
+              ID c   @16:12-13
   definition
     valueDefinition
       typedVar
         varId
-          ID cmp   @17:1
+          ID cmp   @17:1-4
         typeAnnotation
-      EQ_DEF =   @17:5
+      EQ_DEF =   @17:5-6
       binOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID a   @17:7
-          GT >   @17:8
+                ID a   @17:7-8
+          GT >   @17:8-9
           simple:expr
             simpleExpr
               varExpr
-                ID b   @17:9
-        GT >   @17:10
+                ID b   @17:9-10
+        GT >   @17:10-11
         simple:expr
           simpleExpr
             varExpr
-              ID c   @17:11
+              ID c   @17:11-12
   definition
     valueDefinition
       typedVar
         varId
-          ID cmp   @18:1
+          ID cmp   @18:1-4
         typeAnnotation
-      EQ_DEF =   @18:5
+      EQ_DEF =   @18:5-6
       binOp:expr
         binOp:expr
           simple:expr
             simpleExpr
               varExpr
-                ID a   @18:7
-          GE ≥   @18:8
+                ID a   @18:7-8
+          GE ≥   @18:8-9
           simple:expr
             simpleExpr
               varExpr
-                ID b   @18:9
-        GE >=   @18:10
+                ID b   @18:9-10
+        GE >=   @18:10-12
         simple:expr
           simpleExpr
             varExpr
-              ID c   @18:12
+              ID c   @18:12-13
   definition
     valueDefinition
       typedVar
         varId
-          ID pseudoLet   @20:1
+          ID pseudoLet   @20:1-10
         typeAnnotation
-      EQ_DEF =   @20:11
+      EQ_DEF =   @20:11-12
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @20:13
+            '{' {   @20:13-14
             simple:expr
               simpleExpr
                 varExpr
-                  ID hello   @20:15
-            '}' }   @20:21
+                  ID hello   @20:15-20
+            '}' }   @20:21-22
   definition
     valueDefinition
       typedVar
         varId
-          ID let   @22:1
+          ID let   @22:1-4
         typeAnnotation
-      EQ_DEF =   @22:5
+      EQ_DEF =   @22:5-6
       simple:expr
         simpleExpr
           letExpr
-            '{' {   @22:7
+            '{' {   @22:7-8
             definition
               valueDefinition
                 typedVar
                   varId
-                    ID a   @23:5
+                    ID a   @23:5-6
                   typeAnnotation
-                EQ_DEF =   @23:6
+                EQ_DEF =   @23:6-7
                 simple:expr
                   simpleExpr
                     varExpr
-                      ID a   @23:7
+                      ID a   @23:7-8
             simple:expr
               simpleExpr
                 varExpr
-                  ID hello   @24:5
-            '}' }   @25:1
+                  ID hello   @24:5-10
+            '}' }   @25:1-2
   definition
     valueDefinition
       typedVar
         varId
-          ID ifElse   @27:1
+          ID ifElse   @27:1-7
         typeAnnotation
-      EQ_DEF =   @27:8
+      EQ_DEF =   @27:8-9
       simple:expr
         simpleExpr
           ifElseExpr
-            IF if   @27:10
-            '(' (   @27:13
+            IF if   @27:10-12
+            '(' (   @27:13-14
             simple:expr
               simpleExpr
                 varExpr
-                  ID a   @27:14
-            ')' )   @27:15
+                  ID a   @27:14-15
+            ')' )   @27:15-16
             simple:expr
               simpleExpr
                 varExpr
-                  ID b   @27:17
-            ELSE else   @27:19
+                  ID b   @27:17-18
+            ELSE else   @27:19-23
             simple:expr
               simpleExpr
                 varExpr
-                  ID c   @27:24
+                  ID c   @27:24-25
   definition
     valueDefinition
       typedVar
         varId
-          ID paren   @29:1
+          ID paren   @29:1-6
         typeAnnotation
-      EQ_DEF =   @29:7
+      EQ_DEF =   @29:7-8
       simple:expr
         simpleExpr
-          '(' (   @29:9
+          '(' (   @29:9-10
           simple:expr
             simpleExpr
               varExpr
-                ID a   @29:10
-          ')' )   @29:11
+                ID a   @29:10-11
+          ')' )   @29:11-12
   definition
     functionDefinition
       functionId
-        ID foo   @48:1
-      '(' (   @48:4
-      ')' )   @48:5
+        ID foo   @48:1-4
+      '(' (   @48:4-5
+      ')' )   @48:5-6
       typeAnnotation
-      EQ_DEF =   @48:6
+      EQ_DEF =   @48:6-7
       simple:expr
         simpleExpr
           varExpr
-            ID bar   @48:7
+            ID bar   @48:7-10
   definition
     functionDefinition
       functionId
-        ID foo   @49:1
-      '(' (   @49:4
+        ID foo   @49:1-4
+      '(' (   @49:4-5
       typedParams
         typedParam
           paramId
-            ID bar   @49:5
+            ID bar   @49:5-8
           typeAnnotation
-      ')' )   @49:8
+      ')' )   @49:8-9
       typeAnnotation
-      EQ_DEF =   @49:9
+      EQ_DEF =   @49:9-10
       simple:expr
         simpleExpr
           varExpr
-            ID baz   @49:10
+            ID baz   @49:10-13
   definition
     functionDefinition
       functionId
-        ID foo   @50:1
-      '(' (   @50:4
+        ID foo   @50:1-4
+      '(' (   @50:4-5
       typedParams
         typedParam
           paramId
-            ID bar   @50:5
+            ID bar   @50:5-8
           typeAnnotation
-        ',' ,   @50:8
+        ',' ,   @50:8-9
         typedParam
           paramId
-            ID baz   @50:9
+            ID baz   @50:9-12
           typeAnnotation
-      ')' )   @50:12
+      ')' )   @50:12-13
       typeAnnotation
-      EQ_DEF =   @50:13
+      EQ_DEF =   @50:13-14
       simple:expr
         simpleExpr
           varExpr
-            ID something_else   @50:14
+            ID something_else   @50:14-28
   definition
     tupleDefinition
-      '(' (   @52:1
+      '(' (   @52:1-2
       typedVars
         typedVar
           varId
-            ID a   @52:2
+            ID a   @52:2-3
           typeAnnotation
-      ')' )   @52:3
-      EQ_DEF =   @52:4
+      ')' )   @52:3-4
+      EQ_DEF =   @52:4-5
       simple:expr
         simpleExpr
           varExpr
-            ID A   @52:5
+            ID A   @52:5-6
   definition
     tupleDefinition
-      '(' (   @53:1
+      '(' (   @53:1-2
       typedVars
         typedVar
           varId
-            ID a   @53:2
+            ID a   @53:2-3
           typeAnnotation
-        ',' ,   @53:3
+        ',' ,   @53:3-4
         typedVar
           varId
-            ID b   @53:4
+            ID b   @53:4-5
           typeAnnotation
-      ')' )   @53:5
-      EQ_DEF =   @53:6
+      ')' )   @53:5-6
+      EQ_DEF =   @53:6-7
       simple:expr
         simpleExpr
           varExpr
-            ID AB   @53:7
+            ID AB   @53:7-9
   definition
     tupleDefinition
-      '(' (   @54:1
+      '(' (   @54:1-2
       typedVars
         typedVar
           varId
-            ID a   @54:2
+            ID a   @54:2-3
           typeAnnotation
-        ',' ,   @54:3
+        ',' ,   @54:3-4
         typedVar
           varId
-            ID b   @54:4
+            ID b   @54:4-5
           typeAnnotation
-        ',' ,   @54:5
+        ',' ,   @54:5-6
         typedVar
           varId
-            ID c   @54:6
+            ID c   @54:6-7
           typeAnnotation
-      ')' )   @54:7
-      EQ_DEF =   @54:8
+      ')' )   @54:7-8
+      EQ_DEF =   @54:8-9
       simple:expr
         simpleExpr
           varExpr
-            ID ABC   @54:9
+            ID ABC   @54:9-12
   definition
     valueDefinition
       typedVar
         varId
-          ID lambda   @56:1
+          ID lambda   @56:1-7
         typeAnnotation
-      EQ_DEF =   @56:7
+      EQ_DEF =   @56:7-8
       simple:expr
         simpleExpr
           lambdaExpr
-            '(' (   @56:8
-            ')' )   @56:9
-            '->' ->   @56:10
+            '(' (   @56:8-9
+            ')' )   @56:9-10
+            '->' ->   @56:10-12
             simple:expr
               simpleExpr
                 varExpr
-                  ID foo   @56:12
+                  ID foo   @56:12-15
   definition
     valueDefinition
       typedVar
         varId
-          ID lambda   @57:1
+          ID lambda   @57:1-7
         typeAnnotation
-      EQ_DEF =   @57:7
+      EQ_DEF =   @57:7-8
       simple:expr
         simpleExpr
           lambdaExpr
-            '(' (   @57:8
+            '(' (   @57:8-9
             typedParams
               typedParam
                 paramId
-                  ID foo   @57:9
+                  ID foo   @57:9-12
                 typeAnnotation
-            ')' )   @57:12
-            '->' ->   @57:13
+            ')' )   @57:12-13
+            '->' ->   @57:13-15
             simple:expr
               simpleExpr
                 varExpr
-                  ID bar   @57:15
+                  ID bar   @57:15-18
   definition
     valueDefinition
       typedVar
         varId
-          ID lambda   @58:1
+          ID lambda   @58:1-7
         typeAnnotation
-      EQ_DEF =   @58:7
+      EQ_DEF =   @58:7-8
       simple:expr
         simpleExpr
           lambdaExpr
-            '(' (   @58:8
+            '(' (   @58:8-9
             typedParams
               typedParam
                 paramId
-                  ID foo   @58:9
+                  ID foo   @58:9-12
                 typeAnnotation
-              ',' ,   @58:12
+              ',' ,   @58:12-13
               typedParam
                 paramId
-                  ID bar   @58:13
+                  ID bar   @58:13-16
                 typeAnnotation
-            ')' )   @58:16
-            '->' ->   @58:17
+            ')' )   @58:16-17
+            '->' ->   @58:17-19
             simple:expr
               simpleExpr
                 varExpr
-                  ID baz   @58:19
+                  ID baz   @58:19-22
   definition
     valueDefinition
       typedVar
         varId
-          ID lambda   @59:1
+          ID lambda   @59:1-7
         typeAnnotation
-      EQ_DEF =   @59:7
+      EQ_DEF =   @59:7-8
       simple:expr
         simpleExpr
           shortLambdaExpr
             paramId
-              ID foo   @59:8
-            '->' ->   @59:11
+              ID foo   @59:8-11
+            '->' ->   @59:11-13
             simple:expr
               simpleExpr
                 varExpr
-                  ID bar   @59:13
+                  ID bar   @59:13-16
   definition
     valueDefinition
       typedVar
         varId
-          ID call   @61:1
+          ID call   @61:1-5
         typeAnnotation
-      EQ_DEF =   @61:5
+      EQ_DEF =   @61:5-6
       call:expr
         simple:expr
           simpleExpr
             varExpr
-              ID foo   @61:6
+              ID foo   @61:6-9
         apply
-          '(' (   @61:9
-          ')' )   @61:10
+          '(' (   @61:9-10
+          ')' )   @61:10-11
   definition
     valueDefinition
       typedVar
         varId
-          ID call   @62:1
+          ID call   @62:1-5
         typeAnnotation
-      EQ_DEF =   @62:5
+      EQ_DEF =   @62:5-6
       call:expr
         simple:expr
           simpleExpr
             varExpr
-              ID foo   @62:6
+              ID foo   @62:6-9
         apply
-          '(' (   @62:9
+          '(' (   @62:9-10
           args
             arg
               simple:expr
                 simpleExpr
                   varExpr
-                    ID bar   @62:10
-          ')' )   @62:13
+                    ID bar   @62:10-13
+          ')' )   @62:13-14
   definition
     valueDefinition
       typedVar
         varId
-          ID call   @63:1
+          ID call   @63:1-5
         typeAnnotation
-      EQ_DEF =   @63:5
+      EQ_DEF =   @63:5-6
       call:expr
         simple:expr
           simpleExpr
             varExpr
-              ID foo   @63:6
+              ID foo   @63:6-9
         apply
-          '(' (   @63:9
+          '(' (   @63:9-10
           args
             arg
               simple:expr
                 simpleExpr
                   varExpr
-                    ID bar   @63:10
-            ',' ,   @63:13
+                    ID bar   @63:10-13
+            ',' ,   @63:13-14
             arg
               simple:expr
                 simpleExpr
                   varExpr
-                    ID baz   @63:14
-          ')' )   @63:17
+                    ID baz   @63:14-17
+          ')' )   @63:17-18
   definition
     valueDefinition
       typedVar
         varId
-          ID call   @65:1
+          ID call   @65:1-5
         typeAnnotation
-      EQ_DEF =   @65:5
+      EQ_DEF =   @65:5-6
       call:expr
         simple:expr
           simpleExpr
             varExpr
-              ID foo   @65:6
-        '.' .   @65:9
-        attr
-          ID bar   @65:10
+              ID foo   @65:6-9
+        '.' .   @65:9-10
+        method
+          ID bar   @65:10-13
   definition
     valueDefinition
       typedVar
         varId
-          ID call   @66:1
+          ID call   @66:1-5
         typeAnnotation
-      EQ_DEF =   @66:5
+      EQ_DEF =   @66:5-6
       call:expr
         simple:expr
           simpleExpr
             varExpr
-              ID foo   @66:6
-        '.' .   @66:9
-        attr
-          ID bar   @66:10
+              ID foo   @66:6-9
+        '.' .   @66:9-10
+        method
+          ID bar   @66:10-13
         apply
-          '(' (   @66:13
-          ')' )   @66:14
+          '(' (   @66:13-14
+          ')' )   @66:14-15
   definition
     valueDefinition
       typedVar
         varId
-          ID call   @67:1
+          ID call   @67:1-5
         typeAnnotation
-      EQ_DEF =   @67:5
+      EQ_DEF =   @67:5-6
       call:expr
         simple:expr
           simpleExpr
             varExpr
-              ID foo   @67:6
-        '.' .   @67:9
-        attr
-          ID bar   @67:10
+              ID foo   @67:6-9
+        '.' .   @67:9-10
+        method
+          ID bar   @67:10-13
         apply
-          '(' (   @67:13
+          '(' (   @67:13-14
           args
             arg
               simple:expr
                 simpleExpr
                   varExpr
-                    ID baz   @67:14
-          ')' )   @67:17
+                    ID baz   @67:14-17
+          ')' )   @67:17-18
   definition
     valueDefinition
       typedVar
         varId
-          ID call   @68:1
+          ID call   @68:1-5
         typeAnnotation
-      EQ_DEF =   @68:5
+      EQ_DEF =   @68:5-6
       call:expr
         simple:expr
           simpleExpr
             varExpr
-              ID foo   @68:6
-        '.' .   @68:9
-        attr
-          ID bar   @68:10
+              ID foo   @68:6-9
+        '.' .   @68:9-10
+        method
+          ID bar   @68:10-13
         apply
-          '(' (   @68:13
+          '(' (   @68:13-14
           args
             arg
               simple:expr
                 simpleExpr
                   varExpr
-                    ID baz   @68:14
-            ',' ,   @68:17
+                    ID baz   @68:14-17
+            ',' ,   @68:17-18
             arg
               simple:expr
                 simpleExpr
                   varExpr
-                    ID qux   @68:18
-          ')' )   @68:21
+                    ID qux   @68:18-21
+          ')' )   @68:21-22
   definition
     valueDefinition
       typedVar
         varId
-          ID call   @70:1
+          ID call   @70:1-5
         typeAnnotation
-      EQ_DEF =   @70:5
+      EQ_DEF =   @70:5-6
       userOp:expr
         simple:expr
           simpleExpr
             varExpr
-              ID set1   @70:6
+              ID set1   @70:6-10
         userOpId
-          ID union   @70:11
+          ID union   @70:11-16
         simple:expr
           simpleExpr
             varExpr
-              ID set2   @70:17
+              ID set2   @70:17-21
   definition
     valueDefinition
       typedVar
         varId
-          ID lambdaCall   @72:1
+          ID lambdaCall   @72:1-11
         typeAnnotation
-      EQ_DEF =   @72:11
+      EQ_DEF =   @72:11-12
       call:expr
         simple:expr
           simpleExpr
-            '(' (   @72:12
+            '(' (   @72:12-13
             simple:expr
               simpleExpr
                 lambdaExpr
-                  '(' (   @72:13
-                  ')' )   @72:14
-                  '->' ->   @72:15
+                  '(' (   @72:13-14
+                  ')' )   @72:14-15
+                  '->' ->   @72:15-17
                   simple:expr
                     simpleExpr
                       varExpr
-                        ID result   @72:17
-            ')' )   @72:23
+                        ID result   @72:17-23
+            ')' )   @72:23-24
         apply
-          '(' (   @72:24
-          ')' )   @72:25
+          '(' (   @72:24-25
+          ')' )   @72:25-26
   simple:expr
     simpleExpr
       varExpr
-        ID result   @74:1
+        ID result   @74:1-7
+  undefined <EOF>   @75:1-6
 "
 `;

@@ -3,7 +3,8 @@ import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lam
 import { SExprRenderer } from '../utils/SExprRenderer'
 import { iteratorToArray, OneOrMany } from '../utils/prelude'
 import * as _ from 'lodash'
-import { TPNode, Token } from '../parsing/parser'
+import { TPNode, Token, position, nodePosition } from '../parsing/parser'
+import { fastmap } from '../utils/fastArray'
 
 export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr]
@@ -97,5 +98,34 @@ export class ExprBase {
   setSource (source: OneOrMany<TPNode | Token | null>): this {
     this.source = source
     return this
+  }
+
+  debugInfo () {
+    return debugInfo(this)
+  }
+}
+
+function isToken (t: any): t is Token {
+  return t.text !== undefined && t.line !== undefined && t.column !== undefined // TODO: should check real Antlr4 token type
+}
+
+function sourcePosition (source: TPNode | Token) {
+  if (isToken(source)) {
+    return position(source)
+  } else {
+    return nodePosition(source)
+  }
+}
+
+function debugInfo (data: { source?: OneOrMany<TPNode | Token | null> }) {
+  const type = Object.getPrototypeOf(data).constructor.name
+
+  const source = data.source
+  if (source == null) {
+    return type + ' @ ' + 'unknown location'
+  } else if (!Array.isArray(source)) {
+    return type + ' @ ' + sourcePosition(source)
+  } else {
+    return type + ' @ ' + fastmap(source.filter(p => p !== null), sourcePosition).join('|')
   }
 }

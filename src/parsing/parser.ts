@@ -70,10 +70,6 @@ export type Token = {
   source: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
 }
 
-export function isToken (t: any): t is Token {
-  return t.text !== undefined && t.line !== undefined && t.column !== undefined // TODO: should check real Antlr4 token type
-}
-
 type Node = {
   symbol?: Token, // TODO: analyze symbol field
   parser: { ruleNames: string[] },
@@ -116,7 +112,6 @@ export type TypedParam = N<'typedParam'> & { paramId: A<ParamId>, typeAnnotation
 type TOKEN<n> = N<n> & { token: () => Token }
 
 export type Attr = TOKEN<'attr'>
-export type Method = TOKEN<'method'>
 export type UserOpId = TOKEN<'userOpId'>
 export type VarId = TOKEN<'varId'>
 export type FunctionId = TOKEN<'functionId'>
@@ -146,7 +141,7 @@ export type TPNode = (
   TopLevel | LetExpr
   | Definition | ValueDefinition | FunctionDefinition | TupleDefinition
   | TypedVar | TypedVars | Arg | Args | TypedParams | TypedParam
-  | Attr | Method | UserOpId | VarId | FunctionId | ParamId
+  | Attr | UserOpId | VarId | FunctionId | ParamId
   | Apply | TypeAnnotation
   | IfElseExpr | LambdaExpr | ShortLambdaExpr
   | VarExpr | LiteralExpr | SimpleExpr | Expr

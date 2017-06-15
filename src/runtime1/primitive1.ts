@@ -45,11 +45,16 @@ export const primitives = {
     })
   },
 
-  [s('list_asString')]: function list_asString (xarray: X<number[]>): X<string> {
+  [s('list_asString')]: function list_asString (xarray: X<any[]>): X<string> {
     return then(xarray, (array) => {
       let s: string = ''
       for (let i = 0; i < array.length; i++) {
-        s += String.fromCharCode(array[i])
+        const c = array[i]
+        if (typeof c === 'number') {
+          s += String.fromCharCode(c)
+        } else {
+          throw new RuntimeError(`Expecting number (char code), was: ${c} (${typeof c})`)
+        }
       }
       return s
     })

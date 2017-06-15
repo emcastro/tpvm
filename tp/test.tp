@@ -68,20 +68,17 @@ _foldLeft(list, zero, op) = {
 }
 
 _join(list, delim) = {
-    delimPseudoLine = #list(#list(delim))
-    list.flatmap(item->delimPseudoLine++list).foldLeft(#nil, (x,y)->x++y)
+    delimPseudoLine = #list(delim)
+    list.flatmap(item->delimPseudoLine++item).asString
 }
 
 /* ------------------ */
 
-//file = #readFile("test").asList
+file = #readFile("test").asList
 
-//lines = file.split(c->c == char(","))
+lines = file.split(c->c == char(","))
 
-//#list("abc".asList, "123".asList).join(char("|")).asString
+//#list("abc".asList, "123".asList).join(char("|"))
 
-//lines.asList.asString
 
-l = #list(1,10,100)
-l.foldLeft(0, (s,v)->s+v)
-
+lines.join(char("|"))

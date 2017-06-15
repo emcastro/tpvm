@@ -6,7 +6,6 @@ import {
 
 import { primitives } from './primitive1'
 import { OneOrMany } from '../utils/prelude'
-import { TPNode, Token, position, isToken, nodePosition } from '../parsing/parser'
 import { fastmap } from '../utils/fastArray'
 import { then, Promise } from './optimisticPromise'
 
@@ -53,32 +52,11 @@ class EvalError extends Error {}
 
 class PrimitiveError extends EvalError {}
 
-function sourcePosition (source: TPNode | Token) {
-  if (isToken(source)) {
-    return position(source)
-  } else {
-    return nodePosition(source)
-  }
-}
-
-function debugInfo (data: { source?: OneOrMany<TPNode | Token | null> }) {
-  const type = Object.getPrototypeOf(data).constructor.name
-
-  const source = data.source
-  if (source == null) {
-    return type + ' @ ' + 'unknown location'
-  } else if (!Array.isArray(source)) {
-    return type + ' @ ' + sourcePosition(source)
-  } else {
-    return type + ' @ ' + fastmap(source.filter(p => p !== null), sourcePosition).join('|')
-  }
-}
-
 /**
  * Simple strict evaluation
  */
 export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
-  //console.log('+++', debugInfo(expr))
+  // console.log('+++', debugInfo(expr))
 
   switch (expr.typ) {
     case eVar.typ:
@@ -163,7 +141,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
               try {
                 return op.apply(null, args)
               } catch (e) {
-                console.error(debugInfo(expr))
+                console.error(expr.debugInfo())
                 throw new PrimitiveError(e)
               }
             } else {
