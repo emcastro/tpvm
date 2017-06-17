@@ -49,12 +49,13 @@ export const primitives = {
     return then(xarray, (array) => {
       let s: string = ''
       for (let i = 0; i < array.length; i++) {
-        const c = array[i]
-        if (typeof c === 'number') {
-          s += String.fromCharCode(c)
-        } else {
-          throw new RuntimeError(`Expecting number (char code), was: ${c} (${typeof c})`)
-        }
+        then(array[i], c => { // TODO: Dificulté. Il faut attendre que tous les éléments du tableau soient résolus
+          if (typeof c === 'number') {
+            s += String.fromCharCode(c)
+          } else {
+            throw new RuntimeError(`Expecting number (char code), was: ${c} (${typeof c})`)
+          }
+        })
       }
       return s
     })
