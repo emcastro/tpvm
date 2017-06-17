@@ -4,7 +4,7 @@ import { } from './eval1'
 import { Value } from './eval1'
 import { equal } from '../utils/prelude'
 
-import { then, Promise, promisify } from './optimisticPromise'
+import { then, Promise, promisify, delay } from './optimisticPromise'
 
 function then2<T, U, R> (a: X<T>, b: X<U>, f: (t: T, u: U) => X<R>): X<R> {
   return then(a, (va: T) => {
@@ -29,7 +29,7 @@ class RuntimeError extends Error { }
 const readFile = promisify((fs.readFile as (name: string, enc: string, cb: (err: NodeJS.ErrnoException, data: string) => void) => void))
 
 export const primitives = {
-  [s('readFile')]: function _readFile (xname: X<string>): X<string> {
+  [s('readFile')]: function fs_readFile (xname: X<string>): X<string> {
     return then(xname, (name) => {
       return readFile(name, 'utf8')
     })
@@ -100,14 +100,22 @@ export const primitives = {
     })
   },
 
-  [s('error')]: function error (cause: any) {
-    throw new RuntimeError(cause)
+  [s('error')]: function error (xcause: X<any>) {
+    return then(xcause, cause => {
+      throw new RuntimeError(cause)
+    })
   },
 
-  [s('spy')]: function spy (data: any) {
-    return then(data, d => {
-      console.log(d)
-      return d
+  [s('spy')]: function spy (xdata: any) {
+    return then(xdata, data => {
+      console.log(data)
+      return data
+    })
+  },
+
+  [s('delay')]: function promise_delay (xtime: X<number>, xresult: X<any>) {
+    return then2(xtime, xresult, (time, result) => {
+      return delay(time).then(() => result)
     })
   }
 }

@@ -32,3 +32,5 @@ export function then<Q, P> (q: Q | Promise<Q>, f: (q: Q) => P): P | Promise<P> {
     return f(q as Q)
   }
 }
+
+export const delay = BlueBird.delay

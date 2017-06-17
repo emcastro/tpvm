@@ -74,11 +74,11 @@ _join(list, delim) = {
 
 /* ------------------ */
 
+
 file = #readFile("test").asList
 
 lines = file.split(c->c == char(","))
 
-//#list("abc".asList, "123".asList).join(char("|"))
+//lines.join(char("|"))
+lines.map(x->#delay(500,x.asString).asList).join(char("|"))
 
-
-lines.join(char("|"))
