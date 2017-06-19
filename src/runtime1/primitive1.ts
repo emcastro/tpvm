@@ -21,7 +21,9 @@ function varArg (f: any) {
   return f
 }
 
-const s = Symbol.for // reccourci
+const s = Symbol.for // syntactic shortcut
+
+// In the following document, strictness is about not being a promise
 
 class RuntimeError extends Error { }
 
@@ -41,7 +43,7 @@ export const primitives = {
       for (let i = 0; i < str.length; i++) {
         array[i] = str.charCodeAt(i)
       }
-      return array
+      return array // list of strict values
     })
   },
 
@@ -69,18 +71,18 @@ export const primitives = {
 
   [s('list_tailFrom')]: function list_tailFrom<T> (xlist: X<T[]>, xfrom: X<number>): X<T[]> {
     return then2(xlist, xfrom, (list, from) => {
-      return list.slice(from)
+      return list.slice(from)  // same strictness as source
     })
   },
 
   [s('list_concat')]: function list_concat<T> (xlist1: X<T[]>, xlist2: X<T[]>): X<T[]> {
     return then2(xlist1, xlist2, (list1, list2) => {
-      return list1.concat(list2)
+      return list1.concat(list2) // strict if both sources are strict
     })
   },
 
   [s('list')]: varArg(function list<T> (...elements: X<T>[]) {
-    return elements.slice() // copy
+    return elements.slice() // copy // same strictness are strict
   }),
 
   [s('eq')]: function eq (a: X<any>, b: X<any>): X<boolean> {

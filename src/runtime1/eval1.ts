@@ -8,6 +8,7 @@ import { primitives } from './primitive1'
 import { OneOrMany } from '../utils/prelude'
 import { fastmap } from '../utils/fastArray'
 import { then, Promise } from './optimisticPromise'
+import * as _ from 'lodash'
 
 export type Value = LiteralValue | Closure | ValueArray | Function
 interface ValueArray extends Array<Value> { } // Pseudo interface to avoid cyclic type
@@ -48,15 +49,37 @@ export class Closure {
   }
 }
 
-class EvalError extends Error {}
+class EvalError extends Error { }
 
-class PrimitiveError extends EvalError {}
+class PrimitiveError extends EvalError { }
+
+const stats = new Map<Expr, number>()
+
+process.on('exit', () => {
+  console.log('=================')
+
+  const entries = []
+  for (let e of stats.entries()) {
+    entries.push(e)
+  }
+
+  const s = _.groupBy(entries, ([expr, count]) => count)
+
+  const sE = Object.entries(s).reverse()
+
+  sE.forEach(([count, items]) => {
+    items.forEach(i =>
+      console.log(count, items.length, i[0].toText())
+    )
+  })
+})
 
 /**
  * Simple strict evaluation
  */
 export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
   // console.log('+++', debugInfo(expr))
+  stats.set(expr, (stats.get(expr) || 0) + 1)
 
   switch (expr.typ) {
     case eVar.typ:
