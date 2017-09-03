@@ -12,8 +12,8 @@
     "build": "gulp default && tsc",
     "pretest": "npm run build",
     "test": "jest",
-    "lint": "tslint -p tsconfig.json --type-check",
-    "lint-fix": "tslint -p tsconfig.json --type-check --fix",
+    "lint": "tslint -p tsconfig.json --type-check src/**",
+    "lint-fix": "tslint -p tsconfig.json --type-check --fix src/**",
     "autobuild": "(gulp auto &) ; tsc -w",
     "autotest": "jest --coverage --watchAll",
     "cleaner": "rm -rf coverage dist"

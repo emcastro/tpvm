@@ -3,6 +3,7 @@ const antlr4 = require('antlr4')
 const { TerminalNode, TerminalNodeImpl } = require('antlr4/tree/Tree')
 const { TPGrammarParser } = require('../generated/TPGrammarParser')
 const { TPGrammarLexer } = require('../generated/TPGrammarLexer')
+const { ErrorListener } = require('antlr4/error/ErrorListener')
 import * as _ from 'lodash'
 import { fasteach } from '../utils/fastArray'
 
@@ -200,7 +201,19 @@ export function parse (input: string): TPNode {
   const tokens = new antlr4.CommonTokenStream(lexer)
   const parser = new TPGrammarParser(tokens)
   parser.buildParseTrees = true
+
+  const errorListener = new ErrorListener()
+  errorListener.syntaxError = function (recognizer: any, offendingSymbol: any, line: number, column: number, msg: string, e: Error) {
+    errorListener.failed = true
+  }
+  parser.addErrorListener(errorListener)
+
   const start = parser.topLevel()
+
+  if (errorListener.failed) {
+    throw new Error('Parsing error occured')
+  }
+
   return start
 }
 
