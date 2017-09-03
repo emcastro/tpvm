@@ -13,7 +13,9 @@ _length(list)=#list_length(list)
 _empty(list)=list.length==0
 
 _asList=#string_asList
-_asString=#list_asString
+_asString(list) = {
+    list.map(#fromCharCode).foldLeft("",#plus)
+}
 
 lone(list)=if(list.length == 1) list(0) else #error("Size must be 1")
 char(s) = lone(s.asList)

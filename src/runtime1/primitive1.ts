@@ -6,22 +6,14 @@ import { equal } from '../utils/prelude'
 
 import { then, Promise, promisify, delay } from './optimisticPromise'
 
-function then2<T, U, R> (a: X<T>, b: X<U>, f: (t: T, u: U) => X<R>): X<R> {
-  return then(a, (va: T) => {
-    return then(b, (vb: U) => {
-      return f(va, vb)
-    })
-  })
+export enum Strictness {
+  VALUE, PROMISE
 }
-
-type X<T> = T | Promise<T>
 
 function varArg (f: any) {
   f.varArg = true
   return f
 }
-
-const s = Symbol.for // syntactic shortcut
 
 // In the following document, strictness is about not being a promise
 
@@ -30,95 +22,98 @@ class RuntimeError extends Error { }
 // const readFile = promisify(fs.readFile)
 const readFile = promisify((fs.readFile as (name: string, enc: string, cb: (err: NodeJS.ErrnoException, data: string) => void) => void))
 
-export const primitives = {
-  [s('readFile')]: function fs_readFile (xname: X<string>): X<string> {
-    return then(xname, (name) => {
-      return readFile(name, 'utf8')
-    })
+export const primitives = annotate({
+  readFile: function fs_readFile_vp (name: string): Promise<string> {
+    return readFile(name, 'utf8')
   },
 
-  [s('string_asList')]: function string_asList (xstr: X<string>): X<number[]> {
-    return then(xstr, (str) => {
-      const array: number[] = []
-      for (let i = 0; i < str.length; i++) {
-        array[i] = str.charCodeAt(i)
-      }
-      return array // list of strict values
-    })
+  'string_asList': function string_asList_vv (str: string): number[] {
+    const array: number[] = []
+    for (let i = 0; i < str.length; i++) {
+      array[i] = str.charCodeAt(i)
+    }
+    return array // list of strict values
   },
 
-  [s('list_asString')]: function list_asString (xarray: X<any[]>): X<string> {
-    return then(xarray, (array) => {
-      let s: string = ''
-      for (let i = 0; i < array.length; i++) {
-        then(array[i], c => { // TODO: Dificulté. Il faut attendre que tous les éléments du tableau soient résolus
-          if (typeof c === 'number') {
-            s += String.fromCharCode(c)
-          } else {
-            throw new RuntimeError(`Expecting number (char code), was: ${c} (${typeof c})`)
-          }
-        })
-      }
-      return s
-    })
+  'fromCharCode': function fromCharCode_vv (code: number): string {
+    return String.fromCharCode(code)
   },
 
-  [s('nil')]: [],
+  'nil': [],
 
-  [s('list_length')]: function list_length<T> (xlist: X<T[]>): X<number> {
-    return then(xlist, (list) => list.length)
+  'list_length': function list_length_vv<T> (list: T[]): number {
+    return list.length
   },
 
-  [s('list_tailFrom')]: function list_tailFrom<T> (xlist: X<T[]>, xfrom: X<number>): X<T[]> {
-    return then2(xlist, xfrom, (list, from) => {
-      return list.slice(from)  // same strictness as source
-    })
+  'list_tailFrom': function list_tailFrom_vvv<T> (list: T[], from: number): T[] {
+    return list.slice(from)  // same strictness as source
   },
 
-  [s('list_concat')]: function list_concat<T> (xlist1: X<T[]>, xlist2: X<T[]>): X<T[]> {
-    return then2(xlist1, xlist2, (list1, list2) => {
-      return list1.concat(list2) // strict if both sources are strict
-    })
+  'list_concat': function list_concat_vvv<T> (list1: T[], list2: T[]): T[] {
+    return list1.concat(list2) // strict if both sources are strict
   },
 
-  [s('list')]: varArg(function list<T> (...elements: X<T>[]) {
+  'list': varArg(function list_pv<PT> (...elements: PT[]) {
     return elements.slice() // copy // same strictness are strict
   }),
 
-  [s('eq')]: function eq (a: X<any>, b: X<any>): X<boolean> {
-    return then2(a, b, (va, vb) => {
-      return equal(va, vb)
-    })
+  'eq': function eq_vvv (a: any, b: any): boolean {
+    return equal(a, b)
   },
 
-  [s('plus')]: function plus (a: X<any>, b: X<any>): X<any> {
-    return then2(a, b, (va, vb) => {
-      return a + b
-    })
+  'plus': function plus_vvv (a: any, b: any): any {
+    return a + b
   },
 
-  [s('minus')]: function minus (a: X<any>, b: X<any>): X<any> {
-    return then2(a, b, (va, vb) => {
-      return a - b
-    })
+  'minus': function minus_vvv (a: any, b: any): any {
+    return a - b
   },
 
-  [s('error')]: function error (xcause: X<any>) {
-    return then(xcause, cause => {
-      throw new RuntimeError(cause)
-    })
+  'error': function error_vv (cause: any) {
+    throw new RuntimeError(cause)
   },
 
-  [s('spy')]: function spy (xdata: any) {
-    return then(xdata, data => {
-      console.log(data)
-      return data
-    })
+  'spy': function spy_vv (data: any) {
+    console.log(data)
+    return data
   },
 
-  [s('delay')]: function promise_delay (xtime: X<number>, xresult: X<any>) {
-    return then2(xtime, xresult, (time, result) => {
-      return delay(time).then(() => result)
-    })
+  'delay': function promise_delay_vvp (time: number, result: any) {
+    return delay(time).then(() => result)
   }
+})
+
+function annotate (primitives: {[key: string]: any}): {[keySymbol: string]: any} {
+  const annotated: {[keySymbol: string]: any} = {}
+  Object.entries(primitives).forEach(([k,v]) => {
+    if (v instanceof Function) {
+      v.strictness = strictnessDecoder(v)
+    }
+
+    annotated[Symbol.for(k)] = v
+  })
+  return annotated
+}
+
+// ---------------------------------------
+
+function strictnessDecoder (f: Function): Strictness[] {
+  const name = f.name
+
+  let i = name.lastIndexOf('_') + 1
+
+  const strictnessArray = []
+  while (i < name.length) {
+    let s
+    switch (name[i]) {
+      case 'p' : s = Strictness.PROMISE
+        break
+      case 'v' : s = Strictness.VALUE
+        break
+      default: throw new Error('Unexpected strictness suffix: ' + name[i])
+    }
+    strictnessArray.push(s)
+    i++
+  }
+  return strictnessArray
 }

@@ -6,7 +6,11 @@ exports[`The Parser can be tested with snapshots 2`] = `"\\"\\\\\\"test\\"\\\\\\
 
 exports[`The Parser parses Empty.tp correctly 1`] = `
 "topLevel
-  undefined <EOF>   @1:1-6
+  simple:expr
+    simpleExpr
+      literalExpr
+        INTEGER 0   @1:1-2
+  undefined <EOF>   @1:2-7
 "
 `;
 
@@ -180,7 +184,11 @@ exports[`The Parser parses EndOfLet.tp correctly 1`] = `
                 varExpr
                   ID a   @30:5-6
             '}' }   @31:1-2
-  undefined <EOF>   @33:1-6
+  simple:expr
+    simpleExpr
+      literalExpr
+        INTEGER 0   @33:1-2
+  undefined <EOF>   @33:2-7
 "
 `;
 
@@ -342,7 +350,11 @@ exports[`The Parser parses Literals.tp correctly 1`] = `
         simpleExpr
           literalExpr
             BOOLEAN true   @23:12-16
-  undefined <EOF>   @25:1-6
+  simple:expr
+    simpleExpr
+      literalExpr
+        INTEGER 0   @25:1-2
+  undefined <EOF>   @25:2-7
 "
 `;
 
@@ -762,7 +774,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
                     varExpr
                       ID c   @23:30-31
                 '.' .   @23:31-32
-                method
+                attr
                   ID b   @23:32-33
   definition
     valueDefinition
@@ -1046,7 +1058,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
                 varExpr
                   ID foo   @33:24-27
             '.' .   @33:27-28
-            method
+            attr
               ID bar   @33:28-31
   definition
     valueDefinition
@@ -1081,7 +1093,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
                   varExpr
                     ID c   @35:28-29
               '.' .   @35:29-30
-              method
+              attr
                 ID d   @35:30-31
         userOpId
           ID union   @35:32-37
@@ -1145,7 +1157,11 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
                   literalExpr
                     INTEGER 1   @41:7-8
             '}' }   @42:1-2
-  undefined <EOF>   @43:1-6
+  simple:expr
+    simpleExpr
+      literalExpr
+        INTEGER 0   @44:1-2
+  undefined <EOF>   @44:2-7
 "
 `;
 
@@ -1275,7 +1291,11 @@ exports[`The Parser parses SemiColon.tp correctly 1`] = `
                 varExpr
                   ID foo   @10:10-13
             '}' }   @10:14-15
-  undefined <EOF>   @12:1-6
+  simple:expr
+    simpleExpr
+      literalExpr
+        INTEGER 0   @12:1-2
+  undefined <EOF>   @12:2-7
 "
 `;
 
@@ -1921,7 +1941,7 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
             varExpr
               ID foo   @65:6-9
         '.' .   @65:9-10
-        method
+        attr
           ID bar   @65:10-13
   definition
     valueDefinition
@@ -1936,7 +1956,7 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
             varExpr
               ID foo   @66:6-9
         '.' .   @66:9-10
-        method
+        attr
           ID bar   @66:10-13
         apply
           '(' (   @66:13-14
@@ -1954,7 +1974,7 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
             varExpr
               ID foo   @67:6-9
         '.' .   @67:9-10
-        method
+        attr
           ID bar   @67:10-13
         apply
           '(' (   @67:13-14
@@ -1978,7 +1998,7 @@ exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
             varExpr
               ID foo   @68:6-9
         '.' .   @68:9-10
-        method
+        attr
           ID bar   @68:10-13
         apply
           '(' (   @68:13-14

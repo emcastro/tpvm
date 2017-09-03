@@ -40,3 +40,5 @@ let1={
     a=b
     1+1         // Impose let to be a top rule when no pinning
 }
+
+0

@@ -4,7 +4,7 @@ import {
   Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue
 } from '../expr/Expr'
 
-import { primitives } from './primitive1'
+import { primitives, Strictness } from './primitive1'
 import { OneOrMany } from '../utils/prelude'
 import { fastmap } from '../utils/fastArray'
 import { then, Promise } from './optimisticPromise'
@@ -55,24 +55,24 @@ class PrimitiveError extends EvalError { }
 
 const stats = new Map<Expr, number>()
 
-process.on('exit', () => {
-  console.log('=================')
+// process.on('exit', () => {
+//   console.log('=================')
 
-  const entries = []
-  for (let e of stats.entries()) {
-    entries.push(e)
-  }
+//   const entries = []
+//   for (let e of stats.entries()) {
+//     entries.push(e)
+//   }
 
-  const s = _.groupBy(entries, ([expr, count]) => count)
+//   const s = _.groupBy(entries, ([expr, count]) => count)
 
-  const sE = Object.entries(s).reverse()
+//   const sE = Object.entries(s).reverse()
 
-  sE.forEach(([count, items]) => {
-    items.forEach(i =>
-      console.log(count, items.length, i[0].toText())
-    )
-  })
-})
+//   sE.forEach(([count, items]) => {
+//     items.forEach(i =>
+//       console.log(count, items.length, i[0].toText())
+//     )
+//   })
+// })
 
 /**
  * Simple strict evaluation
@@ -162,7 +162,12 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
                 }
               }
               try {
+                const s: Strictness[] = (op as any).strictness
+// test strictness
+
                 return op.apply(null, args)
+
+
               } catch (e) {
                 console.error(expr.debugInfo())
                 throw new PrimitiveError(e)
