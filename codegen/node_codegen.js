@@ -1,4 +1,4 @@
-// @flow - in comments only
+
 const _ = require('lodash')
 
 // Format keyword
@@ -30,7 +30,7 @@ export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
 
   constructor (${typedAttributes.join(', ')}) {
     // generated code
-${extend ? '    super()': ''}
+${extend ? '    super()' : ''}
     this.typ = ${name.toUpperCase()} // typ is faster when set on instances
     ${_.join(_.map(attributes, a => `this.${a} = ${a}`), '\n    ')}
   }
@@ -80,8 +80,8 @@ function typedEntries (object) {
   return Object.keys(object).map(k => [k, object[k]])
 }
 
-/* ::
-type dataParams = {
+/*
+type DataParams = {
   extend?: string,
   import?: Array<string>,
   implement?: string,
@@ -89,7 +89,11 @@ type dataParams = {
 }
 */
 
-function data (name /* :string */, params /* :dataParams */) {
+/**
+ * @param {string} name
+ * @param {DataParams} params
+ */
+function data (name, params) {
   const header = (`
 // generated code
 

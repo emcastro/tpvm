@@ -1,4 +1,3 @@
-// @flow
 
 const { usage, newSuite, run } = require('./utils/bench')
 const _ = require('lodash')

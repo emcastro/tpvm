@@ -40,7 +40,6 @@
     "eslint-plugin-flowtype": "^2.32.1",
     "event-stream": "^3.3.4",
     "flat-map": "^0.4.0",
-    "flow-bin": "^0.46.0",
     "gulp": "^3.9.1",
     "gulp-antlr4": "^0.3.2",
     "gulp-clean": "^0.3.2",
@@ -54,9 +53,6 @@
     "typescript": "^2.3.4"
   },
   "standard": {
-    "plugins": [
-      "flowtype"
-    ],
     "parser": "babel-eslint",
     "globals": [
       "test",
@@ -68,7 +64,6 @@
       "$ReadOnlyArray"
     ],
     "ignore": [
-      "flow-typed",
       "src/generated"
     ]
   },

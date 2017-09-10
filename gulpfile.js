@@ -1,4 +1,3 @@
-// @flow
 
 // Builds everything, expect typescript
 
