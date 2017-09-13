@@ -12,7 +12,7 @@ import { LiteralValue } from '../expr/ExprBase'
 /*
 const ExprRewriter = new TreeRewriter()
 ExprRewriter.isRewritable = function (obj) {
-  return obj.rewrite !== undefined // TODO: should define more explicit marker?
+  return obj.rewrite !== undefined // FIXME: should define more explicit marker?
 }
 
 ExprRewriter.rewrite = function (obj, newChildren) {

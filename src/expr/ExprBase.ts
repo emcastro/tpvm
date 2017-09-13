@@ -106,7 +106,7 @@ export class ExprBase {
 }
 
 function isToken (t: any): t is Token {
-  return t.text !== undefined && t.line !== undefined && t.column !== undefined // TODO: should check real Antlr4 token type
+  return t.text !== undefined && t.line !== undefined && t.column !== undefined // FIXME: should check real Antlr4 token type
 }
 
 function sourcePosition (source: TPNode | Token) {

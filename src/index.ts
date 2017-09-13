@@ -10,16 +10,16 @@ const source = fs.readFileSync('tp/test.tp', 'utf-8')
 const parsed = parse(source)
 const cored = core(parsed)
 
-console.log(cored.toText())
+// console.log(cored.toText())
 
 const p: any = eval1(cored, new Env(new Map()))
 
-if (p != null && p.then) {
+if (p != null && p.then) { // Promise result
   p.then((v: any) => {
     console.log('!End', v)
   }, (e: any) => {
     console.error('!Error', e)
   })
-} else {
+} else { // Simple result
   console.log(':End', p)
 }

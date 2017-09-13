@@ -163,7 +163,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
               }
               try {
                 const s: Strictness[] = (op as any).strictness
-// test strictness
+// TODO: test strictness
 
                 return op.apply(null, args)
 

@@ -27,7 +27,7 @@ const CODEGEN = 'codegen/**/*_codegen.js'
 const ANTLR4 = 'codegen/**/*.g4'
 const COVERAGE = 'coverage'
 
-process.env.CLASSPATH = ':' + path.join(__dirname, 'antlr-4.7-complete.jar') + ':' // TODO: report bug to gulp-antlr4
+process.env.CLASSPATH = ':' + path.join(__dirname, 'antlr-4.7-complete.jar') + ':' // FIXME: report bug to gulp-antlr4
 
 gulp.task('clean', () => {
   return (

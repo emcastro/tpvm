@@ -149,7 +149,7 @@ ESCAPE_SEQUENCE: '\\' ~[\r\n];
 
 WS:         [ \r\t\f\n] -> skip;
 
-COMMENT:    '/*' .*? '*/' -> skip; // TODO Incomplet
+COMMENT:    '/*' .*? '*/' -> skip; // FIXME: Incomplet
 
 LINE_COMMENT:
             '//' ~[\n\r]* '\r'? '\n' -> skip;

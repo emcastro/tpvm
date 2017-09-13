@@ -85,7 +85,7 @@ export type Token = {
 }
 
 type Node = {
-  symbol?: Token, // TODO: analyze symbol field
+  symbol?: Token, // FIXME: analyze symbol field
   parser: { ruleNames: string[] },
   ruleIndex: number,
   start: Token,
