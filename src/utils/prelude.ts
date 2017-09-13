@@ -84,7 +84,7 @@ export type MayBe<T> = T | undefined
 
 export type OneOrMany<T> = T | T[]
 
-export class Pair<A,B> {
+export class Pair<A, B> {
   _0: A
   _1: B
 

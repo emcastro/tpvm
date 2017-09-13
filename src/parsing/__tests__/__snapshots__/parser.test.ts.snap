@@ -1183,9 +1183,9 @@ exports[`The Parser parses SemiColon.tp correctly 1`] = `
                 varExpr
                   ID foo   @2:7-10
             '}' }   @2:11-12
-    ';' ;   @2:12-13
-    ';' ;   @2:13-14
-    ';' ;   @2:14-15
+  ';' ;   @2:12-13
+  ';' ;   @2:13-14
+  ';' ;   @2:14-15
   definition
     valueDefinition
       typedVar
@@ -1214,7 +1214,7 @@ exports[`The Parser parses SemiColon.tp correctly 1`] = `
         simpleExpr
           varExpr
             ID foo   @4:5-8
-    ';' ;   @4:8-9
+  ';' ;   @4:8-9
   definition
     valueDefinition
       typedVar
@@ -1243,9 +1243,9 @@ exports[`The Parser parses SemiColon.tp correctly 1`] = `
           simpleExpr
             varExpr
               ID b   @7:7-8
-    ';' ;   @7:8-9
-    ';' ;   @7:9-10
-    ';' ;   @7:10-11
+  ';' ;   @7:8-9
+  ';' ;   @7:9-10
+  ';' ;   @7:10-11
   definition
     functionDefinition
       functionId
@@ -1268,7 +1268,7 @@ exports[`The Parser parses SemiColon.tp correctly 1`] = `
                 varExpr
                   ID foo   @9:10-13
             '}' }   @9:14-15
-    ';' ;   @9:15-16
+  ';' ;   @9:15-16
   definition
     functionDefinition
       functionId

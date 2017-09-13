@@ -9,6 +9,19 @@ import { fasteach } from '../utils/fastArray'
 
 export { TPGrammarParser as parser }
 
+/**
+ * Tests if the previous token and the new token are
+ * on different lines.
+ * @return false is on the same line
+ */
+TPGrammarParser.prototype.newline = function () {
+  const newToken = this.getCurrentToken()
+  const stream = this.getTokenStream()
+  const prevToken = stream.get(newToken.tokenIndex - 1)
+  const nl = prevToken.line !== newToken.line
+  return nl
+}
+
 function annotateParserWithContextName (parser: any) {
   const suffix = 'Context'
 
@@ -104,7 +117,7 @@ export type Definition = N<'definition'> & {
 } // transparent node
 
 export type ValueDefinition = N<'valueDefinition'> & { typedVar: A<TypedVar>, expr: A<Expr> }
-export type FunctionDefinition = N<'functionDefinition'> & { functionId: A<FunctionId>, typedParams: NA<TypedParams>, typeAnnotation: N<TypeAnnotation>, expr: A<Expr>}
+export type FunctionDefinition = N<'functionDefinition'> & { functionId: A<FunctionId>, typedParams: NA<TypedParams>, typeAnnotation: N<TypeAnnotation>, expr: A<Expr> }
 export type TupleDefinition = N<'tupleDefinition'> & { typedVars: NA<TypedVars>, expr: A<Expr> }
 
 export type TypedVar = N<'typedVar'> & { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
@@ -158,7 +171,7 @@ export function tokenName (token: Token) {
   return token.text + '#' + token.type
 }
 
-export function position (token: {line: number, column: number, text: { length: number }}) {
+export function position (token: { line: number, column: number, text: { length: number } }) {
   return `${token.line}:${token.column + 1}-${token.column + 1 + token.text.length}`
 }
 

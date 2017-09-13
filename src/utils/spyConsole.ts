@@ -1,7 +1,8 @@
 
 export default function spyConsole (method: 'log' | 'error' | 'info' | 'warn' | 'trace', ...breakOn: string[]) {
-  const cl = (console as any)[method]
-  ; (console as any)[method] = function (...args: any[]) {
+  const consoleAny = console as any
+  const cl = consoleAny[method]
+  consoleAny[method] = function (...args: any[]) {
     // cl(method + '>>')
     cl.apply(console, args)
     args.forEach(a => {

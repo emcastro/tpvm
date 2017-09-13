@@ -1,6 +1,6 @@
 grammar TPGrammar;
 
-topLevel: definition* expr ';'* EOF; // let-like
+topLevel: (definition ';'+ | definition { this.newline() }?)* expr ';'* EOF; // let-like
 
 expr: simpleExpr # simple
     | expr (apply | '.' attr apply?)    # call
@@ -26,7 +26,7 @@ simpleExpr: literalExpr
           | letExpr
           ;
 
-definition: (valueDefinition | tupleDefinition | functionDefinition) ';'* ;
+definition: (valueDefinition | tupleDefinition | functionDefinition);
 
 valueDefinition: typedVar EQ_DEF expr;
 
@@ -76,7 +76,7 @@ shortLambdaExpr: paramId '->' expr;
 
 varExpr: ID;
 
-letExpr: '{' definition* expr ';'* '}';
+letExpr: '{' (definition ';'+ | definition { this.newline() }?)* expr ';'* '}';
 
 //
 
