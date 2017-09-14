@@ -93,7 +93,7 @@ type Node = {
   children: TPNode[] | null
 }
 
-// Typeing assistance for Nodes for TPGrammar
+// Typing assistance for Nodes for TPGrammar
 type A<T> = () => (T)
 type NA<T> = () => (T | null)
 
@@ -224,7 +224,7 @@ export function parse (input: string): TPNode {
   const start = parser.topLevel()
 
   if (errorListener.failed) {
-    throw new Error('Parsing error occured')
+    throw new Error('Parsing error occurred')
   }
 
   return start

@@ -2,13 +2,15 @@
 import * as fs from 'fs'
 import { } from './eval1'
 import { Value } from './eval1'
-import { equal } from '../utils/prelude'
+import { equal, notnull } from '../utils/prelude'
 
 import { then, Promise, promisify, delay } from './optimisticPromise'
 
 export enum Strictness {
   VALUE, PROMISE
 }
+
+export type StrictnessInfo = Strictness[] & { result: Strictness }
 
 function varArg (f: any) {
   f.varArg = true
@@ -97,12 +99,12 @@ function annotate (primitives: {[key: string]: any}): {[keySymbol: string]: any}
 
 // ---------------------------------------
 
-function strictnessDecoder (f: Function): Strictness[] {
+function strictnessDecoder (f: Function): StrictnessInfo {
   const name = f.name
 
   let i = name.lastIndexOf('_') + 1
 
-  const strictnessArray = []
+  const strictnessArray: StrictnessInfo = [] as any
   while (i < name.length) {
     let s
     switch (name[i]) {
@@ -115,5 +117,9 @@ function strictnessDecoder (f: Function): Strictness[] {
     strictnessArray.push(s)
     i++
   }
+  // The last element of strictness is for the function result
+  // We put it into a convenient place
+  strictnessArray.result = notnull(strictnessArray.pop())
+
   return strictnessArray
 }

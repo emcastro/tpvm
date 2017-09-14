@@ -8,11 +8,11 @@ function newSuite () {
 }
 
 /**
- * @param {string} prefered
+ * @param {string} preferred
  * @param {string[]} others
  */
-function usage (prefered, others) {
-  console.log(`Use ${color.green(prefered)} instead of ${others.map(o => color.grey(o)).join(' or ')}`)
+function usage (preferred, others) {
+  console.log(`Use ${color.green(preferred)} instead of ${others.map(o => color.grey(o)).join(' or ')}`)
 }
 
 /**

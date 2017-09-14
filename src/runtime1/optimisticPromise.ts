@@ -7,7 +7,7 @@ export interface Promise<Q> { }
 
 const stats = {
   direct: 0,
-  fullfilled: 0,
+  fulfilled: 0,
   pending: 0
 }
 
@@ -20,7 +20,7 @@ export function then<Q, P> (q: Q | Promise<Q>, f: (q: Q) => P): P | Promise<P> {
   if (q instanceof BlueBird) {
     let qq = q
     if (qq.isFulfilled()) {
-      stats.fullfilled++
+      stats.fulfilled++
       qq = qq.value()
       return then(qq, f)
     } else {

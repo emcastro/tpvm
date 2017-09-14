@@ -73,7 +73,7 @@ export function notnull<T> (value: T | null | undefined): T {
 }
 
 export function switchMap<T1, R> (object: { [switchKey: string]: (switchValue: any) => R }): Map<string, (switchValue: T1) => R> {
-  return new Map(Object.entries(object)) as Map<string, (swtichValue: T1) => R>
+  return new Map(Object.entries(object)) as Map<string, (switchValue: T1) => R>
 }
 
 export function switchMap2<T1, T2, R> (object: { [switchKey: string]: (switchValue: any, arg: T2) => R }): Map<string, (switchValue: T1, arg: T2) => R> {
