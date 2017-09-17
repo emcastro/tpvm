@@ -4,10 +4,10 @@ import {
   Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue
 } from '../expr/Expr'
 
-import { primitives, Strictness } from './primitive1'
-import { OneOrMany } from '../utils/prelude'
+import { primitives, Strictness, StrictnessInfo } from './primitive1'
+import { OneOrMany, XError } from '../utils/prelude'
 import { fastmap } from '../utils/fastArray'
-import { then, Promise } from './optimisticPromise'
+import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
 import * as _ from 'lodash'
 
 export type Value = LiteralValue | Closure | ValueArray | Function
@@ -25,7 +25,7 @@ export class Env { // export for building root env
   }
 
   lookup (varId: string): Value | Promise<Value> {
-    // There should not be indefined variable at this level
+    // There should not be undefined variable at this level
     const value = this.frame.get(varId)
     if (value !== undefined) { // we don't intend to use undefined as a value
       return value
@@ -49,7 +49,7 @@ export class Closure {
   }
 }
 
-class EvalError extends Error { }
+class EvalError extends XError { }
 
 class PrimitiveError extends EvalError { }
 
@@ -146,7 +146,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
             return eval1(op.lambda.body, newEnv)
 
           } else {
-            // Spécial case: primitve, array or object access
+            // Special case: primitive, array or object access
 
             // Parameter evaluation
             const args = []  // inlined Array.map
@@ -162,11 +162,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
                 }
               }
               try {
-                const s: Strictness[] = (op as any).strictness
-// TODO: test strictness
-
-                return op.apply(null, args)
-
+                return callPrimitive(op, args, 0) // ATTENTION: in-place modification of args
 
               } catch (e) {
                 console.error(expr.debugInfo())

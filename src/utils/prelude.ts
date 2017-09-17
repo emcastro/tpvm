@@ -107,3 +107,18 @@ export function memo<F extends Function> (f: F) {
     return result
   }) as any as F
 }
+
+/** Error with cascading cause error */
+export class XError extends Error {
+
+  cause?: Error
+
+  constructor (msg?: string, cause?: Error) {
+    super(msg)
+    this.cause = cause
+    if (cause !== undefined) {
+      this.stack = cause.stack || '' + this.stack
+    }
+  }
+
+}

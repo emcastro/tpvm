@@ -2,9 +2,9 @@
 import * as fs from 'fs'
 import { } from './eval1'
 import { Value } from './eval1'
-import { equal, notnull } from '../utils/prelude'
+import { equal, notnull, XError } from '../utils/prelude'
 
-import { then, Promise, promisify, delay } from './optimisticPromise'
+import { Promise, promisify, delay } from './optimisticPromise'
 
 export enum Strictness {
   VALUE, PROMISE
@@ -55,8 +55,8 @@ export const primitives = annotate({
     return list1.concat(list2) // strict if both sources are strict
   },
 
-  'list': varArg(function list_pv<PT> (...elements: PT[]) {
-    return elements.slice() // copy // same strictness are strict
+  'list': varArg(function list_v<PT> (...elements: PT[]) { // no args => no change
+    return elements.slice() // copy
   }),
 
   'eq': function eq_vvv (a: any, b: any): boolean {
@@ -120,6 +120,10 @@ function strictnessDecoder (f: Function): StrictnessInfo {
   // The last element of strictness is for the function result
   // We put it into a convenient place
   strictnessArray.result = notnull(strictnessArray.pop())
+
+  if (strictnessArray.length !== f.length) {
+    throw new Error('Internal arity problem on ' + f)
+  }
 
   return strictnessArray
 }
