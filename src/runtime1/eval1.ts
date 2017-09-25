@@ -196,7 +196,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
           }
         } catch (e) {
           if (e instanceof EvalError) throw e
-          throw new EvalError(e)
+          throw new EvalError('', e)
         }
       })
   }

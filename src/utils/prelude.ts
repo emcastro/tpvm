@@ -116,9 +116,6 @@ export class XError extends Error {
   constructor (msg?: string, cause?: Error) {
     super(msg)
     this.cause = cause
-    if (cause !== undefined) {
-      this.stack = cause.stack || '' + this.stack
-    }
   }
 
 }
