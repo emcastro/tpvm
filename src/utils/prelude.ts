@@ -1,4 +1,6 @@
 
+import * as _ from 'lodash'
+
 /** Typed version of o[Symbol.iterator]() */
 export function iterator (o: any): Iterator<any> {
   return o[Symbol.iterator]()
@@ -116,6 +118,12 @@ export class XError extends Error {
   constructor (msg?: string, cause?: Error) {
     super(msg)
     this.cause = cause
+  }
+
+  toString () {
+    const shortStack = this.stack ? this.stack.split('\n').slice(1).join('\n') : this.message
+
+    return _.truncate(this.message, { length: 500 }) + '\n' + shortStack + '\n' + (this.cause ? this.cause.toString() : '')
   }
 
 }
