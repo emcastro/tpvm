@@ -25,9 +25,12 @@
       "name": "Launch Program (index.js)",
       "program": "${workspaceRoot}/dist/index.js",
       "protocol": "inspector",
-      "outFiles": [
+      "args": [
         "--harmony_tailcalls",
-        "--use_strictommande",
+        "--use_strict",
+        "--nolazy"
+      ],
+      "outFiles": [
         "${workspaceRoot}/dist/**/*.js"
       ]
     },

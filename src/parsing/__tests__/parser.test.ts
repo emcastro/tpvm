@@ -1,7 +1,7 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { parse, dump, TPNode } from '../parser'
+import { parse, dump } from '../parser'
 
 describe('The Parser', () => {
   it('can be tested with snapshots', () => {

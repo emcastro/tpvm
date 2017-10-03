@@ -6,6 +6,7 @@
     "language": "en",
     // words - list of words to be always considered correct
     "words": [
+        "Delim",
         "Memoization",
         "antlr",
         "bidule",
@@ -20,7 +21,8 @@
         "minusminus",
         "notnull",
         "promisify",
-        "scripthost"
+        "scripthost",
+        "sublist"
     ],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.

@@ -3,6 +3,7 @@ __eq__=#eq
 __concat__=#list_concat
 __plus__=#plus
 __minus__=#minus
+__or__=(a,b)->if (a) a else b
 
 // Lists
 _head(list)=list(0)
@@ -31,32 +32,44 @@ _flatmap(list, f) = {
     }
 }
 
-_map(list, f) = list.flatmap(e->#list(f(e))) // ici problème de type
+_map(list, f) = list.flatmap(e->#list(f(e)))
 
+/* // Lazy Standard version
 _filter(list, f) = {
     if (list.empty) #nil
     else {
         if (f(list.head))
-            #list(list.head) ++ list.tail.filter(f) // ici problème de type
+            #list(list.head) ++ list.tail.filter(f)
         else
             list.tail.filter(f)
     }
 }
+*/
 
-_split(list, isDelim) = {
-    if (list.empty) #nil
+_filter_(list, f, result) = {
+    if (list.empty) result
     else {
-        if (isDelim(list.head)) // [ delim, a, b, c ] => [[],[a,b,c]]
-            #list(#nil) ++ list.tail.split(isDelim)
-        else {
-            suite = list.tail.split(isDelim)
-            if (suite.empty)
-                #list(#list(list.head))
-            else
-                #list(#list(list.head)++suite.head)++suite.tail
-        }
+        if (f(list.head))
+            list.tail.filter_(f, result ++ #list(list.head))
+        else
+            list.tail.filter_(f, result)
     }
 }
+
+_filter(list, f) = _filter_(list, f, #nil)
+
+_split_(list, isDelim, accumulator, result) = {
+    if (list.empty) {
+        result ++ #list(accumulator) // flush the accumulator
+    } else {
+        if (isDelim(list.head))
+            list.tail.split_(isDelim, #nil, result ++ #list(accumulator)) // start a new accumulator
+        else 
+            list.tail.split_(isDelim, accumulator ++ #list(list.head), result) // put un the accumulator
+    }
+}
+
+_split(list, isDelim) = if (list.empty) #nil else _split_(list, isDelim, #nil, #nil)
 
 _foldLeft(list, zero, op) = {
     loop(list, state) = {
@@ -70,17 +83,23 @@ _foldLeft(list, zero, op) = {
 }
 
 _join(list, delim) = {
-    delimPseudoLine = #list(delim)
-    list.flatmap(item->delimPseudoLine++item).asString
+    list.flatmap(item->delim++item).asString
 }
 
 /* ------------------ */
 
-
+/*
 file = #readFile("test").asList
 
-lines = file.split(c->c == char(","))
+lines = file.split(c->c == char("\n"))
+linesOfWords = lines.map(l->l.split(c->c == char(",")))
+
+transformedLines = linesOfWords.map(words->words.join("|".asList))
 
 //lines.join(char("|"))
-lines.map(x->#delay(500,x.asString).asList).join(char("|"))
+lines.map(x->#delay(500,x.asString).asList).join("$\n".asList)
+*/
 
+foo(x) = foo(x)
+
+foo(0)

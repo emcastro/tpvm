@@ -6,7 +6,7 @@ import { Value } from './eval1'
 
 export const promisify = BlueBird.promisify
 
-export interface Promise<Q> { }
+export interface Promise<Q> { } // tslint:disable-line
 
 const stats = {
   direct: 0,

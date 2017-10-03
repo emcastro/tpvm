@@ -12,8 +12,8 @@ export enum Strictness {
 
 export type StrictnessInfo = Strictness[] & { result: Strictness }
 
-function varArg (f: any) {
-  f.varArg = true
+function varArgs (f: any) {
+  f.varArgs = true
   return f
 }
 
@@ -43,6 +43,8 @@ export const primitives = annotate({
 
   'nil': [],
 
+  'null': null,
+
   'list_length': function list_length_vv<T> (list: T[]): number {
     return list.length
   },
@@ -55,7 +57,7 @@ export const primitives = annotate({
     return list1.concat(list2) // strict if both sources are strict
   },
 
-  'list': varArg(function list_v<PT> (...elements: PT[]) { // no args => no change
+  'list': varArgs(function list_v<PT> (...elements: PT[]) { // no args => no change
     return elements.slice() // copy
   }),
 

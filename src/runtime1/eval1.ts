@@ -54,9 +54,17 @@ class EvalError extends XError {
   expression?: Expr
 
   constructor (msg?: string, expression?: Expr, cause?: Error) {
-    super(msg || _.truncate(`${expression}`, { length: 250 }))
+    super(msg || (expression && `${expression.debugInfo()} : ` + _.truncate(`${expression}`, { length: 250 })))
     this.expression = expression
     this.cause = cause
+  }
+
+  shownStack () {
+    if (this.expression === undefined || this.stack === undefined) {
+      return this.stack
+    } else {
+      return this.stack.slice(0, this.stack.indexOf('\n'))
+    }
   }
 
 }
@@ -100,7 +108,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
         const l = expr.value
         if (typeof l === 'symbol') {
           const x = primitives[l]
-          if (x == null) {
+          if (x === undefined) {
             throw new Error(`Undefined primitive #${Symbol.keyFor(l)}`)
           }
           return x
@@ -146,7 +154,7 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
               const frame = new Map()
               const params = op.lambda.params
               if (params.length !== ops.length) {
-                throw new EvalError(`Argument count ${ops.length} differs from parameter count ${params.length}`)
+                throw new EvalError(`Call argument count ${ops.length} differs from closure parameter count ${params.length}`)
               }
 
               for (let i = 0; i < ops.length; i++) {
@@ -168,8 +176,8 @@ export default function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
               // Primitive function (from Literal)
               if (typeof op === 'function') {
                 if (op.length !== args.length) {
-                  if ((op as any).varArgs) {
-                    throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} (P)`)
+                  if (! (op as any).varArgs) {
+                    throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} of primitive`)
                   }
                 }
                 try {

@@ -303,9 +303,9 @@ function operands (apply: PApply, env: Env) {
 }
 
 function toCore (expr: TPNode, env: Env): Expr {
-  const toCoreExpr: any = toCoreSwitchMap.get(expr.contextName)
+  const toCoreExpr = toCoreSwitchMap.get(expr.contextName)
   if (toCoreExpr == null) throw new Error('À coder : ' + expr.contextName)
-  return toCoreExpr(expr, env).setSource(expr)
+  return toCoreExpr(expr as any, env).setSource(expr)
 }
 
 function toCoreMap (exprs: TPNode[], env: Env): Expr[] {

@@ -120,10 +120,12 @@ export class XError extends Error {
     this.cause = cause
   }
 
-  toString () {
-    const shortStack = this.stack ? this.stack.split('\n').slice(1).join('\n') : this.message
+  shownStack () {
+    return this.stack
+  }
 
-    return _.truncate(this.message, { length: 500 }) + '\n' + shortStack + '\n' + (this.cause ? this.cause.toString() : '')
+  toString () {
+    return this.shownStack() + '\n' + (this.cause ? this.cause.toString() : '')
   }
 
 }
