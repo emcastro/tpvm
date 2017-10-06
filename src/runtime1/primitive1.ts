@@ -1,6 +1,5 @@
 
 import * as fs from 'fs'
-import { } from './eval1'
 import { Value } from './eval1'
 import { equal, notnull, XError } from '../utils/prelude'
 
@@ -63,6 +62,10 @@ export const primitives = annotate({
 
   'eq': function eq_vvv (a: any, b: any): boolean {
     return equal(a, b)
+  },
+
+  'lt': function eq_vvv (a: any, b: any): boolean {
+    return a < b
   },
 
   'plus': function plus_vvv (a: any, b: any): any {

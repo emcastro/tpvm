@@ -103,6 +103,10 @@ export class ExprBase {
   debugInfo () {
     return debugInfo(this)
   }
+
+  location () {
+    return location(this)
+  }
 }
 
 function isToken (t: any): t is Token {
@@ -120,12 +124,16 @@ function sourcePosition (source: TPNode | Token) {
 function debugInfo (data: { source?: OneOrMany<TPNode | Token | null> }) {
   const type = Object.getPrototypeOf(data).constructor.name
 
+  return type + location(data)
+}
+
+function location (data: { source?: OneOrMany<TPNode | Token | null> }) {
   const source = data.source
   if (source == null) {
-    return type + ' @ ' + 'unknown location'
+    return '@' + 'unknown location'
   } else if (!Array.isArray(source)) {
-    return type + ' @ ' + sourcePosition(source)
+    return '@' + sourcePosition(source)
   } else {
-    return type + ' @ ' + fastmap(source.filter(p => p !== null), sourcePosition).join('|')
+    return '@' + fastmap(source.filter(p => p !== null), sourcePosition).join('|')
   }
 }

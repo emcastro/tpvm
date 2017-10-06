@@ -1,5 +1,6 @@
 // Testbed 1
 __eq__=#eq
+__lt__=#lt
 __concat__=#list_concat
 __plus__=#plus
 __minus__=#minus
@@ -86,6 +87,15 @@ _join(list, delim) = {
     list.flatmap(item->delim++item).asString
 }
 
+integers(from, to) = {
+  ints(from, to, result) = {
+    if (from < to) ints(from+1, to, result ++ #list(from))
+    else result
+  }
+
+  ints(from, to, #nil)
+} 
+
 /* ------------------ */
 
 /*
@@ -95,11 +105,16 @@ lines = file.split(c->c == char("\n"))
 linesOfWords = lines.map(l->l.split(c->c == char(",")))
 
 transformedLines = linesOfWords.map(words->words.join("|".asList))
-
-//lines.join(char("|"))
+*/
+/*
 lines.map(x->#delay(500,x.asString).asList).join("$\n".asList)
+
+
+//foo(x) = foo(x)
+
+//foo(0)
 */
 
-foo(x) = foo(x)
+//transformedLines
 
-foo(0)
+integers(10,200000)
