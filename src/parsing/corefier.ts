@@ -123,7 +123,8 @@ function extractFunctionId (def: FunctionDefinition): Token {
   return def.functionId().token()
 }
 
-const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
+// const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
+const toCoreSwitchMap: { [name: string]: (expr: any, env: Env) => Expr } = {
 
   letExpr: letExpr,
   topLevel: letExpr,
@@ -223,7 +224,7 @@ const toCoreSwitchMap = switchMap2<Expr, Env, Expr>({
     return eLambda([newEnv.resolve(param)], toCore(lambda.expr(), newEnv))
   }
 
-})
+}
 
 function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
   const defs = fastmap(expr.definition(), d => d.loneChild())
@@ -303,7 +304,8 @@ function operands (apply: PApply, env: Env) {
 }
 
 function toCore (expr: TPNode, env: Env): Expr {
-  const toCoreExpr = toCoreSwitchMap.get(expr.contextName)
+//  const toCoreExpr = toCoreSwitchMap.get(expr.contextName)
+  const toCoreExpr = toCoreSwitchMap[expr.contextName]
   if (toCoreExpr == null) throw new Error('À coder : ' + expr.contextName)
   return toCoreExpr(expr as any, env).setSource(expr)
 }

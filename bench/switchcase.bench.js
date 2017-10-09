@@ -6,7 +6,7 @@ const _ = require('lodash')
 
 const { fastmap } = require('../dist/utils/fastArray')
 
-usage('switch Map', ['switch case', 'switch {object}'])
+usage('switch {object}', ['switch case', 'switch Map'])
 
 const keys = _.shuffle(_.times(30, n => 'k' + n))
 
@@ -97,4 +97,4 @@ suite.add('switch Map', () => {
   })
 })
 
-run(suite, 'switch Map')
+run(suite, 'switch {object}')

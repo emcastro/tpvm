@@ -2,20 +2,22 @@
 export class AppendList<T> {
   private backend: T[]
 
-  private length: number
+  private _length: number
+
+  get length () { return this._length }
 
   constructor (array: T[] = [], copy: boolean = true) {
     const localArray = copy ? array.slice() : array
     this.backend = localArray
-    this.length = localArray.length
+    this._length = localArray.length
     return this
   }
 
   get (index: number): T {
     if (index < 0) {
       throw new Error(`Index out of bounds: ${index} < 0`)
-    } if (index > this.length) {
-      throw new Error(`Index out of bounds: ${index} >= ${this.length}`)
+    } if (index >= this._length) {
+      throw new Error(`Index out of bounds: ${index} >= ${this._length}`)
     }
 
     return this.backend[index]
@@ -23,8 +25,8 @@ export class AppendList<T> {
 
   concat (that: AppendList<T>): AppendList<T> {
     const list = AppendList.innerMake<T>()
-    list.length = this.length + that.length
-    if (this.backend.length === this.length) {
+    list._length = this._length + that._length
+    if (this.backend.length === this._length) {
       // No appending yet
       list.backend = this.backend
     } else {
@@ -43,8 +45,8 @@ export class AppendList<T> {
 
   push (element: T): AppendList<T> {
     const list = AppendList.innerMake<T>()
-    list.length = this.length + 1
-    if (this.backend.length === this.length) {
+    list._length = this._length + 1
+    if (this.backend.length === this._length) {
       // No appending yet
       list.backend = this.backend
     } else {
@@ -59,7 +61,15 @@ export class AppendList<T> {
     return list
   }
 
-  private static innerMake<T> (): AppendList<T> {
+  toList (): T[] {
+    const result = []
+    for (let i = 0; i < this._length; i++) {
+      result.push(this.backend[i])
+    }
+    return result
+  }
+
+  private static innerMake<T>(): AppendList<T> {
     return Object.create(AppendList.prototype) as AppendList<T>
   }
 }
