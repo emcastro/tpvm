@@ -31,33 +31,14 @@ export class AppendList<T> {
       list.backend = this.backend
     } else {
       // Appending already occurred
-      const list = AppendList.innerMake<T>()
       list.backend = []
       for (let i = 0; i < this.backend.length; i++) {
-        this.backend.push(this.backend[i])
+        list.backend.push(this.backend[i])
       }
     }
     for (let i = 0; i < that.backend.length; i++) {
-      this.backend.push(that.backend[i])
+      list.backend.push(that.backend[i])
     }
-    return list
-  }
-
-  push (element: T): AppendList<T> {
-    const list = AppendList.innerMake<T>()
-    list._length = this._length + 1
-    if (this.backend.length === this._length) {
-      // No appending yet
-      list.backend = this.backend
-    } else {
-      // Appending already occurred
-      const list = AppendList.innerMake<T>()
-      list.backend = []
-      for (let i = 0; i < this.backend.length; i++) {
-        this.backend.push(this.backend[i])
-      }
-    }
-    this.backend.push(element)
     return list
   }
 
@@ -69,7 +50,7 @@ export class AppendList<T> {
     return result
   }
 
-  private static innerMake<T>(): AppendList<T> {
+  private static innerMake<T> (): AppendList<T> {
     return Object.create(AppendList.prototype) as AppendList<T>
   }
 }

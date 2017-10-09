@@ -32,6 +32,9 @@ for (let i = 0; i < 15; i += 3) {
       copy[i] = list[i]
     }
   })
+  suite.add('slice', () => {
+    list.slice()
+  })
 
   run(suite, '[i]')
 }

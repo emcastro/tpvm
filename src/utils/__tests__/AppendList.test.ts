@@ -22,7 +22,7 @@ describe('AppendList', () => {
     })
   })
 
-  it('throws exception for out of bound access', () => {
+  it('throws exception on out-of-bound access', () => {
     const al1 = new AppendList()
     const al10 = new AppendList(_.times(10))
 
@@ -39,16 +39,29 @@ describe('AppendList', () => {
     _.times(max).forEach(i => {
       const l1 = _.times(i)
       const l2 = _.times(max - i)
+      const l1b = l1.slice()
+      const l2b = l2.slice()
 
-      const al1 = new AppendList(l1)
-      const al2 = new AppendList(l2)
+      const al1 = new AppendList(l1b, false)
+      const al2 = new AppendList(l2b, false)
+      const al3 = new AppendList(l2)
 
-      expect(al1.concat(al2).toList()).toEqual(l1.concat(l2))
+      const concat1 = al1.concat(al2)
+      const concat2 = al1.concat(al3)
+
+      expect(concat1.toList()).toEqual(l1.concat(l2))
+      expect(concat2.toList()).toEqual(l1.concat(l2))
+
+      // No unexpected changes
+      expect(al1.toList()).toEqual(l1)
+      expect(al2.toList()).toEqual(l2)
+      expect(al3.toList()).toEqual(l2)
+
+      // concatenated target backend is appended
+      expect(l1b).toEqual(l1.concat(l2))
+      // concatenated operand is untouched
+      expect(l2b).toEqual(l2)
     })
   })
-
-  // it('appends twice correctly', () => {
-
-  // })
 
 })
