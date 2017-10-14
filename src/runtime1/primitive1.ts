@@ -2,6 +2,7 @@
 import * as fs from 'fs'
 import { Value } from './eval1'
 import { equal, notnull, XError } from '../utils/prelude'
+import { AppendList as XList } from '../utils/AppendList'
 
 import { Promise, promisify, delay } from './optimisticPromise'
 
@@ -40,24 +41,25 @@ export const primitives = annotate({
     return String.fromCharCode(code)
   },
 
-  'nil': [],
+  'nil': new XList(),
 
   'null': null,
 
-  'list_length': function list_length_vv<T> (list: T[]): number {
+  'list_length': function list_length_vv<T> (list: XList<T>): number {
     return list.length
   },
 
   'list_tailFrom': function list_tailFrom_vvv<T> (list: T[], from: number): T[] {
-    return list.slice(from)  // same strictness as source
+    throw new Error('À coder')
+    // return list.slice(from)  // same strictness as source
   },
 
-  'list_concat': function list_concat_vvv<T> (list1: T[], list2: T[]): T[] {
+  'list_concat': function list_concat_vvv<T> (list1: XList<T>, list2: XList<T>): XList<T> {
     return list1.concat(list2) // strict if both sources are strict
   },
 
-  'list': varArgs(function list_v<PT> (...elements: PT[]) { // no args => no change
-    return elements.slice() // copy
+  'list': varArgs(function list_v<T> (...elements: T[]): XList<T> { // no args => no change
+    return new XList(elements, true) // copy
   }),
 
   'eq': function eq_vvv (a: any, b: any): boolean {

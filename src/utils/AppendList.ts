@@ -1,4 +1,13 @@
 
+function copyArrayInto<T> (from: T[], to: T[]): T[] {
+  const fromLength = from.length
+  let j = to.length
+  for (let i = 0; i < fromLength; i++) {
+    to[j++] = from[i]
+  }
+  return to
+}
+
 export class AppendList<T> {
   private backend: T[]
 
@@ -7,7 +16,7 @@ export class AppendList<T> {
   get length () { return this._length }
 
   constructor (array: T[] = [], copy: boolean = true) {
-    const localArray = copy ? array.slice() : array
+    const localArray = copy ? copyArrayInto(array, []) : array
     this.backend = localArray
     this._length = localArray.length
     return this
@@ -32,25 +41,30 @@ export class AppendList<T> {
     } else {
       // Appending already occurred
       list.backend = []
-      for (let i = 0; i < this.backend.length; i++) {
-        list.backend.push(this.backend[i])
-      }
+      copyArrayInto(this.backend, list.backend)
     }
-    for (let i = 0; i < that.backend.length; i++) {
-      list.backend.push(that.backend[i])
-    }
+    copyArrayInto(that.backend, list.backend)
     return list
   }
 
   toList (): T[] {
     const result = []
-    for (let i = 0; i < this._length; i++) {
-      result.push(this.backend[i])
+    const l = this._length // we don't read the whole array
+    for (let i = 0; i < l; i++) {
+      result[i] = this.backend[i]
     }
     return result
   }
 
+  equals (other: any): boolean {
+    throw new Error('Pas fini')
+  }
+
   private static innerMake<T> (): AppendList<T> {
     return Object.create(AppendList.prototype) as AppendList<T>
+  }
+
+  toString () {
+    return '[:' + this.toList().toString() + ':]'
   }
 }

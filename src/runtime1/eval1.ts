@@ -10,6 +10,8 @@ import { fastmap } from '../utils/fastArray'
 import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
 import * as _ from 'lodash'
 
+import { AppendList } from '../utils/AppendList'
+
 export type Value = LiteralValue | Closure | ValueArray | Function
 interface ValueArray extends Array<Value> { } // Pseudo interface to avoid cyclic type
 
@@ -199,8 +201,11 @@ export function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
               // Array-like access or method
               return then(args[0], (arg1) => {
                 if (typeof arg1 === 'number') {
-                  // Array access
-                  if (Array.isArray(op)) {
+                  if (op instanceof AppendList) {
+                    // AppendList access
+                    return op.get(arg1)
+                  } else if (Array.isArray(op)) {
+                    // Array access
                     return op[arg1]
                   }
                 }

@@ -98,23 +98,16 @@ integers(from, to) = {
 
 /* ------------------ */
 
-/*
+
 file = #readFile("test").asList
 
 lines = file.split(c->c == char("\n"))
 linesOfWords = lines.map(l->l.split(c->c == char(",")))
 
 transformedLines = linesOfWords.map(words->words.join("|".asList))
-*/
-/*
+
+
 lines.map(x->#delay(500,x.asString).asList).join("$\n".asList)
-
-
-//foo(x) = foo(x)
-
-//foo(0)
-*/
 
 //transformedLines
 
-integers(10,200000)
