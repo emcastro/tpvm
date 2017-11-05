@@ -1,0 +1,9 @@
+{
+  "testEnvironment": "node",
+  "testRegex": "/dist/.*(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js"
+  ]
+}

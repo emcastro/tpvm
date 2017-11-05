@@ -4,20 +4,19 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+
     {
       "type": "node",
       "request": "launch",
+      "protocol": "inspector",
       "name": "Launch Jest",
       "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
       "cwd": "${workspaceRoot}",
       "args": [
         "--runInBand",
-        "--coverage",
-        "dist"
+        "--config=jest-debug.json"
       ],
-      "outFiles": [
-        "${workspaceRoot}/dist/**/*.js"
-      ]
+      "sourceMaps": true
     },
     {
       "type": "node",
@@ -30,9 +29,7 @@
         "--use_strict",
         "--nolazy"
       ],
-      "outFiles": [
-        "${workspaceRoot}/dist/**/*.js"
-      ]
+      "sourceMaps": true
     },
     {
       "type": "node",
@@ -40,19 +37,21 @@
       "name": "Launch Program (parser.js)",
       "program": "${workspaceRoot}/dist/parsing/parser.js",
       "protocol": "inspector",
-      "outFiles": [
-        "${workspaceRoot}/dist/**/*.js"
-      ]
+      "sourceMaps": true      
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program (corefier.js)",
-      "program": "${workspaceRoot}/dist/parsing/corefier.js",
+      "name": "Launch Program (microjest.js)",
+      "program": "${workspaceRoot}/dist/microjest.js",
       "protocol": "inspector",
-      "outFiles": [
-        "${workspaceRoot}/dist/**/*.js"
-      ]
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "runtimeArgs": [
+        "--nolazy"
+      ],
+      "sourceMaps": true      
     },
     {
       "type": "node",
@@ -60,19 +59,14 @@
       "name": "Launch Program (test2.js)",
       "program": "${workspaceRoot}/dist/test2.js",
       "protocol": "inspector",
-      "outFiles": [
-        "${workspaceRoot}/dist/**/*.js"
-      ]
+      "sourceMaps": true      
     },
     {
       "type": "node",
       "request": "launch",
       "name": "Launch Program (bench)",
       "program": "${workspaceRoot}/bench/switchcase.bench.js",
-      "protocol": "inspector",
-      "outFiles": [
-        "${workspaceRoot}/dist/**/*.js"
-      ]
+      "protocol": "inspector"
     },
     {
       "type": "node",

@@ -14,13 +14,13 @@
     "strict": true,
     "experimentalDecorators": true,
     "allowJs": true,
-    "sourceMap": true,
+    "inlineSourceMap": true, // better for Jest debugging
+    "inlineSources": true,
     "pretty": true,
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "*": [
-        //   "node_modules/*",
         "src/types/*"
       ]
     }
