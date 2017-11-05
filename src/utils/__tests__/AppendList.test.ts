@@ -25,6 +25,7 @@ describe('AppendList', () => {
   it('throws exception on out-of-bound access', () => {
     const al1 = new AppendList()
     const al10 = new AppendList(_.times(10))
+    const alShort = al10.slice(3,4)
 
     expect(() => al1.get(-1)).toThrow('Index out of bounds: -1 < 0')
     expect(() => al1.get(0)).toThrow('Index out of bounds: 0 >= 0')
@@ -32,6 +33,12 @@ describe('AppendList', () => {
     expect(al10.get(0)).toBe(0)
     expect(al10.get(9)).toBe(9)
     expect(() => al10.get(10)).toThrow('Index out of bounds: 10 >= 10')
+    expect(() => alShort.get(2)).toThrow('Index out of bounds: 2 >= 1')
+    expect(alShort.get(0)).toBe(3)
+    expect(() => alShort.get(-1)).toThrow('Index out of bounds: -1 < 0')
+    expect(() => alShort.slice(2,1)).toThrow('Start after end: 2 > 1')
+    expect(() => alShort.slice(4,5)).toThrow('End index out of bounds: 5 > 1')
+    expect(() => alShort.slice(-1,0)).toThrow('Start index out of bounds: -1 < 0')
   })
 
   it('appends', () => {
@@ -62,6 +69,20 @@ describe('AppendList', () => {
       // concatenated operand is untouched
       expect(l2b).toEqual(l2)
     })
+  })
+
+  it('slices', () => {
+    const a = new AppendList([1,2,3,4,5])
+    expect(a.slice(0,5).toList()).toEqual([1,2,3,4,5])
+    expect(a.slice(1,4).toList()).toEqual([2,3,4])
+    expect(a.slice(1,4).slice(1,2).toList()).toEqual([3])
+    expect(a.slice(1,1).toList()).toEqual([])
+  })
+
+  it('chains appended on sliced', () => {
+    const a: AppendList<any> = new AppendList([1,2,3,4,5])
+    const b = new AppendList(['a','b'])
+    expect(a.slice(1,4).concat(b.slice(1,2)).toList()).toEqual([2,3,4,'b'])
   })
 
 })

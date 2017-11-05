@@ -72,3 +72,12 @@ export function safeNewMap<K,V> (values: [K, V][]): Map < K,V > {
   }
   return map
 }
+
+export function copyArrayInto<T> (from: T[], to: T[]): T[] {
+  const fromLength = from.length
+  let j = to.length
+  for (let i = 0; i < fromLength; i++) {
+    to[j++] = from[i]
+  }
+  return to
+}

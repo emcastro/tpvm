@@ -1,57 +1,77 @@
-
-function copyArrayInto<T> (from: T[], to: T[]): T[] {
-  const fromLength = from.length
-  let j = to.length
-  for (let i = 0; i < fromLength; i++) {
-    to[j++] = from[i]
-  }
-  return to
-}
+import { copyArrayInto } from './fastArray'
 
 export class AppendList<T> {
   private backend: T[]
 
-  private _length: number
+  private from: number
 
-  get length () { return this._length }
+  private to: number
+
+  get length () { return this.to - this.from }
 
   constructor (array: T[] = [], copy: boolean = true) {
     const localArray = copy ? copyArrayInto(array, []) : array
     this.backend = localArray
-    this._length = localArray.length
+    this.from = 0
+    this.to = localArray.length
     return this
   }
 
   get (index: number): T {
     if (index < 0) {
       throw new Error(`Index out of bounds: ${index} < 0`)
-    } if (index >= this._length) {
-      throw new Error(`Index out of bounds: ${index} >= ${this._length}`)
+    } if (index >= this.length) {
+      throw new Error(`Index out of bounds: ${index} >= ${this.length}`)
     }
 
-    return this.backend[index]
+    return this.backend[index + this.from]
   }
 
   concat (that: AppendList<T>): AppendList<T> {
-    const list = AppendList.innerMake<T>()
-    list._length = this._length + that._length
-    if (this.backend.length === this._length) {
-      // No appending yet
-      list.backend = this.backend
+    if (this.from !== 0) {
+      return new AppendList(this.toList()).concat(that)
+    } else if (that.from !== 0) {
+      return this.concat(new AppendList(that.toList()))
     } else {
-      // Appending already occurred
-      list.backend = []
-      copyArrayInto(this.backend, list.backend)
+      const list = AppendList.innerMake<T>()
+      list.from = 0
+      list.to = this.length + that.length
+      if (this.backend.length === this.length) {
+        // No append has occurred yet
+        list.backend = this.backend
+      } else {
+        // An append has already occurred
+        list.backend = []
+        copyArrayInto(this.backend, list.backend)
+      }
+      copyArrayInto(that.backend, list.backend)
+      return list
     }
-    copyArrayInto(that.backend, list.backend)
+  }
+
+  slice (from: number, to: number): AppendList<T> {
+    const list = AppendList.innerMake<T>()
+    list.backend = this.backend
+    list.from = this.from + from
+    list.to = this.from + to
+
+    if (from > to) {
+      throw new Error(`Start after end: ${from} > ${to}`)
+    } if (from < 0) {
+      throw new Error(`Start index out of bounds: ${from} < 0`)
+    } if (to > this.length) {
+      throw new Error(`End index out of bounds: ${to} > ${this.length}`)
+    }
+
     return list
   }
 
   toList (): T[] {
     const result = []
-    const l = this._length // we don't read the whole array
-    for (let i = 0; i < l; i++) {
-      result[i] = this.backend[i]
+    const l = this.to
+    let j = 0
+    for (let i = this.from; i < l; i++) {
+      result[j++] = this.backend[i]
     }
     return result
   }

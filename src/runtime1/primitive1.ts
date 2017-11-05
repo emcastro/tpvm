@@ -92,9 +92,9 @@ export const primitives = annotate({
   }
 })
 
-function annotate (primitives: {[key: string]: any}): {[keySymbol: string]: any} {
-  const annotated: {[keySymbol: string]: any} = {}
-  Object.entries(primitives).forEach(([k,v]) => {
+function annotate (primitives: { [key: string]: any }): { [keySymbol: string]: any } {
+  const annotated: { [keySymbol: string]: any } = {}
+  Object.entries(primitives).forEach(([k, v]) => {
     if (v instanceof Function) {
       v.strictness = strictnessDecoder(v)
     }
@@ -115,9 +115,9 @@ function strictnessDecoder (f: Function): StrictnessInfo {
   while (i < name.length) {
     let s
     switch (name[i]) {
-      case 'p' : s = Strictness.PROMISE
+      case 'p': s = Strictness.PROMISE
         break
-      case 'v' : s = Strictness.VALUE
+      case 'v': s = Strictness.VALUE
         break
       default: throw new Error('Unexpected strictness suffix: ' + name[i])
     }
