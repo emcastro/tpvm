@@ -49,9 +49,8 @@ export const primitives = annotate({
     return list.length
   },
 
-  'list_tailFrom': function list_tailFrom_vvv<T> (list: T[], from: number): T[] {
-    throw new Error('À coder')
-    // return list.slice(from)  // same strictness as source
+  'list_tailFrom': function list_tailFrom_vvv<T> (list: XList<T>, from: number): XList<T> {
+    return list.slice(from, list.length)  // same strictness as source
   },
 
   'list_concat': function list_concat_vvv<T> (list1: XList<T>, list2: XList<T>): XList<T> {

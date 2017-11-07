@@ -108,7 +108,7 @@ const stats = new Map<Expr, number>()
  * Simple strict evaluation
  */
 export function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
-  // console.log('+++', debugInfo(expr))
+  // console.log('+++', expr.debugInfo())
   stats.set(expr, (stats.get(expr) || 0) + 1)
 
   switch (expr.typ) {

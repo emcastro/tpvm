@@ -25,7 +25,7 @@ try {
       console.error(`${e}`)
     })
   } else { // Simple result
-    console.log(':End', p)
+    console.log(':End', p.toString())
   }
 } catch (e) {
   console.error('*Error')

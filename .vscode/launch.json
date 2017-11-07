@@ -42,20 +42,6 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program (microjest.js)",
-      "program": "${workspaceRoot}/dist/microjest.js",
-      "protocol": "inspector",
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "runtimeArgs": [
-        "--nolazy"
-      ],
-      "sourceMaps": true      
-    },
-    {
-      "type": "node",
-      "request": "launch",
       "name": "Launch Program (test2.js)",
       "program": "${workspaceRoot}/dist/test2.js",
       "protocol": "inspector",

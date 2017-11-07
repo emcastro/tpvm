@@ -306,7 +306,7 @@ function operands (apply: PApply, env: Env) {
 function toCore (expr: TPNode, env: Env): Expr {
 //  const toCoreExpr = toCoreSwitchMap.get(expr.contextName)
   const toCoreExpr = toCoreSwitchMap[expr.contextName]
-  if (toCoreExpr == null) throw new Error('À coder : ' + expr.contextName)
+  if (toCoreExpr == null) throw new Error('À coder : ' + expr.contextName) // tslint:disable-line
   return toCoreExpr(expr as any, env).setSource(expr)
 }
 
