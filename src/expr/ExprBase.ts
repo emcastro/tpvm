@@ -134,6 +134,6 @@ function location (data: { source?: OneOrMany<TPNode | Token | null> }) {
   } else if (!Array.isArray(source)) {
     return '@' + sourcePosition(source)
   } else {
-    return '@' + fastmap(source.filter(p => p !== null), sourcePosition).join('|')
+    return '@' + fastmap(source.filter(p => p !== null) as any, sourcePosition).join('|')
   }
 }
