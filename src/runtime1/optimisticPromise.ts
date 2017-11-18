@@ -1,12 +1,16 @@
 
+import { done, trampoline, tailCall, Trampoline } from '../utils/trampoline'
+
 import * as BlueBird from 'bluebird'
 import { StrictnessInfo } from './primitive1'
 import { Strictness } from './primitive1'
 import { Value } from './eval1'
+import { checkNotCast } from '../utils/prelude'
 
 export const promisify = BlueBird.promisify
 
-export interface Promise<Q> { } // tslint:disable-line
+// export interface Promise<Q> { } // tslint:disable-line
+export type Promise<Q> = BlueBird<Q>
 
 const stats = {
   direct: 0,
@@ -23,16 +27,21 @@ export function isPromise<Q> (q: Q | Promise<Q>): q is Promise<Q> {
   return q instanceof BlueBird
 }
 
-export function then<Q, P> (q: Q | Promise<Q>, f: (q: Q) => P): P | Promise<P> {
+/**
+ * Optimisation on monadic `then`.
+ * @param q Immediate value or promise.
+ * @param f Function to apply on the immediate value, or on the promise result.
+ */
+export function then<Q, P> (q: Q | Promise<Q>, f: (q: Q) => P | Promise<P>): P | Promise<P> {
   if (isPromise(q)) {
-    let qq = q as any
-    if (qq.isFulfilled()) {
+    if (q.isFulfilled()) {
       stats.fulfilled++
-      qq = qq.value()
-      return then(qq, f)
+      const v = q.value()
+      checkNotCast(v, Promise)
+      return then(v, f)
     } else {
       stats.pending++
-      return qq.then(f)
+      return q.then(f)
     }
   } else {
     stats.direct++
@@ -40,6 +49,7 @@ export function then<Q, P> (q: Q | Promise<Q>, f: (q: Q) => P): P | Promise<P> {
   }
 }
 
+/* CallPrimitive decodes its promised arguments. */
 export function callPrimitive (op: Function, args: (Value | Promise<Value>)[], from: number): any {
   const s: StrictnessInfo = (op as any).strictness
   const l = s.length

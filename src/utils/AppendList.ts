@@ -1,4 +1,6 @@
+import { Spy, SpyResult, Assert } from './spy'
 import { copyArrayInto } from './fastArray'
+import { arrayEqual } from './prelude'
 
 export class AppendList<T> {
   private backend: T[]
@@ -27,23 +29,24 @@ export class AppendList<T> {
     return this.backend[index + this.from]
   }
 
+  // @Assert(function (this: AppendList<any>, that: AppendList<any>, result: AppendList<any>) {
+  //   return arrayEqual([...this.toList(), ...that.toList()], result.toList())
+  // })
+  // @SpyResult(
+  //   function (this: AppendList<any>, that: AppendList<any>) { return [this.toString(), that.toString()] },
+  //   function (result: AppendList<any>) { return result.toString() }
+  // )
   concat (that: AppendList<T>): AppendList<T> {
-    if (this.from !== 0) {
-      return new AppendList(this.toList()).concat(that)
+    if (this.from !== 0 || this.to !== this.backend.length) {
+      // An append or slice has already occurred
+      return new AppendList(this.toList(), false).concat(that)
     } else if (that.from !== 0) {
-      return this.concat(new AppendList(that.toList()))
+      return this.concat(new AppendList(that.toList(), false))
     } else {
       const list = AppendList.innerMake<T>()
       list.from = 0
       list.to = this.length + that.length
-      if (this.backend.length === this.length) {
-        // No append has occurred yet
-        list.backend = this.backend
-      } else {
-        // An append has already occurred
-        list.backend = []
-        copyArrayInto(this.backend, list.backend)
-      }
+      list.backend = this.backend
       copyArrayInto(that.backend, list.backend)
       return list
     }
@@ -77,7 +80,10 @@ export class AppendList<T> {
   }
 
   equals (other: any): boolean {
-    throw new Error('Pas fini')
+    if (!(other instanceof AppendList)) {
+      return false
+    }
+    return arrayEqual(this.toList(), other.toList()) // FIXME: very inefficient (copy arrays)
   }
 
   private static innerMake<T> (): AppendList<T> {

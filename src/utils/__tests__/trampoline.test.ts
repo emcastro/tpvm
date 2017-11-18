@@ -22,11 +22,11 @@ function maxiLoop2 (count: number, result: string): string {
 
 describe('trampoline', () => {
   it('done as done ', () => {
-    expect(trampoline(fortyTwo)).toBe(42)
+    expect(trampoline(fortyTwo())).toBe(42)
   })
 
   it('loops', () => {
-    expect(trampoline(() => maxiLoop(10000, '')).length).toBe(10000)
+    expect(trampoline(maxiLoop(10000, '')).length).toBe(10000)
   })
 
   it('is better that RangeError', () => {

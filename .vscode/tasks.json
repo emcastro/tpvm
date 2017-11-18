@@ -1,0 +1,18 @@
+{
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "autobuild",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      }
+    }
+  ]
+}

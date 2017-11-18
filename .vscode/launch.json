@@ -4,7 +4,6 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
     {
       "type": "node",
       "request": "launch",
@@ -23,29 +22,11 @@
       "request": "launch",
       "name": "Launch Program (index.js)",
       "program": "${workspaceRoot}/dist/index.js",
-      "protocol": "inspector",
-      "args": [
-        "--harmony_tailcalls",
-        "--use_strict",
-        "--nolazy"
+      "runtimeArgs": [
+        "--no-lazy"
       ],
+      "protocol": "inspector",
       "sourceMaps": true
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Program (parser.js)",
-      "program": "${workspaceRoot}/dist/parsing/parser.js",
-      "protocol": "inspector",
-      "sourceMaps": true      
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Program (test2.js)",
-      "program": "${workspaceRoot}/dist/test2.js",
-      "protocol": "inspector",
-      "sourceMaps": true      
     },
     {
       "type": "node",

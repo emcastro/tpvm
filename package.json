@@ -8,15 +8,15 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node --harmony_tailcalls --use_strict dist/index.js",
+    "start": "node dist/index.js",
     "gulp": "gulp",
     "tsc": "tsc",
     "build": "run-s 'gulp default' tsc",
     "pretest": "npm run build",
-    "test": "jest",
+    "test": "jest --coverage",
     "lint": "tslint -p tsconfig.json --type-check",
     "lint-fix": "tslint -p tsconfig.json --type-check --fix",
-    "autobuild": "npm-run-all gulp --parallel 'gulp auto' 'tsc -w'",
+    "autobuild": "npm-run-all gulp --parallel \"gulp auto\" \"tsc -- -w\"",
     "autotest": "jest --coverage --watchAll",
     "cleaner": "rm -rf coverage dist"
   },

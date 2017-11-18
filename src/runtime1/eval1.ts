@@ -1,3 +1,4 @@
+import { done, tailCall, trampoline, Trampoline } from '../utils/trampoline'
 
 import {
   eVar, eLiteral, eLet, eLambda, eIfElse, eApply,
@@ -12,10 +13,17 @@ import * as _ from 'lodash'
 
 import { AppendList } from '../utils/AppendList'
 
-export type Value = LiteralValue | Closure | ValueArray | Function
-interface ValueArray extends Array<Value> { } // Pseudo interface to avoid cyclic type
+import { Promise as BBPromise } from 'bluebird'
 
-type Frame = Map<string, Value | Promise<Value>>
+export type Value = LiteralValue | Closure | ValueArray | AppendList<any> | Function
+
+export type XValue = Value | Promise<Value>
+
+interface ValueArray extends Array<Value> {
+  $ValueArray$: never
+} // Pseudo interface to avoid cyclic type
+
+type Frame = Map<string, XValue>
 
 export class Env { // export for building root env
   frame: Frame
@@ -26,7 +34,7 @@ export class Env { // export for building root env
     this.parent = parent
   }
 
-  lookup (varId: string): Value | Promise<Value> {
+  lookup (varId: string): XValue {
     // There should not be undefined variable at this level
     const value = this.frame.get(varId)
     if (value !== undefined) { // we don't intend to use undefined as a value
@@ -72,7 +80,8 @@ class EvalError extends XError {
   }
 
   shownStack () {
-    if (this.showStack || this.expression === undefined || this.stack === undefined) {
+    // TODO: montrer la pile de la dernière erreur
+    if (this.showStack || this.expression === undefined || this.stack === undefined || this.cause === undefined) {
       return this.stack
     } else {
       return this.stack.slice(0, this.stack.indexOf('\n    at'))
@@ -107,7 +116,7 @@ const stats = new Map<Expr, number>()
 /**
  * Simple strict evaluation
  */
-export function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
+export function eval1 (expr: Expr, env: Env): XValue {
   // console.log('+++', expr.debugInfo())
   stats.set(expr, (stats.get(expr) || 0) + 1)
 
@@ -142,7 +151,7 @@ export function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
 
     case eIfElse.typ: // eval if...
       const ifExpr = expr
-      return then(pushingEval1(expr.ifClause, env), b => {
+      return then<Value, Value>(pushingEval1(expr.ifClause, env), b => {
         if (typeof b === 'boolean') {
           if (b) {
             return eval1(ifExpr.thenClause, env)
@@ -177,7 +186,7 @@ export function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
           // Special case: primitive, array or object access
 
           // Parameter evaluation
-          const args = []  // inlined Array.map
+          const args: XValue[] = []  // inlined Array.map
           for (let i = 0; i < ops.length; i++) {
             args.push(pushingEval1(ops[i], env))
           }
@@ -227,12 +236,28 @@ export function eval1 (expr: Expr, env: Env): Value | Promise<Value> {
   }
 }
 
+export let LOG_IN_OUT: boolean = false
+let i = 0
+
 /**
  * For cases when proper tail call is not available, push a diagnosis try-catch on the stack
  */
-export function pushingEval1 (expr: Expr, env: Env): Value | Promise<Value> {
+export function pushingEval1 (expr: Expr, env: Env): XValue {
   try {
-    return eval1(expr, env)
+    const local = i++
+    if (LOG_IN_OUT) {
+      console.log('>>>' + local, expr.debugInfo())
+    }
+    const result = eval1(expr, env)
+    if (LOG_IN_OUT) {
+      let resultInfo = result
+      if (resultInfo instanceof Closure) resultInfo = '<Closure>'
+      if (resultInfo instanceof Function) resultInfo = '<Function>'
+      if (resultInfo instanceof BBPromise) resultInfo = '<Promise>'
+      if (resultInfo instanceof AppendList) resultInfo = resultInfo.toString()
+      console.log('<<<' + local, expr.debugInfo(), resultInfo)
+    }
+    return result
   } catch (e) {
     if (e instanceof EvalError && e.expression === expr) throw e
     throw new EvalError(undefined, expr, e)

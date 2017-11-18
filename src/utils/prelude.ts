@@ -129,3 +129,25 @@ export class XError extends Error {
   }
 
 }
+
+type Class<T> = new (...args: any[]) => T
+
+class ClassCastError extends Error {
+  constructor (public awaitedClass: Class<any>, public value: any, public include: boolean) {
+    super('ClassCastError: awaiting ' + (include ? '' : 'not ') + awaitedClass.name + '; found: `' + value + '`: ' + (value && value.constructor.name))
+  }
+}
+
+const CHECK_CAST: boolean = true
+
+export function checkCast<T> (value: T, classConstructor: Class<T>) {
+  if (CHECK_CAST && !(value instanceof classConstructor)) {
+    throw new ClassCastError(classConstructor, value, true)
+  }
+}
+
+export function checkNotCast (value: any, classConstructor: Class<any>) {
+  if (CHECK_CAST && (value instanceof classConstructor)) {
+    throw new ClassCastError(classConstructor, value, false)
+  }
+}

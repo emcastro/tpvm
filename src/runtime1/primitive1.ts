@@ -2,7 +2,7 @@
 import * as fs from 'fs'
 import { Value } from './eval1'
 import { equal, notnull, XError } from '../utils/prelude'
-import { AppendList as XList } from '../utils/AppendList'
+import { AppendList as XList, AppendList } from '../utils/AppendList'
 
 import { Promise, promisify, delay } from './optimisticPromise'
 
@@ -29,12 +29,12 @@ export const primitives = annotate({
     return readFile(name, 'utf8')
   },
 
-  'string_asList': function string_asList_vv (str: string): number[] {
+  'string_asList': function string_asList_vv (str: string): AppendList<number> {
     const array: number[] = []
     for (let i = 0; i < str.length; i++) {
       array[i] = str.charCodeAt(i)
     }
-    return array // list of strict values
+    return new AppendList(array, false) // list of strict values
   },
 
   'fromCharCode': function fromCharCode_vv (code: number): string {
