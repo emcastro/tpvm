@@ -1,7 +1,7 @@
 
 import * as fs from 'fs'
 import { Value } from './eval1'
-import { equal, notnull, XError } from '../utils/prelude'
+import { equal, notnull, XError, checkCast, checkType, checkNotType } from '../utils/prelude'
 import { AppendList as XList, AppendList } from '../utils/AppendList'
 
 import { Promise, promisify, delay } from './optimisticPromise'

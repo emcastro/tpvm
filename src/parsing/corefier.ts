@@ -4,7 +4,13 @@ import {
   eApply, eVar, eLet, eLiteral, eLambda, eIfElse
 } from '../expr/Expr'
 
-import { TPNode, Token, parser, nodeName, tokenName, position, parse, ParseError, Expr as PExpr } from '../parsing/parser'
+import {
+  TPNode, Token, parser, nodeName, tokenName, position, parse, ParseError, Expr as PExpr,
+  Args, TypedParams, TypedVars, LambdaExpr, Arg, TypedParam, TypedVar,
+  LetExpr, TopLevel, Simple, VarExpr, LiteralExpr,
+  BinOp, UnOp, UserOp, Call, Definition, ValueDefinition, TupleDefinition, FunctionDefinition,
+  IfElseExpr, Apply as PApply, ShortLambdaExpr
+} from './parser'
 
 import { fastmap, flapmap, fasteach, zip, safeNewMap } from '../utils/fastArray'
 import { notnull, switchMap2, OneOrMany, memo, MayBe } from '../utils/prelude'
@@ -102,12 +108,6 @@ const unOpFunctionName = safeNewMap([
   [parser.PLUS, '__unary_plus__'],
   [parser.MINUS, '__unary_minus__']
 ])
-
-import {
-  LetExpr, TopLevel, Simple, VarExpr, LiteralExpr,
-  BinOp, UnOp, UserOp, Call, Definition, ValueDefinition, TupleDefinition, FunctionDefinition,
-  IfElseExpr, Apply as PApply, ShortLambdaExpr
-} from './parser'
 
 type AnyDefinition = ValueDefinition | TupleDefinition | FunctionDefinition
 
@@ -290,8 +290,6 @@ function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams | null), expr
 
 // Utils ↓↓↓↓
 
-import { Args, TypedParams, TypedVars, LambdaExpr, Arg, TypedParam, TypedVar } from './parser'
-
 const _emptyList: any[] = []
 function emptyList<T> () { return _emptyList as T[] }
 
@@ -304,7 +302,7 @@ function operands (apply: PApply, env: Env) {
 }
 
 function toCore (expr: TPNode, env: Env): Expr {
-//  const toCoreExpr = toCoreSwitchMap.get(expr.contextName)
+  //  const toCoreExpr = toCoreSwitchMap.get(expr.contextName)
   const toCoreExpr = toCoreSwitchMap[expr.contextName]
   if (toCoreExpr == null) throw new Error('À coder : ' + expr.contextName) // tslint:disable-line
   return toCoreExpr(expr as any, env).setSource(expr)

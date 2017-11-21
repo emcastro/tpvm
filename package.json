@@ -14,7 +14,7 @@
     "build": "run-s 'gulp default' tsc",
     "pretest": "npm run build",
     "test": "jest --coverage",
-    "lint": "tslint -p tsconfig.json --type-check",
+    "lint": "tslint -p tsconfig.json",
     "lint-fix": "tslint -p tsconfig.json --type-check --fix",
     "autobuild": "npm-run-all gulp --parallel \"gulp auto\" \"tsc -- -w\"",
     "autotest": "jest --coverage --watchAll",

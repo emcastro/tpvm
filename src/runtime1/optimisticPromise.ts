@@ -2,8 +2,7 @@
 import { done, trampoline, tailCall, Trampoline } from '../utils/trampoline'
 
 import * as BlueBird from 'bluebird'
-import { StrictnessInfo } from './primitive1'
-import { Strictness } from './primitive1'
+import { Strictness, StrictnessInfo } from './primitive1'
 import { Value } from './eval1'
 import { checkNotCast } from '../utils/prelude'
 

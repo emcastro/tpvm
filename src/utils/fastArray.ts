@@ -51,7 +51,7 @@ export function flapmap<T, R> (array: T[], f: (t: T) => OneOrMany<R>): R[] {
 
 const id = <T>(x: T) => x
 
-export function flatten<T> (array: (T|T[])[]): T[] {
+export function flatten<T> (array: (T | T[])[]): T[] {
   return flapmap(array, id)
 }
 
