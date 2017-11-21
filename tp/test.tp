@@ -6,6 +6,12 @@ __plus__=#plus
 __minus__=#minus
 __or__=(a,b)->if (a) a else b
 
+// Type check debugging checker
+__list_=#assertTypeList
+__string_=#assertTypeString
+__boolean_=#assertTypeBoolean
+__number_=#assertTypeNumber
+
 // Lists
 _head(list)=list(0)
 _tail(list)=list.tailFrom(1)
@@ -16,7 +22,7 @@ _empty(list)=list.length==0
 
 _asList=#string_asList
 _asString(list) = {
-    list.map(#fromCharCode).foldLeft("",#plus)
+    list._list_.map(#fromCharCode).foldLeft("",#plus)
 }
 
 lone(list)=if(list.length == 1) list(0) else #error("Size must be 1")
@@ -84,7 +90,7 @@ _foldLeft(list, zero, op) = {
 }
 
 _join(list, delim) = {
-    list.flatmap(item->delim++item).asString
+    list.flatmap(item->delim++item)
 }
 
 integers(from, to) = {
@@ -107,7 +113,7 @@ linesOfWords = lines.map(l->l.split(c->c == char(",")))
 transformedLines = linesOfWords.map(words->words.join("|".asList))
 
 
-lines.map(x->#delay(500,x.asString).asList).join("$\n".asList)
+transformedLines.map(x->#delay(500,x.asString).asList).join("$\n".asList).asString
 
 //transformedLines
 

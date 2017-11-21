@@ -151,3 +151,23 @@ export function checkNotCast (value: any, classConstructor: Class<any>) {
     throw new ClassCastError(classConstructor, value, false)
   }
 }
+
+type TypeName = 'string' | 'number' | 'boolean' // and others?
+
+class TypeCastError extends Error {
+  constructor (public awaitedType: TypeName, public value: any, public include: boolean) {
+    super('TypeCastError: awaiting ' + (include ? '' : 'not ') + awaitedType + '; found: `' + value + '`: ' + typeof value)
+  }
+}
+
+export function checkType (value: any, typeName: TypeName) {
+  if (CHECK_CAST && (typeof value !== typeName)) { // tslint:disable-line
+    throw new TypeCastError(typeName, value, true)
+  }
+}
+
+export function checkNotType (value: any, typeName: TypeName) {
+  if (CHECK_CAST && !(typeof value !== typeName)) { // tslint:disable-line
+    throw new TypeCastError(typeName, value, false)
+  }
+}

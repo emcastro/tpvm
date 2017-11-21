@@ -29,7 +29,28 @@ export const primitives = annotate({
     return readFile(name, 'utf8')
   },
 
+  'assertTypeList': function assertTypeList_vv<T> (l: any): XList<T> {
+    checkCast(l, XList)
+    return l as XList<T>
+  },
+
+  'assertTypeString': function assertTypeString_vv<T> (l: any): string {
+    checkType(l, 'string')
+    return l as string
+  },
+
+  'assertTypeNumber': function assertTypeNumber_vv<T> (l: any): number {
+    checkType(l, 'number')
+    return l as number
+  },
+
+  'assertTypeBoolean': function assertTypeBoolean_vv<T> (l: any): boolean {
+    checkType(l, 'boolean')
+    return l as boolean
+  },
+
   'string_asList': function string_asList_vv (str: string): AppendList<number> {
+    checkType(str, 'string')
     const array: number[] = []
     for (let i = 0; i < str.length; i++) {
       array[i] = str.charCodeAt(i)
@@ -38,6 +59,7 @@ export const primitives = annotate({
   },
 
   'fromCharCode': function fromCharCode_vv (code: number): string {
+    checkType(code, 'number')
     return String.fromCharCode(code)
   },
 
