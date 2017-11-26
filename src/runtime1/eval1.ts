@@ -15,13 +15,12 @@ import { AppendList } from '../utils/AppendList'
 
 import { Promise as BBPromise } from 'bluebird'
 
-export type Value = LiteralValue | Closure | ValueArray | AppendList<any> | Function
+export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Function
 
 export type XValue = Value | Promise<Value>
 
-interface ValueArray extends Array<Value> {
-  $ValueArray$: never
-} // Pseudo interface to avoid cyclic type
+interface ValueArray extends Array<XValue> { }
+interface ValueAppendList extends AppendList<XValue> { }
 
 type Frame = Map<string, XValue>
 
@@ -113,16 +112,26 @@ const stats = new Map<Expr, number>()
 //   })
 // })
 
+function mixDone (value: Trampoline<XValue> | Promise<Trampoline<XValue>>): Trampoline<XValue> {
+  if (isPromise(value)) {
+    return done(value.then(q => {
+      return trampoline(q)
+    }))
+  } else {
+    return value
+  }
+}
+
 /**
  * Simple strict evaluation
  */
-export function eval1 (expr: Expr, env: Env): XValue {
+export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
   // console.log('+++', expr.debugInfo())
   stats.set(expr, (stats.get(expr) || 0) + 1)
 
   switch (expr.typ) {
     case eVar.typ:
-      return env.lookup(expr.varId)
+      return done(env.lookup(expr.varId))
 
     case eLiteral.typ:
       const l = expr.value
@@ -131,9 +140,9 @@ export function eval1 (expr: Expr, env: Env): XValue {
         if (x === undefined) {
           throw new EvalError(`Undefined primitive #${Symbol.keyFor(l)}`, expr)
         }
-        return x
+        return done(x)
       } else {
-        return l
+        return done(l)
       }
 
     case eLet.typ: {
@@ -143,29 +152,29 @@ export function eval1 (expr: Expr, env: Env): XValue {
         // Launch all computations
         newEnv.frame.set(k, pushingEval1(subExpr, newEnv))   // TODO: simple - no letrec - fuzzy semantics
       }
-      return eval1(expr.body, newEnv)
+      return tailCall(() => eval1(expr.body, newEnv))
     }
 
     case eLambda.typ:
-      return new Closure(expr, env)
+      return done(new Closure(expr, env))
 
     case eIfElse.typ: // eval if...
       const ifExpr = expr
-      return then<Value, Value>(pushingEval1(expr.ifClause, env), b => {
+      return mixDone(then(pushingEval1(expr.ifClause, env), (b: Value) => {
         if (typeof b === 'boolean') {
           if (b) {
-            return eval1(ifExpr.thenClause, env)
+            return tailCall(() => eval1(ifExpr.thenClause, env))
           } else {
-            return eval1(ifExpr.elseClause, env)
+            return tailCall(() => eval1(ifExpr.elseClause, env))
           }
         } else {
           throw new EvalError(`Illegal value in if: ${b}`, expr)
         }
-      })
+      }))
 
     case eApply.typ:
       const applyExpr = expr
-      return then(pushingEval1(expr.operator, env), (op) => {
+      return mixDone(then(pushingEval1(expr.operator, env), (op) => {
         const ops = applyExpr.operands
         if (op instanceof Closure) {
           const frame = new Map()
@@ -179,7 +188,7 @@ export function eval1 (expr: Expr, env: Env): XValue {
           }
           const newEnv: Env = new Env(frame, op.defEnv)
 
-          return eval1(op.lambda.body, newEnv)
+          return tailCall(() => eval1(op.lambda.body, newEnv))
 
         } else {
           // Special case: primitive, array or object access
@@ -198,7 +207,7 @@ export function eval1 (expr: Expr, env: Env): XValue {
               }
             }
             try {
-              return callPrimitive(op, args, 0) // ATTENTION: in-place modification of args
+              return done(callPrimitive(op, args, 0)) // ATTENTION: in-place modification of args
             } catch (e) {
               throw new PrimitiveError(undefined, expr, e)
             }
@@ -207,31 +216,31 @@ export function eval1 (expr: Expr, env: Env): XValue {
 
             if (args.length === 1) {
               // Array-like access or method
-              return then(args[0], (arg1) => {
+              return mixDone(then(args[0], (arg1) => {
                 if (typeof arg1 === 'number') {
                   if (op instanceof AppendList) {
                     // AppendList access
-                    return op.get(arg1)
+                    return done(op.get(arg1))
                   } else if (Array.isArray(op)) {
                     // Array access
-                    return op[arg1]
+                    return done(op[arg1])
                   }
                 }
                 if (typeof arg1 === 'string') {
                   // Method call
                   const generic: any = op
                   if (generic[arg1] !== undefined) {
-                    return generic[arg1]
+                    return done(generic[arg1] as XValue)
                   }
                 }
                 throw new EvalError('No method or special application available', expr)
-              })
+              }))
             }
 
             throw new EvalError('No method or special application available', expr)
           }
         }
-      })
+      }))
 
     default:
       return assertNever(expr)
@@ -250,7 +259,7 @@ export function pushingEval1 (expr: Expr, env: Env): XValue {
     if (LOG_IN_OUT) {
       console.log('>>>' + local, expr.debugInfo())
     }
-    const result = eval1(expr, env)
+    const result = trampoline(eval1(expr, env))
     if (LOG_IN_OUT) {
       let resultInfo = result
       if (resultInfo instanceof Closure) resultInfo = '<Closure>'

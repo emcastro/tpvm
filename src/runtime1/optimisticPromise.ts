@@ -3,7 +3,7 @@ import { done, trampoline, tailCall, Trampoline } from '../utils/trampoline'
 
 import * as BlueBird from 'bluebird'
 import { Strictness, StrictnessInfo } from './primitive1'
-import { Value } from './eval1'
+import { Value, XValue } from './eval1'
 import { checkNotCast } from '../utils/prelude'
 
 export const promisify = BlueBird.promisify
@@ -49,7 +49,7 @@ export function then<Q, P> (q: Q | Promise<Q>, f: (q: Q) => P | Promise<P>): P |
 }
 
 /* CallPrimitive decodes its promised arguments. */
-export function callPrimitive (op: Function, args: (Value | Promise<Value>)[], from: number): any {
+export function callPrimitive (op: Function, args: (Value | Promise<Value>)[], from: number): XValue {
   const s: StrictnessInfo = (op as any).strictness
   const l = s.length
 
