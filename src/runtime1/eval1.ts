@@ -6,7 +6,7 @@ import {
 } from '../expr/Expr'
 
 import { primitives, Strictness, StrictnessInfo } from './primitive1'
-import { OneOrMany, XError } from '../utils/prelude'
+import { OneOrMany, XError, assertNever } from '../utils/prelude'
 import { fastmap } from '../utils/fastArray'
 import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
 import * as _ from 'lodash'
@@ -163,7 +163,6 @@ export function eval1 (expr: Expr, env: Env): XValue {
         }
       })
 
-    default:
     case eApply.typ:
       const applyExpr = expr
       return then(pushingEval1(expr.operator, env), (op) => {
@@ -233,6 +232,9 @@ export function eval1 (expr: Expr, env: Env): XValue {
           }
         }
       })
+
+    default:
+      return assertNever(expr)
   }
 }
 

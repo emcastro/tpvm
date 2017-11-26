@@ -69,9 +69,8 @@ export function arrayEqual (a: any[], b: any[]): boolean {
   return true
 }
 
-export function notnull<T> (value: T | null | undefined): T {
-  if (value == null) throw new Error('Null or undefined value')
-  return value
+export function isNotNull<A> (v: A | null): v is A {
+  return v != null
 }
 
 export function switchMap<T1, R> (object: { [switchKey: string]: (switchValue: any) => R }): Map<string, (switchValue: T1) => R> {
@@ -96,7 +95,7 @@ export class Pair<A, B> {
   }
 }
 
-export function memo<F extends Function> (f: F) {
+export function memo<F extends Function> (f: F): F {
   const store = new Map()
 
   return ((arg: any) => {
@@ -107,7 +106,7 @@ export function memo<F extends Function> (f: F) {
     }
 
     return result
-  }) as any as F
+  }) as any
 }
 
 /** Error with cascading cause error */
@@ -170,4 +169,13 @@ export function checkNotType (value: any, typeName: TypeName) {
   if (CHECK_CAST && !(typeof value !== typeName)) { // tslint:disable-line
     throw new TypeCastError(typeName, value, false)
   }
+}
+
+export function notnull<T> (value: T | null | undefined): T {
+  if (value == null) throw new Error('Null or undefined value')
+  return value
+}
+
+export function assertNever (invalidValue: never): never {
+  throw new Error('Invalid value that should never happen: ' + invalidValue)
 }

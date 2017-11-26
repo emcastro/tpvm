@@ -1,7 +1,7 @@
 
 import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Expr, Var } from '../generated/genExpr'
 import { SExprRenderer } from '../utils/SExprRenderer'
-import { iteratorToArray, OneOrMany } from '../utils/prelude'
+import { iteratorToArray, OneOrMany, isNotNull } from '../utils/prelude'
 import * as _ from 'lodash'
 import { TPNode, Token, position, nodePosition } from '../parsing/parser'
 import { fastmap } from '../utils/fastArray'
@@ -134,6 +134,6 @@ function location (data: { source?: OneOrMany<TPNode | Token | null> }) {
   } else if (!Array.isArray(source)) {
     return '@' + sourcePosition(source)
   } else {
-    return '@' + fastmap(source.filter(p => p !== null) as any, sourcePosition).join('|')
+    return '@' + fastmap(source.filter(isNotNull), sourcePosition).join('|')
   }
 }

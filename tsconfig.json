@@ -10,7 +10,6 @@
       "dom.iterable",
       "es2017.object"
     ],
-    "noImplicitAny": true,
     "strict": true,
     "experimentalDecorators": true,
     "allowJs": true,

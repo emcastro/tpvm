@@ -75,81 +75,83 @@ antlr4.ParserRuleContext.prototype.tokenAt = function (idx: number) {
 
 // Antlr4 typing
 
-export type Token = {
-  text: string,
-  column: number,
-  line: number,
-  tokenIndex: number,
-  type: number,
+export interface Token {
+  text: string
+  column: number
+  line: number
+  tokenIndex: number
+  type: number
   source: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
 }
 
-type Node = {
-  symbol?: Token, // FIXME: analyze symbol field
-  parser: { ruleNames: string[] },
-  ruleIndex: number,
-  start: Token,
-  stop: Token,
+export interface Node<N> {
+  symbol?: Token // FIXME: analyze symbol field
+  parser: { ruleNames: string[] }
+  ruleIndex: number
+  start: Token
+  stop: Token
   children: TPNode[] | null
+  contextName: N
+  tokenAt: (n: number) => Token
 }
 
 // Typing assistance for Nodes for TPGrammar
 type A<T> = () => (T)
 type NA<T> = () => (T | null)
 
-type N<n> = Node & { contextName: n, tokenAt: (n: number) => Token }
+type N<T> = Node<T>
 
-export type TopLevel = N<'topLevel'> & { definition: A<Definition[]>, expr: A<Expr> }
+export interface TopLevel extends N<'topLevel'> { definition: A<Definition[]>; expr: A<Expr> }
 
 export type Expr = Simple | Call | UnOp | BinOp | UserOp
-export type Simple = N<'simple'> & { simpleExpr: A<SimpleExpr> }
-export type Call = N<'call'> & { expr: A<Expr>, apply: NA<Apply>, attr: NA<Attr> }
-export type UnOp = N<'unOp'> & { expr: A<Expr> }
-export type BinOp = N<'binOp'> & { expr: A<Expr[]> }
-export type UserOp = N<'userOp'> & { expr: A<Expr[]>, userOpId: A<UserOpId> }
+export interface Simple extends N<'simple'> { simpleExpr: A<SimpleExpr> }
+export interface Call extends N<'call'> { expr: A<Expr>; apply: NA<Apply>; attr: NA<Attr> }
+export interface UnOp extends N<'unOp'> { expr: A<Expr> }
+export interface BinOp extends N<'binOp'> { expr: A<Expr[]> }
+export interface UserOp extends N<'userOp'> { expr: A<Expr[]>; userOpId: A<UserOpId> }
 
-export type SimpleExpr = N<'simpleExpr'> & {
+export interface SimpleExpr extends N<'simpleExpr'> {
   loneChild: A<LiteralExpr | Expr | VarExpr | IfElseExpr | ShortLambdaExpr | LambdaExpr | LetExpr>
 } // transparent node
 
-export type Definition = N<'definition'> & {
+export interface Definition extends N<'definition'> {
   loneChild: A<ValueDefinition | TupleDefinition | FunctionDefinition>
 } // transparent node
 
-export type ValueDefinition = N<'valueDefinition'> & { typedVar: A<TypedVar>, expr: A<Expr> }
-export type FunctionDefinition = N<'functionDefinition'> & { functionId: A<FunctionId>, typedParams: NA<TypedParams>, typeAnnotation: N<TypeAnnotation>, expr: A<Expr> }
-export type TupleDefinition = N<'tupleDefinition'> & { typedVars: NA<TypedVars>, expr: A<Expr> }
+export interface ValueDefinition extends N<'valueDefinition'> { typedVar: A<TypedVar>; expr: A<Expr> }
+export interface FunctionDefinition extends N<'functionDefinition'> { functionId: A<FunctionId>; typedParams: NA<TypedParams>; typeAnnotation: N<TypeAnnotation>; expr: A<Expr> }
+export interface TupleDefinition extends N<'tupleDefinition'> { typedVars: NA<TypedVars>; expr: A<Expr> }
 
-export type TypedVar = N<'typedVar'> & { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
-export type TypedParam = N<'typedParam'> & { paramId: A<ParamId>, typeAnnotation: A<TypeAnnotation> }
+export interface TypedVar extends N<'typedVar'> { varId: A<VarId>; typeAnnotation: A<TypeAnnotation> }
+export interface TypedParam extends N<'typedParam'> { paramId: A<ParamId>; typeAnnotation: A<TypeAnnotation> }
 
-type TOKEN<n> = N<n> & { token: () => Token }
+interface TOKEN<T> extends N<T> { token: () => Token }
 
-export type Attr = TOKEN<'attr'>
-export type UserOpId = TOKEN<'userOpId'>
-export type VarId = TOKEN<'varId'>
-export type FunctionId = TOKEN<'functionId'>
-export type ParamId = TOKEN<'paramId'>
+export interface Attr extends TOKEN<'attr'> {}
+export interface UserOpId extends TOKEN<'userOpId'> {}
+export interface VarId extends TOKEN<'varId'> {}
+export interface FunctionId extends TOKEN<'functionId'> {}
+export interface ParamId extends TOKEN<'paramId'> {}
 
-export type Apply = N<'apply'> & { args: NA<Args> }
+export interface Apply extends N<'apply'> { args: NA<Args> }
 
-export type Arg = N<'arg'> & { expr: A<Expr> }
+export interface Arg extends N<'arg'> { expr: A<Expr> }
 
-export type TypeAnnotation = N<'typeAnnotation'>
+export interface TypeAnnotation extends N<'typeAnnotation'> {}
 
-export type LiteralExpr = TOKEN<'literalExpr'>
+export interface LiteralExpr extends TOKEN<'literalExpr'> {}
 
-export type IfElseExpr = N<'ifElseExpr'> & { expr: A<Expr[]> }
-export type LambdaExpr = N<'lambdaExpr'> & { typedParams: NA<TypedParams>, expr: A<Expr> }
-export type ShortLambdaExpr = N<'shortLambdaExpr'> & { paramId: A<ParamId>, expr: A<Expr> }
+export interface IfElseExpr extends N<'ifElseExpr'> { expr: A<Expr[]> }
+export interface LambdaExpr extends N<'lambdaExpr'> { typedParams: NA<TypedParams>, expr: A<Expr> }
+export interface ShortLambdaExpr extends N<'shortLambdaExpr'> { paramId: A<ParamId>, expr: A<Expr> }
 
-export type VarExpr = TOKEN<'varExpr'>
+export interface VarExpr extends TOKEN<'varExpr'> {}
 
-export type LetExpr = N<'letExpr'> & { definition: A<Definition[]>, expr: A<Expr> }
+export interface LetExpr extends N<'letExpr'> { definition: A<Definition[]>, expr: A<Expr> }
 
-export type Args = N<'args'> & { arg: A<Arg[]> }
-export type TypedParams = N<'typedParams'> & { typedParam: A<TypedParam[]> }
-export type TypedVars = N<'typedArg'> & { typedVar: A<TypedVar[]> }
+export interface Args extends N<'args'> { arg: A<Arg[]> }
+export interface TypedParams extends N<'typedParams'> { typedParam: A<TypedParam[]> }
+export interface TypedVars extends N<'typedArg'> { typedVar: A<TypedVar[]> }
 
 export type TPNode = (
   TopLevel | LetExpr

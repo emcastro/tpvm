@@ -13,7 +13,7 @@ import {
 } from './parser'
 
 import { fastmap, flapmap, fasteach, zip, safeNewMap } from '../utils/fastArray'
-import { notnull, switchMap2, OneOrMany, memo, MayBe } from '../utils/prelude'
+import { switchMap2, OneOrMany, memo, MayBe } from '../utils/prelude'
 
 const METHOD_PREFIX = '_'
 
