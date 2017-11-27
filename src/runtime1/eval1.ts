@@ -112,13 +112,31 @@ const stats = new Map<Expr, number>()
 //   })
 // })
 
-function mixDone (value: Trampoline<XValue> | Promise<Trampoline<XValue>>): Trampoline<XValue> {
-  if (isPromise(value)) {
-    return done(value.then(q => {
-      return trampoline(q)
+/**
+ * Composition rule for Promise monad and Trampoline monad.
+ *
+ * With:
+ * ```
+ * type PromiseMonad<T> = Direct<T> | Promise<T>
+ * type Direct<T> = T  // making T explicitly part of the monad
+ * ```
+ * One can rewrite signature of `mixDone` as:
+ * ```
+ * (x: Direct<Trampoline<PromiseMonad<T>>> | Promise<Trampoline<PromiseMonad<T>>>) => Trampoline<PromiseMonad<T>
+ * ```
+ * Simplified as:
+ * ```
+ * (x: PromiseMonad<Trampoline<PromiseMonad<T>>>) => Trampoline<PromiseMonad<T>>
+ * ```
+ * I.e. we resolve the trampoline inside the inner promise, then enclose the resulting promise it into a trampoline.
+ */
+function mixDone<T> (optimisticPromise: Trampoline<T | Promise<T>> | Promise<Trampoline<T | Promise<T>>>): Trampoline<T | Promise<T>> {
+  if (isPromise(optimisticPromise)) {
+    return done(optimisticPromise.then(trampolineValue => {
+      return trampoline(trampolineValue)
     }))
   } else {
-    return value
+    return optimisticPromise
   }
 }
 
