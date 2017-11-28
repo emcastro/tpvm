@@ -61,7 +61,6 @@ export class Closure {
 class EvalError extends XError {
 
   expression?: Expr
-  showStack: boolean
 
   constructor (msg?: string, expression?: Expr, cause?: Error) {
     const shortExpression = (expression && `${expression.location()} : ` + _.truncate(`${expression}`, { length: 250 }))
@@ -72,19 +71,9 @@ class EvalError extends XError {
       else bigMsg = shortExpression
     } else if (msg) bigMsg = msg
 
-    super(bigMsg, cause)
+    const showSelfTrace = (msg === undefined || expression === undefined || cause === undefined)
 
-    this.showStack = msg !== undefined
-    this.expression = expression
-  }
-
-  shownStack () {
-    // TODO: montrer la pile de la dernière erreur
-    if (this.showStack || this.expression === undefined || this.stack === undefined || this.cause === undefined) {
-      return this.stack
-    } else {
-      return this.stack.slice(0, this.stack.indexOf('\n    at'))
-    }
+    super(bigMsg, cause, showSelfTrace)
   }
 
 }
@@ -288,6 +277,7 @@ export function pushingEval1 (expr: Expr, env: Env): XValue {
     }
     return result
   } catch (e) {
+    if (e instanceof RangeError) throw e // fast-track
     if (e instanceof EvalError && e.expression === expr) throw e
     throw new EvalError(undefined, expr, e)
   }

@@ -114,17 +114,18 @@ export class XError extends Error {
 
   cause?: Error
 
-  constructor (msg?: string, cause?: Error) {
+  constructor (msg?: string, cause?: Error, showSelfTrace: boolean = true) {
     super(msg)
-    this.cause = cause
-  }
+    if (showSelfTrace) {
+      this.stack = this.stack!.replace(/^Error/, this.constructor.name)
 
-  shownStack () {
-    return this.stack
-  }
-
-  toString () {
-    return this.shownStack() + '\n' + (this.cause ? this.cause.toString() : '')
+      if (cause !== undefined) {
+        this.stack += '\n'
+        this.stack += cause.stack
+      }
+    } else {
+      this.stack = this.constructor.name + ': ' + msg + '\n' + cause!.stack
+    }
   }
 
 }

@@ -48,12 +48,14 @@ try {
       console.log('!End', v.toString())
     }, (e: any) => {
       console.error('!Error')
-      console.error(`${e}`)
+      console.error(e.stack)
+      process.exit()
     })
   } else { // Simple result
     console.log(':End', p.toString())
   }
 } catch (e) {
   console.error('*Error')
-  console.error(`${e}`)
+  console.error(e.stack)
+  process.exit()
 }
