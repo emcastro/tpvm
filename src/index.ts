@@ -14,32 +14,6 @@ const parsed = parse(source)
 console.log('Running')
 const cored = core(parsed)
 
-// console.log(cored.toText())
-
-// function mainLoop (p: XValue): void {
-//   if (isPromise<Value>(p)) { // Promise result
-//     p.then((v: any) => {
-//       mainLoop(v)
-//     }).catch((e: any) => {
-//       console.error('!Error')
-//       console.error(`${e}`)
-//     })
-//     // } else if (p instanceof Trampoline) {
-//     //   zoop(trampoline(() => p))
-//   } else { // Simple result
-//     console.log('End', p.toString())
-//   }
-// }
-
-// try {
-//   const p = pushingEval1(cored, new Env(new Map()))
-
-//   // mainLoop(p)
-// } catch (e) {
-//   console.error('*Error')
-//   console.error(`${e}`)
-// }
-
 try {
   const p: any = pushingEval1(cored, new Env(new Map()))
 

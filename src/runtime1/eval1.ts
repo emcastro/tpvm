@@ -80,24 +80,18 @@ class PrimitiveError extends EvalError { }
 
 const stats = new Map<Expr, number>()
 
-// process.on('exit', () => {
-//   console.log('=================')
+process.on('exit', () => {
+  console.log('==Expr Stats==')
 
-//   const entries = []
-//   for (let e of stats.entries()) {
-//     entries.push(e)
-//   }
+  const entries = []
+  for (let e of stats.entries()) {
+    entries.push(e)
+  }
 
-//   const s = _.groupBy(entries, ([expr, count]) => count)
-
-//   const sE = Object.entries(s).reverse()
-
-//   sE.forEach(([count, items]) => {
-//     items.forEach(i =>
-//       console.log(count, items.length, i[0].toText())
-//     )
-//   })
-// })
+  for (const [expr, count] of entries.sort(([expr1,count1], [expr2,count2]) => count2 - count1)) {
+    console.log(`${count} - ${expr.toString()}`)
+  }
+})
 
 /**
  * Composition rule for Promise monad and Trampoline monad.

@@ -326,24 +326,8 @@ function parseIntAuto (text: string) {
   return parseInt(match[4], 10)
 }
 
-// console.log('start')
-
 const emptyEnv = new VarMapping(new Map())
 
 export function core (source: TPNode) {
   return toCore(source, emptyEnv)
 }
-
-// const tree: any = parse(`
-// {
-//   __plus__=#plus
-//   a=1
-//   bar=(x)->x+1
-//   (b,c)=1
-//   foo(x)=x+1
-//   a+2
-// }
-// `)
-// const core = toCore(tree, emptyEnv)
-
-// console.log(core.toText())
