@@ -33,69 +33,65 @@ char(s) = lone(s.asList)
 _spy(self) = #spy(self)
 
 _flatmap(list, f) = {
-    if (list.empty) #nil
+  _flatmap_(list, result) = {
+    if (list.empty) result
     else {
-        f(list.head) ++ list.tail.flatmap(f)
+      list.tail.flatmap_(result ++ f(list.head))
     }
+  }
+
+  list.flatmap_(#nil)
 }
 
 _map(list, f) = list.flatmap(e->#list(f(e)))
 
-/* // Lazy Standard version
 _filter(list, f) = {
-    if (list.empty) #nil
-    else {
-        if (f(list.head))
-            #list(list.head) ++ list.tail.filter(f)
-        else
-            list.tail.filter(f)
-    }
-}
-*/
-
-_filter_(list, f, result) = {
+  _filter_(list, result) = {
     if (list.empty) result
     else {
-        if (f(list.head))
-            list.tail.filter_(f, result ++ #list(list.head))
-        else
-            list.tail.filter_(f, result)
+      if (f(list.head))
+        list.tail.filter_(f, result ++ #list(list.head))
+      else
+        list.tail.filter_(f, result)
     }
 }
 
-_filter(list, f) = _filter_(list, f, #nil)
+ _filter_(list, #nil)
+}
 
-_split_(list, isDelim, accumulator, result) = {
+_split(list, isDelim) = {
+  _split_(list, accumulator, result) = {
     if (list.empty) {
-        result ++ #list(accumulator) // flush the accumulator
+      result ++ #list(accumulator) // flush the accumulator
     } else {
-        if (isDelim(list.head))
-            list.tail.split_(isDelim, #nil, result ++ #list(accumulator)) // start a new accumulator
-        else 
-            list.tail.split_(isDelim, accumulator ++ #list(list.head), result) // put un the accumulator
+      if (isDelim(list.head))
+        list.tail.split_(#nil, result ++ #list(accumulator)) // start a new accumulator
+      else 
+        list.tail.split_(accumulator ++ #list(list.head), result) // put un the accumulator
     }
 }
 
-_split(list, isDelim) = if (list.empty) #nil else _split_(list, isDelim, #nil, #nil)
+  if (list.empty) #nil else list.split_(#nil, #nil)
+}
 
 _foldLeft(list, zero, op) = {
-    loop(list, state) = {
-        if (list.empty) state
-        else {
-            loop(list.tail, state op list.head)
-        }
+  loop(list, state) = {
+    if (list.empty) state
+    else {
+      loop(list.tail, state op list.head)
     }
+  }
 
-    loop(list,zero)
+  loop(list,zero)
 }
 
 _join(list, delim) = {
-    list.flatmap(item->delim++item)
+  list.flatmap(item->delim++item)
 }
 
 integers(from, to) = {
-  ints(from, to, result) = {
-    if (from < to) ints(from+1, to, result ++ #list(from))
+  ints(from, result) = {
+    if (from < to) ints(from+1, result ++ #list(from))
     else result
   }
 
@@ -114,6 +110,4 @@ transformedLines = linesOfWords.map(words->words.join("|".asList))
 
 
 transformedLines.map(x->#delay(500,x.asString).asList).join("$\n".asList).asString
-
-//transformedLines
 

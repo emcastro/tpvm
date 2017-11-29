@@ -60,8 +60,6 @@ export class Closure {
 
 class EvalError extends XError {
 
-  expression?: Expr
-
   constructor (msg?: string, expression?: Expr, cause?: Error) {
     const shortExpression = (expression && `${expression.location()} : ` + _.truncate(`${expression}`, { length: 250 }))
 
@@ -278,7 +276,6 @@ export function pushingEval1 (expr: Expr, env: Env): XValue {
     return result
   } catch (e) {
     // if (e instanceof RangeError) throw e // fast-track
-    if (e instanceof EvalError && e.expression === expr) throw e
     throw new EvalError(undefined, expr, e)
   }
 }
