@@ -71,7 +71,7 @@ class EvalError extends XError {
       else bigMsg = shortExpression
     } else if (msg) bigMsg = msg
 
-    const showSelfTrace = (msg === undefined || expression === undefined || cause === undefined)
+    const showSelfTrace = (expression === undefined || cause === undefined)
 
     super(bigMsg, cause, showSelfTrace)
   }
@@ -277,7 +277,7 @@ export function pushingEval1 (expr: Expr, env: Env): XValue {
     }
     return result
   } catch (e) {
-    if (e instanceof RangeError) throw e // fast-track
+    // if (e instanceof RangeError) throw e // fast-track
     if (e instanceof EvalError && e.expression === expr) throw e
     throw new EvalError(undefined, expr, e)
   }
