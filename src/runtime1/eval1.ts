@@ -89,7 +89,7 @@ process.on('exit', () => {
   }
 
   for (const [expr, count] of entries.sort(([expr1,count1], [expr2,count2]) => count2 - count1)) {
-    console.log(`${count} - ${expr.toString()}`)
+    console.log(`${count} - ${expr.debugInfo()}  ${expr.toString()}`)
   }
 })
 
@@ -126,7 +126,6 @@ function mixDone<T> (optimisticPromise: Trampoline<T | Promise<T>> | Promise<Tra
  */
 export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
   // console.log('+++', expr.debugInfo())
-  stats.set(expr, (stats.get(expr) || 0) + 1)
 
   switch (expr.typ) {
     case eVar.typ:
@@ -176,6 +175,9 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
       return mixDone(then(pushingEval1(expr.operator, env), (op) => {
         const ops = applyExpr.operands
         if (op instanceof Closure) {
+
+          stats.set(op.lambda, (stats.get(op.lambda) || 0) + 1)
+
           const frame = new Map()
           const params = op.lambda.params
           if (params.length !== ops.length) {
