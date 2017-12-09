@@ -1,8 +1,8 @@
 
 import * as fs from 'fs'
 import { Value } from './eval1'
-import { equal, notnull, XError, checkCast, checkType, checkNotType } from '../utils/prelude'
-import { AppendList as XList, AppendList } from '../utils/AppendList'
+import { equal, notnull, XError, checkCast, checkType, checkNotType } from 'tpvm/utils/prelude'
+import { AppendList as XList, AppendList } from 'tpvm/utils/AppendList'
 
 import { Promise, promisify, delay } from './optimisticPromise'
 

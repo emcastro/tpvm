@@ -1,10 +1,10 @@
 
-import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Expr, Var } from '../generated/genExpr'
-import { SExprRenderer } from '../utils/SExprRenderer'
-import { iteratorToArray, OneOrMany, isNotNull } from '../utils/prelude'
+import { eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Expr, Var } from 'tpvm/generated/genExpr'
+import { SExprRenderer } from 'tpvm/utils/SExprRenderer'
+import { iteratorToArray, OneOrMany, isNotNull } from 'tpvm/utils/prelude'
 import * as _ from 'lodash'
-import { TPNode, Token, position, nodePosition } from '../parsing/parser'
-import { fastmap } from '../utils/fastArray'
+import { TPNode, Token, position, nodePosition } from 'tpvm/parsing/parser'
+import { fastmap } from 'tpvm/utils/fastArray'
 
 export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr]

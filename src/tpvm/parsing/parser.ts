@@ -1,11 +1,12 @@
 
-const antlr4 = require('antlr4')
-const { TerminalNode, TerminalNodeImpl } = require('antlr4/tree/Tree')
-const { TPGrammarParser } = require('../generated/TPGrammarParser')
-const { TPGrammarLexer } = require('../generated/TPGrammarLexer')
-const { ErrorListener } = require('antlr4/error/ErrorListener')
+import * as antlr4 from 'antlr4'
+import { TerminalNode, TerminalNodeImpl } from 'antlr4/tree/Tree'
+import { TPGrammarParser } from 'tpvm/generated/TPGrammarParser'
+import { TPGrammarLexer } from 'tpvm/generated/TPGrammarLexer'
+
+import { ErrorListener } from 'antlr4/error/ErrorListener'
 import * as _ from 'lodash'
-import { fasteach } from '../utils/fastArray'
+import { fasteach } from 'tpvm/utils/fastArray'
 
 export { TPGrammarParser as parser }
 

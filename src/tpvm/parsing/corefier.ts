@@ -2,7 +2,7 @@
 import {
   Expr, Var, Literal, Apply, IfElse, Lambda, Let, LiteralValue,
   eApply, eVar, eLet, eLiteral, eLambda, eIfElse
-} from '../expr/Expr'
+} from 'tpvm/expr/Expr'
 
 import {
   TPNode, Token, parser, nodeName, tokenName, position, parse, ParseError, Expr as PExpr,
@@ -12,8 +12,8 @@ import {
   IfElseExpr, Apply as PApply, ShortLambdaExpr
 } from './parser'
 
-import { fastmap, flapmap, fasteach, zip, safeNewMap } from '../utils/fastArray'
-import { switchMap2, OneOrMany, memo, MayBe } from '../utils/prelude'
+import { fastmap, flapmap, fasteach, zip, safeNewMap } from 'tpvm/utils/fastArray'
+import { switchMap2, OneOrMany, memo, MayBe } from 'tpvm/utils/prelude'
 
 const METHOD_PREFIX = '_'
 

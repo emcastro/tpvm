@@ -21,8 +21,8 @@ process.on('uncaughtException', function (error) {
 gulp.task('default', gulpSequence('clean', 'codegen', 'antlr4', 'resources'))
 
 const RESOURCES = 'src/**/data/*'
-const GENERATED = 'src/generated'
-const DIST = 'dist'
+const GENERATED = 'src/tpvm/generated'
+const DIST = 'node_modules'
 const CODEGEN = 'codegen/**/*_codegen.js'
 const ANTLR4 = 'codegen/**/*.g4'
 const COVERAGE = 'coverage'
@@ -31,7 +31,7 @@ process.env.CLASSPATH = ':' + path.join(__dirname, 'antlr-4.7-complete.jar') + '
 
 gulp.task('clean', () => {
   return (
-    gulp.src([GENERATED, DIST, COVERAGE], { read: true })
+    gulp.src([GENERATED, DIST+'/tpvm', COVERAGE], { read: true })
       .pipe(clean()))
 })
 

@@ -1,10 +1,10 @@
 
-import { done, trampoline, tailCall, Trampoline } from '../utils/trampoline'
+import { done, trampoline, tailCall, Trampoline } from 'tpvm/utils/trampoline'
 
 import * as BlueBird from 'bluebird'
 import { Strictness, StrictnessInfo } from './primitive1'
 import { Value, XValue } from './eval1'
-import { checkNotCast } from '../utils/prelude'
+import { checkNotCast } from 'tpvm/utils/prelude'
 
 export const promisify = BlueBird.promisify
 

@@ -1,17 +1,17 @@
-import { done, tailCall, trampoline, Trampoline } from '../utils/trampoline'
+import { done, tailCall, trampoline, Trampoline } from 'tpvm/utils/trampoline'
 
 import {
   eVar, eLiteral, eLet, eLambda, eIfElse, eApply,
   Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue
-} from '../expr/Expr'
+} from 'tpvm/expr/Expr'
 
 import { primitives, Strictness, StrictnessInfo } from './primitive1'
-import { OneOrMany, XError, assertNever } from '../utils/prelude'
-import { fastmap } from '../utils/fastArray'
+import { OneOrMany, XError, assertNever } from 'tpvm/utils/prelude'
+import { fastmap } from 'tpvm/utils/fastArray'
 import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
 import * as _ from 'lodash'
 
-import { AppendList } from '../utils/AppendList'
+import { AppendList } from 'tpvm/utils/AppendList'
 
 import { Promise as BBPromise } from 'bluebird'
 

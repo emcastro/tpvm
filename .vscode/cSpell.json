@@ -6,23 +6,24 @@
     "language": "en",
     // words - list of words to be always considered correct
     "words": [
-        "Delim",
-        "Memoization",
         "antlr",
         "bidule",
         "colorizer",
         "concat",
         "corefier",
+        "Delim",
         "deoptimisation",
         "fasteach",
         "fastmap",
         "flapmap",
+        "Memoization",
         "memoizes",
         "minusminus",
         "notnull",
         "promisify",
         "scripthost",
-        "sublist"
+        "sublist",
+        "tpvm"
     ],
     // flagWords - list of words to be always considered incorrect
     // This is useful for offensive words and common spelling errors.
