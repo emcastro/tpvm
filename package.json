@@ -18,7 +18,7 @@
     "lint-fix": "tslint -p tsconfig.json --type-check --fix",
     "autobuild": "npm-run-all gulp --parallel \"gulp auto\" \"tsc -- -w\"",
     "autotest": "jest --coverage --watchAll",
-    "cleaner": "rm -rf coverage dist"
+    "cleaner": "rm -rf coverage node_modules/tpvm"
   },
   "dependencies": {
     "antlr4": "4.7.0",
@@ -65,7 +65,7 @@
       "$ReadOnlyArray"
     ],
     "ignore": [
-      "src/generated"
+      "src/tpvm/generated"
     ]
   },
   "jest": {
