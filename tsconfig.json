@@ -4,11 +4,9 @@
     "module": "commonjs",
     "target": "es6",
     "lib": [
-      "dom",
       "es6",
-      "scripthost",
-      "dom.iterable",
-      "es2017.object"
+      "es2017.object",
+      "es2017.string"
     ],
     "strict": true,
     "experimentalDecorators": true,
@@ -17,12 +15,6 @@
     "inlineSources": true,
     "pretty": true,
     "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "src/types/*"
-      ]
-    }
   },
   "include": [
     "src/**/*"
