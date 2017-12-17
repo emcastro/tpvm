@@ -70,7 +70,7 @@ export function arrayEqual (a: any[], b: any[]): boolean {
 }
 
 export function isNotNull<A> (v: A | null): v is A {
-  return v != null
+  return v !== null
 }
 
 export function switchMap<T1, R> (object: { [switchKey: string]: (switchValue: any) => R }): Map<string, (switchValue: T1) => R> {

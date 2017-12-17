@@ -6,9 +6,10 @@ const _ = require('lodash')
 
 const { fastmap } = require('../dist/utils/fastArray')
 
-usage('switch {object}', ['switch case', 'switch Map'])
+usage('switch Poly', ['switch case', 'switch Map', '{object}'])
 
-const keys = _.shuffle(_.times(30, n => 'k' + n))
+const keyNames = _.times(30, n => 'k' + n)
+const keys = _.shuffle(keyNames)
 
 const suite = newSuite()
 
@@ -92,9 +93,20 @@ const switchMap2 = new Map(Object.entries(switchObject))
 
 suite.add('switch Map', () => {
   return fastmap(keys, k => {
-    // $TypingTricks
     switchMap2.get(k)(k)
   })
 })
 
-run(suite, 'switch {object}')
+const keyNameMap = new Map(keyNames.map(k => [k, ({
+  action () { return [k + '%' + k] }
+})]))
+
+const objKeys = keys.map(k => keyNameMap.get(k))
+
+suite.add('switch Poly', () => {
+  return fastmap(objKeys, k => {
+    k.action(k)
+  })
+})
+
+run(suite, 'switch Poly')
