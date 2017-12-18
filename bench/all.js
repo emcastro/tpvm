@@ -6,7 +6,6 @@ fs.readdirSync(__dirname).forEach(name => {
     console.log('')
     console.log('============', name, '============')
     /* eslint-disable */
-    // $TypingTrick
-    require('./' + name.slice(0, name.length - 3)) // 3 = '.js'.length
+    require('./' + name.slice(0, name.length - '.js'.length))
   }
 })
