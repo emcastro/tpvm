@@ -13,7 +13,7 @@ import {
 } from './parser'
 
 import { fastmap, flapmap, fasteach, zip, safeNewMap } from '../utils/fastArray'
-import { switchMap2, OneOrMany, memo, MayBe } from '../utils/prelude'
+import { switchMap2, OneOrMany, memo, MayBe, emptyList } from '../utils/prelude'
 
 const METHOD_PREFIX = '_'
 
@@ -289,9 +289,6 @@ function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams | null), expr
 }
 
 // Utils ↓↓↓↓
-
-const _emptyList: any[] = []
-function emptyList<T> () { return _emptyList as T[] }
 
 function argList (args: Args | null) { return (args === null) ? emptyList<Arg>() : args.arg() }
 function typedParamList (params: TypedParams | null) { return (params === null) ? emptyList<TypedParam>() : params.typedParam() }

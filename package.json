@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@types/bluebird": "3.5.18",
+    "@types/immutable": "^3.8.7",
     "@types/jest": "21.1.6",
     "@types/lodash": "4.14.85",
     "@types/node": "8.0.53",
@@ -45,6 +46,7 @@
     "gulp-file": "0.3.0",
     "gulp-sequence": "0.4.6",
     "gulp-util": "3.0.8",
+    "immutable": "^3.8.2",
     "jest": "21.2.1",
     "npm-run-all": "4.1.2",
     "standard": "10.0.3",

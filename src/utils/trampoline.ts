@@ -1,4 +1,4 @@
-import { AppendList } from './AppendList'
+import { XList } from './XList'
 import { checkCast, checkNotCast } from './prelude'
 
 export type Trampoline<T> = Done<T> | TailCall<T>

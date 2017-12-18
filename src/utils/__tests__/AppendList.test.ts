@@ -1,12 +1,12 @@
 
 import * as _ from 'lodash'
-import { AppendList } from '../AppendList'
+import { XList } from '../XList'
 
 describe('AppendList', () => {
   it('can be built', () => {
     _.times(10).forEach(i => {
       const l = _.times(i)
-      const al = new AppendList(l)
+      const al = new XList(l)
       expect(al.toList()).toEqual(l)
     })
   })
@@ -14,7 +14,7 @@ describe('AppendList', () => {
   it('gives access to its elements', () => {
     _.times(10).forEach(i => {
       const l = _.times(i)
-      const al = new AppendList(l)
+      const al = new XList(l)
 
       for (let j = 0; j < al.length; j++) {
         expect(l[j]).toBe(al.get(j))
@@ -23,8 +23,8 @@ describe('AppendList', () => {
   })
 
   it('throws exception on out-of-bound access', () => {
-    const al1 = new AppendList()
-    const al10 = new AppendList(_.times(10))
+    const al1 = new XList()
+    const al10 = new XList(_.times(10))
     const alShort = al10.slice(3, 4)
 
     expect(() => al1.get(-1)).toThrow('Index out of bounds: -1 < 0')
@@ -49,9 +49,9 @@ describe('AppendList', () => {
       const l1b = l1.slice()
       const l2b = l2.slice()
 
-      const al1 = new AppendList(l1b, false)
-      const al2 = new AppendList(l2b, false)
-      const al3 = new AppendList(l2)
+      const al1 = new XList(l1b, false)
+      const al2 = new XList(l2b, false)
+      const al3 = new XList(l2)
 
       const concat1 = al1.concat(al2)
       const concat2 = al1.concat(al3)
@@ -72,7 +72,7 @@ describe('AppendList', () => {
   })
 
   it('slices', () => {
-    const a = new AppendList([1, 2, 3, 4, 5])
+    const a = new XList([1, 2, 3, 4, 5])
     expect(a.slice(0, 5).toList()).toEqual([1, 2, 3, 4, 5])
     expect(a.slice(1, 4).toList()).toEqual([2, 3, 4])
     expect(a.slice(1, 4).slice(1, 2).toList()).toEqual([3])
@@ -80,8 +80,8 @@ describe('AppendList', () => {
   })
 
   it('chains appended on sliced', () => {
-    const a: AppendList<any> = new AppendList([1, 2, 3, 4, 5])
-    const b = new AppendList(['a', 'b'])
+    const a: XList<any> = new XList([1, 2, 3, 4, 5])
+    const b = new XList(['a', 'b'])
     expect(a.slice(1, 4).concat(b.slice(1, 2)).toList()).toEqual([2, 3, 4, 'b'])
 
     expect(a.slice(0, 0).concat(b.slice(1, 2)).toList()).toEqual(['b'])

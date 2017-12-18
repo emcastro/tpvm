@@ -1,6 +1,10 @@
 
 import * as _ from 'lodash'
 
+/** Frozen empty list */
+const _emptyList: any[] = Object.freeze([]) as any
+export function emptyList<T> () { return _emptyList as T[] }
+
 /** Typed version of o[Symbol.iterator]() */
 export function iterator (o: any): Iterator<any> {
   return o[Symbol.iterator]()

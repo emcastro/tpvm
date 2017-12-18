@@ -2,7 +2,7 @@
 import * as fs from 'fs'
 import { Value } from './eval1'
 import { equal, notnull, XError, checkCast, checkType, checkNotType } from '../utils/prelude'
-import { AppendList as XList, AppendList } from '../utils/AppendList'
+import { XList } from '../utils/XList'
 
 import { Promise, promisify, delay } from './optimisticPromise'
 
@@ -49,13 +49,13 @@ export const primitives = annotate({
     return l as boolean
   },
 
-  'string_asList': function string_asList_vv (str: string): AppendList<number> {
+  'string_asList': function string_asList_vv (str: string): XList<number> {
     checkType(str, 'string')
     const array: number[] = []
     for (let i = 0; i < str.length; i++) {
       array[i] = str.charCodeAt(i)
     }
-    return new AppendList(array, false) // list of strict values
+    return new XList(array, false) // list of strict values
   },
 
   'fromCharCode': function fromCharCode_vv (code: number): string {

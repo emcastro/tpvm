@@ -1,8 +1,8 @@
-import { Spy, SpyResult, Assert } from './spy'
+// import { Spy, SpyResult, Assert } from './spy'
 import { copyArrayInto } from './fastArray'
 import { arrayEqual } from './prelude'
 
-export class AppendList<T> {
+export class XList<T> {
   private backend: T[]
 
   private from: number
@@ -36,14 +36,14 @@ export class AppendList<T> {
   //   function (this: AppendList<any>, that: AppendList<any>) { return [this.toString(), that.toString()] },
   //   function (result: AppendList<any>) { return result.toString() }
   // )
-  concat (that: AppendList<T>): AppendList<T> {
+  concat (that: XList<T>): XList<T> {
     if (this.from !== 0 || this.to !== this.backend.length) {
       // An append or slice has already occurred
-      return new AppendList(this.toList(), false).concat(that)
+      return new XList(this.toList(), false).concat(that)
     } else if (that.from !== 0) {
-      return this.concat(new AppendList(that.toList(), false))
+      return this.concat(new XList(that.toList(), false))
     } else {
-      const list = AppendList.innerMake<T>()
+      const list = XList.innerMake<T>()
       list.from = 0
       list.to = this.length + that.length
       list.backend = this.backend
@@ -52,8 +52,8 @@ export class AppendList<T> {
     }
   }
 
-  slice (from: number, to: number): AppendList<T> {
-    const list = AppendList.innerMake<T>()
+  slice (from: number, to: number): XList<T> {
+    const list = XList.innerMake<T>()
     list.backend = this.backend
     list.from = this.from + from
     list.to = this.from + to
@@ -80,14 +80,14 @@ export class AppendList<T> {
   }
 
   equals (other: any): boolean {
-    if (!(other instanceof AppendList)) {
+    if (!(other instanceof XList)) {
       return false
     }
     return arrayEqual(this.toList(), other.toList()) // FIXME: very inefficient (copy arrays)
   }
 
-  private static innerMake<T> (): AppendList<T> {
-    return Object.create(AppendList.prototype) as AppendList<T>
+  private static innerMake<T> (): XList<T> {
+    return Object.create(XList.prototype) as XList<T>
   }
 
   toString () {

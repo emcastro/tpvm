@@ -11,7 +11,7 @@ import { fastmap } from '../utils/fastArray'
 import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
 import * as _ from 'lodash'
 
-import { AppendList } from '../utils/AppendList'
+import { XList } from '../utils/XList'
 
 import { Promise as BBPromise } from 'bluebird'
 
@@ -20,7 +20,7 @@ export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Func
 export type XValue = Value | Promise<Value>
 
 interface ValueArray extends Array<XValue> { }
-interface ValueAppendList extends AppendList<XValue> { }
+interface ValueAppendList extends XList<XValue> { }
 
 type Frame = Map<string, XValue>
 
@@ -219,7 +219,7 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
               // Array-like access or method
               return mixDone(then(args[0], (arg1) => {
                 if (typeof arg1 === 'number') {
-                  if (op instanceof AppendList) {
+                  if (op instanceof XList) {
                     // AppendList access
                     return done(op.get(arg1))
                   } else if (Array.isArray(op)) {
@@ -266,7 +266,7 @@ export function pushingEval1 (expr: Expr, env: Env): XValue {
       if (resultInfo instanceof Closure) resultInfo = '<Closure>'
       if (resultInfo instanceof Function) resultInfo = '<Function>'
       if (resultInfo instanceof BBPromise) resultInfo = '<Promise>'
-      if (resultInfo instanceof AppendList) resultInfo = resultInfo.toString()
+      if (resultInfo instanceof XList) resultInfo = resultInfo.toString()
       console.log('<<<' + local, expr.debugInfo(), resultInfo)
     }
     return result
