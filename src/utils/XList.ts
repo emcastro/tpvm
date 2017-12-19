@@ -52,6 +52,20 @@ export class XList<T> {
     }
   }
 
+  append (item: T): XList<T> {
+    if (this.from !== 0 || this.to !== this.backend.length) {
+      // An append or slice has already occurred
+      return new XList(this.toList(), false).concat(new XList([item], false))
+    } else {
+      const list = XList.innerMake<T>()
+      list.from = 0
+      list.to = this.length + 1
+      list.backend = this.backend
+      list.backend[this.length] = item
+      return list
+    }
+  }
+
   slice (from: number, to: number): XList<T> {
     const list = XList.innerMake<T>()
     list.backend = this.backend

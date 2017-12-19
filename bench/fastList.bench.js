@@ -9,7 +9,7 @@ const { XList } = require('../dist/utils/XList')
 
 // usage('---', [])
 
-for (let i = 0; i < 15; i++) {
+for (const i of [3, 11, 18, 30, 60, 150]) {
   console.log(color.yellow('list.length = ' + i))
   const suite = newSuite()
 
@@ -20,9 +20,22 @@ for (let i = 0; i < 15; i++) {
     fasteach(list, x => result.push(`(${x})`))
   })
 
+  suite.add('Standard Array and copy', () => {
+    let result = []
+    fasteach(list, x => {
+      result = new Array(result)
+      result.push(`(${x})`)
+    })
+  })
+
   suite.add('XList', () => {
     let result = new XList()
     fasteach(list, x => { result = result.concat(new XList([`(${x})`], false)) })
+  })
+
+  suite.add('XList 2', () => {
+    let result = new XList()
+    fasteach(list, x => { result = result.append(`(${x})`) })
   })
 
   suite.add('Immutable', () => {
