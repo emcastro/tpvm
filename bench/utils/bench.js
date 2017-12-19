@@ -19,12 +19,12 @@ function usage (preferred, others) {
  * @param {*} suite
  * @param {string} expectedFastest
  */
-function run (suite, expectedFastest) {
+function run (suite, expectedFastest, reference) {
   suite.on('cycle', function (event) {
     console.log(String(event.target))
   })
   suite.on('complete', function () {
-    const fastest = this.filter('fastest').map('name')
+    const fastest = this.filter(i => i.name !== reference).filter('fastest').map('name')
     const c = (fastest.includes(expectedFastest) ? color.green : color.red).bind(color)
     console.log('Fastest is ' + c(fastest))
   })
