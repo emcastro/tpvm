@@ -20,6 +20,26 @@ export function iteratorToArray<T> (i: Iterator<T>): T[] {
   return list
 }
 
+/** @return the same set is item in not in this, or a new set including the new item */
+export function setAdd<T> (set: Set<T>, item: T): Set<T> {
+  if (set.has(item)) {
+    return set
+  } else {
+    const copy = new Set(set)
+    copy.add(item)
+    return copy
+  }
+}
+
+/** @return a new set including the new items */
+export function setExtends<T> (set: Set<T>, items: Iterable<T>): Set<T> {
+  const copy = new Set(set)
+  for (const item of items) {
+    copy.add(item)
+  }
+  return copy
+}
+
 /** Deep Equals.
  * Compare primitive objects (number, string, boolean),
  * standard Array and Map, and
