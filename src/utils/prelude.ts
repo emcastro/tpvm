@@ -20,6 +20,22 @@ export function iteratorToArray<T> (i: Iterator<T>): T[] {
   return list
 }
 
+let _emptySet = new Set()
+export function emptySet<T> (): Set<T> {
+  if (_emptySet.size === 0) {
+    return _emptySet as any
+  } else {
+    _emptySet = new Set()
+    return _emptySet as any
+  }
+}
+
+export function singleton<T> (value: T): Set<T> {
+  const set = new Set()
+  set.add(value)
+  return set
+}
+
 /** @return the same set is item in not in this, or a new set including the new item */
 export function setAdd<T> (set: Set<T>, item: T): Set<T> {
   if (set.has(item)) {
@@ -31,13 +47,19 @@ export function setAdd<T> (set: Set<T>, item: T): Set<T> {
   }
 }
 
-/** @return a new set including the new items */
-export function setExtends<T> (set: Set<T>, items: Iterable<T>): Set<T> {
-  const copy = new Set(set)
-  for (const item of items) {
-    copy.add(item)
+/** @return a new set including the other set */
+export function setExtends<T> (set1: Set<T>, set2: Set<T>): Set<T> {
+  if (set1.size === 0) {
+    return set2
+  } else if (set2.size === 0) {
+    return set1
+  } else {
+    const copy = new Set(set1)
+    for (const item of set2) {
+      copy.add(item)
+    }
+    return copy
   }
-  return copy
 }
 
 /** Deep Equals.

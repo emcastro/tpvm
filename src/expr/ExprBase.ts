@@ -1,10 +1,11 @@
 
 import { ExprRenderer } from './ExprRenderer'
-import { iteratorToArray, OneOrMany, isNotNull } from '../utils/prelude'
+import { iteratorToArray, OneOrMany, isNotNull, emptySet } from '../utils/prelude'
 import * as _ from 'lodash'
 import { TPNode, Token, position, nodePosition } from '../parsing/parser'
 import { Expr } from './Expr'
 import { fastmap } from '../utils/fastArray'
+import { freeVars } from './freeVars'
 
 export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr]
@@ -36,6 +37,10 @@ export class ExprBase {
   location () {
     return location(this)
   }
+
+  freeVars () {
+    return freeVars(this as any, emptySet())
+  }
 }
 
 function debugInfo (data: { source?: OneOrMany<TPNode | Token | null> }) {
@@ -56,7 +61,7 @@ function location (data: { source?: OneOrMany<TPNode | Token | null> }) {
 }
 
 function isToken (t: any): t is Token {
-  return t.text !== undefined && t.line !== undefined && t.column !== undefined // FIXME: should check real Antlr4 token type
+  return t.text !== undefined && t.line !== undefined && t.column !== undefined // TODO: should check real Antlr4 token type
 }
 
 export function sourcePosition (source: TPNode | Token) {

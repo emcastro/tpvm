@@ -57,7 +57,7 @@ export function flatten<T> (array: (T | T[])[]): T[] {
 
 export function zip<A, B> (array1: A[], array2: B[]): [A, B][] {
   if (array1.length !== array2.length) throw new Error('zipping list of different sizes')
-  const result: [A,B][] = []
+  const result: [A, B][] = []
   const length = array1.length
   for (let i = 0; i < length; i++) {
     result[i] = [array1[i], array2[i]]
@@ -65,7 +65,7 @@ export function zip<A, B> (array1: A[], array2: B[]): [A, B][] {
   return result
 }
 
-export function safeNewMap<K,V> (values: [K, V][]): Map < K,V > {
+export function safeNewMap<K, V> (values: [K, V][]): Map<K, V> {
   const map = new Map(values)
   if (map.size !== values.length) {
     throw new Error(`Duplicate keys`)
