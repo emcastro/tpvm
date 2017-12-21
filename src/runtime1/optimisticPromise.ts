@@ -18,7 +18,7 @@ const stats = {
 }
 
 process.on('exit', () => {
-  console.log('==Acces stats==')
+  console.log('==Access stats==')
   console.log(stats)
 })
 

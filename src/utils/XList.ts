@@ -105,6 +105,6 @@ export class XList<T> {
   }
 
   toString () {
-    return '[:' + this.toList().toString() + ':]'
+    return `[:${this.toList().toString()}:]`
   }
 }

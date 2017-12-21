@@ -127,25 +127,25 @@ export interface TypedParam extends N<'typedParam'> { paramId: A<ParamId>; typeA
 
 interface TOKEN<T> extends N<T> { token: () => Token }
 
-export interface Attr extends TOKEN<'attr'> {}
-export interface UserOpId extends TOKEN<'userOpId'> {}
-export interface VarId extends TOKEN<'varId'> {}
-export interface FunctionId extends TOKEN<'functionId'> {}
-export interface ParamId extends TOKEN<'paramId'> {}
+export interface Attr extends TOKEN<'attr'> { }
+export interface UserOpId extends TOKEN<'userOpId'> { }
+export interface VarId extends TOKEN<'varId'> { }
+export interface FunctionId extends TOKEN<'functionId'> { }
+export interface ParamId extends TOKEN<'paramId'> { }
 
 export interface Apply extends N<'apply'> { args: NA<Args> }
 
 export interface Arg extends N<'arg'> { expr: A<Expr> }
 
-export interface TypeAnnotation extends N<'typeAnnotation'> {}
+export interface TypeAnnotation extends N<'typeAnnotation'> { }
 
-export interface LiteralExpr extends TOKEN<'literalExpr'> {}
+export interface LiteralExpr extends TOKEN<'literalExpr'> { }
 
 export interface IfElseExpr extends N<'ifElseExpr'> { expr: A<Expr[]> }
 export interface LambdaExpr extends N<'lambdaExpr'> { typedParams: NA<TypedParams>, expr: A<Expr> }
 export interface ShortLambdaExpr extends N<'shortLambdaExpr'> { paramId: A<ParamId>, expr: A<Expr> }
 
-export interface VarExpr extends TOKEN<'varExpr'> {}
+export interface VarExpr extends TOKEN<'varExpr'> { }
 
 export interface LetExpr extends N<'letExpr'> { definition: A<Definition[]>, expr: A<Expr> }
 
@@ -170,7 +170,7 @@ export function tokenName (token: Token) {
   if (symbolic !== null) return symbolic
   const literal = token.source[0].literalNames[token.type]
   if (literal !== null) return literal
-  return token.text + '#' + token.type
+  return `${token.text}#${token.type}`
 }
 
 export function position (token: { line: number, column: number, text: { length: number } }) {
@@ -182,7 +182,7 @@ export function nodeName (node: TPNode) {
   const ruleCategory = node.contextName
 
   const ruleName = node.parser.ruleNames[node.ruleIndex]
-  return ruleName === ruleCategory ? ruleName : ruleCategory + ':' + ruleName
+  return `${ruleName === ruleCategory ? ruleName : ruleCategory}:${ruleName}`
 }
 
 export function nodePosition (node: TPNode) {
@@ -195,13 +195,13 @@ export function nodePosition (node: TPNode) {
 export function dump (node: TPNode, tab?: string): string {
   const _tab = tab || ''
   const nextTab = _tab + '  '
-  let line = _tab + nodeName(node) + '\n'
+  let line = `${_tab}${nodeName(node)}\n`
 
   if (node.children !== null) {
     for (let subNode of node.children) {
       if (subNode.symbol !== undefined) {
         const symbol = subNode.symbol
-        line += nextTab + tokenName(symbol) + ' ' + symbol.text + '   @' + position(symbol) + '\n'
+        line += `${nextTab}${tokenName(symbol)} ${symbol.text}   @${position(symbol)}\n`
       } else {
         line += dump(subNode, nextTab)
       }
@@ -236,6 +236,6 @@ export class ParseError extends Error {
   node: TPNode
 
   constructor (msg: string, node: TPNode) {
-    super(msg + ' ' + nodePosition(node))
+    super(`${msg} ${nodePosition(node)}`)
   }
 }

@@ -39,9 +39,9 @@ export class ExprRenderer extends SExprRenderer<Expr | Binding, any> {
           if (typeof v === 'symbol') {
             return Symbol.keyFor(v) as string
           } else if (Array.isArray(v)) {
-            return '[' + String(v) + ']:array'
+            return `[${String(v)}]:array`
           } else {
-            return String(v) + ':' + typeof v
+            return `${String(v)}:${typeof v}`
           }
 
         case eApply.typ:

@@ -48,7 +48,7 @@ export function setAdd<T> (set: Set<T>, item: T): Set<T> {
 }
 
 /** @return a new set including the other set */
-export function setExtends<T> (set1: Set<T>, set2: Set<T>): Set<T> {
+export function extendSet<T> (set1: Set<T>, set2: Set<T>): Set<T> {
   if (set1.size === 0) {
     return set2
   } else if (set2.size === 0) {
@@ -170,7 +170,7 @@ export class XError extends Error {
         this.stack += cause.stack
       }
     } else {
-      this.stack = this.constructor.name + ': ' + msg + '\n' + cause!.stack
+      this.stack = `${this.constructor.name}: ${msg}\n${cause!.stack}`
     }
   }
 
@@ -180,7 +180,7 @@ type Class<T> = new (...args: any[]) => T
 
 class ClassCastError extends Error {
   constructor (public awaitedClass: Class<any>, public value: any, public include: boolean) {
-    super('ClassCastError: awaiting ' + (include ? '' : 'not ') + awaitedClass.name + '; found: `' + value + '`: ' + (value && value.constructor.name))
+    super(`ClassCastError: awaiting ${include ? '' : 'not '}${awaitedClass.name}; found: \`${value}\`: ${value && value.constructor.name}`)
   }
 }
 
@@ -202,7 +202,7 @@ type TypeName = 'string' | 'number' | 'boolean' // and others?
 
 class TypeCastError extends Error {
   constructor (public awaitedType: TypeName, public value: any, public include: boolean) {
-    super('TypeCastError: awaiting ' + (include ? '' : 'not ') + awaitedType + '; found: `' + value + '`: ' + typeof value)
+    super(`TypeCastError: awaiting ${include ? '' : 'not '}${awaitedType}; found: \`${value}\`: ${typeof value}`)
   }
 }
 
@@ -224,5 +224,5 @@ export function notnull<T> (value: T | null | undefined): T {
 }
 
 export function assertNever (invalidValue: never): never {
-  throw new Error('Invalid value that should never happen: ' + invalidValue)
+  throw new Error(`Invalid value that should never happen: ${invalidValue}`)
 }

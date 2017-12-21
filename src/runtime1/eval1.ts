@@ -14,6 +14,7 @@ import * as _ from 'lodash'
 import { XList } from '../utils/XList'
 
 import { Promise as BBPromise } from 'bluebird'
+import { isSymbol } from 'util'
 
 export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Function
 
@@ -37,6 +38,9 @@ export class Env { // export for building root env
     // There should not be undefined variable at this level
     const value = this.frame.get(varId)
     if (value !== undefined) { // we don't intend to use undefined as a value
+      if (isSymbol(value)) {
+        throw new Error(`Forward definition of ${varId}`)
+      }
       return value
     } else {
       if (this.parent !== undefined) {
@@ -65,7 +69,7 @@ class EvalError extends XError {
 
     let bigMsg
     if (shortExpression) {
-      if (msg) bigMsg = shortExpression + '\n' + msg
+      if (msg) bigMsg = `${shortExpression}\n${msg}`
       else bigMsg = shortExpression
     } else if (msg) bigMsg = msg
 
@@ -88,7 +92,7 @@ process.on('exit', () => {
     entries.push(e)
   }
 
-  for (const [expr, count] of entries.sort(([expr1,count1], [expr2,count2]) => count2 - count1)) {
+  for (const [expr, count] of entries.sort(([expr1, count1], [expr2, count2]) => count2 - count1)) {
     console.log(`${count} - ${expr.debugInfo()}  ${expr.toString()}`)
   }
 })
@@ -121,6 +125,8 @@ function mixDone<T> (optimisticPromise: Trampoline<T | Promise<T>> | Promise<Tra
   }
 }
 
+const awaitingComputation = Symbol('awaitingComputation')
+
 /**
  * Simple strict evaluation
  */
@@ -145,10 +151,14 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
 
     case eLet.typ: {
       const entries = expr.defs.entries()
-      const newEnv: Env = new Env(new Map(), env)
+      const newEnv = new Env(new Map(), env)
+      const frame = newEnv.frame
       for (const [k, subExpr] of entries) {
-        // Launch all computations
-        newEnv.frame.set(k, pushingEval1(subExpr, newEnv))   // TODO: simple - no letrec - fuzzy semantics
+        frame.set(k, awaitingComputation as any)
+      }
+      for (const [k, subExpr] of entries) {
+        // Launch all computations in order. Later values are not available for earliers ones
+        frame.set(k, pushingEval1(subExpr, newEnv))
       }
       return tailCall(() => eval1(expr.body, newEnv))
     }
@@ -234,7 +244,7 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
                     return done(generic[arg1] as XValue)
                   }
                 }
-                throw new EvalError('No method or special application available', expr)
+                throw new EvalError(`No method or special application available: ${op} ${arg1}`, expr)
               }))
             }
 

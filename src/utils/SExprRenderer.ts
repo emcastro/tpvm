@@ -15,7 +15,7 @@ export class SExprRenderer<N, T> {
     const m = this.splitNode(o)
     if (m instanceof Array) {
       const [name, seq] = m
-      return '(' + name + ' ' + _.join(_.map(seq, (e: N) => this.sExpr(e)), ' ') + ')'
+      return `(${name} ${_.join(_.map(seq, (e: N) => this.sExpr(e)), ' ')})`
     } else {
       return this.escape(m)
     }
@@ -37,9 +37,9 @@ export class SExprRenderer<N, T> {
       const newTab = tab + this.length(name) + 2
       const tabs = _.repeat(' ', tab)
       if (seq.length === 0) {
-        return tabs + '(' + name + ')' // Does not happen with Expr
+        return `${tabs}(${name})` // Does not happen with Expr
       } else {
-        return tabs + '(' + name + _.join(_.map(seq, (e: N) => '\n' + this.sExprLn(e, newTab)), '') + ')'
+        return `${tabs}(${name + _.join(_.map(seq, (e: N) => `\n${this.sExprLn(e, newTab)}`), '')})`
       }
     } else {
       return _.repeat(' ', tab) + this.escape(m)

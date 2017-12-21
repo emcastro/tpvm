@@ -52,11 +52,11 @@ function debugInfo (data: { source?: OneOrMany<TPNode | Token | null> }) {
 function location (data: { source?: OneOrMany<TPNode | Token | null> }) {
   const source = data.source
   if (source == null) {
-    return '@' + 'unknown location'
+    return `@unknown location`
   } else if (!Array.isArray(source)) {
-    return '@' + sourcePosition(source)
+    return `@${sourcePosition(source)}`
   } else {
-    return '@' + fastmap(source.filter(isNotNull), sourcePosition).join('|')
+    return `@${fastmap(source.filter(isNotNull), sourcePosition).join('|')}`
   }
 }
 

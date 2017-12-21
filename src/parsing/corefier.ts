@@ -43,7 +43,7 @@ class VarMapping {
 
   resolveSpecial (token: Token, mapping: Map<number, string>): string {
     const id = mapping.get(token.type)
-    if (id === undefined) throw Error('Unexpected token type: ' + tokenName(token))
+    if (id === undefined) throw Error(`Unexpected token type: ${tokenName(token)}`)
     const r = this.storage.get(id)
     if (r === undefined) throw new ReferenceError(`Undefined var ${id}(${token.text}) @${position(token)}`)
     return r
@@ -301,7 +301,7 @@ function operands (apply: PApply, env: Env) {
 function toCore (expr: TPNode, env: Env): Expr {
   //  const toCoreExpr = toCoreSwitchMap.get(expr.contextName)
   const toCoreExpr = toCoreSwitchMap[expr.contextName]
-  if (toCoreExpr == null) throw new Error('À coder : ' + expr.contextName) // tslint:disable-line
+  if (toCoreExpr == null) throw new Error(`Unsupported corefication: ${expr.contextName}`) // tlint:disable-line
   return toCoreExpr(expr as any, env).setSource(expr)
 }
 
@@ -313,7 +313,7 @@ const parseIntAutoRE = /((0x)|(0b))?(.*)/
 
 function parseIntAuto (text: string) {
   const match = parseIntAutoRE.exec(text)
-  if (match === null) throw new Error('Mismatch with grammar on integers: ' + text)
+  if (match === null) throw new Error(`Mismatch with grammar on integers: ${text}`)
   if (match[2] !== undefined) { // tslint:disable-line
     return parseInt(match[4], 16)
   }

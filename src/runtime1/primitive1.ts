@@ -140,7 +140,7 @@ function strictnessDecoder (f: Function): StrictnessInfo {
         break
       case 'v': s = Strictness.VALUE
         break
-      default: throw new Error('Unexpected strictness suffix: ' + name[i])
+      default: throw new Error(`Unexpected strictness suffix: ${name[i]}`)
     }
     strictnessArray.push(s)
     i++
@@ -150,7 +150,7 @@ function strictnessDecoder (f: Function): StrictnessInfo {
   strictnessArray.result = notnull(strictnessArray.pop())
 
   if (strictnessArray.length !== f.length) {
-    throw new Error('Internal arity problem on ' + f)
+    throw new Error(`Internal arity problem on ${f}`)
   }
 
   return strictnessArray
