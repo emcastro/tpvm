@@ -150,13 +150,12 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
       }
 
     case eLet.typ: {
-      const entries = expr.defs.entries()
       const newEnv = new Env(new Map(), env)
       const frame = newEnv.frame
-      for (const [k, subExpr] of entries) {
+      for (const [k, subExpr] of expr.defs.entries()) {
         frame.set(k, awaitingComputation as any)
       }
-      for (const [k, subExpr] of entries) {
+      for (const [k, subExpr] of expr.defs.entries()) {
         // Launch all computations in order. Later values are not available for earliers ones
         frame.set(k, pushingEval1(subExpr, newEnv))
       }
