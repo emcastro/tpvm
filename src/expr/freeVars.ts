@@ -1,9 +1,9 @@
 import { Expr, Var, Literal, eVar, eApply, eIfElse, eLambda, eLet, eLiteral } from './Expr'
-import { emptyList, assertNever, emptySet, singleton, extendSet } from '../utils/prelude'
+import { emptyList, assertNever, emptySet, singleton, extendSet, $$$ } from '../utils/prelude'
 import { XList } from '../utils/XList'
 import { flapmap, fasteach, fastmap } from '../utils/fastArray'
 
-export function freeVars (expr: Expr, bindings: Set<string>): Set<string> {
+export function freeVars(expr: Expr, bindings: Set<string>): Set<string> {
   switch (expr.typ) {
     case eLiteral.typ: {
       return emptySet()
@@ -26,18 +26,29 @@ export function freeVars (expr: Expr, bindings: Set<string>): Set<string> {
     }
 
     case eApply.typ: {
-      return extendSet(
-        freeVars(expr.operator, bindings),
-        fastmap(expr.operands, o => freeVars(o, bindings)).reduce(extendSet)
-      )
+      if (expr.operands.length !== 0) {
+        return extendSet(
+          freeVars(expr.operator, bindings),
+          fastmap(expr.operands, o => freeVars(o, bindings)).reduce(extendSet)
+        )
+      } else {
+        return freeVars(expr.operator, bindings)
+      }
     }
 
-    case eLambda.typ:
+    case eLambda.typ: {
       const newBindings = extendSet(bindings, new Set(expr.params))
       return freeVars(expr.body, newBindings)
+    }
 
-    case eLet.typ:
-      throw new Error('ooo')
+    case eLet.typ: {
+      const newBindings = extendSet(bindings, new Set(expr.defs.keys()))
+
+      return extendSet(
+        fastmap(expr.defBodies, o => freeVars(o, newBindings)).reduce(extendSet),
+        freeVars(expr.body, newBindings)
+      )
+    }
 
     default:
       return assertNever(expr)

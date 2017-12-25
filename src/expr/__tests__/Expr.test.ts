@@ -31,6 +31,14 @@ describe('Expr', () => {
     expect(build().toText()).toMatchSnapshot()
   })
 
+  it('initializes defBodies correctly', () => {
+    const letExpr = eLet(new Map([
+      ['a', eLiteral(1)]
+    ]), eVar('a'))
+    expect(letExpr.defBodies).toEqual([eLiteral(1)])
+    expect(letExpr.defNames).toEqual(['a'])
+  })
+
   it('prints with .toString()', () => {
     expect(build().toString()).toMatchSnapshot()
   })

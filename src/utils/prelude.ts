@@ -226,3 +226,7 @@ export function notnull<T> (value: T | null | undefined): T {
 export function assertNever (invalidValue: never): never {
   throw new Error(`Invalid value that should never happen: ${invalidValue}`)
 }
+
+export function $$$ (): never {
+  throw new Error(`Not implemented yet`)
+}

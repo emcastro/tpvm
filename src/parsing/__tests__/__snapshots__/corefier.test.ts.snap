@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Corefier works 1`] = `
+"(Let
+     ($a_1 :
+           $z)
+     ($b_2 :
+           (Apply
+                  $__plus__
+                  $a_1
+                  $y))
+     ($c_3 :
+           (Apply
+                  $__plus__
+                  $d_4
+                  $x))
+     ($d_4 :
+           $a_1)
+     (Apply
+            $a_1
+            $a_1
+            $b_2
+            $c_3
+            $d_4
+            $x
+            $w))"
+`;

@@ -182,7 +182,7 @@ export function nodeName (node: TPNode) {
   const ruleCategory = node.contextName
 
   const ruleName = node.parser.ruleNames[node.ruleIndex]
-  return `${ruleName === ruleCategory ? ruleName : ruleCategory}:${ruleName}`
+  return ruleName === ruleCategory ? ruleName : `${ruleCategory}:${ruleName}`
 }
 
 export function nodePosition (node: TPNode) {

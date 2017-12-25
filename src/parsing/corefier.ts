@@ -21,37 +21,43 @@ class ReferenceError extends Error {
 }
 
 class VarMapping {
-  storage: Map<string, string>
 
-  constructor (storage: Map<string, string>) {
-    this.storage = storage
-  }
+  constructor (public storage: Map<string, string>, public autodef: boolean) { }
 
-  resolve (token: Token): string {
+  resolve(token: Token): string {
     const id = token.text
     const r = this.storage.get(id)
     if (r === undefined) {
-      throw new ReferenceError(`Undefined var ${id} @${position(token)}`)
+      if (this.autodef) {
+        return id
+      } else {
+        throw new ReferenceError(`Undefined var ${id} @${position(token)}`)
+      }
     }
     return r
   }
 
-  resolveIfDefined (prefix: string, token: Token): MayBe<string> {
+  resolveIfDefined(prefix: string, token: Token): MayBe<string> {
     const id = prefix + token.text
     return this.storage.get(id)
   }
 
-  resolveSpecial (token: Token, mapping: Map<number, string>): string {
+  resolveSpecial(token: Token, mapping: Map<number, string>): string {
     const id = mapping.get(token.type)
     if (id === undefined) throw Error(`Unexpected token type: ${tokenName(token)}`)
     const r = this.storage.get(id)
-    if (r === undefined) throw new ReferenceError(`Undefined var ${id}(${token.text}) @${position(token)}`)
-    return r
+    if (r === undefined) {
+      if (this.autodef) {
+        return id
+      } else {
+        throw new ReferenceError(`Undefined var ${id}(${token.text}) @${position(token)}`)
+      }
+    } return r
   }
 
   private static varCounter = 0
 
-  extends (ids: Token[]): VarMapping {
+  extends(ids: Token[]): VarMapping {
     const newMap = new Map(this.storage)
 
     const added = new Set()
@@ -63,7 +69,7 @@ class VarMapping {
       newMap.set(id.text, `${id.text}_${++VarMapping.varCounter}`)
     })
 
-    return new VarMapping(newMap)
+    return new VarMapping(newMap, this.autodef)
   }
 }
 
@@ -111,15 +117,15 @@ const unOpFunctionName = safeNewMap([
 
 type AnyDefinition = ValueDefinition | TupleDefinition | FunctionDefinition
 
-function extractValueId (def: ValueDefinition): Token {
+function extractValueId(def: ValueDefinition): Token {
   return def.typedVar().varId().token()
 }
 
-function extractTupleIds (def: TupleDefinition): Token[] {
+function extractTupleIds(def: TupleDefinition): Token[] {
   return fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
 }
 
-function extractFunctionId (def: FunctionDefinition): Token {
+function extractFunctionId(def: FunctionDefinition): Token {
   return def.functionId().token()
 }
 
@@ -129,15 +135,15 @@ const toCoreSwitchMap: { [name: string]: (expr: any, env: Env) => Expr } = {
   letExpr: letExpr,
   topLevel: letExpr,
 
-  simple (expr: Simple, env: Env): Expr { // includes parenthesis expressions
+  simple(expr: Simple, env: Env): Expr { // includes parenthesis expressions
     return toCore(expr.simpleExpr().loneChild(), env)
   },
 
-  varExpr (expr: VarExpr, env: Env): Expr {
+  varExpr(expr: VarExpr, env: Env): Expr {
     return eVar(env.resolve(expr.token())).setSource(expr)
   },
 
-  literalExpr (expr: LiteralExpr, env: Env): Expr {
+  literalExpr(expr: LiteralExpr, env: Env): Expr {
     const token = expr.token()
     switch (token.type) {
       case parser.INTEGER:
@@ -160,12 +166,12 @@ const toCoreSwitchMap: { [name: string]: (expr: any, env: Env) => Expr } = {
     }
   },
 
-  ifElseExpr (expr: IfElseExpr, env: Env): Expr {
+  ifElseExpr(expr: IfElseExpr, env: Env): Expr {
     const exprs = expr.expr()
     return eIfElse(toCore(exprs[0], env), toCore(exprs[1], env), toCore(exprs[2], env))
   },
 
-  binOp (expr: BinOp, env: Env): Expr {
+  binOp(expr: BinOp, env: Env): Expr {
     const opToken = expr.tokenAt(1)
     const varExpr = eVar(env.resolveSpecial(opToken, binOpFunctionName)).setSource(opToken)
     return eApply(varExpr, toCoreMap(expr.expr(), env))
@@ -323,8 +329,7 @@ function parseIntAuto (text: string) {
   return parseInt(match[4], 10)
 }
 
-const emptyEnv = new VarMapping(new Map())
-
-export function core (source: TPNode) {
+export function core (source: TPNode, autodef: boolean = false) {
+  const emptyEnv = new VarMapping(new Map(), autodef)
   return toCore(source, emptyEnv)
 }

@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The Parser can be tested with snapshots 1`] = `"\\"test\\""`;
+exports[`Parser can be tested with snapshots 1`] = `"\\"test\\""`;
 
-exports[`The Parser can be tested with snapshots 2`] = `"\\"\\\\\\"test\\"\\\\\\""`;
+exports[`Parser can be tested with snapshots 2`] = `"\\"\\\\\\"test\\"\\\\\\""`;
 
-exports[`The Parser parses Empty.tp correctly 1`] = `
+exports[`Parser parses Empty.tp correctly 1`] = `
 "topLevel
   simple:expr
     simpleExpr
@@ -14,7 +14,7 @@ exports[`The Parser parses Empty.tp correctly 1`] = `
 "
 `;
 
-exports[`The Parser parses EndOfLet.tp correctly 1`] = `
+exports[`Parser parses EndOfLet.tp correctly 1`] = `
 "topLevel
   definition
     valueDefinition
@@ -192,7 +192,7 @@ exports[`The Parser parses EndOfLet.tp correctly 1`] = `
 "
 `;
 
-exports[`The Parser parses Literals.tp correctly 1`] = `
+exports[`Parser parses Literals.tp correctly 1`] = `
 "topLevel
   definition
     valueDefinition
@@ -358,7 +358,7 @@ exports[`The Parser parses Literals.tp correctly 1`] = `
 "
 `;
 
-exports[`The Parser parses Priority.tp correctly 1`] = `
+exports[`Parser parses Priority.tp correctly 1`] = `
 "topLevel
   definition
     valueDefinition
@@ -1165,7 +1165,7 @@ exports[`The Parser parses Priority.tp correctly 1`] = `
 "
 `;
 
-exports[`The Parser parses SemiColon.tp correctly 1`] = `
+exports[`Parser parses SemiColon.tp correctly 1`] = `
 "topLevel
   definition
     valueDefinition
@@ -1299,7 +1299,7 @@ exports[`The Parser parses SemiColon.tp correctly 1`] = `
 "
 `;
 
-exports[`The Parser parses SimpleEverything.tp correctly 1`] = `
+exports[`Parser parses SimpleEverything.tp correctly 1`] = `
 "topLevel
   definition
     valueDefinition

@@ -3,7 +3,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { parse, dump } from '../parser'
 
-describe('The Parser', () => {
+describe('Parser', () => {
   it('can be tested with snapshots', () => {
     // Testing the representation of special strings in Jest snapshots
     expect('"test"').toMatchSnapshot()
