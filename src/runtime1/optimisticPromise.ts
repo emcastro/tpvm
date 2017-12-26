@@ -1,6 +1,3 @@
-
-import { done, trampoline, tailCall, Trampoline } from '../utils/trampoline'
-
 import * as BlueBird from 'bluebird'
 import { Strictness, StrictnessInfo } from './primitive1'
 import { Value, XValue } from './eval1'

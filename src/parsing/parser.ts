@@ -1,6 +1,6 @@
 
 const antlr4 = require('antlr4')
-const { TerminalNode, TerminalNodeImpl } = require('antlr4/tree/Tree')
+const { TerminalNodeImpl } = require('antlr4/tree/Tree')
 const { TPGrammarParser } = require('../generated/TPGrammarParser')
 const { TPGrammarLexer } = require('../generated/TPGrammarLexer')
 const { ErrorListener } = require('antlr4/error/ErrorListener')
@@ -178,7 +178,6 @@ export function position (token: { line: number, column: number, text: { length:
 }
 
 export function nodeName (node: TPNode) {
-  const ruleClass: string = (node as any).__proto__.constructor.name
   const ruleCategory = node.contextName
 
   const ruleName = node.parser.ruleNames[node.ruleIndex]

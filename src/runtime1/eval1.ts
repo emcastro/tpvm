@@ -2,12 +2,11 @@ import { done, tailCall, trampoline, Trampoline } from '../utils/trampoline'
 
 import {
   eVar, eLiteral, eLet, eLambda, eIfElse, eApply,
-  Expr, Var, Literal, Let, Lambda, IfElse, Apply, LiteralValue
+  Expr, Lambda, LiteralValue
 } from '../expr/Expr'
 
-import { primitives, Strictness, StrictnessInfo } from './primitive1'
-import { OneOrMany, XError, assertNever } from '../utils/prelude'
-import { fastmap } from '../utils/fastArray'
+import { primitives } from './primitive1'
+import { XError, assertNever } from '../utils/prelude'
 import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
 import * as _ from 'lodash'
 
@@ -152,11 +151,11 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
     case eLet.typ: {
       const newEnv = new Env(new Map(), env)
       const frame = newEnv.frame
-      for (const [k, subExpr] of expr.defs.entries()) {
+      for (const [k] of expr.defs.entries()) {
         frame.set(k, awaitingComputation as any)
       }
       for (const [k, subExpr] of expr.defs.entries()) {
-        // Launch all computations in order. Later values are not available for earliers ones
+        // Launch all computations in order. Later values are not available for earlier ones
         frame.set(k, pushingEval1(subExpr, newEnv))
       }
       return tailCall(() => eval1(expr.body, newEnv))

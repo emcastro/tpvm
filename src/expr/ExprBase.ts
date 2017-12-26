@@ -1,6 +1,6 @@
 
 import { ExprRenderer } from './ExprRenderer'
-import { iteratorToArray, OneOrMany, isNotNull, emptySet } from '../utils/prelude'
+import { OneOrMany, isNotNull, emptySet } from '../utils/prelude'
 import * as _ from 'lodash'
 import { TPNode, Token, position, nodePosition } from '../parsing/parser'
 import { Expr } from './Expr'

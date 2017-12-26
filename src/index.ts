@@ -1,11 +1,9 @@
 // import { eApply, eVar, eLet, eLiteral, eLambda, eIfElse } from './expr/Expr'
 import { parse } from './parsing/parser'
 import { core } from './parsing/corefier'
-import { pushingEval1, Env, XValue, Value } from './runtime1/eval1'
+import { pushingEval1, Env } from './runtime1/eval1'
 
 import * as fs from 'fs'
-import { Trampoline, trampoline } from './utils/trampoline'
-import { isPromise } from './runtime1/optimisticPromise'
 
 const source = fs.readFileSync('tp/test.tp', 'utf-8')
 

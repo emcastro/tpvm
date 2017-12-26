@@ -1,7 +1,6 @@
-import { Expr, Var, Literal, eVar, eApply, eIfElse, eLambda, eLet, eLiteral } from './Expr'
-import { emptyList, assertNever, emptySet, singleton, extendSet, $$$ } from '../utils/prelude'
-import { XList } from '../utils/XList'
-import { flapmap, fasteach, fastmap } from '../utils/fastArray'
+import { Expr, eVar, eApply, eIfElse, eLambda, eLet, eLiteral } from './Expr'
+import { assertNever, emptySet, singleton, extendSet } from '../utils/prelude'
+import { fastmap } from '../utils/fastArray'
 
 export function freeVars (expr: Expr, bindings: Set<string>): Set<string> {
   switch (expr.typ) {

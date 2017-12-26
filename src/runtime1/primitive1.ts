@@ -1,7 +1,6 @@
 
 import * as fs from 'fs'
-import { Value } from './eval1'
-import { equal, notnull, XError, checkCast, checkType, checkNotType } from '../utils/prelude'
+import { equal, notnull, checkCast, checkType } from '../utils/prelude'
 import { XList } from '../utils/XList'
 
 import { Promise, promisify, delay } from './optimisticPromise'
@@ -34,17 +33,17 @@ export const primitives = annotate({
     return l as XList<T>
   },
 
-  'assertTypeString': function assertTypeString_vv<T> (l: any): string {
+  'assertTypeString': function assertTypeString_vv (l: any): string {
     checkType(l, 'string')
     return l as string
   },
 
-  'assertTypeNumber': function assertTypeNumber_vv<T> (l: any): number {
+  'assertTypeNumber': function assertTypeNumber_vv (l: any): number {
     checkType(l, 'number')
     return l as number
   },
 
-  'assertTypeBoolean': function assertTypeBoolean_vv<T> (l: any): boolean {
+  'assertTypeBoolean': function assertTypeBoolean_vv (l: any): boolean {
     checkType(l, 'boolean')
     return l as boolean
   },

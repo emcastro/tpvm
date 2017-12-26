@@ -1,19 +1,19 @@
 
 import {
-  Expr, Var, Literal, Apply, IfElse, Lambda, Let, LiteralValue,
+  Expr,
   eApply, eVar, eLet, eLiteral, eLambda, eIfElse
 } from '../expr/Expr'
 
 import {
-  TPNode, Token, parser, nodeName, tokenName, position, parse, ParseError, Expr as PExpr,
-  Args, TypedParams, TypedVars, LambdaExpr, Arg, TypedParam, TypedVar,
+  TPNode, Token, parser, tokenName, position, ParseError, Expr as PExpr,
+  Args, TypedParams, TypedVars, Arg, TypedParam, TypedVar,
   LetExpr, TopLevel, Simple, VarExpr, LiteralExpr,
-  BinOp, UnOp, UserOp, Call, Definition, ValueDefinition, TupleDefinition, FunctionDefinition,
+  BinOp, UnOp, UserOp, Call, ValueDefinition, TupleDefinition, FunctionDefinition,
   IfElseExpr, Apply as PApply, ShortLambdaExpr
 } from './parser'
 
-import { fastmap, flapmap, fasteach, zip, safeNewMap } from '../utils/fastArray'
-import { switchMap2, OneOrMany, memo, MayBe, emptyList } from '../utils/prelude'
+import { fastmap, flapmap, fasteach, safeNewMap } from '../utils/fastArray'
+import { memo, MayBe, emptyList } from '../utils/prelude'
 
 const METHOD_PREFIX = '_'
 

@@ -1,7 +1,6 @@
 import SExprRenderer from '../utils/SExprRenderer'
 import { Expr, eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Binding } from './Expr'
 import { iteratorToArray } from '../utils/prelude'
-import { Token, TPNode, nodePosition, position } from '../parsing/parser'
 import * as _ from 'lodash'
 
 // Debugging print support

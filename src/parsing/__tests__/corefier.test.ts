@@ -1,6 +1,4 @@
 
-import * as fs from 'fs'
-import * as path from 'path'
 import { core } from '../corefier'
 import { parse } from '../parser'
 
