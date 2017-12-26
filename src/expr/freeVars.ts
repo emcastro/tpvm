@@ -3,7 +3,7 @@ import { emptyList, assertNever, emptySet, singleton, extendSet, $$$ } from '../
 import { XList } from '../utils/XList'
 import { flapmap, fasteach, fastmap } from '../utils/fastArray'
 
-export function freeVars(expr: Expr, bindings: Set<string>): Set<string> {
+export function freeVars (expr: Expr, bindings: Set<string>): Set<string> {
   switch (expr.typ) {
     case eLiteral.typ: {
       return emptySet()

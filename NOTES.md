@@ -19,5 +19,5 @@
 
   - L'analyse semble statique, mais la combinatoire est explosive, c'est pourquoi on la fait à l'exécution.
  
-  - On peut construire une carte des conditions d'appel et du résultat, en terme de monade. L'analyse se fait sur le type monadique (ex. _done_ ou _tailcall_). Le résultat peut être indéterminé — dans le cas des promesses et de la strictness, indéterminé est contagieux.   
+  - On peut construire une carte des conditions d'appel et du résultat, en terme de monade. L'analyse se fait sur le type monadique (ex. _done_ ou _tailcall_) du résultat. Le résultat peut être indéterminé — dans le cas des promesses et de la strictness, _indéterminé_ est contagieux.   
   L'usage de l'inlining permet d'aller plus en profondeur (comme avec la supercompilation, mais en JIT) 

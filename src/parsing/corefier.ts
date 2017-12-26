@@ -24,7 +24,7 @@ class VarMapping {
 
   constructor (public storage: Map<string, string>, public autodef: boolean) { }
 
-  resolve(token: Token): string {
+  resolve (token: Token): string {
     const id = token.text
     const r = this.storage.get(id)
     if (r === undefined) {
@@ -37,12 +37,12 @@ class VarMapping {
     return r
   }
 
-  resolveIfDefined(prefix: string, token: Token): MayBe<string> {
+  resolveIfDefined (prefix: string, token: Token): MayBe<string> {
     const id = prefix + token.text
     return this.storage.get(id)
   }
 
-  resolveSpecial(token: Token, mapping: Map<number, string>): string {
+  resolveSpecial (token: Token, mapping: Map<number, string>): string {
     const id = mapping.get(token.type)
     if (id === undefined) throw Error(`Unexpected token type: ${tokenName(token)}`)
     const r = this.storage.get(id)
@@ -57,7 +57,7 @@ class VarMapping {
 
   private static varCounter = 0
 
-  extends(ids: Token[]): VarMapping {
+  extends (ids: Token[]): VarMapping {
     const newMap = new Map(this.storage)
 
     const added = new Set()
@@ -117,15 +117,15 @@ const unOpFunctionName = safeNewMap([
 
 type AnyDefinition = ValueDefinition | TupleDefinition | FunctionDefinition
 
-function extractValueId(def: ValueDefinition): Token {
+function extractValueId (def: ValueDefinition): Token {
   return def.typedVar().varId().token()
 }
 
-function extractTupleIds(def: TupleDefinition): Token[] {
+function extractTupleIds (def: TupleDefinition): Token[] {
   return fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
 }
 
-function extractFunctionId(def: FunctionDefinition): Token {
+function extractFunctionId (def: FunctionDefinition): Token {
   return def.functionId().token()
 }
 
@@ -135,15 +135,15 @@ const toCoreSwitchMap: { [name: string]: (expr: any, env: Env) => Expr } = {
   letExpr: letExpr,
   topLevel: letExpr,
 
-  simple(expr: Simple, env: Env): Expr { // includes parenthesis expressions
+  simple (expr: Simple, env: Env): Expr { // includes parenthesis expressions
     return toCore(expr.simpleExpr().loneChild(), env)
   },
 
-  varExpr(expr: VarExpr, env: Env): Expr {
+  varExpr (expr: VarExpr, env: Env): Expr {
     return eVar(env.resolve(expr.token())).setSource(expr)
   },
 
-  literalExpr(expr: LiteralExpr, env: Env): Expr {
+  literalExpr (expr: LiteralExpr, env: Env): Expr {
     const token = expr.token()
     switch (token.type) {
       case parser.INTEGER:
@@ -166,12 +166,12 @@ const toCoreSwitchMap: { [name: string]: (expr: any, env: Env) => Expr } = {
     }
   },
 
-  ifElseExpr(expr: IfElseExpr, env: Env): Expr {
+  ifElseExpr (expr: IfElseExpr, env: Env): Expr {
     const exprs = expr.expr()
     return eIfElse(toCore(exprs[0], env), toCore(exprs[1], env), toCore(exprs[2], env))
   },
 
-  binOp(expr: BinOp, env: Env): Expr {
+  binOp (expr: BinOp, env: Env): Expr {
     const opToken = expr.tokenAt(1)
     const varExpr = eVar(env.resolveSpecial(opToken, binOpFunctionName)).setSource(opToken)
     return eApply(varExpr, toCoreMap(expr.expr(), env))
@@ -307,7 +307,7 @@ function operands (apply: PApply, env: Env) {
 function toCore (expr: TPNode, env: Env): Expr {
   //  const toCoreExpr = toCoreSwitchMap.get(expr.contextName)
   const toCoreExpr = toCoreSwitchMap[expr.contextName]
-  if (toCoreExpr == null) throw new Error(`Unsupported corefication: ${expr.contextName}`) // tlint:disable-line
+  if (toCoreExpr == null) throw new Error(`Unsupported corefication: ${expr.contextName}`) // tslint:disable-line
   return toCoreExpr(expr as any, env).setSource(expr)
 }
 
