@@ -6,7 +6,7 @@ import {
 } from '../expr/Expr'
 
 import { primitives } from './primitive1'
-import { XError, assertNever } from '../utils/prelude'
+import { XError, assertNever, by } from '../utils/prelude'
 import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
 import * as _ from 'lodash'
 
@@ -14,6 +14,7 @@ import { XList } from '../utils/XList'
 
 import { Promise as BBPromise } from 'bluebird'
 import { isSymbol } from 'util'
+import { isLambda } from '../generated/genExpr'
 
 export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Function
 
@@ -84,15 +85,21 @@ class PrimitiveError extends EvalError { }
 const stats = new Map<Expr, number>()
 
 process.on('exit', () => {
-  console.log('==Expr Stats==')
+  const entries = [...stats.entries()]
 
-  const entries = []
-  for (let e of stats.entries()) {
-    entries.push(e)
+  console.log('==Expr stats==')
+
+  for (const [expr, count] of entries.sort(by(([expr, count]) => -count))) {
+    console.log(`${count} - ${expr.debugInfo()}  ${expr.toString()}`)
   }
 
-  for (const [expr, count] of entries.sort(([expr1, count1], [expr2, count2]) => count2 - count1)) {
-    console.log(`${count} - ${expr.debugInfo()}  ${expr.toString()}`)
+  console.log('==Lambda stats==')
+
+  const lambdas = entries.map(([expr]) => expr).filter(isLambda)
+  const lambdaFreeVars = lambdas.map(expr => [expr, expr.freeVars()] as [Lambda, Set<string>])
+
+  for (const [expr, freeVars] of lambdaFreeVars.sort(by(([expr, freeVars]) => freeVars.size))) {
+    console.log(`${freeVars.size} - ${expr.debugInfo()}  ${[...freeVars]}\n ${expr.toString()}`)
   }
 })
 

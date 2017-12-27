@@ -58,6 +58,10 @@ eVar = ((varId: string) => {
 
 eVar.typ = VAR // Shortcut that avoids importing VAR
 
+export function isVar (expr: Expr): expr is Var {
+  return expr.typ === VAR
+}
+
 //
 
 export const LITERAL = 1
@@ -109,6 +113,10 @@ eLiteral = ((value: LiteralValue | symbol) => {
 }) as typeof eLiteral
 
 eLiteral.typ = LITERAL // Shortcut that avoids importing LITERAL
+
+export function isLiteral (expr: Expr): expr is Literal {
+  return expr.typ === LITERAL
+}
 
 //
 
@@ -164,6 +172,10 @@ eApply = ((operator: Expr, operands: Expr[]) => {
 }) as typeof eApply
 
 eApply.typ = APPLY // Shortcut that avoids importing APPLY
+
+export function isApply (expr: Expr): expr is Apply {
+  return expr.typ === APPLY
+}
 
 //
 
@@ -223,6 +235,10 @@ eIfElse = ((ifClause: Expr, thenClause: Expr, elseClause: Expr) => {
 
 eIfElse.typ = IFELSE // Shortcut that avoids importing IFELSE
 
+export function isIfElse (expr: Expr): expr is IfElse {
+  return expr.typ === IFELSE
+}
+
 //
 
 export const LAMBDA = 4
@@ -278,6 +294,10 @@ eLambda = ((params: string[], body: Expr) => {
 
 eLambda.typ = LAMBDA // Shortcut that avoids importing LAMBDA
 
+export function isLambda (expr: Expr): expr is Lambda {
+  return expr.typ === LAMBDA
+}
+
 //
 
 export const LET = 5
@@ -332,6 +352,10 @@ eLet = ((defs: Map<string, Expr>, body: Expr) => {
 }) as typeof eLet
 
 eLet.typ = LET // Shortcut that avoids importing LET
+
+export function isLet (expr: Expr): expr is Let {
+  return expr.typ === LET
+}
 
 //
 

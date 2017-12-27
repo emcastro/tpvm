@@ -230,3 +230,8 @@ export function assertNever (invalidValue: never): never {
 export function $$$ (): never {
   throw new Error(`Not implemented yet`)
 }
+
+/** Build a comparator for Array::sort() */
+export function by<T> (accessor: (value: T) => number): (v1: T, v2: T) => number {
+  return (v1, v2) => accessor(v1) - accessor(v2)
+}

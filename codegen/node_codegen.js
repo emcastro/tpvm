@@ -69,6 +69,10 @@ e${_.upperFirst(name)} = ((${typedAttributes.join(', ')}) => {
 
 e${_.upperFirst(name)}.typ = ${name.toUpperCase()} // Shortcut that avoids importing ${name.toUpperCase()}
 
+export function is${_.upperFirst(name)} (expr: Expr): expr is ${_.upperFirst(name)} {
+  return expr.typ === ${name.toUpperCase()}
+}
+
 //`)
 
   return sourceCode
