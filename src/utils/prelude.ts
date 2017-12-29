@@ -4,6 +4,12 @@ import * as _ from 'lodash'
 export type defined = number | string | boolean | symbol | object | null | Function
 export type anything = defined | undefined
 
+export function toString (v: anything) {
+  if (v === undefined) return 'undefined'
+  if (v === null) return 'null'
+  return v.toString()
+}
+
 /** Frozen empty list */
 const _emptyList: any[] = Object.freeze([]) as any
 export function emptyList<T> () { return _emptyList as T[] }
@@ -227,7 +233,7 @@ export function notnull<T> (value: T | null | undefined): T {
 }
 
 export function assertNever (invalidValue: never): never {
-  throw new Error(`Invalid value that should never happen: ${invalidValue}`)
+  throw new Error(`Invalid value that should never happen: ${toString(invalidValue)}`)
 }
 
 export function $$$ (): never {
