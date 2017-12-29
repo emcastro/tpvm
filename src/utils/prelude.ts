@@ -1,12 +1,14 @@
 
 import * as _ from 'lodash'
 
+export type anything = number | string | boolean | symbol | object | null | undefined
+
 /** Frozen empty list */
 const _emptyList: any[] = Object.freeze([]) as any
 export function emptyList<T> () { return _emptyList as T[] }
 
 /** Typed version of o[Symbol.iterator]() */
-export function iterator (o: any): Iterator<any> {
+export function iterator (o: any): Iterator<anything> {
   return o[Symbol.iterator]()
 }
 
@@ -80,7 +82,7 @@ export function equal (a: any, b: any): boolean {
 }
 
 /** Compare Map */
-export function mapEqual (a: Map<any, any>, b: Map<any, any>): boolean {
+export function mapEqual (a: Map<anything, anything>, b: Map<anything, anything>): boolean {
   if (b === a) return true // fast-track
 
   if (a.size !== b.size) return false
@@ -94,7 +96,7 @@ export function mapEqual (a: Map<any, any>, b: Map<any, any>): boolean {
 }
 
 /** Compare Array */
-export function arrayEqual (a: any[], b: any[]): boolean {
+export function arrayEqual (a: anything[], b: anything[]): boolean {
   if (b === a) return true // fast-track
 
   if (a.length !== b.length) return false
@@ -119,11 +121,11 @@ export function isNotNull<A> (v: A | null): v is A {
   return v !== null
 }
 
-export function switchMap<T1, R> (object: { [switchKey: string]: (switchValue: any) => R }): Map<string, (switchValue: T1) => R> {
+export function switchMap<T1, R> (object: { [switchKey: string]: (switchValue: anything) => R }): Map<string, (switchValue: T1) => R> {
   return new Map(Object.entries(object)) as Map<string, (switchValue: T1) => R>
 }
 
-export function switchMap2<T1, T2, R> (object: { [switchKey: string]: (switchValue: any, arg: T2) => R }): Map<string, (switchValue: T1, arg: T2) => R> {
+export function switchMap2<T1, T2, R> (object: { [switchKey: string]: (switchValue: anything, arg: T2) => R }): Map<string, (switchValue: T1, arg: T2) => R> {
   return new Map(Object.entries(object)) as Map<string, (switchValue: T1, arg: T2) => R>
 }
 
@@ -144,7 +146,7 @@ export class Pair<A, B> {
 export function memo<F extends Function> (f: F): F {
   const store = new Map()
 
-  return ((arg: any) => {
+  return ((arg: anything) => {
     let result = store.get(arg)
     if (result === undefined) {
       result = f(arg)
@@ -179,7 +181,7 @@ export class XError extends Error {
 type Class<T> = new (...args: any[]) => T
 
 class ClassCastError extends Error {
-  constructor (public awaitedClass: Class<any>, public value: any, public include: boolean) {
+  constructor (public awaitedClass: Class<anything>, public value: anything, public include: boolean) {
     super(`ClassCastError: awaiting ${include ? '' : 'not '}${awaitedClass.name}; found: \`${value}\`: ${value && value.constructor.name}`)
   }
 }
@@ -192,7 +194,7 @@ export function checkCast<T> (value: T, classConstructor: Class<T>) {
   }
 }
 
-export function checkNotCast (value: any, classConstructor: Class<any>) {
+export function checkNotCast (value: anything, classConstructor: Class<anything>) {
   if (CHECK_CAST && (value instanceof classConstructor)) {
     throw new ClassCastError(classConstructor, value, false)
   }
@@ -206,13 +208,13 @@ class TypeCastError extends Error {
   }
 }
 
-export function checkType (value: any, typeName: TypeName) {
+export function checkType (value: anything, typeName: TypeName) {
   if (CHECK_CAST && (typeof value !== typeName)) { // tslint:disable-line
     throw new TypeCastError(typeName, value, true)
   }
 }
 
-export function checkNotType (value: any, typeName: TypeName) {
+export function checkNotType (value: anything, typeName: TypeName) {
   if (CHECK_CAST && !(typeof value !== typeName)) { // tslint:disable-line
     throw new TypeCastError(typeName, value, false)
   }

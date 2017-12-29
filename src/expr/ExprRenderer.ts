@@ -1,6 +1,6 @@
 import SExprRenderer from '../utils/SExprRenderer'
 import { Expr, eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Binding } from './Expr'
-import { iteratorToArray } from '../utils/prelude'
+import { iteratorToArray, anything } from '../utils/prelude'
 import * as _ from 'lodash'
 
 // Debugging print support
@@ -23,7 +23,7 @@ function subExprs (expr: Apply | IfElse | Let | Lambda): (Expr | Binding)[] {
   }
 }
 
-export class ExprRenderer extends SExprRenderer<Expr | Binding, any> {
+export class ExprRenderer extends SExprRenderer<Expr | Binding, anything> {
   splitNode (node: Expr | Binding): string | [string, (Expr | Binding)[]] {
     if (Array.isArray(node)) {
       const [v, e] = node
@@ -65,7 +65,7 @@ export class ExprRenderer extends SExprRenderer<Expr | Binding, any> {
     }
   }
 
-  escape (o: any): string {
+  escape (o: anything): string {
     if (typeof o === 'string' && _.startsWith(o, '$')) {
       const s = JSON.stringify(o)
       return s.slice(1, s.length - 1)
