@@ -83,16 +83,23 @@ class EvalError extends XError {
 
 class PrimitiveError extends EvalError { }
 
-const calledLambda = new Map<Lambda, number>()
+const calledLambdaStats = new Map<Lambda, number>()
+const callSiteStats = new Map<Apply, number>()
 
 process.on('exit', () => {
-  const lambdas = [...calledLambda.entries()]
+  const lambdas = [...calledLambdaStats.entries()]
+  const callSites = [...callSiteStats.entries()]
+
+  console.log('==Callsite stats==')
+  callSites.sort(by(([expr, count]) => -count)).forEach(([site, count]) => {
+    console.log(`${count} -- ${site.debugInfo()}`)
+  })
 
   console.log('==Lambda stats==')
 
-  for (const [expr, count] of lambdas.sort(by(([expr, count]) => -count))) {
+  lambdas.sort(by(([expr, count]) => -count)).forEach(([expr, count]) => {
     console.log(`${count} - ${expr.debugInfo()}  ${expr.toString()}`)
-  }
+  })
 
   console.log('==Lambda stats==')
 
@@ -191,14 +198,16 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
   }
 }
 
-function applyClosure (op: Closure, ops: Expr[], env: Env, debugExpr: Apply) {
+function applyClosure (op: Closure, ops: Expr[], env: Env, callSite: Apply) {
 
-  calledLambda.set(op.lambda, (calledLambda.get(op.lambda) || 0) + 1)
+  calledLambdaStats.set(op.lambda, (calledLambdaStats.get(op.lambda) || 0) + 1)
+
+  callSiteStats.set(callSite, (callSiteStats.get(callSite) || 0) + 1)
 
   const frame = new Map()
   const params = op.lambda.params
   if (params.length !== ops.length) {
-    throw new EvalError(`Call argument count ${ops.length} differs from closure parameter count ${params.length}`, debugExpr)
+    throw new EvalError(`Call argument count ${ops.length} differs from closure parameter count ${params.length}`, callSite)
   }
 
   for (let i = 0; i < ops.length; i++) {
