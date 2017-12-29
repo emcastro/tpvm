@@ -15,6 +15,7 @@ import { XList } from '../utils/XList'
 import { Promise as BBPromise } from 'bluebird'
 import { isSymbol } from 'util'
 import { isLambda } from '../generated/genExpr'
+import { Spy } from '../utils/spy'
 
 export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Function
 
@@ -269,24 +270,26 @@ let i = 0
 /**
  * For cases when proper tail call is not available, push a diagnosis try-catch on the stack
  */
-export function pushingEval1 (expr: Expr, env: Env): XValue {
-  try {
-    const local = i++
-    if (LOG_IN_OUT) {
-      console.log('>>>' + local, expr.debugInfo())
-    }
-    const result = trampoline(eval1(expr, env))
-    if (LOG_IN_OUT) {
+class PushingEval1 {
+
+  @Spy(
+    (expr) => [expr.debugInfo()],
+    (result) => {
       let resultInfo = result
       if (resultInfo instanceof Closure) resultInfo = '<Closure>'
       if (resultInfo instanceof Function) resultInfo = '<Function>'
       if (resultInfo instanceof BBPromise) resultInfo = '<Promise>'
       if (resultInfo instanceof XList) resultInfo = resultInfo.toString()
-      console.log('<<<' + local, expr.debugInfo(), resultInfo)
+      return resultInfo
+    })
+  static pushingEval1 (expr: Expr, env: Env): XValue {
+    try {
+      return trampoline(eval1(expr, env))
+    } catch (e) {
+      // if (e instanceof RangeError) throw e // fast-track
+      throw new EvalError(undefined, expr, e)
     }
-    return result
-  } catch (e) {
-    // if (e instanceof RangeError) throw e // fast-track
-    throw new EvalError(undefined, expr, e)
   }
 }
+
+export const pushingEval1 = PushingEval1.pushingEval1

@@ -1,21 +1,26 @@
 
+type Deco = (target: any, propertyKey: string, descriptor: PropertyDescriptor) => PropertyDescriptor
+
 // Spy methods input and result
 const LOG: boolean = true
 
 function mkSpy (showCall: boolean, showResult: boolean) {
-  return (argFormatter = (...args: any[]) => args, resultFormatter = (result: any) => result) => {
+  return (argFormatter?: (...args: any[]) => any[], resultFormatter?: (result: any) => any) => {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
       if (!LOG) return descriptor
 
       const original = descriptor.value
 
+      const _argFormatter = argFormatter || ((...arg) => arg)
+      const _resultFormatter = resultFormatter || (result => result)
+
       descriptor.value = function (this: any, ...args: any[]) {
         if (showCall) {
-          console.log(`->${this.constructor.name}#${propertyKey}`, argFormatter.apply(this, args))
+          console.log(`->${this.constructor.name}#${propertyKey}`, _argFormatter.apply(this, args))
         }
         const result = original.call(this, ...args)
         if (showResult) {
-          console.log(`<-${this.constructor.name}#${propertyKey}`, argFormatter.apply(this, args), ' => ', resultFormatter(result))
+          console.log(`<-${this.constructor.name}#${propertyKey}`, _argFormatter.apply(this, args), ' => ', _resultFormatter(result))
         }
         return result
       }
@@ -27,7 +32,7 @@ function mkSpy (showCall: boolean, showResult: boolean) {
 
 export const Spy = mkSpy(true, true)
 
-export const SpyArgs = mkSpy(true, false)
+export const SpyArgs: ((argFormatter: (...args: any[]) => any[]) => Deco) = mkSpy(true, false) // only first argument matters
 
 export const SpyResult = mkSpy(false, true)
 
