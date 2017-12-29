@@ -2,7 +2,7 @@ import { done, tailCall, trampoline, Trampoline } from '../utils/trampoline'
 
 import {
   eVar, eLiteral, eLet, eLambda, eIfElse, eApply,
-  Expr, Lambda, LiteralValue
+  Expr, Lambda, LiteralValue, Apply
 } from '../expr/Expr'
 
 import { primitives } from './primitive1'
@@ -185,81 +185,89 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
       }))
 
     case eApply.typ:
-      const applyExpr = expr
-      return mixDone(then(pushingEval1(expr.operator, env), (op) => {
-        const ops = applyExpr.operands
-        if (op instanceof Closure) {
-
-          stats.set(op.lambda, (stats.get(op.lambda) || 0) + 1)
-
-          const frame = new Map()
-          const params = op.lambda.params
-          if (params.length !== ops.length) {
-            throw new EvalError(`Call argument count ${ops.length} differs from closure parameter count ${params.length}`, expr)
-          }
-
-          for (let i = 0; i < ops.length; i++) {
-            frame.set(params[i], pushingEval1(ops[i], env))
-          }
-          const newEnv: Env = new Env(frame, op.defEnv)
-
-          return tailCall(() => eval1(op.lambda.body, newEnv))
-
-        } else {
-          // Special case: primitive, array or object access
-
-          // Parameter evaluation
-          const args: XValue[] = []  // inlined Array.map
-          for (let i = 0; i < ops.length; i++) {
-            args.push(pushingEval1(ops[i], env))
-          }
-
-          // Primitive function (from Literal)
-          if (typeof op === 'function') {
-            if (op.length !== args.length) {
-              if (!(op as any).varArgs) {
-                throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} of primitive`, expr)
-              }
-            }
-            try {
-              return done(callPrimitive(op, args, 0)) // ATTENTION: in-place modification of args
-            } catch (e) {
-              throw new PrimitiveError(undefined, expr, e)
-            }
-          } else {
-            // Other cases: array or object
-
-            if (args.length === 1) {
-              // Array-like access or method
-              return mixDone(then(args[0], (arg1) => {
-                if (typeof arg1 === 'number') {
-                  if (op instanceof XList) {
-                    // AppendList access
-                    return done(op.get(arg1))
-                  } else if (Array.isArray(op)) {
-                    // Array access
-                    return done(op[arg1])
-                  }
-                }
-                if (typeof arg1 === 'string') {
-                  // Method call
-                  const generic: any = op
-                  if (generic[arg1] !== undefined) {
-                    return done(generic[arg1] as XValue)
-                  }
-                }
-                throw new EvalError(`No method or special application available: ${op} ${arg1}`, expr)
-              }))
-            }
-
-            throw new EvalError('No method or special application available', expr)
-          }
-        }
-      }))
+      return apply(expr, env)
 
     default:
       return assertNever(expr)
   }
+}
+
+function applyClosure (op: Closure, ops: Expr[], env: Env, debugExpr: Apply) {
+
+  stats.set(op.lambda, (stats.get(op.lambda) || 0) + 1)
+
+  const frame = new Map()
+  const params = op.lambda.params
+  if (params.length !== ops.length) {
+    throw new EvalError(`Call argument count ${ops.length} differs from closure parameter count ${params.length}`, debugExpr)
+  }
+
+  for (let i = 0; i < ops.length; i++) {
+    frame.set(params[i], pushingEval1(ops[i], env))
+  }
+  const newEnv: Env = new Env(frame, op.defEnv)
+
+  return tailCall(() => eval1(op.lambda.body, newEnv))
+
+}
+
+function apply (expr: Apply, env: Env) {
+  const applyExpr = expr
+  return mixDone(then(pushingEval1(expr.operator, env), (op) => {
+    const ops = applyExpr.operands
+    if (op instanceof Closure) {
+      return applyClosure(op, ops, env, expr)
+    } else {
+      // Special case: primitive, array or object access
+
+      // Parameter evaluation
+      const args: XValue[] = []  // inlined Array.map
+      for (let i = 0; i < ops.length; i++) {
+        args.push(pushingEval1(ops[i], env))
+      }
+
+      // Primitive function (from Literal)
+      if (typeof op === 'function') {
+        if (op.length !== args.length) {
+          if (!(op as any).varArgs) {
+            throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} of primitive`, expr)
+          }
+        }
+        try {
+          return done(callPrimitive(op, args, 0)) // ATTENTION: in-place modification of args
+        } catch (e) {
+          throw new PrimitiveError(undefined, expr, e)
+        }
+      } else {
+        // Other cases: array or object
+
+        if (args.length === 1) {
+          // Array-like access or method
+          return mixDone(then(args[0], (arg1) => {
+            if (typeof arg1 === 'number') {
+              if (op instanceof XList) {
+                // AppendList access
+                return done(op.get(arg1))
+              } else if (Array.isArray(op)) {
+                // Array access
+                return done(op[arg1])
+              }
+            }
+            if (typeof arg1 === 'string') {
+              // Method call
+              const generic: any = op
+              if (generic[arg1] !== undefined) {
+                return done(generic[arg1] as XValue)
+              }
+            }
+            throw new EvalError(`No method or special application available: ${op} ${arg1}`, expr)
+          }))
+        }
+
+        throw new EvalError('No method or special application available', expr)
+      }
+    }
+  }))
 }
 
 /**
