@@ -83,21 +83,20 @@ class EvalError extends XError {
 
 class PrimitiveError extends EvalError { }
 
-const stats = new Map<Expr, number>()
+const calledLambda = new Map<Lambda, number>()
 
 process.on('exit', () => {
-  const entries = [...stats.entries()]
+  const lambdas = [...calledLambda.entries()]
 
-  console.log('==Expr stats==')
+  console.log('==Lambda stats==')
 
-  for (const [expr, count] of entries.sort(by(([expr, count]) => -count))) {
+  for (const [expr, count] of lambdas.sort(by(([expr, count]) => -count))) {
     console.log(`${count} - ${expr.debugInfo()}  ${expr.toString()}`)
   }
 
   console.log('==Lambda stats==')
 
-  const lambdas = entries.map(([expr]) => expr).filter(isLambda)
-  const lambdaFreeVars = lambdas.map(expr => [expr, expr.freeVars()] as [Lambda, Set<string>])
+  const lambdaFreeVars = lambdas.map(([expr]) => [expr, expr.freeVars()] as [Lambda, Set<string>])
 
   for (const [expr, freeVars] of lambdaFreeVars.sort(by(([expr, freeVars]) => freeVars.size))) {
     console.log(`${freeVars.size} - ${expr.debugInfo()}  ${[...freeVars]}\n ${expr.toString()}`)
@@ -194,7 +193,7 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
 
 function applyClosure (op: Closure, ops: Expr[], env: Env, debugExpr: Apply) {
 
-  stats.set(op.lambda, (stats.get(op.lambda) || 0) + 1)
+  calledLambda.set(op.lambda, (calledLambda.get(op.lambda) || 0) + 1)
 
   const frame = new Map()
   const params = op.lambda.params
