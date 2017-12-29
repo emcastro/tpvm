@@ -32,10 +32,10 @@ export class XList<T> {
   // @Assert(function (this: AppendList<any>, that: AppendList<any>, result: AppendList<any>) {
   //   return arrayEqual([...this.toList(), ...that.toList()], result.toList())
   // })
-  // @SpyResult(
-  //   function (this: AppendList<any>, that: AppendList<any>) { return [this.toString(), that.toString()] },
-  //   function (result: AppendList<any>) { return result.toString() }
-  // )
+  // @SpyResult({
+  //   in (this: AppendList<any>, that: AppendList<any>) { return [this.toString(), that.toString()] },
+  //   out (result: AppendList<any>) { return result.toString() }
+  // })
   concat (that: XList<T>): XList<T> {
     if (this.from !== 0 || this.to !== this.backend.length) {
       // An append or slice has already occurred

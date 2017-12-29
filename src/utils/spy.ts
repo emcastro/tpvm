@@ -4,23 +4,39 @@ type Deco = (target: any, propertyKey: string, descriptor: PropertyDescriptor) =
 // Spy methods input and result
 const LOG: boolean = true
 
+type ArgFormatter = (...args: any[]) => any[]
+type ResultFormatter = (result: any) => any
+
+interface SpyArgsParameters {
+  name?: string
+  in?: ArgFormatter
+}
+
+interface SpyParameters extends SpyArgsParameters {
+  out?: ResultFormatter
+}
+
+let spyId = 0
+
 function mkSpy (showCall: boolean, showResult: boolean) {
-  return (argFormatter?: (...args: any[]) => any[], resultFormatter?: (result: any) => any) => {
+  return (params: SpyParameters) => {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
       if (!LOG) return descriptor
 
       const original = descriptor.value
 
-      const _argFormatter = argFormatter || ((...arg) => arg)
-      const _resultFormatter = resultFormatter || (result => result)
+      const name = params.name || `${target.constructor.name}#${propertyKey}`
+      const argFormatter = params.in || ((...arg) => arg)
+      const resultFormatter = params.out || (result => result)
 
       descriptor.value = function (this: any, ...args: any[]) {
+        const i = spyId++
         if (showCall) {
-          console.log(`->${this.constructor.name}#${propertyKey}`, _argFormatter.apply(this, args))
+          console.log(`->${name} ${i}`, argFormatter.apply(this, args))
         }
         const result = original.call(this, ...args)
         if (showResult) {
-          console.log(`<-${this.constructor.name}#${propertyKey}`, _argFormatter.apply(this, args), ' => ', _resultFormatter(result))
+          console.log(`<-${name} ${i}`, argFormatter.apply(this, args), ' => ', resultFormatter(result))
         }
         return result
       }
@@ -32,7 +48,7 @@ function mkSpy (showCall: boolean, showResult: boolean) {
 
 export const Spy = mkSpy(true, true)
 
-export const SpyArgs: ((argFormatter: (...args: any[]) => any[]) => Deco) = mkSpy(true, false) // only first argument matters
+export const SpyArgs: (p: SpyArgsParameters) => Deco = mkSpy(true, false)
 
 export const SpyResult = mkSpy(false, true)
 

@@ -138,8 +138,6 @@ const awaitingComputation = Symbol('awaitingComputation')
  * Simple strict evaluation
  */
 export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
-  // console.log('+++', expr.debugInfo())
-
   switch (expr.typ) {
     case eVar.typ:
       return done(env.lookup(expr.varId))
@@ -264,24 +262,23 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
   }
 }
 
-export let LOG_IN_OUT: boolean = false
-let i = 0
-
 /**
  * For cases when proper tail call is not available, push a diagnosis try-catch on the stack
  */
 class PushingEval1 {
 
-  @Spy(
-    (expr) => [expr.debugInfo()],
-    (result) => {
-      let resultInfo = result
-      if (resultInfo instanceof Closure) resultInfo = '<Closure>'
-      if (resultInfo instanceof Function) resultInfo = '<Function>'
-      if (resultInfo instanceof BBPromise) resultInfo = '<Promise>'
-      if (resultInfo instanceof XList) resultInfo = resultInfo.toString()
-      return resultInfo
-    })
+  // @Spy({
+  //   name: 'Eval',
+  //   in (expr) { return [expr.debugInfo()] },
+  //   out (result) {
+  //     let resultInfo = result
+  //     if (resultInfo instanceof Closure) resultInfo = '<Closure>'
+  //     if (resultInfo instanceof Function) resultInfo = '<Function>'
+  //     if (resultInfo instanceof BBPromise) resultInfo = '<Promise>'
+  //     if (resultInfo instanceof XList) resultInfo = resultInfo.toString()
+  //     return resultInfo
+  //   }
+  // })
   static pushingEval1 (expr: Expr, env: Env): XValue {
     try {
       return trampoline(eval1(expr, env))
