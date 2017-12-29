@@ -1,7 +1,8 @@
 
 import * as _ from 'lodash'
 
-export type anything = number | string | boolean | symbol | object | null | undefined
+export type defined = number | string | boolean | symbol | object | null | Function
+export type anything = defined | undefined
 
 /** Frozen empty list */
 const _emptyList: any[] = Object.freeze([]) as any
@@ -143,10 +144,10 @@ export class Pair<A, B> {
   }
 }
 
-export function memo<F extends Function> (f: F): F {
-  const store = new Map()
+export function memo<V, R extends defined> (f: (v: V) => R): (v: V) => R {
+  const store = new Map<V, R>()
 
-  return ((arg: anything) => {
+  return ((arg: V) => {
     let result = store.get(arg)
     if (result === undefined) {
       result = f(arg)
@@ -154,7 +155,7 @@ export function memo<F extends Function> (f: F): F {
     }
 
     return result
-  }) as any
+  })
 }
 
 /** Error with cascading cause error */
