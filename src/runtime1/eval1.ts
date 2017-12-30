@@ -81,29 +81,37 @@ class PrimitiveError extends EvalError { }
 
 const calledLambdaStats = counter<Lambda>(Map)
 const callSiteStats = counter<Apply>(Map)
+const callSiteTargetStats = counter<[Apply, any]>(MultiKeyMap)
 
 process.on('exit', () => {
   const lambdas = [...calledLambdaStats]
   const callSites = [...callSiteStats]
 
   console.log('==Callsite stats==')
-  callSites.sort(by(([expr, count]) => -count)).forEach(([site, count]) => {
+  callSites.sort(by(([_, count]) => -count)).forEach(([site, count]) => {
     console.log(`${count} -- ${site.debugInfo()}`)
   })
 
-  console.log('==Lambda stats==')
+  console.log('==Lambda target stats==')
 
-  lambdas.sort(by(([expr, count]) => -count)).forEach(([expr, count]) => {
+  lambdas.sort(by(([_, count]) => -count)).forEach(([expr, count]) => {
     console.log(`${count} - ${expr.debugInfo()}  ${expr.toString()}`)
   })
 
-  console.log('==Lambda stats==')
+  console.log('==Freevars stats==')
 
   const lambdaFreeVars = lambdas.map(([expr]) => [expr, expr.freeVars()] as [Lambda, Set<string>])
 
-  for (const [expr, freeVars] of lambdaFreeVars.sort(by(([expr, freeVars]) => freeVars.size))) {
+  lambdaFreeVars.sort(by(([_, freeVars]) => freeVars.size)).forEach(([expr, freeVars]) => {
     console.log(`${freeVars.size} - ${expr.debugInfo()}  ${[...freeVars]}\n ${expr.toString()}`)
-  }
+  })
+
+  console.log('==Callsite-target stats==')
+
+  const callSiteTargets = [...callSiteTargetStats]
+  callSiteTargets.sort(by(([_, count]) => -count)).forEach(([[callSite, target], count]) => {
+    console.log(`${target} <- ${callSite} -- ${count}`)
+  })
 })
 
 /**
@@ -196,9 +204,8 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
 
 function applyClosure (op: Closure, ops: Expr[], env: Env, callSite: Apply) {
 
-  calledLambdaStats.set(op.lambda, (calledLambdaStats.get(op.lambda) || 0) + 1)
-
-  callSiteStats.set(callSite, (callSiteStats.get(callSite) || 0) + 1)
+  calledLambdaStats.inc(op.lambda)
+  callSiteStats.inc(callSite)
 
   const frame = new Map()
   const params = op.lambda.params
@@ -215,13 +222,13 @@ function applyClosure (op: Closure, ops: Expr[], env: Env, callSite: Apply) {
 
 }
 
-const callSiteStats2 = new MultiKeyMap<[Apply, Value], number>()
-
 function apply (expr: Apply, env: Env) {
   const applyExpr = expr
   return mixDone(then(pushingEval1(expr.operator, env), (op) => {
     const ops = applyExpr.operands
     if (op instanceof Closure) {
+      callSiteTargetStats.inc([expr, op.lambda]) // TODO: traiter les différentes closure de même lambda (elles sont nombreuses)
+
       return applyClosure(op, ops, env, expr)
     } else {
       // Special case: primitive, array or object access
@@ -234,6 +241,8 @@ function apply (expr: Apply, env: Env) {
 
       // Primitive function (from Literal)
       if (typeof op === 'function') {
+        callSiteTargetStats.inc([expr, op.name])
+
         if (op.length !== args.length) {
           if (!(op as any).varArgs) {
             throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} of primitive`, expr)
@@ -251,6 +260,7 @@ function apply (expr: Apply, env: Env) {
           // Array-like access or method
           return mixDone(then(args[0], (arg1) => {
             if (typeof arg1 === 'number') {
+              callSiteTargetStats.inc([expr, '<list>'])
               if (op instanceof XList) {
                 // AppendList access
                 return done(op.get(arg1))
@@ -260,6 +270,8 @@ function apply (expr: Apply, env: Env) {
               }
             }
             if (typeof arg1 === 'string') {
+              callSiteTargetStats.inc([expr, '<js-object>'])
+
               // Method call
               const generic: any = op
               if (generic[arg1] !== undefined) {
