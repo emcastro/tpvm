@@ -6,7 +6,7 @@ import {
 } from '../expr/Expr'
 
 import { primitives } from './primitive1'
-import { XError, assertNever, by } from '../utils/prelude'
+import { XError, assertNever, by, toString } from '../utils/prelude'
 import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
 import * as _ from 'lodash'
 
@@ -16,6 +16,7 @@ import { Promise as BBPromise } from 'bluebird'
 import { isSymbol } from 'util'
 import { isLambda } from '../generated/genExpr'
 import { Spy } from '../utils/spy'
+import { MultiKeyMap, counter } from '../utils/maps'
 
 export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Function
 
@@ -27,13 +28,8 @@ interface ValueAppendList extends XList<XValue> { }
 type Frame = Map<string, XValue>
 
 export class Env { // export for building root env
-  frame: Frame
-  parent?: Env
 
-  constructor (frame: Frame, parent?: Env) {
-    this.frame = frame
-    this.parent = parent
-  }
+  constructor (public frame: Frame, public parent?: Env) { }
 
   lookup (varId: string): XValue {
     // There should not be undefined variable at this level
@@ -83,12 +79,12 @@ class EvalError extends XError {
 
 class PrimitiveError extends EvalError { }
 
-const calledLambdaStats = new Map<Lambda, number>()
-const callSiteStats = new Map<Apply, number>()
+const calledLambdaStats = counter<Lambda>(Map)
+const callSiteStats = counter<Apply>(Map)
 
 process.on('exit', () => {
-  const lambdas = [...calledLambdaStats.entries()]
-  const callSites = [...callSiteStats.entries()]
+  const lambdas = [...calledLambdaStats]
+  const callSites = [...callSiteStats]
 
   console.log('==Callsite stats==')
   callSites.sort(by(([expr, count]) => -count)).forEach(([site, count]) => {
@@ -186,7 +182,7 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
             return tailCall(() => eval1(ifExpr.elseClause, env))
           }
         } else {
-          throw new EvalError(`Illegal value in if: ${b}`, expr)
+          throw new EvalError(`Illegal value in if: ${toString(b)}`, expr)
         }
       }))
 
@@ -218,6 +214,8 @@ function applyClosure (op: Closure, ops: Expr[], env: Env, callSite: Apply) {
   return tailCall(() => eval1(op.lambda.body, newEnv))
 
 }
+
+const callSiteStats2 = new MultiKeyMap<[Apply, Value], number>()
 
 function apply (expr: Apply, env: Env) {
   const applyExpr = expr
@@ -268,7 +266,7 @@ function apply (expr: Apply, env: Env) {
                 return done(generic[arg1] as XValue)
               }
             }
-            throw new EvalError(`No method or special application available: ${op} ${arg1}`, expr)
+            throw new EvalError(`No method or special application available: ${op} ${toString(arg1)}`, expr)
           }))
         }
 
