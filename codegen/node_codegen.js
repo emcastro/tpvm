@@ -24,9 +24,9 @@ export const ${name.toUpperCase()} = ${typ}
 export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
   // generated code
 
-  typ: typeof ${name.toUpperCase()}
+  readonly typ: typeof ${name.toUpperCase()}
 
-  ${_.join(typedAttributes, '\n  ')}
+  ${_.join(typedAttributes.map(x => `readonly ${x}`), '\n  ')}
 
   constructor (${typedAttributes.join(', ')}) {
     // generated code

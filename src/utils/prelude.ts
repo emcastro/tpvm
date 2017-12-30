@@ -141,8 +141,8 @@ export type MayBe<T> = T | undefined
 export type OneOrMany<T> = T | T[]
 
 export class Pair<A, B> {
-  _0: A
-  _1: B
+  readonly _0: A
+  readonly _1: B
 
   constructor (a: A, b: B) {
     this._0 = a

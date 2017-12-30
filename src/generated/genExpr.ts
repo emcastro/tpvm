@@ -13,9 +13,9 @@ export const VAR = 0
 export class Var extends ExprBase {
   // generated code
 
-  typ: typeof VAR
+  readonly typ: typeof VAR
 
-  varId: string
+  readonly varId: string
 
   constructor (varId: string) {
     // generated code
@@ -69,9 +69,9 @@ export const LITERAL = 1
 export class Literal extends ExprBase {
   // generated code
 
-  typ: typeof LITERAL
+  readonly typ: typeof LITERAL
 
-  value: LiteralValue | symbol
+  readonly value: LiteralValue | symbol
 
   constructor (value: LiteralValue | symbol) {
     // generated code
@@ -125,10 +125,10 @@ export const APPLY = 2
 export class Apply extends ExprBase {
   // generated code
 
-  typ: typeof APPLY
+  readonly typ: typeof APPLY
 
-  operator: Expr
-  operands: Expr[]
+  readonly operator: Expr
+  readonly operands: Expr[]
 
   constructor (operator: Expr, operands: Expr[]) {
     // generated code
@@ -184,11 +184,11 @@ export const IFELSE = 3
 export class IfElse extends ExprBase {
   // generated code
 
-  typ: typeof IFELSE
+  readonly typ: typeof IFELSE
 
-  ifClause: Expr
-  thenClause: Expr
-  elseClause: Expr
+  readonly ifClause: Expr
+  readonly thenClause: Expr
+  readonly elseClause: Expr
 
   constructor (ifClause: Expr, thenClause: Expr, elseClause: Expr) {
     // generated code
@@ -246,10 +246,10 @@ export const LAMBDA = 4
 export class Lambda extends ExprBase {
   // generated code
 
-  typ: typeof LAMBDA
+  readonly typ: typeof LAMBDA
 
-  params: string[]
-  body: Expr
+  readonly params: string[]
+  readonly body: Expr
 
   constructor (params: string[], body: Expr) {
     // generated code
@@ -305,10 +305,10 @@ export const LET = 5
 export class Let extends ExprBase {
   // generated code
 
-  typ: typeof LET
+  readonly typ: typeof LET
 
-  defs: Map<string, Expr>
-  body: Expr
+  readonly defs: Map<string, Expr>
+  readonly body: Expr
 
   constructor (defs: Map<string, Expr>, body: Expr) {
     // generated code
