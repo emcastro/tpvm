@@ -1,4 +1,4 @@
-// Generated from /media/ecastro/Store/tpvm/codegen/TPGrammar.g4 by ANTLR 4.7
+// Generated from /home/ecastro/tpvm/codegen/TPGrammar.g4 by ANTLR 4.7
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 var grammarFileName = "TPGrammar.g4";
