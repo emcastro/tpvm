@@ -22,12 +22,12 @@ TPGrammarParser.prototype.newline = function () {
   return nl
 }
 
-function annotateParserWithContextName (parser: any) {
+function annotateParserWithContextName(parser: any) {
   const suffix = 'Context'
 
   for (let attrName in parser) {
     if (attrName.endsWith(suffix)) {
-      const contextName = _.lowerFirst(attrName.slice(0, attrName.length - suffix.length))
+      const contextName = attrName[0].toLowerCase() + attrName.slice(1, attrName.length - suffix.length)
       parser[attrName].prototype.contextName = contextName
     }
   }
@@ -165,7 +165,7 @@ export type TPNode = (
 
 // Information accessors
 
-export function tokenName (token: Token) {
+export function tokenName(token: Token) {
   const symbolic = token.source[0].symbolicNames[token.type]
   if (symbolic !== null) return symbolic
   const literal = token.source[0].literalNames[token.type]
@@ -173,25 +173,25 @@ export function tokenName (token: Token) {
   return `${token.text}#${token.type}`
 }
 
-export function position (token: { line: number, column: number, text: { length: number } }) {
+export function position(token: { line: number, column: number, text: { length: number } }) {
   return `${token.line}:${token.column + 1}-${token.column + 1 + token.text.length}`
 }
 
-export function nodeName (node: TPNode) {
+export function nodeName(node: TPNode) {
   const ruleCategory = node.contextName
 
   const ruleName = node.parser.ruleNames[node.ruleIndex]
   return ruleName === ruleCategory ? ruleName : `${ruleCategory}:${ruleName}`
 }
 
-export function nodePosition (node: TPNode) {
+export function nodePosition(node: TPNode) {
   if (node.start.line === node.stop.line) {
     return `${node.start.line}:${node.start.column + 1}-${node.stop.column + 1 + node.stop.text.length}`
   }
   return `${node.start.line}:${node.start.column + 1}-${node.stop.line}:${node.stop.column + 1 + node.stop.text.length}`
 }
 
-export function dump (node: TPNode, tab?: string): string {
+export function dump(node: TPNode, tab?: string): string {
   const _tab = tab || ''
   const nextTab = _tab + '  '
   let line = `${_tab}${nodeName(node)}\n`
@@ -209,7 +209,7 @@ export function dump (node: TPNode, tab?: string): string {
   return line
 }
 
-export function parse (input: string): TPNode {
+export function parse(input: string): TPNode {
   const chars = new antlr4.InputStream(input)
   const lexer = new TPGrammarLexer(chars)
   const tokens = new antlr4.CommonTokenStream(lexer)
@@ -234,7 +234,7 @@ export function parse (input: string): TPNode {
 export class ParseError extends Error {
   node: TPNode
 
-  constructor (msg: string, node: TPNode) {
+  constructor(msg: string, node: TPNode) {
     super(`${msg} ${nodePosition(node)}`)
     this.node = node
   }

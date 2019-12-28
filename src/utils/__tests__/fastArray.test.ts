@@ -1,12 +1,12 @@
 
-import * as _ from 'lodash'
+import times from 'lodash/times'
 
 import { fastmap, fasteach, flapmap, zip } from '../fastArray'
 
 describe('fastmap', () => {
   it('works like Array.map on non-spare arrays', () => {
     for (let i = 0; i < 15; i++) {
-      const list = _.times(i)
+      const list = times(i)
       expect(fastmap(list, x => `(${x})`)).toEqual(list.map(x => `(${x})`))
     }
   })
@@ -15,7 +15,7 @@ describe('fastmap', () => {
 describe('fasteach', () => {
   it('works like Array.forEach on non-spare arrays', () => {
     for (let i = 0; i < 15; i++) {
-      const list = _.times(i)
+      const list = times(i)
 
       const foreachResult: string[] = []
       const arrayForEachResult: string[] = []
@@ -34,18 +34,18 @@ describe('flatmap', () => {
 
   it('works like _.flatMap', () => {
     for (let i = 0; i < 5; i++) {
-      const list = _.times(i)
+      const list = times(i)
 
-      const flattened = _.flatMap(list, x => _.times(x))
-      expect(flapmap(list, x => _.times(x))).toEqual(flattened)
+      const flattened = list.flatMap(x => times(x))
+      expect(flapmap(list, x => times(x))).toEqual(flattened)
     }
   })
 
   it('works like _.map', () => {
     for (let i = 0; i < 5; i++) {
-      const list = _.times(i)
+      const list = times(i)
 
-      const flattened = _.map(list, x => x * 10)
+      const flattened = list.map(x => x * 10)
       expect(flapmap(list, x => x * 10)).toEqual(flattened)
     }
   })

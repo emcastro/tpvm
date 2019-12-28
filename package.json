@@ -12,10 +12,10 @@
     "build": "gulp clean build --series",
     "pretest": "npm run build",
     "test": "jest --coverage",
+    "autobuild": "gulp clean smallBuild watch --series",
 
     "lint": "tslint -p tsconfig.json",
     "lint-fix": "tslint -p tsconfig.json --type-check --fix",
-    "autobuild": "npm-run-all gulp --parallel \"gulp auto\" \"tsc -- -w\"",
     "autotest": "jest --coverage --watchAll",
     
     "clean": "gulp clean"

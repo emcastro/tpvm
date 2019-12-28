@@ -1,19 +1,19 @@
 
-import * as _ from 'lodash'
+import times from 'lodash/times'
 import { XList } from '../XList'
 
 describe('AppendList', () => {
   it('can be built', () => {
-    _.times(10).forEach(i => {
-      const l = _.times(i)
+    times(10).forEach(i => {
+      const l = times(i)
       const al = new XList(l)
       expect(al.toList()).toEqual(l)
     })
   })
 
   it('gives access to its elements', () => {
-    _.times(10).forEach(i => {
-      const l = _.times(i)
+    times(10).forEach(i => {
+      const l = times(i)
       const al = new XList(l)
 
       for (let j = 0; j < al.length; j++) {
@@ -24,7 +24,7 @@ describe('AppendList', () => {
 
   it('throws exception on out-of-bound access', () => {
     const al1 = new XList()
-    const al10 = new XList(_.times(10))
+    const al10 = new XList(times(10))
     const alShort = al10.slice(3, 4)
 
     expect(() => al1.get(-1)).toThrow('Index out of bounds: -1 < 0')
@@ -43,9 +43,9 @@ describe('AppendList', () => {
 
   it('appends', () => {
     const max = 4
-    _.times(max).forEach(i => {
-      const l1 = _.times(i)
-      const l2 = _.times(max - i)
+    times(max).forEach(i => {
+      const l1 = times(i)
+      const l2 = times(max - i)
       const l1b = l1.slice()
       const l2b = l2.slice()
 

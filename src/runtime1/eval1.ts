@@ -8,7 +8,7 @@ import {
 import { primitives } from './primitive1'
 import { XError, assertNever, by } from '../utils/prelude'
 import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
-import * as _ from 'lodash'
+import truncate from 'lodash/truncate'
 
 import { XList } from '../utils/XList'
 
@@ -62,7 +62,7 @@ export class Closure {
 class EvalError extends XError {
 
   constructor (msg?: string, expression?: Expr, cause?: Error) {
-    const shortExpression = (expression && `${expression.location()} : ` + _.truncate(`${expression}`, { length: 250 }))
+    const shortExpression = (expression && `${expression.location()} : ` + truncate(`${expression}`, { length: 250 }))
 
     let bigMsg
     if (shortExpression) {

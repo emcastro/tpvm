@@ -13,6 +13,7 @@
     "inlineSources": true,
     "pretty": true,
     "outDir": "dist",
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*"

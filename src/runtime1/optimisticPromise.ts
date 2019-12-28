@@ -1,4 +1,4 @@
-import * as BlueBird from 'bluebird'
+import BlueBird from 'bluebird'
 import { Strictness, StrictnessInfo } from './primitive1'
 import { Value, XValue } from './eval1'
 import { checkNotCast } from '../utils/prelude'

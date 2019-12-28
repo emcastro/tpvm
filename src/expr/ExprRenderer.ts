@@ -55,7 +55,7 @@ export class ExprRenderer extends SExprRenderer<Expr | Binding, anything> {
           return ['Let', elements]
 
         case eLambda.typ:
-          return [`Lambda (${_.join(_.map(node.params, p => '$' + p), ' ')})`, subExprs(node)]
+          return [`Lambda (${node.params.map(p => '$' + p).join(' ')})`, subExprs(node)]
 
         default:
           console.error('Unexpected node', node)
@@ -66,7 +66,7 @@ export class ExprRenderer extends SExprRenderer<Expr | Binding, anything> {
   }
 
   escape (o: anything): string {
-    if (typeof o === 'string' && _.startsWith(o, '$')) {
+    if (typeof o === 'string' && o.startsWith('$')) {
       const s = JSON.stringify(o)
       return s.slice(1, s.length - 1)
     } else {
