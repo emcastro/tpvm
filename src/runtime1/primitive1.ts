@@ -119,7 +119,7 @@ function annotate (primitives: { [key: string]: any }): { [keySymbol: string]: a
       v.strictness = strictnessDecoder(v)
     }
 
-    annotated[Symbol.for(k)] = v
+    annotated[<any>Symbol.for(k)] = v // used to denote primitives
   })
   return annotated
 }

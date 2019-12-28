@@ -6,7 +6,7 @@ import {
 } from '../expr/Expr'
 
 import { primitives } from './primitive1'
-import { XError, assertNever, by, toString } from '../utils/prelude'
+import { XError, assertNever, by } from '../utils/prelude'
 import { then, Promise, isPromise, callPrimitive } from './optimisticPromise'
 import * as _ from 'lodash'
 
@@ -155,7 +155,7 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
     case eLiteral.typ:
       const l = expr.value
       if (typeof l === 'symbol') {
-        const x = primitives[l]
+        const x = primitives[<any>l]
         if (x === undefined) {
           throw new EvalError(`Undefined primitive #${Symbol.keyFor(l)}`, expr)
         }
@@ -190,7 +190,7 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
             return tailCall(() => eval1(ifExpr.elseClause, env))
           }
         } else {
-          throw new EvalError(`Illegal value in if: ${toString(b)}`, expr)
+          throw new EvalError(`Illegal value in if: ${String(b)}`, expr)
         }
       }))
 
@@ -278,7 +278,7 @@ function apply (expr: Apply, env: Env) {
                 return done(generic[arg1] as XValue)
               }
             }
-            throw new EvalError(`No method or special application available: ${op} ${toString(arg1)}`, expr)
+            throw new EvalError(`No method or special application available: ${op} ${String(arg1)}`, expr)
           }))
         }
 

@@ -9,78 +9,48 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/index.js",
-    "gulp": "gulp",
-    "tsc": "tsc",
-    "build": "run-s 'gulp default' tsc",
+    "build": "gulp clean build --series",
     "pretest": "npm run build",
     "test": "jest --coverage",
+
     "lint": "tslint -p tsconfig.json",
     "lint-fix": "tslint -p tsconfig.json --type-check --fix",
     "autobuild": "npm-run-all gulp --parallel \"gulp auto\" \"tsc -- -w\"",
     "autotest": "jest --coverage --watchAll",
-    "cleaner": "rm -rf coverage dist"
+    
+    "clean": "gulp clean"
   },
+  "engines": {
+    "node": "12.13.0"
+  },
+  "os": [
+    "linux"
+  ],
   "dependencies": {
-    "antlr4": "4.7.0",
-    "bluebird": "3.5.1",
+    "antlr4": "^4.7.2",
+    "bluebird": "^3.7.2",
+    "core-js": "^3.6.0",
     "fs-es6-promise": "0.0.3",
-    "lodash": "4.17.4",
-    "mz": "2.7.0"
+    "lodash": "^4.17.15",
+    "mz": "^2.7.0"
   },
   "devDependencies": {
-    "@types/bluebird": "3.5.18",
-    "@types/immutable": "^3.8.7",
-    "@types/jest": "21.1.6",
-    "@types/lodash": "4.14.85",
-    "@types/node": "8.0.53",
-    "ansi-colorizer": "1.0.1",
-    "benchmark": "2.1.4",
-    "chai": "4.1.2",
-    "child-process-data": "0.5.6",
-    "event-stream": "3.3.4",
-    "flat-map": "0.4.0",
-    "gulp": "3.9.1",
-    "gulp-antlr4": "0.4.5",
-    "gulp-clean": "0.3.2",
-    "gulp-download": "0.0.1",
-    "gulp-file": "0.3.0",
-    "gulp-sequence": "0.4.6",
-    "gulp-util": "3.0.8",
-    "immutable": "^3.8.2",
-    "jest": "21.2.1",
-    "npm-run-all": "4.1.2",
-    "standard": "10.0.3",
-    "through2": "2.0.3",
-    "ts-jest": "21.2.3",
-    "tslint": "5.8.0",
-    "tslint-config-standard": "7.0.0",
-    "typescript": "2.6.1"
-  },
-  "standard": {
-    "globals": [
-      "test",
-      "describe",
-      "it",
-      "expect",
-      "Iterator",
-      "IteratorResult",
-      "$ReadOnlyArray"
-    ],
-    "ignore": [
-      "src/generated"
-    ]
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "/src/.*(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "mapCoverage": true
+    "@types/bluebird": "^3.5.29",
+    "@types/core-js": "^2.5.2",
+    "@types/jest": "^24.0.24",
+    "@types/lodash": "^4.14.149",
+    "@types/mz": "^2.7.0",
+    "ansi-colorizer": "^1.0.1",
+    "benchmark": "^2.1.4",
+    "chai": "^4.2.0",
+    "child-process-data": "^0.7.0",
+    "esm": "^3.2.25",
+    "gulp": "^4.0.2",
+    "gulp-antlr4": "^0.4.6",
+    "gulp-clean": "^0.4.0",
+    "gulp-download-stream": "0.0.19",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.4"
   }
 }

@@ -41,7 +41,7 @@ antlr4.ParserRuleContext.prototype.loneChild = function () {
   const c = this.children
   if (c == null || c.length !== 1) {
     let result: any
-    fasteach(this.children, e => {
+    fasteach<any>(this.children, e => {
       // if (!(e instanceof TerminalNode)) {
       if (e.constructor !== TerminalNodeImpl) {
         if (result !== undefined) {
@@ -236,5 +236,6 @@ export class ParseError extends Error {
 
   constructor (msg: string, node: TPNode) {
     super(`${msg} ${nodePosition(node)}`)
+    this.node = node
   }
 }

@@ -1,85 +1,155 @@
-
+// @ts-check
 // Builds everything, expect typescript
 
 const gulp = require('gulp')
-const clean = require('gulp-clean')
-const gulpSequence = require('gulp-sequence')
-const flatMap = require('flat-map')
-const Vinyl = require('vinyl')
-const antlr4 = require('gulp-antlr4')
-const path = require('path')
-const download = require('gulp-download')
 const fs = require('fs')
+const path = require('path')
+const child_process = require('child_process')
+const gulpClean = require('gulp-clean')
 
-// // Global error report
-process.on('uncaughtException', function (error) {
-  console.error(error)
-  console.error(error.stack)
-  this.emit('end')
-})
+const Vinyl = require('vinyl')
 
-gulp.task('default', gulpSequence('clean', 'codegen', 'antlr4', 'resources'))
+const gulpAntlr4 = require('gulp-antlr4')
+const gulpDownload = require('gulp-download-stream')
 
-const RESOURCES = 'src/**/data/*'
+const DATA_RESOURCES = 'src/**/data/*'
 const GENERATED = 'src/generated'
 const DIST = 'dist'
 const CODEGEN = 'codegen/**/*_codegen.js'
 const ANTLR4 = 'codegen/**/*.g4'
 const COVERAGE = 'coverage'
 
-process.env.CLASSPATH = ':' + path.join(__dirname, 'antlr-4.7-complete.jar') + ':' // FIXME: report bug to gulp-antlr4
+const ANTLR_VERSION = '4.7.2'
 
-gulp.task('clean', () => {
+
+exports.clean = clean
+function clean() {
   return (
-    gulp.src([GENERATED, DIST, COVERAGE], { read: true })
-      .pipe(clean()))
-})
+    gulp.src([GENERATED, DIST, COVERAGE], { allowEmpty: true })
+      .pipe(gulpClean()))
+}
 
-// http://www.antlr.org/download/antlr-4.7-complete.jar
+// ANTLR4
+process.env.CLASSPATH = ':' + path.join(__dirname, `antlr-${ANTLR_VERSION}-complete.jar`) + ':' // FIXME: report bug to gulp-antlr4
 
-gulp.task('antlr4-download', () => {
-  if (!fs.existsSync('antlr-4.7-complete.jar')) {
-    return download('http://www.antlr.org/download/antlr-4.7-complete.jar').pipe(gulp.dest('.'))
+function antlr4Download(done) {
+  if (!fs.existsSync(`antlr-${ANTLR_VERSION}-complete.jar`)) {
+    return gulpDownload(`http://www.antlr.org/download/antlr-${ANTLR_VERSION}-complete.jar`).pipe(gulp.dest('.'))
+  } else {
+    done()
   }
-})
+}
 
-gulp.task('antlr4', ['antlr4-download'], () => {
-  return gulp.src(ANTLR4)
-    .pipe(antlr4({
-      parserDir: GENERATED,
-      mode: 'none'
-    }))
-})
-defauto('antlr4', ANTLR4)
+function antlr4Build() {
+  return (
+    gulp.src(ANTLR4)
+      .pipe(gulpAntlr4({
+        parserDir: GENERATED,
+        mode: 'none'
+      })))
+}
 
-gulp.task('codegen', () => {
-  return gulp.src(CODEGEN)
-    .pipe(flatMap((data, callback) => {
-      const code = data.contents.toString()
-      let result
-      try {
-        result = eval('"use strict"\n' + code) // eslint-disable-line no-eval
-      } catch (e) {
-        result = []
-      }
-      callback(null, result.map(({ path, sourceCode }) => new Vinyl({
-        path,
-        contents: Buffer.from(sourceCode)
+function antlr4Normalize() {
+  return (
+    gulp.src(GENERATED + '/*{Lexer,Parser}.js')
+      .pipe(asyncMap(async (file, encoding) => {
+        const buffer = file.contents
+        file.contents = Buffer.from(buffer.toString(encoding).replace(/(Generated from).*\/(.*?\/.*\.g4)/, '$1 $2'), 'utf8')
+        return file
       }))
-      )
-    }))
-    .pipe(gulp.dest(GENERATED))
-})
-defauto('codegen', CODEGEN)
+      .pipe(gulp.dest(GENERATED)))
+}
 
-gulp.task('resources', function () {
-  return gulp.src(RESOURCES).pipe(gulp.dest((DIST)))
-})
-defauto('resources', RESOURCES)
+const antlr4 = gulp.series(antlr4Download, antlr4Build, antlr4Normalize)
+exports.antlr4 = antlr4
 
-// Continuous build for NodeJS
-gulp.task('auto', ['autoresources', 'autocodegen', 'autoantlr4'])
+// Codegen
+exports.codegen = codegen
+function codegen() {
+  return (
+    gulp.src(CODEGEN)
+      .pipe(asyncFlatMap(async (file, encoding) => {
+        const code = file.contents.toString(encoding)
+        let result
+        try {
+          result = eval('"use strict"\n' + code) // eslint-disable-line no-eval
+          return result.map(({ path, sourceCode }) => new Vinyl({
+            path,
+            contents: Buffer.from(sourceCode)
+          }))
+        } catch (e) {
+          return []
+        }
+      }))
+      .pipe(gulp.dest(GENERATED))
+  )
+}
 
-function defauto (name, sources) {
-  gulp.task('auto' + name, () => gulp.watch(sources, [name]))
+// TSC and dist generation
+
+exports.tsc = tsc
+function tsc(cb) {
+  const watch = child_process.spawn('npx', ['tsc'], {
+    stdio: 'inherit',
+  })
+  watch.on('close', cb)
+}
+
+exports.tscWatch = tscWatch
+function tscWatch(cb) {
+  const watch = child_process.spawn('npx', ['tsc', '--watch'], {
+    stdio: 'inherit',
+  })
+  watch.on('close', cb)
+}
+
+function dataResources() {
+  return gulp.src(DATA_RESOURCES).pipe(gulp.dest((DIST)))
+}
+
+// Build
+
+const smallBuild = gulp.parallel(antlr4, codegen, dataResources)
+exports.smallBuild = smallBuild
+
+exports.build = gulp.series(this.smallBuild, tsc)
+
+// Watch
+
+exports.watch = gulp.parallel(
+  async () => gulp.watch(ANTLR4, antlr4),
+  async () => gulp.watch(CODEGEN, codegen),
+  async () => gulp.watch(DATA_RESOURCES, dataResources),
+  this.tscWatch
+)
+
+// Utils
+
+const stream = require('stream')
+
+/** @param {(chunk: any, encoding: string) => Promise<any>} f */
+function asyncMap(f) {
+  return new stream.Transform({
+    objectMode: true,
+    transform(chunk, encoding, cb) {
+      f(chunk, encoding)
+        .then(result => cb(null, result))
+        .catch(e => cb(e, null))
+    }
+  })
+}
+
+/** @param {(chunk: any, encoding: string) => Promise<any[]>} f */
+function asyncFlatMap(f) {
+  return new stream.Transform({
+    objectMode: true,
+    transform(chunk, encoding, cb) {
+      f(chunk, encoding)
+        .then(result => {
+          result.forEach(r => this.push(r))
+          cb()
+        })
+        .catch(e => cb(e, null))
+    }
+  })
 }

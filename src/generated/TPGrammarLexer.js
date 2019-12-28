@@ -1,6 +1,7 @@
-// Generated from /home/ecastro/tpvm/codegen/TPGrammar.g4 by ANTLR 4.7
+// Generated from codegen/TPGrammar.g4 by ANTLR 4.7.2
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
+
 
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
@@ -238,6 +239,12 @@ function TPGrammarLexer(input) {
 
 TPGrammarLexer.prototype = Object.create(antlr4.Lexer.prototype);
 TPGrammarLexer.prototype.constructor = TPGrammarLexer;
+
+Object.defineProperty(TPGrammarLexer.prototype, "atn", {
+        get : function() {
+                return atn;
+        }
+});
 
 TPGrammarLexer.EOF = antlr4.Token.EOF;
 TPGrammarLexer.T__0 = 1;

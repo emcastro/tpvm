@@ -1,15 +1,15 @@
 
-import { anything, defined, toString, $$$ } from './prelude'
+import { anything, defined, $$$ } from './prelude'
 
-interface Entries<K, V extends defined> extends Map<K, V | Entries<K, V>> { }
+interface Entries<K, V> extends Map<K, V | Entries<K, V>> { }
 
 export class MultiKeyMap<KS extends Array<anything>, V> implements MapLike<KS, V> {
   root: Entries<anything, V> = new Map()
-  keySize: number
+  keySize?: number = undefined
 
   protected navigateToLeafMap (ks: KS) {
     let map = this.root
-    let i
+    let i: number
     for (i = 0; i < ks.length - 1; i++) {
       const k = ks[i]
       const step = map.get(k)
@@ -20,14 +20,18 @@ export class MultiKeyMap<KS extends Array<anything>, V> implements MapLike<KS, V
       } else if (step instanceof Map) {
         map = step
       } else {
-        throw new Error(`Error while putting sub-key ${k}@${i}. Found: ${toString(step)}`)
+        throw new Error(`Error while putting sub-key ${String(k)}@${i}. Found: ${String(step)}`)
       }
     }
     return map
   }
 
   set (ks: KS, v: V) {
-    this.keySize = ks.length
+    if (this.keySize === undefined) {
+      this.keySize = ks.length
+    } else {
+      if (this.keySize !== ks.length) throw new Error('Invalid key size')
+    }
     this.navigateToLeafMap(ks).set(ks[ks.length - 1], v)
   }
 
@@ -49,6 +53,7 @@ export class MultiKeyMap<KS extends Array<anything>, V> implements MapLike<KS, V
 
   private *walkEntries<E> (entryFormatter: (keys: KS, v: V) => E) {
     if (this.root.size === 0) return // nothing inside
+    if (this.keySize === undefined) throw new Error('Invalid internal state')
 
     const stack = [this.root.entries()]
     const keys: KS = ([] as any as KS)

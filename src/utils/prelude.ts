@@ -1,14 +1,9 @@
 
 import * as _ from 'lodash'
 
+// Usefull type for value handled at runtime
 export type defined = number | string | boolean | symbol | object | null | Function
 export type anything = defined | undefined
-
-export function toString (v: anything) {
-  if (v === undefined) return 'undefined'
-  if (v === null) return 'null'
-  return v.toString()
-}
 
 /** Frozen empty list */
 const _emptyList: any[] = Object.freeze([]) as any
@@ -40,7 +35,7 @@ export function emptySet<T> (): Set<T> {
 }
 
 export function singleton<T> (value: T): Set<T> {
-  const set = new Set()
+  const set = new Set<T>()
   set.add(value)
   return set
 }
@@ -76,7 +71,7 @@ export function extendSet<T> (set1: Set<T>, set2: Set<T>): Set<T> {
  * standard Array and Map, and
  * objects with that have .equals() method.
  */
-export function equal (a: any, b: any): boolean {
+export function equal (a: any, b: unknown): boolean {
   if (a === b) return true // fast-track
   if (a != null && typeof a === 'object') {
     if (typeof a.equals === 'function' && b != null) return a.equals(b)
@@ -89,7 +84,7 @@ export function equal (a: any, b: any): boolean {
 }
 
 /** Compare Map */
-export function mapEqual (a: Map<anything, anything>, b: Map<anything, anything>): boolean {
+export function mapEqual (a: Map<unknown, unknown>, b: Map<unknown, unknown>): boolean {
   if (b === a) return true // fast-track
 
   if (a.size !== b.size) return false
@@ -103,7 +98,7 @@ export function mapEqual (a: Map<anything, anything>, b: Map<anything, anything>
 }
 
 /** Compare Array */
-export function arrayEqual (a: anything[], b: anything[]): boolean {
+export function arrayEqual (a: unknown[], b: unknown[]): boolean {
   if (b === a) return true // fast-track
 
   if (a.length !== b.length) return false
@@ -128,11 +123,11 @@ export function isNotNull<A> (v: A | null): v is A {
   return v !== null
 }
 
-export function switchMap<T1, R> (object: { [switchKey: string]: (switchValue: anything) => R }): Map<string, (switchValue: T1) => R> {
+export function switchMap<T1, R> (object: { [switchKey: string]: (switchValue: T1) => R }): Map<string, (switchValue: T1) => R> {
   return new Map(Object.entries(object)) as Map<string, (switchValue: T1) => R>
 }
 
-export function switchMap2<T1, T2, R> (object: { [switchKey: string]: (switchValue: anything, arg: T2) => R }): Map<string, (switchValue: T1, arg: T2) => R> {
+export function switchMap2<T1, T2, R> (object: { [switchKey: string]: (switchValue: T1, arg: T2) => R }): Map<string, (switchValue: T1, arg: T2) => R> {
   return new Map(Object.entries(object)) as Map<string, (switchValue: T1, arg: T2) => R>
 }
 
@@ -188,8 +183,8 @@ export class XError extends Error {
 type Class<T> = new (...args: any[]) => T
 
 class ClassCastError extends Error {
-  constructor (public awaitedClass: Class<anything>, public value: anything, public include: boolean) {
-    super(`ClassCastError: awaiting ${include ? '' : 'not '}${awaitedClass.name}; found: \`${value}\`: ${value && value.constructor.name}`)
+  constructor (public awaitedClass: Class<unknown>, public value: unknown, public include: boolean) {
+    super(`ClassCastError: awaiting ${include ? '' : 'not '}${awaitedClass.name}; found: \`${String(value)}\`: ${(<any>value)?.constructor.name}`)
   }
 }
 
@@ -201,7 +196,7 @@ export function checkCast<T> (value: T, classConstructor: Class<T>) {
   }
 }
 
-export function checkNotCast (value: anything, classConstructor: Class<anything>) {
+export function checkNotCast (value: any, classConstructor: Class<anything>) {
   if (CHECK_CAST && (value instanceof classConstructor)) {
     throw new ClassCastError(classConstructor, value, false)
   }
@@ -233,7 +228,7 @@ export function notnull<T> (value: T | null | undefined): T {
 }
 
 export function assertNever (invalidValue: never): never {
-  throw new Error(`Invalid value that should never happen: ${toString(invalidValue)}`)
+  throw new Error(`Invalid value that should never happen: ${String(invalidValue)}`)
 }
 
 export function $$$ (): never {

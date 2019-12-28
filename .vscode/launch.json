@@ -13,15 +13,16 @@
     {
       "type": "node",
       "request": "launch",
-      "protocol": "inspector",
-      "name": "Launch Jest",
-      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
-      "cwd": "${workspaceRoot}",
+      "name": "Jest Current File",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
       "args": [
-        "--runInBand",
-        "--config=jest-debug.json"
+        "${fileBasenameNoExtension}",
+        "--config",
+        "jest.config.js"
       ],
-      "sourceMaps": true
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true
     },
     {
       "type": "node",
@@ -47,6 +48,13 @@
       "name": "Attach to Port",
       "address": "localhost",
       "port": 5858
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Gulp debug",
+      "program": "${workspaceFolder}/node_modules/gulp/bin/gulp.js",
+      "args": ["debug"]
     }
   ]
 }

@@ -26,10 +26,10 @@ describe('trampoline', () => {
   })
 
   it('loops', () => {
-    expect(trampoline(maxiLoop(10000, '')).length).toBe(10000)
+    expect(trampoline(maxiLoop(100000, '')).length).toBe(100000)
   })
 
   it('is better that RangeError', () => {
-    expect(() => maxiLoop2(10000, '')).toThrowError(RangeError)
+    expect(() => maxiLoop2(100000, '')).toThrowError(RangeError)
   })
 })

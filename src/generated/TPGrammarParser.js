@@ -1,7 +1,8 @@
-// Generated from /home/ecastro/tpvm/codegen/TPGrammar.g4 by ANTLR 4.7
+// Generated from codegen/TPGrammar.g4 by ANTLR 4.7.2
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 var grammarFileName = "TPGrammar.g4";
+
 
 var serializedATN = ["\u0003\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964",
     "\u0003\'\u0103\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
@@ -280,6 +281,7 @@ TPGrammarParser.RULE_shortLambdaExpr = 23;
 TPGrammarParser.RULE_varExpr = 24;
 TPGrammarParser.RULE_letExpr = 25;
 
+
 function TopLevelContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -394,6 +396,7 @@ TPGrammarParser.prototype.topLevel = function() {
     }
     return localctx;
 };
+
 
 function ExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -836,6 +839,7 @@ TPGrammarParser.prototype.expr = function(_p) {
     return localctx;
 };
 
+
 function SimpleExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -955,6 +959,7 @@ TPGrammarParser.prototype.simpleExpr = function() {
     return localctx;
 };
 
+
 function DefinitionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1028,6 +1033,7 @@ TPGrammarParser.prototype.definition = function() {
     return localctx;
 };
 
+
 function ValueDefinitionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1086,6 +1092,7 @@ TPGrammarParser.prototype.valueDefinition = function() {
     }
     return localctx;
 };
+
 
 function FunctionDefinitionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -1169,6 +1176,7 @@ TPGrammarParser.prototype.functionDefinition = function() {
     return localctx;
 };
 
+
 function TupleDefinitionContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1239,6 +1247,7 @@ TPGrammarParser.prototype.tupleDefinition = function() {
     return localctx;
 };
 
+
 function TypedVarContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1291,6 +1300,7 @@ TPGrammarParser.prototype.typedVar = function() {
     }
     return localctx;
 };
+
 
 function TypedParamContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -1345,6 +1355,7 @@ TPGrammarParser.prototype.typedParam = function() {
     return localctx;
 };
 
+
 function AttrContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1391,6 +1402,7 @@ TPGrammarParser.prototype.attr = function() {
     }
     return localctx;
 };
+
 
 function UserOpIdContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -1439,6 +1451,7 @@ TPGrammarParser.prototype.userOpId = function() {
     return localctx;
 };
 
+
 function VarIdContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1485,6 +1498,7 @@ TPGrammarParser.prototype.varId = function() {
     }
     return localctx;
 };
+
 
 function FunctionIdContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -1533,6 +1547,7 @@ TPGrammarParser.prototype.functionId = function() {
     return localctx;
 };
 
+
 function ParamIdContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1579,6 +1594,7 @@ TPGrammarParser.prototype.paramId = function() {
     }
     return localctx;
 };
+
 
 function ApplyContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -1638,6 +1654,7 @@ TPGrammarParser.prototype.apply = function() {
     return localctx;
 };
 
+
 function ArgContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1685,6 +1702,7 @@ TPGrammarParser.prototype.arg = function() {
     return localctx;
 };
 
+
 function TypeAnnotationContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1727,6 +1745,7 @@ TPGrammarParser.prototype.typeAnnotation = function() {
     }
     return localctx;
 };
+
 
 function ArgsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -1795,6 +1814,7 @@ TPGrammarParser.prototype.args = function() {
     return localctx;
 };
 
+
 function TypedParamsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1862,6 +1882,7 @@ TPGrammarParser.prototype.typedParams = function() {
     return localctx;
 };
 
+
 function TypedVarsContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -1928,6 +1949,7 @@ TPGrammarParser.prototype.typedVars = function() {
     }
     return localctx;
 };
+
 
 function LiteralExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -2004,6 +2026,7 @@ TPGrammarParser.prototype.literalExpr = function() {
     return localctx;
 };
 
+
 function IfElseExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2078,6 +2101,7 @@ TPGrammarParser.prototype.ifElseExpr = function() {
     return localctx;
 };
 
+
 function LambdaExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2144,6 +2168,7 @@ TPGrammarParser.prototype.lambdaExpr = function() {
     return localctx;
 };
 
+
 function ShortLambdaExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2199,6 +2224,7 @@ TPGrammarParser.prototype.shortLambdaExpr = function() {
     return localctx;
 };
 
+
 function VarExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
@@ -2245,6 +2271,7 @@ TPGrammarParser.prototype.varExpr = function() {
     }
     return localctx;
 };
+
 
 function LetExprContext(parser, parent, invokingState) {
 	if(parent===undefined) {

@@ -75,11 +75,11 @@ class VarMapping {
 
 class FreshToken {
   text: string
-  column: number
-  line: number
-  tokenIndex: number
-  type: number
-  source: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
+  column!: number
+  line!: number
+  tokenIndex!: number
+  type!: number
+  source!: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
 
   constructor (token: Token) {
     Object.assign(this, token)
