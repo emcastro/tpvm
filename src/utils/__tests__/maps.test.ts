@@ -1,7 +1,6 @@
 import { MultiKeyMap } from '../../utils/maps'
 
 describe('MultiKeyMap', () => {
-
   it('works on standard cases', () => {
     const m = new MultiKeyMap<[string, number], string>()
 
@@ -49,5 +48,4 @@ describe('MultiKeyMap', () => {
       'bravo-3'
     ])
   })
-
 })

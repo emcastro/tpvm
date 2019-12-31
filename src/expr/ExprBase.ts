@@ -1,7 +1,6 @@
 
 import { ExprRenderer } from './ExprRenderer'
 import { OneOrMany, isNotNull, emptySet } from '../utils/prelude'
-import * as _ from 'lodash'
 import { TPNode, Token, position, nodePosition } from '../parsing/parser'
 import { Expr } from './Expr'
 import { fastmap } from '../utils/fastArray'
@@ -11,7 +10,6 @@ export type LiteralValue = string | number | boolean
 export type Binding = [string, Expr]
 
 export class ExprBase {
-
   static exprRenderer = new ExprRenderer()
 
   toString (): string {
@@ -30,29 +28,29 @@ export class ExprBase {
     return this
   }
 
-  debugInfo () {
+  debugInfo (): string {
     return debugInfo(this)
   }
 
-  location () {
+  location (): string {
     return location(this)
   }
 
-  freeVars () {
+  freeVars (): Set<String> {
     return freeVars(this as any, emptySet())
   }
 }
 
-function debugInfo (data: { source?: OneOrMany<TPNode | Token | null> }) {
-  const type = Object.getPrototypeOf(data).constructor.name
+function debugInfo (data: { source?: OneOrMany<TPNode | Token | null> }): string {
+  const type: string = Object.getPrototypeOf(data).constructor.name
 
   return type + location(data)
 }
 
-function location (data: { source?: OneOrMany<TPNode | Token | null> }) {
+function location (data: { source?: OneOrMany<TPNode | Token | null> }): string {
   const source = data.source
   if (source == null) {
-    return `@unknown location`
+    return '@unknown location'
   } else if (!Array.isArray(source)) {
     return `@${sourcePosition(source)}`
   } else {
@@ -64,7 +62,7 @@ function isToken (t: any): t is Token {
   return t.text !== undefined && t.line !== undefined && t.column !== undefined // TODO: should check real Antlr4 token type
 }
 
-export function sourcePosition (source: TPNode | Token) {
+export function sourcePosition (source: TPNode | Token): string {
   if (isToken(source)) {
     return position(source)
   } else {

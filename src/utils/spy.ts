@@ -25,9 +25,9 @@ function mkSpy (showCall: boolean, showResult: boolean) {
 
       const original = descriptor.value
 
-      const name = params.name || `${target.constructor.name}#${propertyKey}`
-      const argFormatter = params.in || ((...arg) => arg)
-      const resultFormatter = params.out || (result => result)
+      const name = params.name ?? `${target.constructor.name}#${propertyKey}`
+      const argFormatter = params.in ?? ((...arg) => arg)
+      const resultFormatter = params.out ?? (result => result)
 
       descriptor.value = function (this: any, ...args: any[]) {
         const i = spyId++

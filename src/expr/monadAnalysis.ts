@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Expr, Var, Literal, eVar, eApply, eIfElse, eLambda, eLet, eLiteral } from './Expr'
 import { emptyList, assertNever, emptySet, singleton, extendSet, $$$ } from '../utils/prelude'
 import { XList } from '../utils/XList'

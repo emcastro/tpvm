@@ -129,12 +129,11 @@ describe('equal', () => {
 describe('memo', () => {
   it('memoizes', () => {
     let count = 0
-    const plus1Memo = memo((x: number) => { count ++ ; return x + 1 })
+    const plus1Memo = memo((x: number) => { count++; return x + 1 })
     expect(plus1Memo(1)).toBe(2)
     expect(plus1Memo(2)).toBe(3)
     expect(plus1Memo(1)).toBe(2)
 
     expect(count).toBe(2)
   })
-
 })

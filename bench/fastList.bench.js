@@ -16,7 +16,7 @@ for (const i of [3, 11, 18, 30, 60, 150]) {
   const list = _.times(i)
 
   suite.add('Standard Array', () => {
-    let result = []
+    const result = []
     fasteach(list, x => result.push(`(${x})`))
   })
 

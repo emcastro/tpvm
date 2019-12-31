@@ -8,17 +8,17 @@
   },
   "license": "MIT",
   "scripts": {
+    "clean": "gulp clean",
     "start": "node dist/index.js",
     "build": "gulp clean build --series",
     "pretest": "npm run build",
     "test": "jest --coverage",
     "autobuild": "gulp clean smallBuild watch --series",
-
-    "lint": "tslint -p tsconfig.json",
-    "lint-fix": "tslint -p tsconfig.json --type-check --fix",
     "autotest": "jest --coverage --watchAll",
-    
-    "clean": "gulp clean"
+    "server-coverage": "http-server coverage/lcov-report",
+    "check-lincense": "license-checker --production",
+    "lint": "eslint --report-unused-disable-directives --ext .ts src",
+    "lint-unix": "eslint --report-unused-disable-directives --format unix --ext .ts src"
   },
   "engines": {
     "node": "12.13.0"
@@ -35,21 +35,34 @@
     "mz": "^2.7.0"
   },
   "devDependencies": {
+    "@types/antlr4": "^4.7.0",
     "@types/bluebird": "^3.5.29",
     "@types/core-js": "^2.5.2",
     "@types/jest": "^24.0.24",
     "@types/lodash": "^4.14.149",
     "@types/mz": "^2.7.0",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
     "ansi-colorizer": "^1.0.1",
     "benchmark": "^2.1.4",
     "chai": "^4.2.0",
     "child-process-data": "^0.7.0",
+    "eslint": "^6.8.0",
+    "eslint-config-standard-with-typescript": "^11.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-you-dont-need-lodash-underscore": "^6.8.0",
     "esm": "^3.2.25",
     "gulp": "^4.0.2",
     "gulp-antlr4": "^0.4.6",
     "gulp-clean": "^0.4.0",
     "gulp-download-stream": "0.0.19",
+    "http-server": "^0.12.0",
     "jest": "^24.9.0",
+    "license-checker": "^25.0.1",
+    "range": "0.0.3",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.4"
   }

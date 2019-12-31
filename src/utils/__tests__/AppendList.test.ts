@@ -86,5 +86,4 @@ describe('AppendList', () => {
 
     expect(a.slice(0, 0).concat(b.slice(1, 2)).toList()).toEqual(['b'])
   })
-
 })

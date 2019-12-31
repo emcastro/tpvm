@@ -1,10 +1,10 @@
 
-const antlr4 = require('antlr4')
-const { TerminalNodeImpl } = require('antlr4/tree/Tree')
-const { TPGrammarParser } = require('../generated/TPGrammarParser')
-const { TPGrammarLexer } = require('../generated/TPGrammarLexer')
-const { ErrorListener } = require('antlr4/error/ErrorListener')
-import * as _ from 'lodash'
+import { InputStream, CommonTokenStream } from 'antlr4'
+import { ParserRuleContext } from 'antlr4/ParserRuleContext'
+import { TerminalNodeImpl } from 'antlr4/tree/Tree'
+import { TPGrammarParser } from '../generated/TPGrammarParser'
+import { TPGrammarLexer } from '../generated/TPGrammarLexer'
+import { ErrorListener } from 'antlr4/error/ErrorListener'
 import { fasteach } from '../utils/fastArray'
 
 export { TPGrammarParser as parser }
@@ -22,10 +22,10 @@ TPGrammarParser.prototype.newline = function () {
   return nl
 }
 
-function annotateParserWithContextName(parser: any) {
+function annotateParserWithContextName (parser: any): void {
   const suffix = 'Context'
 
-  for (let attrName in parser) {
+  for (const attrName in parser) {
     if (attrName.endsWith(suffix)) {
       const contextName = attrName[0].toLowerCase() + attrName.slice(1, attrName.length - suffix.length)
       parser[attrName].prototype.contextName = contextName
@@ -37,7 +37,16 @@ annotateParserWithContextName(TPGrammarParser)
 
 // Improvement of Antlr4
 
-antlr4.ParserRuleContext.prototype.loneChild = function () {
+declare module 'antlr4/ParserRuleContext' {
+  interface ParserRuleContext {
+    loneChild: any
+    children: any[]
+    token(): Token
+    tokenAt(idx: number): Token
+  }
+}
+
+ParserRuleContext.prototype.loneChild = function () {
   const c = this.children
   if (c == null || c.length !== 1) {
     let result: any
@@ -58,14 +67,14 @@ antlr4.ParserRuleContext.prototype.loneChild = function () {
   return c[0]
 }
 
-antlr4.ParserRuleContext.prototype.token = function () {
+ParserRuleContext.prototype.token = function () {
   if (this.start !== this.stop) {
     throw new Error('Not a token node')
   }
   return this.start
 }
 
-antlr4.ParserRuleContext.prototype.tokenAt = function (idx: number) {
+ParserRuleContext.prototype.tokenAt = function (idx: number) {
   const terminal = this.children[idx]
   if (terminal.symbol == null) {
     throw new Error('Not a token node')
@@ -75,13 +84,14 @@ antlr4.ParserRuleContext.prototype.tokenAt = function (idx: number) {
 
 // Antlr4 typing
 
+// Only take what we need.
 export interface Token {
   text: string
   column: number
   line: number
   tokenIndex: number
   type: number
-  source: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
+  source: [{ literalNames: Array<string | null>, symbolicNames: Array<string | null> }, {}]
 }
 
 export interface Node<N> {
@@ -101,14 +111,14 @@ type NA<T> = () => (T | null)
 
 type N<T> = Node<T>
 
-export interface TopLevel extends N<'topLevel'> { definition: A<Definition[]>; expr: A<Expr> }
+export interface TopLevel extends N<'topLevel'> { definition: A<Definition[]>, expr: A<Expr> }
 
 export type Expr = Simple | Call | UnOp | BinOp | UserOp
 export interface Simple extends N<'simple'> { simpleExpr: A<SimpleExpr> }
-export interface Call extends N<'call'> { expr: A<Expr>; apply: NA<Apply>; attr: NA<Attr> }
+export interface Call extends N<'call'> { expr: A<Expr>, apply: NA<Apply>, attr: NA<Attr> }
 export interface UnOp extends N<'unOp'> { expr: A<Expr> }
 export interface BinOp extends N<'binOp'> { expr: A<Expr[]> }
-export interface UserOp extends N<'userOp'> { expr: A<Expr[]>; userOpId: A<UserOpId> }
+export interface UserOp extends N<'userOp'> { expr: A<Expr[]>, userOpId: A<UserOpId> }
 
 export interface SimpleExpr extends N<'simpleExpr'> {
   loneChild: A<LiteralExpr | Expr | VarExpr | IfElseExpr | ShortLambdaExpr | LambdaExpr | LetExpr>
@@ -118,34 +128,34 @@ export interface Definition extends N<'definition'> {
   loneChild: A<ValueDefinition | TupleDefinition | FunctionDefinition>
 } // transparent node
 
-export interface ValueDefinition extends N<'valueDefinition'> { typedVar: A<TypedVar>; expr: A<Expr> }
-export interface FunctionDefinition extends N<'functionDefinition'> { functionId: A<FunctionId>; typedParams: NA<TypedParams>; typeAnnotation: N<TypeAnnotation>; expr: A<Expr> }
-export interface TupleDefinition extends N<'tupleDefinition'> { typedVars: NA<TypedVars>; expr: A<Expr> }
+export interface ValueDefinition extends N<'valueDefinition'> { typedVar: A<TypedVar>, expr: A<Expr> }
+export interface FunctionDefinition extends N<'functionDefinition'> { functionId: A<FunctionId>, typedParams: NA<TypedParams>, typeAnnotation: N<TypeAnnotation>, expr: A<Expr> }
+export interface TupleDefinition extends N<'tupleDefinition'> { typedVars: NA<TypedVars>, expr: A<Expr> }
 
-export interface TypedVar extends N<'typedVar'> { varId: A<VarId>; typeAnnotation: A<TypeAnnotation> }
-export interface TypedParam extends N<'typedParam'> { paramId: A<ParamId>; typeAnnotation: A<TypeAnnotation> }
+export interface TypedVar extends N<'typedVar'> { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
+export interface TypedParam extends N<'typedParam'> { paramId: A<ParamId>, typeAnnotation: A<TypeAnnotation> }
 
 interface TOKEN<T> extends N<T> { token: () => Token }
 
-export interface Attr extends TOKEN<'attr'> { }
-export interface UserOpId extends TOKEN<'userOpId'> { }
-export interface VarId extends TOKEN<'varId'> { }
-export interface FunctionId extends TOKEN<'functionId'> { }
-export interface ParamId extends TOKEN<'paramId'> { }
+export type Attr = TOKEN<'attr'>
+export type UserOpId = TOKEN<'userOpId'>
+export type VarId = TOKEN<'varId'>
+export type FunctionId = TOKEN<'functionId'>
+export type ParamId = TOKEN<'paramId'>
 
 export interface Apply extends N<'apply'> { args: NA<Args> }
 
 export interface Arg extends N<'arg'> { expr: A<Expr> }
 
-export interface TypeAnnotation extends N<'typeAnnotation'> { }
+export type TypeAnnotation = N<'typeAnnotation'>
 
-export interface LiteralExpr extends TOKEN<'literalExpr'> { }
+export type LiteralExpr = TOKEN<'literalExpr'>
 
 export interface IfElseExpr extends N<'ifElseExpr'> { expr: A<Expr[]> }
 export interface LambdaExpr extends N<'lambdaExpr'> { typedParams: NA<TypedParams>, expr: A<Expr> }
 export interface ShortLambdaExpr extends N<'shortLambdaExpr'> { paramId: A<ParamId>, expr: A<Expr> }
 
-export interface VarExpr extends TOKEN<'varExpr'> { }
+export type VarExpr = TOKEN<'varExpr'>
 
 export interface LetExpr extends N<'letExpr'> { definition: A<Definition[]>, expr: A<Expr> }
 
@@ -165,7 +175,7 @@ export type TPNode = (
 
 // Information accessors
 
-export function tokenName(token: Token) {
+export function tokenName (token: Token): string {
   const symbolic = token.source[0].symbolicNames[token.type]
   if (symbolic !== null) return symbolic
   const literal = token.source[0].literalNames[token.type]
@@ -173,31 +183,31 @@ export function tokenName(token: Token) {
   return `${token.text}#${token.type}`
 }
 
-export function position(token: { line: number, column: number, text: { length: number } }) {
+export function position (token: { line: number, column: number, text: { length: number } }): string {
   return `${token.line}:${token.column + 1}-${token.column + 1 + token.text.length}`
 }
 
-export function nodeName(node: TPNode) {
+export function nodeName (node: TPNode): string {
   const ruleCategory = node.contextName
 
   const ruleName = node.parser.ruleNames[node.ruleIndex]
   return ruleName === ruleCategory ? ruleName : `${ruleCategory}:${ruleName}`
 }
 
-export function nodePosition(node: TPNode) {
+export function nodePosition (node: TPNode): string {
   if (node.start.line === node.stop.line) {
     return `${node.start.line}:${node.start.column + 1}-${node.stop.column + 1 + node.stop.text.length}`
   }
   return `${node.start.line}:${node.start.column + 1}-${node.stop.line}:${node.stop.column + 1 + node.stop.text.length}`
 }
 
-export function dump(node: TPNode, tab?: string): string {
-  const _tab = tab || ''
+export function dump (node: TPNode, tab?: string): string {
+  const _tab = tab ?? ''
   const nextTab = _tab + '  '
   let line = `${_tab}${nodeName(node)}\n`
 
   if (node.children !== null) {
-    for (let subNode of node.children) {
+    for (const subNode of node.children) {
       if (subNode.symbol !== undefined) {
         const symbol = subNode.symbol
         line += `${nextTab}${tokenName(symbol)} ${symbol.text}   @${position(symbol)}\n`
@@ -209,11 +219,17 @@ export function dump(node: TPNode, tab?: string): string {
   return line
 }
 
-export function parse(input: string): TPNode {
-  const chars = new antlr4.InputStream(input)
+declare module 'antlr4/error/ErrorListener' {
+  interface ErrorListener {
+    failed: boolean
+  }
+}
+
+export function parse (input: string): TPNode {
+  const chars = new InputStream(input)
   const lexer = new TPGrammarLexer(chars)
-  const tokens = new antlr4.CommonTokenStream(lexer)
-  const parser = new TPGrammarParser(tokens)
+  const tokens = new CommonTokenStream(lexer as any)
+  const parser = new TPGrammarParser(tokens) as any
   parser.buildParseTrees = true
 
   const errorListener = new ErrorListener()
@@ -224,7 +240,7 @@ export function parse(input: string): TPNode {
 
   const start = parser.topLevel()
 
-  if (errorListener.failed) {
+  if (errorListener.failed === true) {
     throw new Error('Parsing error occurred')
   }
 
@@ -234,7 +250,7 @@ export function parse(input: string): TPNode {
 export class ParseError extends Error {
   node: TPNode
 
-  constructor(msg: string, node: TPNode) {
+  constructor (msg: string, node: TPNode) {
     super(`${msg} ${nodePosition(node)}`)
     this.node = node
   }

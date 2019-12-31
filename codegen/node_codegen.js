@@ -26,23 +26,23 @@ export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
 
   readonly typ: typeof ${name.toUpperCase()}
 
-  ${_.join(typedAttributes.map(x => `readonly ${x}`), '\n  ')}
+  ${typedAttributes.map(x => `readonly ${x}`).join('\n  ')}
 
   constructor (${typedAttributes.join(', ')}) {
     // generated code
 ${extend ? '    super()' : ''}
     this.typ = ${name.toUpperCase()} // typ is faster when set on instances
-    ${_.join(_.map(attributes, a => `this.${a} = ${a}`), '\n    ')}
+    ${attributes.map(a => `this.${a} = ${a}`).join('\n    ')}
   }
 
-  children (): [${_.join(types, ', ')}] {
+  children (): [${types.join(', ')}] {
     // generated code
-    return [${_.join(_.map(attributes, a => `this.${a}`), ', ')}]
+    return [${attributes.map(a => `this.${a}`).join(', ')}]
   }
 
-  rewrite (subExprs: [${_.join(types, ', ')}]): ${name} {
+  rewrite (subExprs: [${types.join(', ')}]): ${name} {
     // generated code
-    return new ${_.upperFirst(name)}(${_.join(_.map(attributes, (a, idx) => `subExprs[${idx}]`), ', ')})
+    return new ${_.upperFirst(name)}(${attributes.map((a, idx) => `subExprs[${idx}]`).join(', ')})
   }
 
   equals (that: any): boolean { // ${name}
@@ -50,7 +50,7 @@ ${extend ? '    super()' : ''}
     if (that === this) return true // fast-track
     if (that == null) return false
     if (that instanceof ${name}) {
-      ${_.join(_.map(attributes, a => `if (!equal(this.${a}, that.${a})) return false`), '\n      ')}
+      ${attributes.map(a => `if (!equal(this.${a}, that.${a})) return false`).join('\n      ')}
       return true
     }
     return false
@@ -103,7 +103,7 @@ function data (name, params) {
 
 ${params.import ? params.import.join('\n') : ''}
 
-export type ${name} = ${_.join(_.keys(params.constructors), ' | ')}
+export type ${name} = ${Object.keys(params.constructors).join(' | ')}
 
 //`)
 
@@ -126,12 +126,12 @@ const files = [data('Expr',
       "import { equal } from '../utils/prelude'"
     ],
     constructors: {
-      'Var': ['varId: string'],
-      'Literal': ['value: LiteralValue | symbol'],
-      'Apply': ['operator: Expr', 'operands: Expr[]'],
-      'IfElse': ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
-      'Lambda': ['params: string[]', 'body: Expr'],
-      'Let': ['defs: Map<string, Expr>', 'body: Expr']
+      Var: ['varId: string'],
+      Literal: ['value: LiteralValue | symbol'],
+      Apply: ['operator: Expr', 'operands: Expr[]'],
+      IfElse: ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
+      Lambda: ['params: string[]', 'body: Expr'],
+      Let: ['defs: Map<string, Expr>', 'body: Expr']
     }
   })]
 

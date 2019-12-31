@@ -29,7 +29,7 @@ describe('fasteach', () => {
 
 describe('flatmap', () => {
   it('flattens when needed', () => {
-    expect(flapmap<any,any>([1, [2, 3], [], null, undefined, [[5]]], x => x)).toEqual([1, 2, 3, null, [5]])
+    expect(flapmap<any, any>([1, [2, 3], [], null, undefined, [[5]]], x => x)).toEqual([1, 2, 3, null, [5]])
   })
 
   it('works like _.flatMap', () => {
@@ -53,7 +53,7 @@ describe('flatmap', () => {
 
 describe('zip', () => {
   it('zips', () => {
-    expect(zip(['A','b','©'], [1,2,3])).toEqual([['A',1], ['b', 2], ['©',3]])
+    expect(zip(['A', 'b', '©'], [1, 2, 3])).toEqual([['A', 1], ['b', 2], ['©', 3]])
   })
 
   it('works on empty lists', () => {

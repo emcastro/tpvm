@@ -4,6 +4,8 @@ import {
   Expr, Var, Literal, Apply, IfElse, Lambda, Let
 } from '../generated/genExpr'
 
+import { LiteralValue, Binding } from '../expr/ExprBase'
+
 declare module '../generated/genExpr' {
   interface Let {
     defBodies: Expr[]
@@ -32,8 +34,6 @@ Object.defineProperty(Let.prototype, 'defNames', {
     return lazy
   }
 })
-
-import { LiteralValue, Binding } from '../expr/ExprBase'
 
 export { eVar, eLiteral, eApply, eIfElse, eLambda, eLet }
 export { Expr, Var, Literal, Apply, IfElse, Lambda, Let, LiteralValue }

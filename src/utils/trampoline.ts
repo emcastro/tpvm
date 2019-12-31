@@ -25,7 +25,7 @@ export function tailCall<T> (continuation: () => Trampoline<T>): Trampoline<T> {
 }
 
 export function trampoline<T> (start: Trampoline<T>): T {
-  let next = start  // Theoretical memory leak on `start`
+  let next = start // Theoretical memory leak on `start`
   while (next instanceof TailCall) {
     next = next.continuation()
   }

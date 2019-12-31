@@ -21,7 +21,6 @@ class ReferenceError extends Error {
 }
 
 class VarMapping {
-
   constructor (public storage: Map<string, string>, public autodef: boolean) { }
 
   resolve (token: Token): string {
@@ -38,7 +37,7 @@ class VarMapping {
   }
 
   resolveIfDefined (prefix: string, token: Token): MayBe<string> {
-    const id = prefix + token.text
+    const id = prefix + (token.text)
     return this.storage.get(id)
   }
 
@@ -79,7 +78,7 @@ class FreshToken {
   line!: number
   tokenIndex!: number
   type!: number
-  source!: [{ literalNames: (string | null)[], symbolicNames: (string | null)[] }, {}]
+  source!: [{ literalNames: Array<string | null>, symbolicNames: Array<string | null> }, {}]
 
   constructor (token: Token) {
     Object.assign(this, token)
@@ -255,7 +254,7 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
 
     const newEnv = env.extends(ids)
 
-    const bindings: [string, Expr][] = flapmap(defs, (def): [string, Expr][] => {
+    const bindings: Array<[string, Expr]> = flapmap(defs, (def): Array<[string, Expr]> => {
       switch (def.contextName) {
         case 'valueDefinition': {
           const id = extractValueId(def)
@@ -296,11 +295,11 @@ function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams | null), expr
 
 // Utils ↓↓↓↓
 
-function argList (args: Args | null) { return (args === null) ? emptyList<Arg>() : args.arg() }
-function typedParamList (params: TypedParams | null) { return (params === null) ? emptyList<TypedParam>() : params.typedParam() }
-function typedVarList (vars: TypedVars | null) { return (vars === null) ? emptyList<TypedVar>() : vars.typedVar() }
+function argList (args: Args | null): Arg[] { return (args === null) ? emptyList<Arg>() : args.arg() }
+function typedParamList (params: TypedParams | null): TypedParam[] { return (params === null) ? emptyList<TypedParam>() : params.typedParam() }
+function typedVarList (vars: TypedVars | null): TypedVar[] { return (vars === null) ? emptyList<TypedVar>() : vars.typedVar() }
 
-function operands (apply: PApply, env: Env) {
+function operands (apply: PApply, env: Env): Expr[] {
   return fastmap(argList(apply.args()), a => toCore(a.expr(), env))
 }
 
@@ -317,19 +316,19 @@ function toCoreMap (exprs: TPNode[], env: Env): Expr[] {
 
 const parseIntAutoRE = /((0x)|(0b))?(.*)/
 
-function parseIntAuto (text: string) {
+function parseIntAuto (text: string): number {
   const match = parseIntAutoRE.exec(text)
   if (match === null) throw new Error(`Mismatch with grammar on integers: ${text}`)
-  if (match[2] !== undefined) { // tslint:disable-line
+  if (match[2] !== undefined) {
     return parseInt(match[4], 16)
   }
-  if (match[3] !== undefined) { // tslint:disable-line
+  if (match[3] !== undefined) {
     return parseInt(match[4], 2)
   }
   return parseInt(match[4], 10)
 }
 
-export function core (source: TPNode, autodef: boolean = false) {
+export function core (source: TPNode, autodef: boolean = false): Expr {
   const emptyEnv = new VarMapping(new Map(), autodef)
   return toCore(source, emptyEnv)
 }

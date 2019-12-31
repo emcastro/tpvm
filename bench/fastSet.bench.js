@@ -17,12 +17,12 @@ for (const i of [3, 11, 18, 30, 60, 150]) {
   const list = _.times(i)
 
   suite.add('Standard Set', () => {
-    let result = new Set()
+    const result = new Set()
     fasteach(list, x => result.add(`(${x})`))
   })
 
   suite.add('Set from list', () => {
-    let result = []
+    const result = []
     fasteach(list, x => { result.push(`(${x})`) })
     return new Set(result)
   })

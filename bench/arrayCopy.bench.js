@@ -49,6 +49,9 @@ for (let i = 0; i < 15; i += 3) {
       copy[j++] = list[i]
     }
   })
+  suite.add('core-js map(identity)', () => {
+    list.map(x => x)
+  })
 
   run(suite, '[i] + length copy')
 }

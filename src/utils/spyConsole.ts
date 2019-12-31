@@ -1,5 +1,5 @@
 
-export default function spyConsole (method: 'log' | 'error' | 'info' | 'warn' | 'trace', ...breakOn: string[]) {
+export default function spyConsole (method: 'log' | 'error' | 'info' | 'warn' | 'trace', ...breakOn: string[]): void {
   const consoleAny = console as any
   const cl = consoleAny[method]
   consoleAny[method] = function (...args: any[]) {

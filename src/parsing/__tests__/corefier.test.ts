@@ -12,5 +12,4 @@ describe('Corefier', () => {
     a(a, b, c, d, x, w)
   `), true).toText()).toMatchSnapshot()
   })
-
 })

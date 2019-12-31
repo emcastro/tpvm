@@ -1,13 +1,11 @@
 
-import * as _ from 'lodash'
-
 // Usefull type for value handled at runtime
 export type defined = number | string | boolean | symbol | object | null | Function
 export type anything = defined | undefined
 
 /** Frozen empty list */
 const _emptyList: any[] = Object.freeze([]) as any
-export function emptyList<T> () { return _emptyList as T[] }
+export function emptyList<T> (): T[] { return _emptyList as T[] }
 
 /** Typed version of o[Symbol.iterator]() */
 export function iterator (o: any): Iterator<anything> {
@@ -18,7 +16,7 @@ export function iterator (o: any): Iterator<anything> {
 export function iteratorToArray<T> (i: Iterator<T>): T[] {
   const list: T[] = []
   let item
-  while (!(item = i.next()).done) { // tslint:disable-line
+  while (!(item = i.next()).done) {
     list.push(item.value)
   }
   return list
@@ -148,7 +146,7 @@ export class Pair<A, B> {
 export function memo<V, R extends defined> (f: (v: V) => R): (v: V) => R {
   const store = new Map<V, R>()
 
-  return ((arg: V) => {
+  return (arg: V) => {
     let result = store.get(arg)
     if (result === undefined) {
       result = f(arg)
@@ -156,47 +154,49 @@ export function memo<V, R extends defined> (f: (v: V) => R): (v: V) => R {
     }
 
     return result
-  })
+  }
 }
 
 /** Error with cascading cause error */
 export class XError extends Error {
-
+  //
   cause?: Error
 
   constructor (msg?: string, cause?: Error, showSelfTrace: boolean = true) {
     super(msg)
     if (showSelfTrace) {
-      this.stack = this.stack!.replace(/^Error/, this.constructor.name)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.stack = this.stack!.replace(/^Error/, this.constructor.name) // stack cannot be null in realistic cases
 
       if (cause !== undefined) {
         this.stack += '\n'
         this.stack += cause.stack
       }
     } else {
-      this.stack = `${this.constructor.name}: ${msg}\n${cause!.stack}`
+      if (cause !== undefined) {
+        this.stack = `${this.constructor.name}: ${msg}\n${cause.stack}`
+      }
     }
   }
-
 }
 
 type Class<T> = new (...args: any[]) => T
 
 class ClassCastError extends Error {
   constructor (public awaitedClass: Class<unknown>, public value: unknown, public include: boolean) {
-    super(`ClassCastError: awaiting ${include ? '' : 'not '}${awaitedClass.name}; found: \`${String(value)}\`: ${(<any>value)?.constructor.name}`)
+    super(`ClassCastError: awaiting ${include ? '' : 'not '}${awaitedClass.name}; found: \`${String(value)}\`: ${(value as any)?.constructor.name}`)
   }
 }
 
 const CHECK_CAST: boolean = true
 
-export function checkCast<T> (value: T, classConstructor: Class<T>) {
+export function checkCast<T> (value: T, classConstructor: Class<T>): void {
   if (CHECK_CAST && !(value instanceof classConstructor)) {
     throw new ClassCastError(classConstructor, value, true)
   }
 }
 
-export function checkNotCast (value: any, classConstructor: Class<anything>) {
+export function checkNotCast (value: any, classConstructor: Class<anything>): void {
   if (CHECK_CAST && (value instanceof classConstructor)) {
     throw new ClassCastError(classConstructor, value, false)
   }
@@ -210,14 +210,16 @@ class TypeCastError extends Error {
   }
 }
 
-export function checkType (value: anything, typeName: TypeName) {
-  if (CHECK_CAST && (typeof value !== typeName)) { // tslint:disable-line
+export function checkType (value: anything, typeName: TypeName): void {
+  // eslint-disable-next-line valid-typeof
+  if (CHECK_CAST && (typeof value !== typeName)) {
     throw new TypeCastError(typeName, value, true)
   }
 }
 
-export function checkNotType (value: anything, typeName: TypeName) {
-  if (CHECK_CAST && !(typeof value !== typeName)) { // tslint:disable-line
+export function checkNotType (value: anything, typeName: TypeName): void {
+  // eslint-disable-next-line valid-typeof
+  if (CHECK_CAST && !(typeof value !== typeName)) {
     throw new TypeCastError(typeName, value, false)
   }
 }
@@ -232,7 +234,7 @@ export function assertNever (invalidValue: never): never {
 }
 
 export function $$$ (): never {
-  throw new Error(`Not implemented yet`)
+  throw new Error('Not implemented yet')
 }
 
 /** Build a comparator for Array::sort() */

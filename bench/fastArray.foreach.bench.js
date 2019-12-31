@@ -37,7 +37,7 @@ for (let i = 0; i < 15; i++) {
 
   suite.add('for of', () => {
     const r = []
-    for (let x of list) {
+    for (const x of list) {
       r.push(`(${x})`)
     }
     return r

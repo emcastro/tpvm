@@ -46,14 +46,14 @@ export function then<Q, P> (q: Q | Promise<Q>, f: (q: Q) => P | Promise<P>): P |
 }
 
 /* CallPrimitive decodes its promised arguments. */
-export function callPrimitive (op: Function, args: (Value | Promise<Value>)[], from: number): XValue {
+export function callPrimitive (op: Function, args: Array<Value | Promise<Value>>, from: number): XValue {
   const s: StrictnessInfo = (op as any).strictness
   const l = s.length
 
   for (let i = from; i < l; i++) {
     const arg = args[i]
     if (s[i] === Strictness.VALUE) {
-      if (isPromise(arg)) {  // Wait the value
+      if (isPromise(arg)) { // Wait the value
         return then(arg, a => {
           args[i] = a
           return callPrimitive(op, args, i + 1)

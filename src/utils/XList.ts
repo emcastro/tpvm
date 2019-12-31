@@ -9,7 +9,7 @@ export class XList<T> {
 
   private to: number
 
-  get length () { return this.to - this.from }
+  get length (): number { return this.to - this.from }
 
   constructor (array: T[] = [], copy: boolean = true) {
     const localArray = copy ? copyArrayInto(array, []) : array
@@ -104,7 +104,7 @@ export class XList<T> {
     return Object.create(XList.prototype) as XList<T>
   }
 
-  toString () {
+  toString (): string {
     return `[:${this.toList().toString()}:]`
   }
 }

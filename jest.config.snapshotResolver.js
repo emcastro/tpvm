@@ -1,7 +1,7 @@
 // Keep snapshots in src dir (don't know why it is needed, but remove it and it fails)
 module.exports = {
   // resolves from test to snapshot path
-  resolveSnapshotPath: (testPath, snapshotExtension) => 
+  resolveSnapshotPath: (testPath, snapshotExtension) =>
     testPath.replace('__tests__', '__snapshots__') + snapshotExtension,
 
   // resolves from snapshot to test path
@@ -12,4 +12,4 @@ module.exports = {
 
   // Example test path, used for preflight consistency check of the implementation above
   testPathForConsistencyCheck: 'some/__tests__/example.test.js'
-};
+}

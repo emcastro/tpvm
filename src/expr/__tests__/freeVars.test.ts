@@ -7,7 +7,6 @@ function parse (test: string) {
 }
 
 describe('freeVar', () => {
-
   it('works on if-else', () => {
     expect(parse('if (a) b else c').freeVars()).toEqual(new Set(['a', 'b', 'c']))
     expect(parse('if (a) a else a').freeVars()).toEqual(new Set(['a']))

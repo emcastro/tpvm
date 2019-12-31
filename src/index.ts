@@ -15,7 +15,7 @@ const cored = core(parsed)
 try {
   const p: any = pushingEval1(cored, new Env(new Map()))
 
-  if (p != null && p.then) { // Promise result
+  if (p != null && p.then !== undefined) { // Promise result
     p.then((v: any) => {
       console.log('!End', v.toString())
     }, (e: any) => {

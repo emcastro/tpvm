@@ -12,30 +12,28 @@ import truncate from 'lodash/truncate'
 
 import { XList } from '../utils/XList'
 
-import { Promise as BBPromise } from 'bluebird'
-import { isSymbol } from 'util'
-import { isLambda } from '../generated/genExpr'
-import { Spy } from '../utils/spy'
+// import { Promise as BBPromise } from 'bluebird'
+// import { isLambda } from '../generated/genExpr'
+// import { Spy } from '../utils/spy'
 import { MultiKeyMap, counter } from '../utils/maps'
 
 export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Function
 
 export type XValue = Value | Promise<Value>
 
-interface ValueArray extends Array<XValue> { }
-interface ValueAppendList extends XList<XValue> { }
+type ValueArray = XValue[]
+type ValueAppendList= XList<XValue>
 
 type Frame = Map<string, XValue>
 
 export class Env { // export for building root env
-
   constructor (public frame: Frame, public parent?: Env) { }
 
   lookup (varId: string): XValue {
     // There should not be undefined variable at this level
     const value = this.frame.get(varId)
     if (value !== undefined) { // we don't intend to use undefined as a value
-      if (isSymbol(value)) {
+      if (typeof value === 'symbol') {
         throw new Error(`Forward definition of ${varId}`)
       }
       return value
@@ -60,12 +58,11 @@ export class Closure {
 }
 
 class EvalError extends XError {
-
+  /* eslint-disable @typescript-eslint/strict-boolean-expressions */
   constructor (msg?: string, expression?: Expr, cause?: Error) {
-    const shortExpression = (expression && `${expression.location()} : ` + truncate(`${expression}`, { length: 250 }))
-
     let bigMsg
-    if (shortExpression) {
+    if (expression) {
+      const shortExpression = `${expression.location()} : ` + truncate(`${expression}`, { length: 250 })
       if (msg) bigMsg = `${shortExpression}\n${msg}`
       else bigMsg = shortExpression
     } else if (msg) bigMsg = msg
@@ -74,7 +71,7 @@ class EvalError extends XError {
 
     super(bigMsg, cause, showSelfTrace)
   }
-
+  /* eslint-enable @typescript-eslint/strict-boolean-expressions */
 }
 
 class PrimitiveError extends EvalError { }
@@ -155,7 +152,7 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
     case eLiteral.typ:
       const l = expr.value
       if (typeof l === 'symbol') {
-        const x = primitives[<any>l]
+        const x = primitives[l as any]
         if (x === undefined) {
           throw new EvalError(`Undefined primitive #${Symbol.keyFor(l)}`, expr)
         }
@@ -202,8 +199,7 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
   }
 }
 
-function applyClosure (op: Closure, ops: Expr[], env: Env, callSite: Apply) {
-
+function applyClosure (op: Closure, ops: Expr[], env: Env, callSite: Apply): Trampoline<XValue> {
   calledLambdaStats.inc(op.lambda)
   callSiteStats.inc(callSite)
 
@@ -219,10 +215,9 @@ function applyClosure (op: Closure, ops: Expr[], env: Env, callSite: Apply) {
   const newEnv: Env = new Env(frame, op.defEnv)
 
   return tailCall(() => eval1(op.lambda.body, newEnv))
-
 }
 
-function apply (expr: Apply, env: Env) {
+function apply (expr: Apply, env: Env): Trampoline<XValue> {
   const applyExpr = expr
   return mixDone(then(pushingEval1(expr.operator, env), (op) => {
     const ops = applyExpr.operands
@@ -234,7 +229,7 @@ function apply (expr: Apply, env: Env) {
       // Special case: primitive, array or object access
 
       // Parameter evaluation
-      const args: XValue[] = []  // inlined Array.map
+      const args: XValue[] = [] // inlined Array.map
       for (let i = 0; i < ops.length; i++) {
         args.push(pushingEval1(ops[i], env))
       }
@@ -244,7 +239,7 @@ function apply (expr: Apply, env: Env) {
         callSiteTargetStats.inc([expr, op.name])
 
         if (op.length !== args.length) {
-          if (!(op as any).varArgs) {
+          if ((op as any).varArgs === undefined) {
             throw new EvalError(`Argument count ${args.length} differs from parameter count ${op.length} of primitive`, expr)
           }
         }
@@ -291,8 +286,8 @@ function apply (expr: Apply, env: Env) {
 /**
  * For cases when proper tail call is not available, push a diagnosis try-catch on the stack
  */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class PushingEval1 {
-
   // @Spy({
   //   name: 'Eval',
   //   in (expr) { return [expr.debugInfo()] },

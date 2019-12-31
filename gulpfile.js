@@ -4,7 +4,7 @@
 const gulp = require('gulp')
 const fs = require('fs')
 const path = require('path')
-const child_process = require('child_process')
+const childProcess = require('child_process')
 const gulpClean = require('gulp-clean')
 
 const Vinyl = require('vinyl')
@@ -21,9 +21,8 @@ const COVERAGE = 'coverage'
 
 const ANTLR_VERSION = '4.7.2'
 
-
 exports.clean = clean
-function clean() {
+function clean () {
   return (
     gulp.src([GENERATED, DIST, COVERAGE], { allowEmpty: true })
       .pipe(gulpClean()))
@@ -32,7 +31,7 @@ function clean() {
 // ANTLR4
 process.env.CLASSPATH = ':' + path.join(__dirname, `antlr-${ANTLR_VERSION}-complete.jar`) + ':' // FIXME: report bug to gulp-antlr4
 
-function antlr4Download(done) {
+function antlr4Download (done) {
   if (!fs.existsSync(`antlr-${ANTLR_VERSION}-complete.jar`)) {
     return gulpDownload(`http://www.antlr.org/download/antlr-${ANTLR_VERSION}-complete.jar`).pipe(gulp.dest('.'))
   } else {
@@ -40,7 +39,7 @@ function antlr4Download(done) {
   }
 }
 
-function antlr4Build() {
+function antlr4Build () {
   return (
     gulp.src(ANTLR4)
       .pipe(gulpAntlr4({
@@ -49,7 +48,7 @@ function antlr4Build() {
       })))
 }
 
-function antlr4Normalize() {
+function antlr4Normalize () {
   return (
     gulp.src(GENERATED + '/*{Lexer,Parser}.js')
       .pipe(asyncMap(async (file, encoding) => {
@@ -65,14 +64,15 @@ exports.antlr4 = antlr4
 
 // Codegen
 exports.codegen = codegen
-function codegen() {
+function codegen () {
   return (
     gulp.src(CODEGEN)
       .pipe(asyncFlatMap(async (file, encoding) => {
         const code = file.contents.toString(encoding)
         let result
         try {
-          result = eval('"use strict"\n' + code) // eslint-disable-line no-eval
+          // eslint-disable-next-line no-eval
+          result = eval('"use strict"\n' + code)
           return result.map(({ path, sourceCode }) => new Vinyl({
             path,
             contents: Buffer.from(sourceCode)
@@ -88,22 +88,22 @@ function codegen() {
 // TSC and dist generation
 
 exports.tsc = tsc
-function tsc(cb) {
-  const watch = child_process.spawn('npx', ['tsc'], {
-    stdio: 'inherit',
+function tsc (cb) {
+  const watch = childProcess.spawn('npx', ['tsc'], {
+    stdio: 'inherit'
   })
   watch.on('close', cb)
 }
 
 exports.tscWatch = tscWatch
-function tscWatch(cb) {
-  const watch = child_process.spawn('npx', ['tsc', '--watch'], {
-    stdio: 'inherit',
+function tscWatch (cb) {
+  const watch = childProcess.spawn('npx', ['tsc', '--watch'], {
+    stdio: 'inherit'
   })
   watch.on('close', cb)
 }
 
-function dataResources() {
+function dataResources () {
   return gulp.src(DATA_RESOURCES).pipe(gulp.dest((DIST)))
 }
 
@@ -128,10 +128,10 @@ exports.watch = gulp.parallel(
 const stream = require('stream')
 
 /** @param {(chunk: any, encoding: string) => Promise<any>} f */
-function asyncMap(f) {
+function asyncMap (f) {
   return new stream.Transform({
     objectMode: true,
-    transform(chunk, encoding, cb) {
+    transform (chunk, encoding, cb) {
       f(chunk, encoding)
         .then(result => cb(null, result))
         .catch(e => cb(e, null))
@@ -140,10 +140,10 @@ function asyncMap(f) {
 }
 
 /** @param {(chunk: any, encoding: string) => Promise<any[]>} f */
-function asyncFlatMap(f) {
+function asyncFlatMap (f) {
   return new stream.Transform({
     objectMode: true,
-    transform(chunk, encoding, cb) {
+    transform (chunk, encoding, cb) {
       f(chunk, encoding)
         .then(result => {
           result.forEach(r => this.push(r))

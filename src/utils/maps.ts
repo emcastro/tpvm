@@ -1,13 +1,14 @@
 
-import { anything, defined, $$$ } from './prelude'
+import { anything } from './prelude'
 
-interface Entries<K, V> extends Map<K, V | Entries<K, V>> { }
+// interface Entries<K, V> extends Map<K, V | Entries<K, V>> { }
+type Entries<K, V> = Map<K, V | Entries<K, V>>
 
-export class MultiKeyMap<KS extends Array<anything>, V> implements MapLike<KS, V> {
+export class MultiKeyMap<KS extends anything[], V> implements MapLike<KS, V> {
   root: Entries<anything, V> = new Map()
   keySize?: number = undefined
 
-  protected navigateToLeafMap (ks: KS) {
+  protected navigateToLeafMap (ks: KS): Entries<anything, V> {
     let map = this.root
     let i: number
     for (i = 0; i < ks.length - 1; i++) {
@@ -26,7 +27,7 @@ export class MultiKeyMap<KS extends Array<anything>, V> implements MapLike<KS, V
     return map
   }
 
-  set (ks: KS, v: V) {
+  set (ks: KS, v: V): void {
     if (this.keySize === undefined) {
       this.keySize = ks.length
     } else {
@@ -35,8 +36,7 @@ export class MultiKeyMap<KS extends Array<anything>, V> implements MapLike<KS, V
     this.navigateToLeafMap(ks).set(ks[ks.length - 1], v)
   }
 
-  get (ks: KS) {
-
+  get (ks: KS): V | undefined {
     let map = this.root
     for (const k of ks) {
       const step = map.get(k)
@@ -49,9 +49,9 @@ export class MultiKeyMap<KS extends Array<anything>, V> implements MapLike<KS, V
     }
   }
 
-  [Symbol.iterator] () { return this.entries() }
+  [Symbol.iterator] (): IterableIterator<[KS, V]> { return this.entries() }
 
-  private *walkEntries<E> (entryFormatter: (keys: KS, v: V) => E) {
+  private * walkEntries<E> (entryFormatter: (keys: KS, v: V) => E): IterableIterator<E> {
     if (this.root.size === 0) return // nothing inside
     if (this.keySize === undefined) throw new Error('Invalid internal state')
 
@@ -78,29 +78,29 @@ export class MultiKeyMap<KS extends Array<anything>, V> implements MapLike<KS, V
     }
   }
 
-  entries () { return this.walkEntries<[KS, V]>((ks, v) => [[...ks] as KS, v]) }
+  entries (): IterableIterator<[KS, V]> { return this.walkEntries<[KS, V]>((ks, v) => [[...ks] as KS, v]) }
 
-  keys () { return this.walkEntries((ks, v) => [...ks] as KS) }
-  values () { return this.walkEntries((ks, v) => v) }
-
+  keys (): IterableIterator<KS> { return this.walkEntries((ks, v) => [...ks] as KS) }
+  values (): IterableIterator<V> { return this.walkEntries((ks, v) => v) }
 }
 
 interface MapLike<K, V> {
-  get (k: K): V | undefined
-  set (k: K, v: V): void
+  get(k: K): V | undefined
+  set(k: K, v: V): void
 
-  [Symbol.iterator] (): IterableIterator<[K, V]>
-  entries (): IterableIterator<[K, V]>
-  keys (): IterableIterator<K>
-  values (): IterableIterator<V>
+  [Symbol.iterator](): IterableIterator<[K, V]>
+  entries(): IterableIterator<[K, V]>
+  keys(): IterableIterator<K>
+  values(): IterableIterator<V>
 }
 
-export type CounterMap<K> = MapLike<K, number> & { inc (k: K): void }
+export type CounterMap<K> = MapLike<K, number> & { inc(k: K): void }
 
-export function counter<K> (newMap: { new(): MapLike<K, number> }): CounterMap<K> {
+export function counter<K> (newMap: new () => MapLike<K, number>): CounterMap<K> {
+  // eslint-disable-next-line new-cap
   const map: Partial<CounterMap<K>> = new newMap()
   map.inc = function (this: CounterMap<K>, k: K) {
-    this.set(k, (this.get(k) || 0) + 1)
+    this.set(k, (this.get(k) ?? 0) + 1)
   }
   return map as CounterMap<K>
 }

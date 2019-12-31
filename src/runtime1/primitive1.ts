@@ -1,5 +1,4 @@
-
-import * as fs from 'fs'
+import fs from 'fs'
 import { equal, notnull, checkCast, checkType } from '../utils/prelude'
 import { XList } from '../utils/XList'
 
@@ -11,7 +10,7 @@ export enum Strictness {
 
 export type StrictnessInfo = Strictness[] & { result: Strictness }
 
-function varArgs (f: any) {
+function varArgs (f: any): any {
   f.varArgs = true
   return f
 }
@@ -22,33 +21,34 @@ class RuntimeError extends Error { }
 
 // const readFile = promisify(fs.readFile)
 const readFile = promisify((fs.readFile as (name: string, enc: string, cb: (err: NodeJS.ErrnoException, data: string) => void) => void))
-
+//
 export const primitives = annotate({
+  /* eslint-disable @typescript-eslint/camelcase */
   readFile: function fs_readFile_vp (name: string): Promise<string> {
     return readFile(name, 'utf8')
   },
 
-  'assertTypeList': function assertTypeList_vv<T> (l: any): XList<T> {
+  assertTypeList: function assertTypeList_vv<T> (l: any): XList<T> {
     checkCast(l, XList)
     return l as XList<T>
   },
 
-  'assertTypeString': function assertTypeString_vv (l: any): string {
+  assertTypeString: function assertTypeString_vv (l: any): string {
     checkType(l, 'string')
     return l as string
   },
 
-  'assertTypeNumber': function assertTypeNumber_vv (l: any): number {
+  assertTypeNumber: function assertTypeNumber_vv (l: any): number {
     checkType(l, 'number')
     return l as number
   },
 
-  'assertTypeBoolean': function assertTypeBoolean_vv (l: any): boolean {
+  assertTypeBoolean: function assertTypeBoolean_vv (l: any): boolean {
     checkType(l, 'boolean')
     return l as boolean
   },
 
-  'string_asList': function string_asList_vv (str: string): XList<number> {
+  string_asList: function string_asList_vv (str: string): XList<number> {
     checkType(str, 'string')
     const array: number[] = []
     for (let i = 0; i < str.length; i++) {
@@ -57,59 +57,62 @@ export const primitives = annotate({
     return new XList(array, false) // list of strict values
   },
 
-  'fromCharCode': function fromCharCode_vv (code: number): string {
+  fromCharCode: function fromCharCode_vv (code: number): string {
     checkType(code, 'number')
     return String.fromCharCode(code)
   },
 
-  'nil': new XList(),
+  nil: new XList(),
 
-  'null': null,
+  null: null,
 
-  'list_length': function list_length_vv<T> (list: XList<T>): number {
+  list_length: function list_length_vv<T> (list: XList<T>): number {
     return list.length
   },
 
-  'list_tailFrom': function list_tailFrom_vvv<T> (list: XList<T>, from: number): XList<T> {
-    return list.slice(from, list.length)  // same strictness as source
+  list_tailFrom: function list_tailFrom_vvv<T> (list: XList<T>, from: number): XList<T> {
+    return list.slice(from, list.length) // same strictness as source
   },
 
-  'list_concat': function list_concat_vvv<T> (list1: XList<T>, list2: XList<T>): XList<T> {
+  list_concat: function list_concat_vvv<T> (list1: XList<T>, list2: XList<T>): XList<T> {
     return list1.concat(list2) // strict if both sources are strict
   },
 
-  'list': varArgs(function list_v<T> (...elements: T[]): XList<T> { // no args => no change
+  list: varArgs(function list_v<T> (...elements: T[]): XList<T> { // no args => no change
     return new XList(elements, true) // copy
   }),
 
-  'eq': function eq_vvv (a: any, b: any): boolean {
+  eq: function eq_vvv (a: any, b: any): boolean {
     return equal(a, b)
   },
 
-  'lt': function eq_vvv (a: any, b: any): boolean {
+  lt: function eq_vvv (a: any, b: any): boolean {
     return a < b
   },
 
-  'plus': function plus_vvv (a: any, b: any): any {
+  plus: function plus_vvv (a: any, b: any): any {
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     return a + b
   },
 
-  'minus': function minus_vvv (a: any, b: any): any {
+  minus: function minus_vvv (a: any, b: any): any {
     return a - b
   },
 
-  'error': function error_vv (cause: any) {
+  error: function error_vv (cause: any) {
     throw new RuntimeError(cause)
   },
 
-  'spy': function spy_vv (data: any) {
+  spy: function spy_vv (data: any) {
     console.log(data)
     return data
   },
 
-  'delay': function promise_delay_vvp (time: number, result: any) {
+  delay: function promise_delay_vvp (time: number, result: any) {
     return delay(time).then(() => result)
   }
+
+  /* eslint-enable @typescript-eslint/camelcase */
 })
 
 function annotate (primitives: { [key: string]: any }): { [keySymbol: string]: any } {
@@ -119,7 +122,7 @@ function annotate (primitives: { [key: string]: any }): { [keySymbol: string]: a
       v.strictness = strictnessDecoder(v)
     }
 
-    annotated[<any>Symbol.for(k)] = v // used to denote primitives
+    annotated[Symbol.for(k) as any] = v // used to denote primitives
   })
   return annotated
 }
