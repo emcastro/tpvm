@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    environment:
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./grafana-provisioning:/etc/grafana/provisioning
+  
+  influxdb:
+    image: influxdb
+    ports: 
+      - 8086:8086
+      - 2003:2003
+    environment:
+      - INFLUXDB_GRAPHITE_ENABLED=true
+
+
+    

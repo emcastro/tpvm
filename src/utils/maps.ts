@@ -94,13 +94,25 @@ interface MapLike<K, V> {
   values(): IterableIterator<V>
 }
 
-export type CounterMap<K> = MapLike<K, number> & { inc(k: K): void }
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface Timestamp extends Number {}
 
-export function counter<K> (newMap: new () => MapLike<K, number>): CounterMap<K> {
+export function diffTimestamp (a: Timestamp, b: Timestamp): number {
+  return (b as number) - (a as number)
+}
+
+export type CounterMap<K> = MapLike<K, Timestamp[]> & { inc(k: K): void }
+
+export function counter<K> (newMap: new () => MapLike<K, Timestamp[]>): CounterMap<K> {
   // eslint-disable-next-line new-cap
   const map: Partial<CounterMap<K>> = new newMap()
   map.inc = function (this: CounterMap<K>, k: K) {
-    this.set(k, (this.get(k) ?? 0) + 1)
+    let list = this.get(k)
+    if (list === undefined) {
+      list = []
+      this.set(k, list)
+    }
+    list.push(Date.now() / 1000)
   }
   return map as CounterMap<K>
 }

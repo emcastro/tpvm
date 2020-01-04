@@ -1,7 +1,7 @@
 // import { eApply, eVar, eLet, eLiteral, eLambda, eIfElse } from './expr/Expr'
 import { parse } from './parsing/parser'
 import { core } from './parsing/corefier'
-import { pushingEval1, Env } from './runtime1/eval1'
+import { startPushingEval1, Env } from './runtime1/eval1'
 
 import * as fs from 'fs'
 
@@ -13,7 +13,7 @@ console.log('Running')
 const cored = core(parsed)
 
 try {
-  const p: any = pushingEval1(cored, new Env(new Map()))
+  const p: any = startPushingEval1(cored, new Env(new Map()))
 
   if (p != null && p.then !== undefined) { // Promise result
     p.then((v: any) => {
