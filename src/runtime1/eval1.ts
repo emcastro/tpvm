@@ -18,6 +18,7 @@ import { XList } from '../utils/XList'
 import { MultiKeyMap, counter } from '../utils/maps'
 
 import fs from 'fs'
+import { Spy } from '../utils/spy'
 
 export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Function
 
@@ -78,85 +79,19 @@ class EvalError extends XError {
 
 class PrimitiveError extends EvalError { }
 
-const calledLambdaStats = counter<Lambda>(Map)
-const callSiteStats = counter<Apply>(Map)
-const callSiteTargetStats = counter<[Apply, any]>(MultiKeyMap)
-const pushStackStats = counter<Expr>(Map)
-const popStackStats = counter<Expr>(Map)
+const calledLambdaStats = counter<Lambda>(Map,
+  (t, lambda) => `calledLambda,lambda=${lambda.debugInfo()} value=1 ${t}`)
+const callSiteStats = counter<Apply>(Map,
+  (t, apply) => `callSite,apply=${apply.debugInfo()} value=1 ${t}`)
+const callSiteTargetStats = counter<[Apply, any]>(MultiKeyMap,
+  (t, [apply, source]) => `callSite,apply=${apply.debugInfo()} value=1 ${t}`)
+const pushStackStats = counter<Expr>(Map,
+  (t, expr) => `pushStack,expr=${expr.debugInfo()},type=in value=1 ${t}`)
+const popStackStats = counter<Expr>(Map,
+  (t, expr) => `popStack,expr=${expr.debugInfo()},type=out value=1 ${t}`)
 
-process.on('exit', () => {
-  const fd = fs.openSync('metrics.txt', 'w')
-  function report (s: string): void {
-    fs.writeSync(fd, s + '\n')
-  }
 
-  for (const [lambda, timestamps] of calledLambdaStats) {
-    let i = 0
-    for (const t of timestamps) {
-      report(`calledLambda{lambda="${lambda.debugInfo()}"} ${++i} ${t}`)
-    }
-  }
-
-  for (const [apply, timestamps] of callSiteStats) {
-    let i = 0
-    for (const t of timestamps) {
-      report(`callSite{apply="${apply}"} ${++i} ${t}}`)
-    }
-  }
-
-  for (const [[apply, source], timestamps] of callSiteTargetStats) {
-    let i = 0
-    for (const t of timestamps) {
-      report(`callSite{apply="${apply}",source="${source}"} ${++i} ${t}}`)
-    }
-  }
-
-  for (const [expr, timestamps] of pushStackStats) {
-    let i = 0
-    for (const t of timestamps) {
-      report(`pushStack{expr="${expr.debugInfo()}"} ${++i} ${t}}`)
-    }
-  }
-
-  for (const [expr, timestamps] of popStackStats) {
-    let i = 0
-    for (const t of timestamps) {
-      report(`popStack{expr="${expr.debugInfo()}"} ${++i} ${t}}`)
-    }
-  }
-
-  if (false) {
-    const lambdas = [...calledLambdaStats]
-    const callSites = [...callSiteStats]
-
-    console.log('==Callsite stats==')
-    callSites.sort(by(([_, count]) => -count)).forEach(([site, count]) => {
-      console.log(`${count} -- ${site.debugInfo()}`)
-    })
-
-    console.log('==Lambda target stats==')
-
-    lambdas.sort(by(([_, count]) => -count)).forEach(([expr, count]) => {
-      console.log(`${count} - ${expr.debugInfo()}  ${expr.toString()}`)
-    })
-
-    console.log('==Freevars stats==')
-
-    const lambdaFreeVars = lambdas.map(([expr]) => [expr, expr.freeVars()] as [Lambda, Set<string>])
-
-    lambdaFreeVars.sort(by(([_, freeVars]) => freeVars.size)).forEach(([expr, freeVars]) => {
-      console.log(`${freeVars.size} - ${expr.debugInfo()}  ${[...freeVars]}\n ${expr.toString()}`)
-    })
-
-    console.log('==Callsite-target stats==')
-
-    const callSiteTargets = [...callSiteTargetStats]
-    callSiteTargets.sort(by(([_, count]) => -count)).forEach(([[callSite, target], count]) => {
-      console.log(`${target} <- ${callSite} -- ${count}`)
-    })
-  }
-})
-
+  
 /**
  * Composition rule for Promise monad and Trampoline monad.
  *
@@ -334,18 +269,18 @@ function apply (expr: Apply, env: Env): Trampoline<XValue> {
  */
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class PushingEval1 {
-  // @Spy({
-  //   name: 'Eval',
-  //   in (expr) { return [expr.debugInfo()] },
-  //   out (result) {
-  //     let resultInfo = result
-  //     if (resultInfo instanceof Closure) resultInfo = '<Closure>'
-  //     if (resultInfo instanceof Function) resultInfo = '<Function>'
-  //     if (resultInfo instanceof BBPromise) resultInfo = '<Promise>'
-  //     if (resultInfo instanceof XList) resultInfo = resultInfo.toString()
-  //     return resultInfo
-  //   }
-  // })
+  @Spy({
+    name: 'Eval',
+    in (expr) { return [expr.debugInfo()] },
+    out (result) {
+      let resultInfo = result
+      if (resultInfo instanceof Closure) resultInfo = '<Closure>'
+      if (resultInfo instanceof Function) resultInfo = '<Function>'
+      // if (resultInfo instanceof BBPromise) resultInfo = '<Promise>'
+      if (resultInfo instanceof XList) resultInfo = resultInfo.toString()
+      return resultInfo
+    }
+  })
   static pushingEval1 (expr: Expr, env: Env): XValue {
     try {
       pushStackStats.inc(expr)
