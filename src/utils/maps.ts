@@ -1,6 +1,6 @@
 
 import { anything } from './prelude'
-import { fs } from 'mz'
+import fs from 'fs'
 
 // interface Entries<K, V> extends Map<K, V | Entries<K, V>> { }
 type Entries<K, V> = Map<K, V | Entries<K, V>>
@@ -130,17 +130,18 @@ export function counter<K> (newMap: new () => MapLike<K, Timestamp[]>, format: (
   return map as CounterMap<K>
 }
 
-process.on('exit', (async () => {
+process.on('exit', () => {
+
   // async's callback are never called after exit
-  const fd = await fs.open('metrics.txt', 'w')
+  const fd = fs.openSync('metrics.txt', 'w')
 
   for (const counter of counterList) {
     for (const [k, ts] of counter) {
       for (const t of ts) {
-        await fs.write(fd, counter.format(t, k) + '\n') // write in order
+        fs.writeSync(fd, counter.format(t, k) + '\n') // write in order
       }
     }
   }
 
   fs.closeSync(fd)
-}) as any)
+})
