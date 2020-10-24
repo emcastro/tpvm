@@ -17,6 +17,9 @@ import { XList } from '../utils/XList'
 // import { Spy } from '../utils/spy'
 import { MultiKeyMap, counter } from '../utils/maps'
 
+import fs from 'fs'
+import { Spy } from '../utils/spy'
+
 export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Function
 
 export type XValue = Value | Promise<Value>
@@ -76,41 +79,19 @@ class EvalError extends XError {
 
 class PrimitiveError extends EvalError { }
 
-const calledLambdaStats = counter<Lambda>(Map)
-const callSiteStats = counter<Apply>(Map)
-const callSiteTargetStats = counter<[Apply, any]>(MultiKeyMap)
+const calledLambdaStats = counter<Lambda>(Map,
+  (t, lambda) => `calledLambda,lambda=${lambda.debugInfo()} value=1 ${t}`)
+const callSiteStats = counter<Apply>(Map,
+  (t, apply) => `callSite,apply=${apply.debugInfo()} value=1 ${t}`)
+const callSiteTargetStats = counter<[Apply, any]>(MultiKeyMap,
+  (t, [apply, source]) => `callSite,apply=${apply.debugInfo()} value=1 ${t}`)
+const pushStackStats = counter<Expr>(Map,
+  (t, expr) => `pushStack,expr=${expr.debugInfo()},type=in value=1 ${t}`)
+const popStackStats = counter<Expr>(Map,
+  (t, expr) => `popStack,expr=${expr.debugInfo()},type=out value=1 ${t}`)
 
-process.on('exit', () => {
-  const lambdas = [...calledLambdaStats]
-  const callSites = [...callSiteStats]
 
-  console.log('==Callsite stats==')
-  callSites.sort(by(([_, count]) => -count)).forEach(([site, count]) => {
-    console.log(`${count} -- ${site.debugInfo()}`)
-  })
-
-  console.log('==Lambda target stats==')
-
-  lambdas.sort(by(([_, count]) => -count)).forEach(([expr, count]) => {
-    console.log(`${count} - ${expr.debugInfo()}  ${expr.toString()}`)
-  })
-
-  console.log('==Freevars stats==')
-
-  const lambdaFreeVars = lambdas.map(([expr]) => [expr, expr.freeVars()] as [Lambda, Set<string>])
-
-  lambdaFreeVars.sort(by(([_, freeVars]) => freeVars.size)).forEach(([expr, freeVars]) => {
-    console.log(`${freeVars.size} - ${expr.debugInfo()}  ${[...freeVars]}\n ${expr.toString()}`)
-  })
-
-  console.log('==Callsite-target stats==')
-
-  const callSiteTargets = [...callSiteTargetStats]
-  callSiteTargets.sort(by(([_, count]) => -count)).forEach(([[callSite, target], count]) => {
-    console.log(`${target} <- ${callSite} -- ${count}`)
-  })
-})
-
+  
 /**
  * Composition rule for Promise monad and Trampoline monad.
  *
@@ -284,30 +265,37 @@ function apply (expr: Apply, env: Env): Trampoline<XValue> {
 }
 
 /**
- * For cases when proper tail call is not available, push a diagnosis try-catch on the stack
+ * For cases when proper tail call possible, push a diagnosis try-catch on the stack
  */
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class PushingEval1 {
-  // @Spy({
-  //   name: 'Eval',
-  //   in (expr) { return [expr.debugInfo()] },
-  //   out (result) {
-  //     let resultInfo = result
-  //     if (resultInfo instanceof Closure) resultInfo = '<Closure>'
-  //     if (resultInfo instanceof Function) resultInfo = '<Function>'
-  //     if (resultInfo instanceof BBPromise) resultInfo = '<Promise>'
-  //     if (resultInfo instanceof XList) resultInfo = resultInfo.toString()
-  //     return resultInfo
-  //   }
-  // })
+  @Spy({
+    name: 'Eval',
+    in (expr) { return [expr.debugInfo()] },
+    out (result) {
+      let resultInfo = result
+      if (resultInfo instanceof Closure) resultInfo = '<Closure>'
+      if (resultInfo instanceof Function) resultInfo = '<Function>'
+      // if (resultInfo instanceof BBPromise) resultInfo = '<Promise>'
+      if (resultInfo instanceof XList) resultInfo = resultInfo.toString()
+      return resultInfo
+    }
+  })
   static pushingEval1 (expr: Expr, env: Env): XValue {
     try {
+      pushStackStats.inc(expr)
       return trampoline(eval1(expr, env))
     } catch (e) {
       // if (e instanceof RangeError) throw e // fast-track
       throw new EvalError(undefined, expr, e)
+    } finally {
+      popStackStats.inc(expr)
     }
   }
 }
 
-export const pushingEval1 = PushingEval1.pushingEval1
+const pushingEval1 = PushingEval1.pushingEval1
+
+export function startPushingEval1 (expr: Expr, env: Env): XValue {
+  return pushingEval1(expr, env)
+}

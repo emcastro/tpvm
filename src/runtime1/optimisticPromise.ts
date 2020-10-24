@@ -2,6 +2,7 @@ import BlueBird from 'bluebird'
 import { Strictness, StrictnessInfo } from './primitive1'
 import { Value, XValue } from './eval1'
 import { checkNotCast } from '../utils/prelude'
+import { counter } from '../utils/maps'
 
 export const promisify = BlueBird.promisify
 
@@ -13,6 +14,13 @@ const stats = {
   fulfilled: 0,
   pending: 0
 }
+
+const directStat = counter<string>(Map,
+  (t, typ) => `direct,type=${typ} value=1 ${t}`)
+const fullfilledStat = counter<void>(Map,
+  (t, nothing) => `fullfilled value=1 ${t}`)
+const pendingStat = counter<void>(Map,
+  (t, nothing) => `pending value=1 ${t}`)
 
 process.on('exit', () => {
   console.log('==Access stats==')
@@ -31,16 +39,19 @@ export function isPromise<Q> (q: Q | Promise<Q>): q is Promise<Q> {
 export function then<Q, P> (q: Q | Promise<Q>, f: (q: Q) => P | Promise<P>): P | Promise<P> {
   if (isPromise(q)) {
     if (q.isFulfilled()) {
+      fullfilledStat.inc(undefined)
       stats.fulfilled++
       const v = q.value()
       checkNotCast(v, Promise)
       return then(v, f)
     } else {
+      pendingStat.inc(undefined)
       stats.pending++
       return q.then(f)
     }
   } else {
     stats.direct++
+    directStat.inc('then')
     return f(q)
   }
 }
@@ -60,6 +71,7 @@ export function callPrimitive (op: Function, args: Array<Value | Promise<Value>>
         })
       } else {
         stats.direct++
+        directStat.inc('primitive')
       }
     } else {
       // nothing to do

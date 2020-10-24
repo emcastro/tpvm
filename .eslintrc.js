@@ -23,7 +23,6 @@ module.exports = {
     'standard-with-typescript',
     'plugin:you-dont-need-lodash-underscore/compatible'
   ],
-  // 'parser': '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json'
   },
@@ -31,7 +30,6 @@ module.exports = {
     {
       files: ['*.ts'],
       rules: {
-        ...changeErrorToWarn(config1.rules),
         ...changeErrorToWarn(config2.overrides[0].rules),
         '@typescript-eslint/strict-boolean-expressions': [
           'error',
@@ -49,6 +47,16 @@ module.exports = {
           }
         }
       ]
+    },
+    {
+      files: ['bench/**/*.js'],
+      rules: {
+        'you-dont-need-lodash-underscore/for-each': 'off',
+        'you-dont-need-lodash-underscore/map': 'off'
+      }
     }
-  ]
+  ],
+  rules: {
+    ...changeErrorToWarn(config1.rules),
+  }
 }
