@@ -24,7 +24,7 @@ datasources:
     # <string> database user, if used
     user:
     # <string> database name, if used
-    database: graphite
+    database: tpvm
     # <bool> enable/disable basic auth
     basicAuth:
     # <string> basic auth username
@@ -37,7 +37,7 @@ datasources:
     isDefault: true
     # <map> fields that will be converted to json and stored in jsonData
     jsonData:
-      timeInterval: '.1ms'
+      timeInterval: ".000001ms"
       tlsAuth: false
       tlsAuthWithCACert: false
     # <string> json object of data that will be encrypted.
