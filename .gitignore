@@ -6,3 +6,6 @@
 /coverage
 /antlr-*-complete.jar
 /.history
+/analyze_python
+.ipynb_checkpoints
+/metrics.txt

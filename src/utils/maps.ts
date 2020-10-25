@@ -114,7 +114,15 @@ function hrnow (): Timestamp { return startDate + (process.hrtime.bigint() - sta
 
 const counterList: Array<CounterMap<any>> = []
 
-export function counter<K> (newMap: new () => MapLike<K, Timestamp[]>, format: (t: Timestamp, k: K) => string): CounterMap<K> {
+function replaceBigint (key: string, v: any): any {
+  if (typeof (v) === 'bigint') {
+    return v.toString()
+  } else {
+    return v
+  }
+}
+
+export function counter<K> (newMap: new () => MapLike<K, Timestamp[]>, format: (t: Timestamp, k: K) => {[key: string]: string|number|BigInt}): CounterMap<K> {
   // eslint-disable-next-line new-cap
   const map: Partial<CounterMap<K>> = new newMap()
   map.inc = function (this: CounterMap<K>, k: K) {
@@ -125,15 +133,14 @@ export function counter<K> (newMap: new () => MapLike<K, Timestamp[]>, format: (
     }
     list.push(hrnow())
   }
-  map.format = format
+  map.format = (t: Timestamp, k: K) => JSON.stringify(format(t, k), replaceBigint)
   counterList.push(map as any)
   return map as CounterMap<K>
 }
 
 process.on('exit', () => {
-
   // async's callback are never called after exit
-  const fd = fs.openSync('metrics.txt', 'w')
+  const fd = fs.openSync('metrics.json', 'w')
 
   for (const counter of counterList) {
     for (const [k, ts] of counter) {

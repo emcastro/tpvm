@@ -80,18 +80,16 @@ class EvalError extends XError {
 class PrimitiveError extends EvalError { }
 
 const calledLambdaStats = counter<Lambda>(Map,
-  (t, lambda) => `calledLambda,lambda=${lambda.debugInfo()} value=1 ${t}`)
+  (t, lambda) => ({ time: t, name: 'calledLambda', lambda: lambda.debugInfo() }))
 const callSiteStats = counter<Apply>(Map,
-  (t, apply) => `callSite,apply=${apply.debugInfo()} value=1 ${t}`)
+  (t, apply) => ({ time: t, name: 'callSite', apply: apply.debugInfo() }))
 const callSiteTargetStats = counter<[Apply, any]>(MultiKeyMap,
-  (t, [apply, source]) => `callSite,apply=${apply.debugInfo()} value=1 ${t}`)
+  (t, [apply, source]) => ({ time: t, name: 'callSite', apply: apply.debugInfo() }))
 const pushStackStats = counter<Expr>(Map,
-  (t, expr) => `pushStack,expr=${expr.debugInfo()},type=in value=1 ${t}`)
+  (t, expr) => ({ time: t, name: 'pushStack', expr: expr.debugInfo(), type: 'in' }))
 const popStackStats = counter<Expr>(Map,
-  (t, expr) => `popStack,expr=${expr.debugInfo()},type=out value=1 ${t}`)
+  (t, expr) => ({ time: t, name: 'popStack', expr: expr.debugInfo(), type: 'out' }))
 
-
-  
 /**
  * Composition rule for Promise monad and Trampoline monad.
  *

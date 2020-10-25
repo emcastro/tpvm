@@ -16,11 +16,11 @@ const stats = {
 }
 
 const directStat = counter<string>(Map,
-  (t, typ) => `direct,type=${typ} value=1 ${t}`)
+  (t, typ) => ({ time: t, name: 'direct', type: typ }))
 const fullfilledStat = counter<void>(Map,
-  (t, nothing) => `fullfilled value=1 ${t}`)
+  (t, nothing) => ({ time: t, name: 'fullfilled' }))
 const pendingStat = counter<void>(Map,
-  (t, nothing) => `pending value=1 ${t}`)
+  (t, nothing) => ({ time: t, name: 'pending' }))
 
 process.on('exit', () => {
   console.log('==Access stats==')
