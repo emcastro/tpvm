@@ -1,20 +1,46 @@
 
-import { InputStream, CommonTokenStream } from 'antlr4'
-import { ParserRuleContext } from 'antlr4/ParserRuleContext'
-import { TerminalNodeImpl } from 'antlr4/tree/Tree'
-import { TPGrammarParser } from '../generated/TPGrammarParser'
-import { TPGrammarLexer } from '../generated/TPGrammarLexer'
-import { ErrorListener } from 'antlr4/error/ErrorListener'
+import { InputStream, CommonTokenStream, ParserRuleContext, tree, error } from 'antlr4'
+import TPGrammarParser from '../generated/TPGrammarParser'
+import TPGrammarLexer from '../generated/TPGrammarLexer'
 import { fasteach } from '../utils/fastArray'
+const TerminalNodeImpl = tree.TerminalNodeImpl
 
 export { TPGrammarParser as parser }
+
+declare module 'antlr4' {
+
+  export const tree: {
+    TerminalNodeImpl: any
+  }
+
+  export const error: {
+    ErrorListener: any
+  }
+
+}
+
+declare module 'antlr4/ParserRuleContext' {
+  interface ParserRuleContext {
+    loneChild: any
+    children: any[]
+    token(): Token
+    tokenAt(idx: number): Token
+  }
+}
+
+/**
+ * Allow prototype patching of anything
+ */
+function prototype (a: { prototype: any }): any {
+  return a.prototype
+}
 
 /**
  * Tests if the previous token and the new token are
  * on different lines.
  * @return false is on the same line
  */
-TPGrammarParser.prototype.newline = function () {
+prototype(TPGrammarParser).newline = function () {
   const newToken = this.getCurrentToken()
   const stream = this.getTokenStream()
   const prevToken = stream.get(newToken.tokenIndex - 1)
@@ -37,16 +63,7 @@ annotateParserWithContextName(TPGrammarParser)
 
 // Improvement of Antlr4
 
-declare module 'antlr4/ParserRuleContext' {
-  interface ParserRuleContext {
-    loneChild: any
-    children: any[]
-    token(): Token
-    tokenAt(idx: number): Token
-  }
-}
-
-ParserRuleContext.prototype.loneChild = function () {
+prototype(ParserRuleContext).loneChild = function () {
   const c = this.children
   if (c == null || c.length !== 1) {
     let result: any
@@ -67,14 +84,14 @@ ParserRuleContext.prototype.loneChild = function () {
   return c[0]
 }
 
-ParserRuleContext.prototype.token = function () {
+prototype(ParserRuleContext).token = function () {
   if (this.start !== this.stop) {
     throw new Error('Not a token node')
   }
   return this.start
 }
 
-ParserRuleContext.prototype.tokenAt = function (idx: number) {
+prototype(ParserRuleContext).tokenAt = function (idx: number) {
   const terminal = this.children[idx]
   if (terminal.symbol == null) {
     throw new Error('Not a token node')
@@ -91,7 +108,7 @@ export interface Token {
   line: number
   tokenIndex: number
   type: number
-  source: [{ literalNames: Array<string | null>, symbolicNames: Array<string | null> }, {}]
+  source: [{}, {}]
 }
 
 export interface Node<N> {
@@ -176,9 +193,9 @@ export type TPNode = (
 // Information accessors
 
 export function tokenName (token: Token): string {
-  const symbolic = token.source[0].symbolicNames[token.type]
+  const symbolic = TPGrammarLexer.symbolicNames[token.type]
   if (symbolic !== null) return symbolic
-  const literal = token.source[0].literalNames[token.type]
+  const literal = TPGrammarLexer.literalNames[token.type]
   if (literal !== null) return literal
   return `${token.text}#${token.type}`
 }
@@ -219,12 +236,6 @@ export function dump (node: TPNode, tab?: string): string {
   return line
 }
 
-declare module 'antlr4/error/ErrorListener' {
-  interface ErrorListener {
-    failed: boolean
-  }
-}
-
 export function parse (input: string): TPNode {
   const chars = new InputStream(input)
   const lexer = new TPGrammarLexer(chars)
@@ -232,7 +243,7 @@ export function parse (input: string): TPNode {
   const parser = new TPGrammarParser(tokens) as any
   parser.buildParseTrees = true
 
-  const errorListener = new ErrorListener()
+  const errorListener = new error.ErrorListener()
   errorListener.syntaxError = function (recognizer: any, offendingSymbol: any, line: number, column: number, msg: string, e: Error) {
     errorListener.failed = true
   }

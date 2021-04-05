@@ -3,13 +3,12 @@
 
 const gulp = require('gulp')
 const fs = require('fs')
-const path = require('path')
 const childProcess = require('child_process')
 const gulpClean = require('gulp-clean')
 
 const Vinyl = require('vinyl')
 
-const gulpAntlr4 = require('gulp-antlr4')
+const gulpShell = require('gulp-shell')
 const gulpDownload = require('gulp-download-stream')
 
 const DATA_RESOURCES = 'src/**/data/*'
@@ -19,7 +18,7 @@ const CODEGEN = 'codegen/**/*_codegen.js'
 const ANTLR4 = 'codegen/**/*.g4'
 const COVERAGE = 'coverage'
 
-const ANTLR_VERSION = '4.7.2'
+const ANTLR_VERSION = '4.9.2'
 
 exports.clean = clean
 function clean () {
@@ -29,7 +28,6 @@ function clean () {
 }
 
 // ANTLR4
-process.env.CLASSPATH = ':' + path.join(__dirname, `antlr-${ANTLR_VERSION}-complete.jar`) + ':' // FIXME: report bug to gulp-antlr4
 
 function antlr4Download (done) {
   if (!fs.existsSync(`antlr-${ANTLR_VERSION}-complete.jar`)) {
@@ -42,10 +40,11 @@ function antlr4Download (done) {
 function antlr4Build () {
   return (
     gulp.src(ANTLR4)
-      .pipe(gulpAntlr4({
-        parserDir: GENERATED,
-        mode: 'none'
-      })))
+      .pipe(gulpShell(
+        `java -jar 'antlr-${ANTLR_VERSION}-complete.jar' -no-listener ` +
+        `-Xexact-output-dir -o '${GENERATED}' -Dlanguage=JavaScript '<%= file.path %>'`)
+      )
+  )
 }
 
 function antlr4Normalize () {
