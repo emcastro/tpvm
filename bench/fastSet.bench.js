@@ -2,11 +2,10 @@
 const { color, newSuite, run } = require('./utils/bench')
 const _ = require('lodash')
 
-const { Set } = require('immutable')
+// const { Set } = require('immutable')
 
 const { fasteach } = require('../dist/utils/fastArray')
 const { XList } = require('../dist/utils/XList')
-
 
 // for (let i = 3; i < 15; i += 4) {
 for (const i of [3, 11, 18, 30, 60, 150]) {
@@ -40,10 +39,10 @@ for (const i of [3, 11, 18, 30, 60, 150]) {
     return new Set(result.toList())
   })
 
-  suite.add('Immutable JS', () => {
-    let result = Set()
-    fasteach(list, x => { result = result.add(`(${x})`) })
-  })
+  // suite.add('Immutable JS', () => {
+  //   let result = Set()
+  //   fasteach(list, x => { result = result.add(`(${x})`) })
+  // })
 
-  run(suite, 'Set copy add', 'Standard Set')
+  run(suite, 'Standard Set')
 }

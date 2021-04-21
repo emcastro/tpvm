@@ -27,4 +27,4 @@ suite.add('array', () => fastmap(fastmap(list, x => [x, x + 1]), y => y[1]))
 suite.add('object', () => fastmap(fastmap(list, x => ({ a: x, b: x + 1 })), y => y.b))
 suite.add('class2', () => fastmap(fastmap(list, x => new Pair2(x, x + 1)), y => y[1]))
 
-run(suite, 'class')
+run(suite, 'object')

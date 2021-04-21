@@ -24,5 +24,5 @@ for (let i = 0; i < 15; i++) {
   suite.add('fastmap', () => fastmap(list, x => `(${x})`))
   suite.add('Array.map', () => list.map(x => `(${x})`))
 
-  run(suite, 'fastmap')
+  run(suite, 'Array.map')
 }

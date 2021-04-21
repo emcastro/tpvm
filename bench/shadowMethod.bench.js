@@ -82,4 +82,4 @@ suite.add('visibleMethod', () => {
   })
 })
 
-run(suite, 'switchCase')
+run(suite, 'shadowMethod')

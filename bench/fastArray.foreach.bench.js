@@ -47,5 +47,5 @@ for (let i = 0; i < 15; i++) {
     return r
   })
 
-  run(suite, 'fasteach')
+  run(suite, 'Array.forEach')
 }
