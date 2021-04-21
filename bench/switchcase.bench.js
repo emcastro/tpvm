@@ -1,12 +1,10 @@
 
 console.log()
 
-const { usage, newSuite, run } = require('./utils/bench')
+const { newSuite, run } = require('./utils/bench')
 const _ = require('lodash')
 
 const { fastmap } = require('../dist/utils/fastArray')
-
-usage('switch Poly', ['switch case', 'switch Map', '{object}'])
 
 const keyNames = _.times(30, n => 'k' + n)
 const keys = _.shuffle(keyNames)

@@ -1,10 +1,8 @@
 
-const { usage, newSuite, run } = require('./utils/bench')
+const { newSuite, run } = require('./utils/bench')
 const _ = require('lodash')
 
 const { fastmap } = require('../dist/utils/fastArray')
-
-usage('class', ['object', 'array'])
 
 const suite = newSuite()
 

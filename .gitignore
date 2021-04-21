@@ -9,3 +9,4 @@
 /analyze_python
 .ipynb_checkpoints
 /metrics.txt
+/bench/result

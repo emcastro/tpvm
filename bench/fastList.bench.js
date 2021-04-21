@@ -7,11 +7,9 @@ const { List } = require('immutable')
 const { fasteach } = require('../dist/utils/fastArray')
 const { XList } = require('../dist/utils/XList')
 
-// usage('---', [])
-
 for (const i of [3, 11, 18, 30, 60, 150]) {
   console.log(color.yellow('list.length = ' + i))
-  const suite = newSuite()
+  const suite = newSuite('list.length = ' + i)
 
   const list = _.times(i)
 

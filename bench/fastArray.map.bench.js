@@ -1,14 +1,12 @@
 
-const { color, usage, newSuite, run } = require('./utils/bench')
+const { color, newSuite, run } = require('./utils/bench')
 const _ = require('lodash')
 
 const { fastmap } = require('../dist/utils/fastArray')
 
-usage('fastmap', ['_.map', 'Array.map'])
-
 for (let i = 0; i < 15; i++) {
   console.log(color.yellow('list.length = ' + i))
-  const suite = newSuite()
+  const suite = newSuite('list.length = ' + i)
 
   const list = _.times(i)
 

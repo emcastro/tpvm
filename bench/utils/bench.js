@@ -1,18 +1,21 @@
 
 const benchmark = require('benchmark')
+const fs = require('fs')
 const color = require('ansi-colorizer')
 color.color = true
 
-function newSuite () {
-  return new benchmark.Suite()
-}
+function newSuite (suffix) {
+  const e = new Error()
+  const name = e.stack.split('\n')[2].match(/([^/]*?)\.bench\.js/)[1]
 
-/**
- * @param {string} preferred
- * @param {string[]} others
- */
-function usage (preferred, others) {
-  console.log(`Use ${color.green(preferred)} instead of ${others.map(o => color.grey(o)).join(' or ')}`)
+  let fullname
+  if (suffix !== undefined) {
+    fullname = name + '-' + suffix
+  } else {
+    fullname = name
+  }
+
+  return new benchmark.Suite(fullname)
 }
 
 /**
@@ -20,16 +23,23 @@ function usage (preferred, others) {
  * @param {string} expectedFastest
  */
 function run (suite, expectedFastest, reference) {
+  const entries = []
+
   suite.on('cycle', function (event) {
     console.log(String(event.target))
+    const result = event.target
+    const entry = { suite_name: this.name, run_name: result.name, hz: result.hz, rme: result.stats.rme }
+    entries.push(entry)
   })
   suite.on('complete', function () {
     const fastest = this.filter(i => i.name !== reference).filter('fastest').map('name')
     const c = (fastest.includes(expectedFastest) ? color.green : color.red).bind(color)
     console.log('Fastest is ' + c(fastest))
+
+    fs.writeFileSync(`${__dirname}/../result/${this.name}.json`, JSON.stringify(entries))
   })
 
   suite.run()
 }
 
-module.exports = { color, newSuite, usage, run }
+module.exports = { color, newSuite, run }
