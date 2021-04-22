@@ -1,0 +1,114 @@
+// Testbed 1
+__eq__=#eq
+__lt__=#lt
+__concat__=#list_concat
+__plus__=#plus
+__minus__=#minus
+__or__=(a,b)->if (a) a else b
+
+// Type check debugging checker
+__list_=#assertTypeList
+__string_=#assertTypeString
+__boolean_=#assertTypeBoolean
+__number_=#assertTypeNumber
+
+// Lists
+list.head=list(0)
+list.tail=list.tailFrom(1)
+list.tailFrom(n) = #list_tailFrom(list,n)
+list.sublist(from,to) = #list_sublist(list,from,to)
+list.length=#list_length(list)
+list.empty=list.length==0
+
+_.asList=#string_asList
+list.asString = {
+    list._list_.map(#fromCharCode).foldLeft("",#plus)
+}
+
+lone(list)=if(list.length == 1) list(0) else #error("Size must be 1")
+char(s) = lone(s.asList)
+
+//
+
+self.spy = #spy(self)
+
+list.latmap(f) = {
+  list.flatmap_(result) = {
+    if (list.empty) result
+    else {
+      list.tail.flatmap_(result ++ f(list.head))
+    }
+  }
+
+  list.flatmap_(#nil)
+}
+
+list.map(f) = list.flatmap(e->#list(f(e)))
+
+list.filter(f) = {
+  list.filter_(result) = {
+    if (list.empty) result
+    else {
+      if (f(list.head))
+        list.tail.filter_(f, result ++ #list(list.head))
+      else
+        list.tail.filter_(f, result)
+    }
+}
+
+ list.filter_(#nil)
+}
+
+list.split(isDelim) = {
+  list.split_(accumulator, result) = {
+    if (list.empty) {
+      result ++ #list(accumulator) // flush the accumulator
+    } else {
+      if (isDelim(list.head))
+        list.tail.split_(#nil, result ++ #list(accumulator)) // start a new accumulator
+      else 
+        list.tail.split_(accumulator ++ #list(list.head), result) // put un the accumulator
+    }
+}
+
+  if (list.empty) #nil else list.split_(#nil, #nil)
+}
+
+list.foldLeft(zero, op) = {
+  loop(list, state) = {
+    if (list.empty) state
+    else {
+      loop(list.tail, state op list.head)
+    }
+  }
+
+  loop(list,zero)
+}
+
+list.join(delim) = {
+  list.flatmap(item->delim++item)
+}
+
+integers(from, to) = {
+  ints(from, result) = {
+    if (from < to) ints(from+1, result ++ #list(from))
+    else result
+  }
+
+  ints(from, to, #nil)
+} 
+
+// ------------------ 
+
+
+file = #readFile("test").asList
+
+lines = file.split(c->c == char("\n"))
+linesOfWords = lines.map(l->l.split(c->c == char(",")))
+
+transformedLines = linesOfWords.map(words->words.join("|".asList))
+
+
+transformedLines.map(x->#delay(500,x.asString).asList).join("$\n".asList).asString
+//transformedLines.map(x->x.asString.asList).join("$\n".asList).asString
+

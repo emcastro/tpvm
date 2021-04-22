@@ -9,7 +9,7 @@ import {
   Args, TypedParams, TypedVars, Arg, TypedParam, TypedVar,
   LetExpr, TopLevel, Simple, VarExpr, LiteralExpr,
   BinOp, UnOp, UserOp, Call, ValueDefinition, TupleDefinition, FunctionDefinition,
-  IfElseExpr, Apply as PApply, ShortLambdaExpr
+  IfElseExpr, Apply as PApply, ShortLambdaExpr, MethodDefinition
 } from './parser'
 
 import { flapmap, safeNewMap } from '../utils/fastArray'
@@ -124,7 +124,7 @@ function extractTupleIds (def: TupleDefinition): Token[] {
   return typedVarList(def.typedVars()).map(tv => tv.varId().token())
 }
 
-function extractFunctionId (def: FunctionDefinition): Token {
+function extractFunctionId (def: FunctionDefinition | MethodDefinition): Token {
   return def.functionId().token()
 }
 
@@ -243,12 +243,17 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
       switch (def.contextName) {
         case 'valueDefinition': return extractValueId(def)
         case 'functionDefinition': return extractFunctionId(def)
-        // case 'tupleDefinition':
-        default: {
+        case 'methodDefinition': {
+          const token = extractFunctionId(def)
+          return { ...token, text: `_${token.text}` }
+        }
+        case 'tupleDefinition': {
           const ids = extractTupleIds(def)
           ids.push(freshVar(def)) // One fresh var for each tuple definition
           return ids
         }
+        default:
+          throw new Error('Not implemented')
       }
     })
 
@@ -266,8 +271,12 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
           return [[newEnv.resolve(id), lambdaExpr(def, newEnv).setSource([def.typedParams(), def.expr()])]]
         }
 
-        // case 'tupleDefinition':
-        default:
+        case 'methodDefinition': {
+          const id = extractFunctionId(def)
+          return [[newEnv.resolve({ ...id, text: `_${id.text}` }), lambdaExpr2(def, newEnv).setSource([def.typedVar(), def.typedParams(), def.expr()])]]
+        }
+
+        case 'tupleDefinition':
           const ids = extractTupleIds(def)
           const fresh = freshVar(def)
           const freshId = newEnv.resolve(fresh)
@@ -279,6 +288,9 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
           bindings.unshift(mainBinding)
 
           return bindings
+
+        default:
+          throw new Error('Not implemented')
       }
     })
 
@@ -288,6 +300,14 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
 
 function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams | null), expr: () => PExpr }, env: Env): Expr {
   const params = typedParamList(lambdaLike.typedParams()).map(p => p.paramId().token())
+  const newEnv = env.extends(params)
+
+  return eLambda(params.map(p => newEnv.resolve(p)), toCore(lambdaLike.expr(), newEnv))
+}
+
+function lambdaExpr2 (lambdaLike: { typedVar: () => TypedVar, typedParams: () => (TypedParams | null), expr: () => PExpr }, env: Env): Expr {
+  const thisToken = lambdaLike.typedVar().varId().token()
+  const params = [thisToken, ...typedParamList(lambdaLike.typedParams()).map(p => p.paramId().token())]
   const newEnv = env.extends(params)
 
   return eLambda(params.map(p => newEnv.resolve(p)), toCore(lambdaLike.expr(), newEnv))

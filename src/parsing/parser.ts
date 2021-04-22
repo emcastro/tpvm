@@ -141,11 +141,12 @@ export interface SimpleExpr extends N<'simpleExpr'> {
 } // transparent node
 
 export interface Definition extends N<'definition'> {
-  loneChild: A<ValueDefinition | TupleDefinition | FunctionDefinition>
+  loneChild: A<ValueDefinition | TupleDefinition | FunctionDefinition | MethodDefinition>
 } // transparent node
 
 export interface ValueDefinition extends N<'valueDefinition'> { typedVar: A<TypedVar>, expr: A<Expr> }
 export interface FunctionDefinition extends N<'functionDefinition'> { functionId: A<FunctionId>, typedParams: NA<TypedParams>, typeAnnotation: N<TypeAnnotation>, expr: A<Expr> }
+export interface MethodDefinition extends N<'methodDefinition'> { typedVar: A<TypedVar>, functionId: A<FunctionId>, typedParams: NA<TypedParams>, typeAnnotation: N<TypeAnnotation>, expr: A<Expr> }
 export interface TupleDefinition extends N<'tupleDefinition'> { typedVars: NA<TypedVars>, expr: A<Expr> }
 
 export interface TypedVar extends N<'typedVar'> { varId: A<VarId>, typeAnnotation: A<TypeAnnotation> }
@@ -181,7 +182,7 @@ export interface TypedVars extends N<'typedArg'> { typedVar: A<TypedVar[]> }
 
 export type TPNode = (
   TopLevel | LetExpr
-  | Definition | ValueDefinition | FunctionDefinition | TupleDefinition
+  | Definition | ValueDefinition | FunctionDefinition | TupleDefinition | MethodDefinition
   | TypedVar | TypedVars | Arg | Args | TypedParams | TypedParam
   | Attr | UserOpId | VarId | FunctionId | ParamId
   | Apply | TypeAnnotation

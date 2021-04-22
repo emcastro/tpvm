@@ -2058,10 +2058,91 @@ exports[`Parser parses SimpleEverything.tp correctly 1`] = `
         apply
           '(' (   @72:24-25
           ')' )   @72:25-26
+  definition
+    methodDefinition
+      typedVar
+        varId
+          ID this   @74:1-5
+        typeAnnotation
+      '.' .   @74:5-6
+      functionId
+        ID method   @74:6-12
+      typeAnnotation
+      EQ_DEF =   @74:13-14
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 42   @74:15-17
+  definition
+    methodDefinition
+      typedVar
+        varId
+          ID this   @75:1-5
+        typeAnnotation
+      '.' .   @75:5-6
+      functionId
+        ID method   @75:6-12
+      '(' (   @75:12-13
+      ')' )   @75:13-14
+      typeAnnotation
+      EQ_DEF =   @75:15-16
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 42   @75:17-19
+  definition
+    methodDefinition
+      typedVar
+        varId
+          ID this   @76:1-5
+        typeAnnotation
+      '.' .   @76:5-6
+      functionId
+        ID method   @76:6-12
+      '(' (   @76:12-13
+      typedParams
+        typedParam
+          paramId
+            ID a   @76:13-14
+          typeAnnotation
+      ')' )   @76:14-15
+      typeAnnotation
+      EQ_DEF =   @76:16-17
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 42   @76:18-20
+  definition
+    methodDefinition
+      typedVar
+        varId
+          ID this   @77:1-5
+        typeAnnotation
+      '.' .   @77:5-6
+      functionId
+        ID method   @77:6-12
+      '(' (   @77:12-13
+      typedParams
+        typedParam
+          paramId
+            ID a   @77:13-14
+          typeAnnotation
+        ',' ,   @77:14-15
+        typedParam
+          paramId
+            ID b   @77:15-16
+          typeAnnotation
+      ')' )   @77:16-17
+      typeAnnotation
+      EQ_DEF =   @77:18-19
+      simple:expr
+        simpleExpr
+          literalExpr
+            INTEGER 42   @77:20-22
   simple:expr
     simpleExpr
       varExpr
-        ID result   @74:1-7
-  undefined <EOF>   @75:1-6
+        ID result   @79:1-7
+  undefined <EOF>   @80:1-6
 "
 `;

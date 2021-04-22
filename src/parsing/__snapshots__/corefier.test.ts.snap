@@ -16,6 +16,30 @@ exports[`Corefier works 1`] = `
                   $x))
      ($d_4 :
            $a_1)
+     ($f_5 :
+           (Lambda ()
+                   $f_5))
+     ($g_6 :
+           (Lambda ($a_10)
+                   (Apply
+                          $g_6
+                          $a_10)))
+     ($_h_7 :
+            (Lambda ($a_11)
+                    (Apply
+                           $_h_7
+                           $a_11)))
+     ($_i_8 :
+            (Lambda ($a_12)
+                    (Apply
+                           $_i_8
+                           $a_12)))
+     ($_j_9 :
+            (Lambda ($a_13 $b_14)
+                    (Apply
+                           $_j_9
+                           $a_13
+                           $b_14)))
      (Apply
             $a_1
             $a_1

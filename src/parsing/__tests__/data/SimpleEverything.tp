@@ -71,4 +71,9 @@ call=set1 union set2
 
 lambdaCall=(()->result)()
 
+this.method = 42
+this.method() = 42
+this.method(a) = 42
+this.method(a,b) = 42
+
 result 

@@ -26,11 +26,13 @@ simpleExpr: literalExpr
           | letExpr
           ;
 
-definition: (valueDefinition | tupleDefinition | functionDefinition);
+definition: (valueDefinition | tupleDefinition | functionDefinition | methodDefinition);
 
 valueDefinition: typedVar EQ_DEF expr;
 
 functionDefinition: functionId '(' typedParams? ')' typeAnnotation EQ_DEF expr;
+
+methodDefinition: typedVar '.' functionId ('(' typedParams? ')')? typeAnnotation EQ_DEF expr;
 
 tupleDefinition: '(' typedVars? ')' EQ_DEF expr;
 
