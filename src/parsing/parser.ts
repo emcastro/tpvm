@@ -2,7 +2,6 @@
 import { InputStream, CommonTokenStream, ParserRuleContext, tree, error } from 'antlr4'
 import TPGrammarParser from '../generated/TPGrammarParser'
 import TPGrammarLexer from '../generated/TPGrammarLexer'
-import { fasteach } from '../utils/fastArray'
 const TerminalNodeImpl = tree.TerminalNodeImpl
 
 export { TPGrammarParser as parser }
@@ -67,7 +66,7 @@ prototype(ParserRuleContext).loneChild = function () {
   const c = this.children
   if (c == null || c.length !== 1) {
     let result: any
-    fasteach<any>(this.children, e => {
+    this.children.forEach((e: any) => {
       // if (!(e instanceof TerminalNode)) {
       if (e.constructor !== TerminalNodeImpl) {
         if (result !== undefined) {

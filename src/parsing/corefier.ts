@@ -12,7 +12,7 @@ import {
   IfElseExpr, Apply as PApply, ShortLambdaExpr
 } from './parser'
 
-import { fastmap, flapmap, fasteach, safeNewMap } from '../utils/fastArray'
+import { flapmap, safeNewMap } from '../utils/fastArray'
 import { memo, MayBe, emptyList } from '../utils/prelude'
 
 const METHOD_PREFIX = '_'
@@ -60,7 +60,7 @@ class VarMapping {
     const newMap = new Map(this.storage)
 
     const added = new Set()
-    fasteach(ids, id => {
+    ids.forEach(id => {
       if (added.has(id.text)) {
         throw new ReferenceError(`Duplicate var ${id.text} @${position(id)}`)
       }
@@ -121,7 +121,7 @@ function extractValueId (def: ValueDefinition): Token {
 }
 
 function extractTupleIds (def: TupleDefinition): Token[] {
-  return fastmap(typedVarList(def.typedVars()), tv => tv.varId().token())
+  return typedVarList(def.typedVars()).map(tv => tv.varId().token())
 }
 
 function extractFunctionId (def: FunctionDefinition): Token {
@@ -232,7 +232,7 @@ const toCoreSwitchMap: { [name: string]: (expr: any, env: Env) => Expr } = {
 }
 
 function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
-  const defs = fastmap(expr.definition(), d => d.loneChild())
+  const defs = expr.definition().map(d => d.loneChild())
   if (defs.length === 0) {
     return toCore(expr.expr(), env)
   } else {
@@ -287,10 +287,10 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
 }
 
 function lambdaExpr (lambdaLike: { typedParams: () => (TypedParams | null), expr: () => PExpr }, env: Env): Expr {
-  const params = fastmap(typedParamList(lambdaLike.typedParams()), p => p.paramId().token())
+  const params = typedParamList(lambdaLike.typedParams()).map(p => p.paramId().token())
   const newEnv = env.extends(params)
 
-  return eLambda(fastmap(params, p => newEnv.resolve(p)), toCore(lambdaLike.expr(), newEnv))
+  return eLambda(params.map(p => newEnv.resolve(p)), toCore(lambdaLike.expr(), newEnv))
 }
 
 // Utils ↓↓↓↓
@@ -300,7 +300,7 @@ function typedParamList (params: TypedParams | null): TypedParam[] { return (par
 function typedVarList (vars: TypedVars | null): TypedVar[] { return (vars === null) ? emptyList<TypedVar>() : vars.typedVar() }
 
 function operands (apply: PApply, env: Env): Expr[] {
-  return fastmap(argList(apply.args()), a => toCore(a.expr(), env))
+  return argList(apply.args()).map(a => toCore(a.expr(), env))
 }
 
 function toCore (expr: TPNode, env: Env): Expr {
@@ -311,7 +311,7 @@ function toCore (expr: TPNode, env: Env): Expr {
 }
 
 function toCoreMap (exprs: TPNode[], env: Env): Expr[] {
-  return fastmap(exprs, e => toCore(e, env))
+  return exprs.map(e => toCore(e, env))
 }
 
 const parseIntAutoRE = /((0x)|(0b))?(.*)/

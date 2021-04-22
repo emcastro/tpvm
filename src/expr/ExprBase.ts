@@ -3,7 +3,6 @@ import { ExprRenderer } from './ExprRenderer'
 import { OneOrMany, isNotNull, emptySet } from '../utils/prelude'
 import { TPNode, Token, position, nodePosition } from '../parsing/parser'
 import { Expr } from './Expr'
-import { fastmap } from '../utils/fastArray'
 import { freeVars } from './freeVars'
 
 export type LiteralValue = string | number | boolean
@@ -54,7 +53,7 @@ function location (data: { source?: OneOrMany<TPNode | Token | null> }): string 
   } else if (!Array.isArray(source)) {
     return `@${sourcePosition(source)}`
   } else {
-    return `@${fastmap(source.filter(isNotNull), sourcePosition).join('|')}`
+    return `@${source.filter(isNotNull).map(sourcePosition).join('|')}`
   }
 }
 

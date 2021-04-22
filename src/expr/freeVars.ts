@@ -1,6 +1,5 @@
 import { Expr, eVar, eApply, eIfElse, eLambda, eLet, eLiteral } from './Expr'
 import { assertNever, emptySet, singleton, extendSet } from '../utils/prelude'
-import { fastmap } from '../utils/fastArray'
 
 export function freeVars (expr: Expr, bindings: Set<string>): Set<string> {
   switch (expr.typ) {
@@ -28,7 +27,7 @@ export function freeVars (expr: Expr, bindings: Set<string>): Set<string> {
       if (expr.operands.length !== 0) {
         return extendSet(
           freeVars(expr.operator, bindings),
-          fastmap(expr.operands, o => freeVars(o, bindings)).reduce(extendSet)
+          expr.operands.map(o => freeVars(o, bindings)).reduce(extendSet)
         )
       } else {
         return freeVars(expr.operator, bindings)
@@ -44,7 +43,7 @@ export function freeVars (expr: Expr, bindings: Set<string>): Set<string> {
       const newBindings = extendSet(bindings, new Set(expr.defs.keys()))
 
       return extendSet(
-        fastmap(expr.defBodies, o => freeVars(o, newBindings)).reduce(extendSet),
+        expr.defBodies.map(o => freeVars(o, newBindings)).reduce(extendSet),
         freeVars(expr.body, newBindings)
       )
     }
