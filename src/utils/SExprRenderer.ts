@@ -1,3 +1,4 @@
+import { $$$ } from './prelude'
 
 /**
  * Generic S-Expression renderer.js
@@ -6,7 +7,7 @@
  */
 export class SExprRenderer<N, T> {
   splitNode (o: N): T | [string, N[]] {
-    throw new Error('Unimplemented')
+    $$$()
   }
 
   sExpr (o: N): string {

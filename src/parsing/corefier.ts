@@ -13,7 +13,7 @@ import {
 } from './parser'
 
 import { flapmap, safeNewMap } from '../utils/fastArray'
-import { memo, MayBe, emptyList } from '../utils/prelude'
+import { memo, MayBe, emptyList, $$$ } from '../utils/prelude'
 
 const METHOD_PREFIX = '_'
 
@@ -253,7 +253,7 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
           return ids
         }
         default:
-          throw new Error('Not implemented')
+          $$$()
       }
     })
 
@@ -290,7 +290,7 @@ function letExpr (expr: LetExpr | TopLevel, env: Env): Expr {
           return bindings
 
         default:
-          throw new Error('Not implemented')
+          $$$()
       }
     })
 

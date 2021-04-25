@@ -1,4 +1,4 @@
-// Testbed 1
+// Testbed 2
 __eq__=#eq
 __lt__=#lt
 __concat__=#list_concat
@@ -20,7 +20,7 @@ list.sublist(from,to) = #list_sublist(list,from,to)
 list.length=#list_length(list)
 list.empty=list.length==0
 
-_.asList=#string_asList
+_.asList=#string_asList // _ is lost. TODO, support partial eval in corefier
 list.asString = {
     list._list_.map(#fromCharCode).foldLeft("",#plus)
 }
