@@ -1,5 +1,6 @@
 import { Expr, eVar, eApply, eIfElse, eLambda, eLet, eLiteral } from './Expr'
-import { assertNever, emptySet, singleton, extendSet } from '../utils/prelude'
+import { assertNever, emptySet, singleton, extendSet, $$$ } from '../utils/prelude'
+import { eStrict } from '../generated/genExpr'
 
 export function freeVars (expr: Expr, bindings: Set<string>): Set<string> {
   switch (expr.typ) {
@@ -47,6 +48,9 @@ export function freeVars (expr: Expr, bindings: Set<string>): Set<string> {
         freeVars(expr.body, newBindings)
       )
     }
+
+    case eStrict.typ:
+      return freeVars(expr.expr, bindings)
 
     default:
       return assertNever(expr)

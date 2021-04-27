@@ -22,14 +22,14 @@ function defCaseClass (name, extend, implement, typedAttributes) {
 export const ${name.toUpperCase()} = ${typ}
 
 export class ${name}${kw('extends', extend)}${kw('implements', implement)} {
-  // generated code
+  // generated code by node_codegen.js
 
   readonly typ: typeof ${name.toUpperCase()}
 
   ${typedAttributes.map(x => `readonly ${x}`).join('\n  ')}
 
   constructor (${typedAttributes.join(', ')}) {
-    // generated code
+    // generated code by node_codegen.js
 ${extend ? '    super()' : ''}
     this.typ = ${name.toUpperCase()} // typ is faster when set on instances
     ${attributes.map(a => `this.${a} = ${a}`).join('\n    ')}
@@ -99,7 +99,7 @@ type DataParams = {
  */
 function data (name, params) {
   const header = (`
-// generated code
+// generated code by node_codegen.js
 
 ${params.import ? params.import.join('\n') : ''}
 
@@ -131,7 +131,8 @@ const files = [data('Expr',
       Apply: ['operator: Expr', 'operands: Expr[]'],
       IfElse: ['ifClause: Expr', 'thenClause: Expr', 'elseClause: Expr'],
       Lambda: ['params: string[]', 'body: Expr'],
-      Let: ['defs: Map<string, Expr>', 'body: Expr']
+      Let: ['defs: Map<string, Expr>', 'body: Expr'],
+      Strict: ['expr: Expr']
     }
   })]
 

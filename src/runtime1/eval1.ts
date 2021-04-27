@@ -17,8 +17,8 @@ import { XList } from '../utils/XList'
 // import { Spy } from '../utils/spy'
 import { MultiKeyMap, counter } from '../utils/maps'
 
-import fs from 'fs'
 import { Spy } from '../utils/spy'
+import { eStrict } from '../generated/genExpr'
 
 export type Value = LiteralValue | Closure | ValueArray | ValueAppendList | Function
 
@@ -172,6 +172,9 @@ export function eval1 (expr: Expr, env: Env): Trampoline<XValue> {
 
     case eApply.typ:
       return apply(expr, env)
+
+    case eStrict.typ:
+      return eval1(expr.expr, env) // not used in eval1. Strictness is handled elsewhere
 
     default:
       return assertNever(expr)

@@ -1,24 +1,24 @@
 
-// generated code
+// generated code by node_codegen.js
 
 import { ExprBase, LiteralValue } from '../expr/ExprBase'
 import { equal } from '../utils/prelude'
 
-export type Expr = Var | Literal | Apply | IfElse | Lambda | Let
+export type Expr = Var | Literal | Apply | IfElse | Lambda | Let | Strict
 
 //
 
 export const VAR = 0
 
 export class Var extends ExprBase {
-  // generated code
+  // generated code by node_codegen.js
 
   readonly typ: typeof VAR
 
   readonly varId: string
 
   constructor (varId: string) {
-    // generated code
+    // generated code by node_codegen.js
     super()
     this.typ = VAR // typ is faster when set on instances
     this.varId = varId
@@ -67,14 +67,14 @@ export function isVar (expr: Expr): expr is Var {
 export const LITERAL = 1
 
 export class Literal extends ExprBase {
-  // generated code
+  // generated code by node_codegen.js
 
   readonly typ: typeof LITERAL
 
   readonly value: LiteralValue | symbol
 
   constructor (value: LiteralValue | symbol) {
-    // generated code
+    // generated code by node_codegen.js
     super()
     this.typ = LITERAL // typ is faster when set on instances
     this.value = value
@@ -123,7 +123,7 @@ export function isLiteral (expr: Expr): expr is Literal {
 export const APPLY = 2
 
 export class Apply extends ExprBase {
-  // generated code
+  // generated code by node_codegen.js
 
   readonly typ: typeof APPLY
 
@@ -131,7 +131,7 @@ export class Apply extends ExprBase {
   readonly operands: Expr[]
 
   constructor (operator: Expr, operands: Expr[]) {
-    // generated code
+    // generated code by node_codegen.js
     super()
     this.typ = APPLY // typ is faster when set on instances
     this.operator = operator
@@ -182,7 +182,7 @@ export function isApply (expr: Expr): expr is Apply {
 export const IFELSE = 3
 
 export class IfElse extends ExprBase {
-  // generated code
+  // generated code by node_codegen.js
 
   readonly typ: typeof IFELSE
 
@@ -191,7 +191,7 @@ export class IfElse extends ExprBase {
   readonly elseClause: Expr
 
   constructor (ifClause: Expr, thenClause: Expr, elseClause: Expr) {
-    // generated code
+    // generated code by node_codegen.js
     super()
     this.typ = IFELSE // typ is faster when set on instances
     this.ifClause = ifClause
@@ -244,7 +244,7 @@ export function isIfElse (expr: Expr): expr is IfElse {
 export const LAMBDA = 4
 
 export class Lambda extends ExprBase {
-  // generated code
+  // generated code by node_codegen.js
 
   readonly typ: typeof LAMBDA
 
@@ -252,7 +252,7 @@ export class Lambda extends ExprBase {
   readonly body: Expr
 
   constructor (params: string[], body: Expr) {
-    // generated code
+    // generated code by node_codegen.js
     super()
     this.typ = LAMBDA // typ is faster when set on instances
     this.params = params
@@ -303,7 +303,7 @@ export function isLambda (expr: Expr): expr is Lambda {
 export const LET = 5
 
 export class Let extends ExprBase {
-  // generated code
+  // generated code by node_codegen.js
 
   readonly typ: typeof LET
 
@@ -311,7 +311,7 @@ export class Let extends ExprBase {
   readonly body: Expr
 
   constructor (defs: Map<string, Expr>, body: Expr) {
-    // generated code
+    // generated code by node_codegen.js
     super()
     this.typ = LET // typ is faster when set on instances
     this.defs = defs
@@ -355,6 +355,62 @@ eLet.typ = LET // Shortcut that avoids importing LET
 
 export function isLet (expr: Expr): expr is Let {
   return expr.typ === LET
+}
+
+//
+
+export const STRICT = 6
+
+export class Strict extends ExprBase {
+  // generated code by node_codegen.js
+
+  readonly typ: typeof STRICT
+
+  readonly expr: Expr
+
+  constructor (expr: Expr) {
+    // generated code by node_codegen.js
+    super()
+    this.typ = STRICT // typ is faster when set on instances
+    this.expr = expr
+  }
+
+  children (): [Expr] {
+    // generated code
+    return [this.expr]
+  }
+
+  rewrite (subExprs: [Expr]): Strict {
+    // generated code
+    return new Strict(subExprs[0])
+  }
+
+  equals (that: any): boolean { // Strict
+    // generated code
+    if (that === this) return true // fast-track
+    if (that == null) return false
+    if (that instanceof Strict) {
+      if (!equal(this.expr, that.expr)) return false
+      return true
+    }
+    return false
+  }
+
+  notEquals (that: any): boolean { return !(this.equals(that)) }
+}
+
+/** Builder for Strict */
+export let eStrict: ((expr: Expr) => Strict) & { typ: typeof STRICT }
+
+eStrict = ((expr: Expr) => {
+  // generated code
+  return new Strict(expr)
+}) as typeof eStrict
+
+eStrict.typ = STRICT // Shortcut that avoids importing STRICT
+
+export function isStrict (expr: Expr): expr is Strict {
+  return expr.typ === STRICT
 }
 
 //
