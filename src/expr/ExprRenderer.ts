@@ -1,6 +1,7 @@
 import SExprRenderer from '../utils/SExprRenderer'
 import { Expr, eVar, eLiteral, eApply, eIfElse, eLet, eLambda, Apply, IfElse, Let, Lambda, Binding } from './Expr'
 import { iteratorToArray, anything } from '../utils/prelude'
+import { eStrict } from '../generated/genExpr'
 
 // Debugging print support
 function subExprs (expr: Apply | IfElse | Let | Lambda): Array<Expr | Binding> {
@@ -56,7 +57,12 @@ export class ExprRenderer extends SExprRenderer<Expr | Binding, anything> {
         case eLambda.typ:
           return [`Lambda (${node.params.map(p => '$' + p).join(' ')})`, subExprs(node)]
 
+        case eStrict.typ:
+          return ['!', [node.expr]]
+
         default:
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const never: never = node
           console.error('Unexpected node', node)
           //  throw new Error(node);
           return '#error'

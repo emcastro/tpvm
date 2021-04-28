@@ -14,6 +14,7 @@ import {
 
 import { flapmap, safeNewMap } from '../utils/fastArray'
 import { memo, MayBe, emptyList, assertNever } from '../utils/prelude'
+import { eStrict } from '../generated/genExpr'
 
 const METHOD_PREFIX = '_'
 
@@ -167,7 +168,7 @@ const toCoreSwitchMap: { [name: string]: (expr: any, env: Env) => Expr } = {
 
   ifElseExpr (expr: IfElseExpr, env: Env): Expr {
     const exprs = expr.expr()
-    return eIfElse(toCore(exprs[0], env), toCore(exprs[1], env), toCore(exprs[2], env))
+    return eIfElse(eStrict(toCore(exprs[0], env)), toCore(exprs[1], env), toCore(exprs[2], env))
   },
 
   binOp (expr: BinOp, env: Env): Expr {
@@ -198,25 +199,27 @@ const toCoreSwitchMap: { [name: string]: (expr: any, env: Env) => Expr } = {
       const attrName = env.resolveIfDefined(METHOD_PREFIX, attr.token())
 
       if (attrName === undefined) {
+        // no method-like function → call js method
         const attrLiteral = [eLiteral(attr.token().text).setSource(attr)]
         if (apply === null) { // expr.attr => expr('attr')
-          return eApply(operator, attrLiteral)
+          return eApply(eStrict(operator), attrLiteral)
         } else { // expr.attr(apply) => expr('attr')(apply...)
-          return eApply(eApply(operator, attrLiteral), operands(apply, env))
+          return eApply(eStrict(eApply(eStrict(operator), attrLiteral)), operands(apply, env))
         }
       } else {
+        // method-like function found. Just call it.
         const attrVar = eVar(attrName).setSource(attr)
         if (apply === null) { // expr.attr => _attr(expr)
-          return eApply(attrVar, [operator])
+          return eApply(eStrict(attrVar), [operator])
         } else { // expr.attr(apply) => _attr(expr, apply...)
           const ops = operands(apply, env)
           ops.unshift(operator)
-          return eApply(attrVar, ops)
+          return eApply(eStrict(attrVar), ops)
         }
       }
     } else { // expr(apply...)
       if (apply === null) throw new Error('Unexpected missing apply')
-      return eApply(operator, operands(apply, env))
+      return eApply(eStrict(operator), operands(apply, env))
     }
   },
 

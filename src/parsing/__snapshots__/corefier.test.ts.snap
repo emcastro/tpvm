@@ -20,28 +20,144 @@ exports[`Corefier works 1`] = `
            (Lambda ()
                    $f_5))
      ($g_6 :
-           (Lambda ($a_10)
+           (Lambda ($a_30)
                    (Apply
-                          $g_6
-                          $a_10)))
+                          (!
+                             $g_6)
+                          $a_30)))
      ($_h_7 :
-            (Lambda ($a_11)
+            (Lambda ($a_31)
                     (Apply
-                           $_h_7
-                           $a_11)))
+                           (!
+                              $_h_7)
+                           $a_31)))
      ($_i_8 :
-            (Lambda ($a_12)
+            (Lambda ($a_32)
                     (Apply
-                           $_i_8
-                           $a_12)))
+                           (!
+                              $_i_8)
+                           $a_32)))
      ($_j_9 :
-            (Lambda ($a_13 $b_14)
+            (Lambda ($a_33 $b_34)
                     (Apply
-                           $_j_9
-                           $a_13
-                           $b_14)))
+                           (!
+                              $_j_9)
+                           $a_33
+                           $b_34)))
+     ($l_10 :
+            (Apply
+                   (!
+                      $map)
+                   (Lambda ($a_35 $b_36)
+                           $b_36)
+                   (Lambda ($c_37)
+                           $c_37)
+                   (Lambda ($d_38)
+                           $d_38)))
+     ($fv0_12 :
+              $a_1)
+     ($x1_11 :
+             (Apply
+                    $fv0_12
+                    '0:number'))
+     ($fv1_15 :
+              $a_1)
+     ($x2_13 :
+             (Apply
+                    $fv1_15
+                    '0:number'))
+     ($y2_14 :
+             (Apply
+                    $fv1_15
+                    '1:number'))
+     ($c1_16 :
+             (Apply
+                    $__plus__
+                    (Apply
+                           $__plus__
+                           '1.2:number'
+                           '255:number')
+                    '10:number'))
+     ($c2_17 :
+             (Apply
+                    $__plus__
+                    (Apply
+                           $__plus__
+                           'abcd:string'
+                           'true:boolean')
+                    'symbol'))
+     ($c3_18 :
+             (Apply
+                    $__unary_minus__
+                    '2:number'))
+     ($c4_19 :
+             (Apply
+                    $f_5
+                    $a_1
+                    $b_2))
+     ($_f_20 :
+             (Lambda ($a_39)
+                     '0:number'))
+     ($e1_21 :
+             (Apply
+                    (!
+                       $f_5)
+                    $a_1))
+     ($e2_22 :
+             (Apply
+                    (!
+                       $_f_20)
+                    $a_1))
+     ($e3_23 :
+             (Apply
+                    (!
+                       $_f_20)
+                    $a_1))
+     ($e4_24 :
+             (Apply
+                    (!
+                       $_f_20)
+                    $a_1
+                    $b_2))
+     ($e5_25 :
+             (Apply
+                    (!
+                       $_f_20)
+                    $a_1
+                    $b_2
+                    $c_3))
+     ($j2_26 :
+             (Apply
+                    (!
+                       $a_1)
+                    'z:string'))
+     ($j3_27 :
+             (Apply
+                    (!
+                       (Apply
+                              (!
+                                 $a_1)
+                              'z:string'))))
+     ($j4_28 :
+             (Apply
+                    (!
+                       (Apply
+                              (!
+                                 $a_1)
+                              'z:string'))
+                    $b_2))
+     ($j5_29 :
+             (Apply
+                    (!
+                       (Apply
+                              (!
+                                 $a_1)
+                              'z:string'))
+                    $b_2
+                    $c_3))
      (Apply
-            $a_1
+            (!
+               $a_1)
             $a_1
             $b_2
             $c_3
