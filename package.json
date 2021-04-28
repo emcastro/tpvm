@@ -4,7 +4,7 @@
   "description": "A Virtual Machine for TP",
   "respository": {
     "type": "git",
-    "url": "https://emmanuel_castro@bitbucket.org/emmanuel_castro/tpvm.git"
+    "url": "https://github.com/emcastro/tpvm.git"
   },
   "license": "MIT",
   "scripts": {
